@@ -11,15 +11,22 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-const DesignItem = () => {
+const DesignItem = (props) => {
+    const {courseData, setCourseID, handleListItemClick} = props;
+    const test = JSON.parse(courseData.data);
+
+    const onClick = () => {
+        handleListItemClick(event, 'design');
+        setCourseID(courseData.id);
+    }
     return (
-        <ListItem button>
+        <ListItem button onClick={()=>onClick()}>
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="My Design" secondary="Last update @ 6 Feb, 2020" />
+            <ListItemText primary={test.unitTitle+" - "+test.courseDes}  secondary="Last update @ 6 Feb, 2020" />
             <ListItemSecondaryAction>
-                Edit | Delete | Duplicated  
+                Delete | Duplicated  
             </ListItemSecondaryAction>
         </ListItem>
 

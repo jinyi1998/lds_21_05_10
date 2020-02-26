@@ -35,10 +35,11 @@ const MyDesign = (props)=>{
     }, []);
 
 
-    const {handleListItemClick} = props;
+    const {handleListItemClick, setCourseID} = props;
 
     const buttonOnClick = (event) => {
         handleListItemClick(event, 'design');
+        setCourseID(-1);
     }
 
     const displayCourseList = () => {
@@ -55,6 +56,8 @@ const MyDesign = (props)=>{
                     <DesigmItem 
                     key ={_key_courseList} 
                     courseData = {courseList[_key_courseList]}
+                    setCourseID = {setCourseID} 
+                    handleListItemClick = {handleListItemClick}
                 /> ) }
             </div>);
         }

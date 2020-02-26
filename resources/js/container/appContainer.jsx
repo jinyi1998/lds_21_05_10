@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
- const AppContainer = () => {
+ const AppContainer = (props) => {
 
   const classes = useStyles();
 
@@ -123,6 +123,16 @@ const useStyles = makeStyles(theme => ({
   };
 
   const [selectedIndex, setSelectedIndex] = React.useState('myDesign');
+  React.useEffect(()=>{
+    if(props.firstLogin){
+      setSelectedIndex('design');
+    }else{
+
+    }
+  },
+  [])
+
+  const [courseID, setCourseID] = React.useState(-1);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -132,13 +142,13 @@ const useStyles = makeStyles(theme => ({
       switch (selectedIndex){
         default:
         case 'myDesign':
-          return <MyDesign handleListItemClick = {handleListItemClick}/>;
+          return <MyDesign handleListItemClick = {handleListItemClick} setCourseID = {setCourseID}/>;
           break;
         case 'publicDesign':
-          return <PublicDesign handleListItemClick = {handleListItemClick}/>;
+          return <PublicDesign handleListItemClick = {handleListItemClick} setCourseID = {setCourseID}/>;
           break;
         case 'design':
-          return <DesignContainer/>;
+          return <DesignContainer courseID = {courseID}/>;
           break;
       }
   }
@@ -217,5 +227,8 @@ const useStyles = makeStyles(theme => ({
 export default AppContainer;
 
 if (document.getElementById('dashboard')) {
-    ReactDOM.render(<AppContainer />, document.getElementById('dashboard'));
+    ReactDOM.render(<AppContainer firstLogin = {false}/>, document.getElementById('dashboard'));
+}
+if (document.getElementById('dashboard2')) {
+  ReactDOM.render(<AppContainer firstLogin = {true}/>, document.getElementById('dashboard2'));
 }

@@ -27,6 +27,10 @@ Route::get('/app', function () {
     return view('app');
 });
 
+Route::get('/app2', function () {
+    return view('app2');
+});
+
 // Route::get('/design', function () {
 //     return view('design');
 // });

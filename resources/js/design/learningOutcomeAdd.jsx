@@ -18,7 +18,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
+
+import {ContextStore} from '../container/designContainer'
 
 
 // learningOutcomes: [
@@ -50,45 +52,26 @@ const LearningOutcomeAdd = (props) => {
     const {handleOnSave} = props;
     const [learningOutcome, setLearningOutcome] = React.useState({
         id: -1,
-        level: "",
-        outcomeType: "",
-        STEMType: ["", ""],
+        level: -1,
+        outcomeType: -1,
+        STEMType: [],
         description: "",
         isCourseLevel: true
       });
 
+    const [step, setStep] = React.useState(0);
     const [state, setState] = React.useState({
-        S: true,
-        T: true,
-        E: true,
-        M: true,
+        S: false,
+        T: false,
+        E: false,
+        M: false,
       });
 
-      const [learningTypeTemp, setLearningTypeTemp] = React.useState({});
-      async function fetchlearningTypeTempData() {
-
-        const res = await fetch(
-            `http://localhost:8000/api/learningOutcome/getOutcomeType/`,
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-            setLearningTypeTemp(response);
-        })
-        .catch(error => console.log(error));
-
-    }
-    
-    React.useEffect(() => {
-       fetchlearningTypeTempData();
-    }, []);
-
+    const { options } = React.useContext(ContextStore);
+    const learningTypeTemp = options.learningOutcomeType;
 
     const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
     async function fetchlearningLevelTempData(selectLearningType) {
-        console.log(selectLearningType);
         const res = await fetch(
             `http://localhost:8000/api/learningOutcome/getOutcomeLevel/`+selectLearningType,
             {
@@ -106,16 +89,32 @@ const LearningOutcomeAdd = (props) => {
         Object.keys(learningTypeTemp).map( 
             _key => {
                 if(learningTypeTemp[_key].value == learningOutcome.outcomeType){
-                    console.log(learningTypeTemp[_key].value);
                     selectLearningType = learningTypeTemp[_key].id;
                 }
         });
         fetchlearningLevelTempData(selectLearningType);
     }, [learningOutcome.outcomeType]);
 
+    React.useEffect(() => {
+        handleChange();
+    }, [learningOutcome]);
+
+    //#region action related
+    const handleChange = () => {
+        var stepCount = 0;
+        if(learningOutcome.level != -1){
+            stepCount++;
+        }
+        if(learningOutcome.outcomeType != -1){
+            stepCount++;
+        }
+
+        setStep(stepCount);
+    }
+
 
     
-      const handleChange = name => event => {
+      const handleSTEMChange = name => event => {
         setState({ ...state, [name]: event.target.checked });
       };
 
@@ -124,7 +123,9 @@ const LearningOutcomeAdd = (props) => {
       }
 
       const outcomeLevelOnchange = event => {
-        setLearningOutcome({...learningOutcome, level: event.target.value});
+        setLearningOutcome({...learningOutcome, 
+            level: event.target.value, 
+            description: learningLevelTemp.find(x => x.value == event.target.value).description});
       }
 
       const outcomeDescchange = event => {
@@ -146,37 +147,20 @@ const LearningOutcomeAdd = (props) => {
          handleOnSave({...learningOutcome, STEMType: tmpSTEMType});
          handleClose();
       }
+      //#endregion
+    
 
-
-    return (
-        <div>
-            <AppBar className={classes.appBar}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                    <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                    Adding new learning outcome
-                    </Typography>
-                    <Button autoFocus color="inherit" onClick={outcomeSave}>
-                    save
-                    </Button>
-                </Toolbar>
-            </AppBar>
-
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <FormControl required className={classes.formControl}>
+    //#region display related
+    const displayOutcomeType = () => {
+        return (
+            <Grid item xs={12}>
+                    <FormControl required className={classes.formControl} fullWidth>
                         <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
                         <Select
                         labelId="demo-simple-select-required-label"
                         id="demo-simple-select-required"
                         className={classes.selectEmpty}
-                        defaultValue = ''
+                        value = {learningOutcome.outcomeType}
                         onChange = {outcomeTypeOnchange}
                         >
                             <MenuItem value='' disabled>
@@ -192,11 +176,15 @@ const LearningOutcomeAdd = (props) => {
                         </Select>
                         <FormHelperText>Required</FormHelperText>
                     </FormControl>
-                </Grid>
+            </Grid>
+        )
+    }
 
-                <Grid item xs={6}>
-                   
-                    <FormControl required className={classes.formControl}>
+    const displayOutcomeLevel = () => {
+        if(step > 0){
+            return (
+                <Grid item xs={12}>
+                    <FormControl required className={classes.formControl} fullWidth>
                         <InputLabel id="levels-label">Levels</InputLabel>
                         <Select
                         labelId="levels-label"
@@ -221,16 +209,20 @@ const LearningOutcomeAdd = (props) => {
                         <FormHelperText>Required</FormHelperText>
                     </FormControl>
                 </Grid>
+            )
+        }  
+    }
 
-
+    const displaySTEMOpts = () => {
+        if(step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2) ){
+            return (
                 <Grid item xs={12}>
-                {learningOutcome.outcomeType === "Generic Skills"?  null :
                     <FormGroup row>
                         <FormControlLabel
                             control={
                             <Checkbox
                                 checked={state.S}
-                                onChange={handleChange('S')}
+                                onChange={handleSTEMChange('S')}
                                 value="checkedB"
                                 color="primary"
                             />
@@ -242,7 +234,7 @@ const LearningOutcomeAdd = (props) => {
                             control={
                             <Checkbox
                                 checked={state.T}
-                                onChange={handleChange('T')}
+                                onChange={handleSTEMChange('T')}
                                 value="checkedB"
                                 color="primary"
                             />
@@ -254,7 +246,7 @@ const LearningOutcomeAdd = (props) => {
                             control={
                             <Checkbox
                                 checked={state.E}
-                                onChange={handleChange('E')}
+                                onChange={handleSTEMChange('E')}
                                 value="checkedB"
                                 color="primary"
                             />
@@ -266,29 +258,69 @@ const LearningOutcomeAdd = (props) => {
                             control={
                             <Checkbox
                                 checked={state.M}
-                                onChange={handleChange('M')}
+                                onChange={handleSTEMChange('M')}
                                 value="checkedB"
                                 color="primary"
                             />
                             }
                             label="Mathamatics"
                         />
-                        </FormGroup>
-                    }
-                </Grid>
+                    </FormGroup>
+            </Grid>
+            );
+        }
+    }
 
+    const displayOutcomeDes = () => {
+        if(step > 1){
+            return (
                 <Grid item xs={12}>
                     <TextField 
                          required
                          id="outlined-required"
                          label="Description of the outcome"
                          variant="outlined"
-                         defaultValue = ''
+                         value =  {learningOutcome.description}
                          onChange = {outcomeDescchange}
+                         autoFocus
                          fullWidth/>
                 </Grid>
+            );
+        }
+    }
+    //#endregion
+
+    return (
+        <React.Fragment>
+            <AppBar className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                        <CloseIcon />
+                        </IconButton>
+                        <Typography variant="h6" className={classes.title}>
+                        Adding new learning outcome
+                        </Typography>
+                        <Button autoFocus color="inherit" onClick={outcomeSave}>
+                        save
+                        </Button>
+                    </Toolbar>
+            </AppBar>
+            <Paper style={ {padding: "16px"} }>
+            
+
+            <Grid container spacing={5}>
+                <Grid item xs={12}>
+                    <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
+                </Grid>
+
+                {displayOutcomeType()}
+                {displayOutcomeLevel()}
+                {displaySTEMOpts()}
+                {displayOutcomeDes()}
+                
             </Grid>
-        </div> 
+        </Paper> 
+        </React.Fragment>
         
     );
 

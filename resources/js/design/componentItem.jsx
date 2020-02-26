@@ -47,11 +47,11 @@ const DesignComponentItem = (props) => {
                     <DragHandleIcon />
                 </ListItemIcon>
                 <ListItemText
-                    primary={"Step" + (index+1)}
-                    secondary = {item.title}
+                    // primary={"Step" + (index+1)}
+                    primary = {item.title}
                 />
                 <ListItemSecondaryAction>
-                    <IconButton onClick ={()=>addItems(item.title)}>
+                    <IconButton onClick ={()=>addItems(item)}>
                         <FileCopyIcon />
                     </IconButton>
                     <IconButton onClick ={()=>setDelDialogOpen(true)}>

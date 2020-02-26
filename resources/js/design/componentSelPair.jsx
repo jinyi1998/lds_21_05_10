@@ -20,63 +20,83 @@ const data = [
     {
         id: 1,
         type: "Engineering Design + Self Directed Learning",
-        dataSet: ["ED+SDL 1", "ED+SDL 2", "ED+SDL 3"]
     },
     {
         id: 2,
         type: "Scientific Investigation + Self Directed Learning",
-        dataSet: ["SI+SDL 1", "SI+SDL 2", "SI+SDL 3"]
     },
-    {
-        id: 3,
-        type: "Engineering Design + Teacher Guided Learning",
-        dataSet: ["ED+TGL 1", "ED+TGL 2", "ED+TGL 3"]
-    },
-    {
-        id: 4,
-        type: "Scientific Investigation + Teacher Guided Learning",
-        dataSet: ["SI+TGL 1", "SI+TGL 2", "SI+TGL 3"]
-    },
+
 ];
 
 const DesignComponentSelPair = (props) => {
     const dataSet = data; 
     const [selectType, setType] = React.useState("1"); 
+
+    const [componentOpts, setComponentOpts] =  React.useState([]); 
+    const [selectComponent_id, setSelectComponent_id] = React.useState(""); 
+
+
+    async function fetcComponentOptsData() {
+        const res = await fetch(
+            `http://localhost:8000/api/learningComponent/getLearningComponentByDesignType/` + selectType,
+            {
+            method: "GET",
+            }
+        )
+            .then(res => res.json())
+            .then(response => {
+                setComponentOpts(response);
+        })
+        .catch(error => console.log(error));
+    }
+
     const classes = useStyles();
-    const {component, setComponent} = props;
+    const {setComponent} = props;
 
     const onTypeChange = (event) => {
         setType(event.target.value);
-        
     }
+
+    React.useEffect(()=>{
+        fetcComponentOptsData()
+        setSelectComponent_id("")
+    },[selectType])
+
     const onSelectComp = (event) =>{
-        setComponent(event.target.value);
+        setSelectComponent_id(event.target.value);
+        setComponent(componentOpts.find(x=> x.id == event.target.value));
     }
+
+
 
     return(
       <Paper>
-        <FormControl className={classes.formControl} fullWidrg>
-            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+        <FormControl className={classes.formControl} >
+            <InputLabel id="type-select-label">Type</InputLabel>
             <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            onChange = {(event)=>onTypeChange(event)}
+                labelId="type-select-label"
+                id="type-select"
+                onChange = {(event)=>onTypeChange(event)}
+                value = {selectType}
             >
-                {dataSet.map((_data)=>( 
-                    <MenuItem value={_data.id}>{_data.type}</MenuItem>
+                {dataSet.map((_data, index)=>( 
+                    <MenuItem value={_data.id} key={index}>{_data.type}</MenuItem>
                 ))}
             </Select>
         </FormControl>
-        <FormControl className={classes.formControl} fullWidrg>
-            <InputLabel id="demo-simple-select-label">Component</InputLabel>
+
+        <FormControl className={classes.formControl}>
+            <InputLabel id="component-select-label">Component</InputLabel>
             <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="component-select-label"
+                id="component-select"
                 onChange = {(event)=>onSelectComp(event)}
+                value = {selectComponent_id}
             >
-                {dataSet.map((_data)=>(
-                    (_data.id == selectType ? _data.dataSet.map((__data)=>(<MenuItem value={__data}>{__data}</MenuItem>)): null)
-                ))}
+                <MenuItem value = "" disabled>N/A </MenuItem>
+                {componentOpts.map((opts, index)=>
+                    <MenuItem value={opts.id} key= {index}>{opts.title}</MenuItem>
+                )}
             </Select> 
         </FormControl>
       </Paper>

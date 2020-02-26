@@ -8,16 +8,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core';
 
 
@@ -49,8 +44,6 @@ const LearningOutcomeAddFromSelect = (props) => {
     const handleClose = props.onClose;
     const {handleOnSave, learningOutcomeOpts} = props;
 
-    console.log(learningOutcomeOpts);
-
     const [learningOutcome, setLearningOutcome] = React.useState({
         id: -1,
         level: "",
@@ -74,7 +67,7 @@ const LearningOutcomeAddFromSelect = (props) => {
     }
 
     return (
-        <div>
+        <React.Fragment>
             <AppBar className={classes.appBar}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -89,7 +82,8 @@ const LearningOutcomeAddFromSelect = (props) => {
                 </Toolbar>
             </AppBar>
 
-            <Grid container spacing={3}>
+            <div style= { {padding: "16px" }}>
+                <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <h3>Add learning outcomes that specify what learners will be able to do after this unit.</h3>
                 </Grid>
@@ -109,15 +103,16 @@ const LearningOutcomeAddFromSelect = (props) => {
                                 <em>Outcome Type</em>
                             </MenuItem>
                             {
-                                learningOutcomeOpts.map((_opts,key)=> <MenuItem 
-                                id={_opts.id}
-                                value={_opts.description} 
-                                level = {_opts.description} 
-                                outcomeType = {_opts.outcomeType} 
-                                STEMType = {_opts.STEMType}
-                                description = {_opts.description}
-                                key={key}>
-                                    {_opts.description}
+                                learningOutcomeOpts.map((_opts,key)=> 
+                                <MenuItem 
+                                    id={_opts.id}
+                                    value={_opts.description} 
+                                    level = {_opts.description} 
+                                    outcomeType = {_opts.outcomeType} 
+                                    STEMType = {_opts.STEMType}
+                                    description = {_opts.description}
+                                    key={key}>
+                                        {_opts.description}
                                 </MenuItem>)
                             }
                         </Select>
@@ -126,7 +121,8 @@ const LearningOutcomeAddFromSelect = (props) => {
                 </Grid>
 
             </Grid>
-        </div> 
+            </div>
+        </React.Fragment> 
         
     );
 

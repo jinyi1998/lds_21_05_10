@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import DesignStepper from '../design/designStepper';
 
@@ -20,7 +21,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
-
 const useStyles = makeStyles(theme => ({
   gridList: {
     display: 'flex',
@@ -46,64 +46,64 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const steps = ['SUBJECT', 'UNIT', 'LEARNING COMPONENTS'];
+const steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'LEARNING COMPONENTS'];
 
-const course = {
-  id: 0,
-  unitTitle: "",
-  schoolName: "",
-  level: "",
-  noOfLessons: "",
-  courseDes: "",
-  designType: "",
-  components: [
-    // {
-    //   id: 0,
-    //   title: "",
-    //   tasks: [
-    //     {
-    //       id: 0,
-    //       title: "",
-    //       assessment: [],
-    //       time: 0,
-    //       classType: "",
-    //       target: "",
-    //       resource: "",
-    //       STEMType: [],
-    //       description: "",
-    //     }
-    //   ],
-    //   learningOutcomes: [
-    //     {
-    //       id: 0,
-    //       level: "",
-    //       outcomeType: "",
-    //       STEMType: [],
-    //       description: "",
-    //       status: false
-    //     }
-    //   ]
-    // }
-  ],
-  //learning outcomes in course level
-  learningOutcomes: [
-    // {
-    //   id: 0,
-    //   level: "",
-    //   outcomeType: "",
-    //   STEMType: [],
-    //   description: "",
-    //   isCourseLevel: false
-    // }
-  ],
-  lesson: [
-    {
-      id: 0,
-      name: "",
-      tasks: []
-    }
-  ]
-}
+// const course = {
+//   id: 0,
+//   unitTitle: "",
+//   schoolName: "",
+//   level: "",
+//   noOfLessons: "",
+//   courseDes: "",
+//   designType: "",
+//   components: [
+//     // {
+//     //   id: 0,
+//     //   title: "",
+//     //   tasks: [
+//     //     {
+//     //       id: 0,
+//     //       title: "",
+//     //       assessment: [],
+//     //       time: 0,
+//     //       classType: "",
+//     //       target: "",
+//     //       resource: "",
+//     //       STEMType: [],
+//     //       description: "",
+//     //     }
+//     //   ],
+//     //   learningOutcomes: [
+//     //     {
+//     //       id: 0,
+//     //       level: "",
+//     //       outcomeType: "",
+//     //       STEMType: [],
+//     //       description: "",
+//     //       status: false
+//     //     }
+//     //   ]
+//     // }
+//   ],
+//   //learning outcomes in course level
+//   learningOutcomes: [
+//     // {
+//     //   id: 0,
+//     //   level: "",
+//     //   outcomeType: "",
+//     //   STEMType: [],
+//     //   description: "",
+//     //   isCourseLevel: false
+//     // }
+//   ],
+//   lesson: [
+//     {
+//       id: 0,
+//       name: "",
+//       tasks: []
+//     }
+//   ]
+// }
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -132,28 +132,29 @@ const PageMenu = (props) => {
         open={Boolean(anchorEl)}
         onClose={()=> handleClose(activePage)}
       >
-        <MenuItem onClick={() => handleClose("learningComp")} selected = {activePage == "learningComp"}>Learning Component (Course Level)</MenuItem>
+        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activePage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
         <CssBaseline />
-        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Unit Info</MenuItem>
-        <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Major Step</MenuItem>
+        <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Learning Components</MenuItem>
+        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Unit Design</MenuItem>
         <CssBaseline />
-        <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem>
+        {/* <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem> */}
       </Menu>
     </div>
   );
 }
 
-const Design = () => {
+const Design = (props) => {
   
   const classes = useStyles();
 
+  const {courseID} = props;
   const [activePage, setActionPage] = React.useState('basic');
   const [activeStep, setActiveStep] = React.useState(0);
-  const [courseData, setCourseData] = React.useState(course);
-  const { course, dispatch } = React.useContext(ContextStore);
+  
+  const { course, dispatch, setLoadingOpen } = React.useContext(ContextStore);
   
   //#region data init
-  //preload learningOutcome
+  //preload learningOutcome (Unit Level)
   async function fetchlearningTypeTempData() {
     const res = await fetch(
         `http://localhost:8000/api/learningOutcome/getDefaultOutcomeByLearningType/`+course.designType,
@@ -186,15 +187,33 @@ const Design = () => {
           //load the default learning outcomes by api request
 
           response.map( _respond => {
-            const taskData = fetchlearningTaskTempData(_respond.id).then(taskData => {
-              _respond.tasks = taskData;
+            //learning Task
+            fetchlearningPatternID(_respond.id).then(patternID => {
+              fetchlearningTaskByPattern(patternID[0]).then(taskData => {
+                _respond.tasks = taskData;
+              })
+              _respond.patternOptsID = patternID
             });
+
+            //learning outcomes
+            fetchlearningOutcomes(_respond.id).then(learningOutcomes => {
+              learningOutcomes.map(learningOutcome => {
+                learningOutcome.id = -1;
+                //auto match the component
+                learningOutcome.componentid = _respond.id;
+                dispatch({
+                  type: "ADD_LEARNINGOUTCOME",
+                  value: learningOutcome
+                })
+  
+              });
+             
+            })
           });
           dispatch({
             type: "SET_COMPONENT",
             value: response
-          })
-      
+          })    
       })
       .catch(error => console.log(error));
 
@@ -215,10 +234,103 @@ const Design = () => {
     })
     .catch(error => console.log(error));
   }
+
+  async function fetchlearningPatternID(id) {
+    return await fetch(
+        `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+        {
+        method: "GET",
+        }
+    )
+    .then(res => res.json())
+    .then(response => {
+        //load the default learning outcomes by api request
+        return response;
+    })
+    .catch(error => console.log(error));
+  }
+
+  async function fetchlearningTaskByPattern(id) {
+    return await fetch(
+        `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+        {
+        method: "GET",
+        }
+    )
+    .then(res => res.json())
+    .then(response => {
+        //load the default learning outcomes by api request
+        return response;
+    })
+    .catch(error => console.log(error));
+  }
+
+  async function fetchlearningOutcomes(id) {
+    return await fetch(
+        `http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/`+ id,
+        {
+        method: "GET",
+        }
+    )
+    .then(res => res.json())
+    .then(response => {
+        //load the default learning outcomes by api request
+        return response;
+    })
+    .catch(error => console.log(error));
+  }
+
+  async function saveCourse(){
+    setLoadingOpen(true);
+    if(courseID == -1){
+        return await fetch(
+          'http://localhost:8000/api/course/test',
+          {
+            method: "POST",
+            body:  JSON.stringify(course),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          location.href = "app";
+          setLoadingOpen(false);
+          return response;
+      })
+      .catch(error => console.log(error));
+    }else{
+      return await fetch(
+          'http://localhost:8000/api/course/'+courseID,
+          {
+            method: "PUT",
+            body:  JSON.stringify(course),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+          }
+          }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          location.href = "app";
+          setLoadingOpen(false);
+          return response;
+      })
+      .catch(error => console.log(error));
+    }
+
+  }
+
   //#endregion
 
   // init the data once design type is changed
   React.useEffect(() => {
+      if(courseID != -1){
+        return setActionPage('unitPlan');
+      }
       if(course.designType != ""){
         fetchlearningTypeTempData();
         fetchlearningComponentTempData();
@@ -230,7 +342,7 @@ const Design = () => {
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
       //final step
-      setActionPage('majorStep');
+      setActionPage('unitPlan');
     }else{
       setActiveStep(activeStep + 1);
     }
@@ -247,12 +359,12 @@ const Design = () => {
         return <DesignType />
       case 1:
         return <DesignInfo />
-      // case 2:
-      //   return <DesignComponentStep />;
       case 2:
         return  <LearningOutcomeToDo />
       case 3:
-        return  <BasicReview />
+        return <DesignComponentStep />;
+      // case 3:
+      //   return  <BasicReview />
       default:
         return <div> hello </div>;
     }
@@ -301,7 +413,7 @@ const Design = () => {
             <UnitPlanContainer/>
         </React.Fragment>
         );
-      case 'learningComp':
+      case 'learningOutcomes':
           return( 
           <React.Fragment>
             <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
@@ -316,15 +428,38 @@ const Design = () => {
     }
   }
 
+
+  const displayTitle = () => {
+    switch(activePage){
+      case 'basic': 
+        return "Basic Info";
+      case 'majorStep':
+        return "Learning Compoents"
+      case 'unitPlan':
+        return "Unit Design"
+      case 'learningOutcomes':
+          return "Learning Outcomes"
+    }
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
       <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h4" align="center">
-            Learning Design Studio
-          </Typography>
-          {getActivePage()}
+        <Paper className={classes.paper} style ={{padding: "16px"}}>
+          <Grid container spacing = {4}>
+            <Grid item xs = {12}>
+              <Typography component="h1" variant="h4" align="center">
+                {displayTitle()}
+              </Typography>
+            </Grid>
+            <Grid item xs = {12}>
+              {getActivePage()}
+            </Grid>
+            <Grid item xs = {12}>
+              <Button color="primary" variant="contained" onClick={() => {saveCourse()} } fullWidth > Save Course</Button>
+            </Grid>
+          </Grid>
         </Paper>
       </main>
     </React.Fragment>

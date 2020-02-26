@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -74,46 +75,8 @@ class CourseController extends Controller
     {
         // pattern 
         // id => courseJson
-
-        return response()->json([
-
-            '1' => [ 
-                'id' => '1',
-                'unitTitle'=> "Course 1",
-                'schoolName'=> "",
-                'level'=> "",
-                'noOfLessons'=> 3,
-                'courseDes'=> "",
-                'createDate'=> "",
-                'createBy'=> "",
-                'modifyDate'=> "",
-                'modifyBy'=> "",
-            ],
-            '2' =>  [ 
-                'id' => '2',
-                'unitTitle'=> "Course 2",
-                'schoolName'=> "",
-                'level'=> "",
-                'noOfLessons'=> 4,
-                'courseDes'=> "",
-                'createDate'=> "",
-                'createBy'=> "",
-                'modifyDate'=> "",
-                'modifyBy'=> "",
-            ],
-            '3' =>  [ 
-                'id' => '3',
-                'unitTitle'=> "Course 3",
-                'schoolName'=> "",
-                'level'=> "",
-                'noOfLessons'=> 5,
-                'courseDes'=> "",
-                'createDate'=> "",
-                'createBy'=> "",
-                'modifyDate'=> "",
-                'modifyBy'=> "",
-            ]
-        ]);
+        $list = DB::table('demo')->select('id','data')->get();
+        return response()->json($list);
     }
 
     /**
@@ -124,7 +87,11 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $id = DB::table('demo')->insertGetId(
+            ['data' => json_encode($input)]
+        );
+        return response()->json($id);
     }
 
     /**
@@ -136,18 +103,8 @@ class CourseController extends Controller
     public function show($id)
     {
         //
-        return response()->json([
-            'id' => '3',
-            'unitTitle'=> "Course 3",
-            'schoolName'=> "",
-            'level'=> "",
-            'noOfLessons'=> 5,
-            'courseDes'=> "",
-            'createDate'=> "",
-            'createBy'=> "",
-            'modifyDate'=> "",
-            'modifyBy'=> "",
-        ]);
+        $course = DB::table('demo')->find($id);
+        return response()->json($course);
     }
 
     /**
@@ -160,6 +117,9 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $input = $request->all();
+        $respond =  DB::table('demo')->where('id', $id)->update(['data' => json_encode($input)]);
+        return response()->json($respond);
     }
 
     /**
@@ -171,6 +131,15 @@ class CourseController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function test(Request $request)
+    {
+        $input = $request->all();
+        $id = DB::table('demo')->insertGetId(
+            ['data' => json_encode($input)]
+        );
+        return response()->json($id);
     }
 
     public function getDesignTypeTemp(){
@@ -191,22 +160,22 @@ class CourseController extends Controller
                 'media'=> "https://www.pinclipart.com/picdir/big/44-449704_nuclear-icon-nuclear-icon-png-clipart.png",
                 'name'=> "Scienitic Investigation SDL",
             ],
-            [
-                'id' => 3,
-                'hint' => 'engineering design approach guides you...',
-                'description'=> "using engineering design practice to guide the learing task 
-                sequence design by adopting the guided learning approach",
-                'media'=> "https://www.pinclipart.com/picdir/big/1-17456_engineer-clipart-ship-engineer-symbol-of-marine-engineering.png",
-                'name'=> "Engineering Design Guided",
-            ],
-            [
-                'id' => 4,
-                'hint' => 'engineering design approach guides you...',
-                'description'=> "using scienitic investigation practice to guide the learing task sequence 
-                design by adopting the guided learning approach",
-                'media'=> "https://www.pinclipart.com/picdir/big/179-1791472_engineering-solutions-engineering-tools-logo-clipart.png",
-                'name'=> "Scienitic Investigation Guided",
-            ]
+            // [
+            //     'id' => 3,
+            //     'hint' => 'engineering design approach guides you...',
+            //     'description'=> "using engineering design practice to guide the learing task 
+            //     sequence design by adopting the guided learning approach",
+            //     'media'=> "https://www.pinclipart.com/picdir/big/1-17456_engineer-clipart-ship-engineer-symbol-of-marine-engineering.png",
+            //     'name'=> "Engineering Design Guided",
+            // ],
+            // [
+            //     'id' => 4,
+            //     'hint' => 'engineering design approach guides you...',
+            //     'description'=> "using scienitic investigation practice to guide the learing task sequence 
+            //     design by adopting the guided learning approach",
+            //     'media'=> "https://www.pinclipart.com/picdir/big/179-1791472_engineering-solutions-engineering-tools-logo-clipart.png",
+            //     'name'=> "Scienitic Investigation Guided",
+            // ]
         ]);
     }
 }

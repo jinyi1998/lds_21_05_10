@@ -71,7 +71,7 @@ class LearningComponentController extends Controller
             "1" => [
                 [
                     'id' => 1,
-                    'title' => 'Design Type 1: Item 1',
+                    'title' => 'Identify problem through goal-setting',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -79,7 +79,7 @@ class LearningComponentController extends Controller
                 ],
                 [
                     'id' => 2,
-                    'title' => 'Design Type 1: Item 2',
+                    'title' => 'Ideate and design solution through self-planning ',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -87,7 +87,23 @@ class LearningComponentController extends Controller
                 ],
                 [
                     'id' => 3,
-                    'title' => 'Design Type 1: Item 3',
+                    'title' => 'Construct prototype through self-monitoring',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+
+                    ],
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'Test performance of the product through self-evaluation',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+
+                    ],
+                ],
+                [
+                    'id' => 5,
+                    'title' => 'Optimize the product through revision',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -96,24 +112,40 @@ class LearningComponentController extends Controller
             ],
             "2" => [
                 [
-                    'id' => 1,
-                    'title' => 'Design Type 1: Item 1',
+                    'id' => 6,
+                    'title' => 'Formulate inquiry questions through goal setting',
                     'tasks' => [],
                     'learningOutcomes' => [
 
                     ],
                 ],
                 [
-                    'id' => 2,
-                    'title' => 'Design Type 1: Item 2',
+                    'id' => 7,
+                    'title' => 'Research and Propose Hypothesis through goal setting',
                     'tasks' => [],
                     'learningOutcomes' => [
 
                     ],
                 ],
                 [
-                    'id' => 3,
-                    'title' => 'Design Type 1: Item 3',
+                    'id' => 8,
+                    'title' => 'Design Experiment through self-planning',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+
+                    ],
+                ],
+                [
+                    'id' => 9,
+                    'title' => 'Conduct Experiment through self-monitoring',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+
+                    ],
+                ],
+                [
+                    'id' => 10,
+                    'title' => 'Analyse Data and interpret results through self-evaluation and revision',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -123,7 +155,7 @@ class LearningComponentController extends Controller
             "3" => [
                 [
                     'id' => 1,
-                    'title' => 'Design Type 3: Item 1',
+                    'title' => 'Conduct Experiment through self-monitoring',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -131,7 +163,7 @@ class LearningComponentController extends Controller
                 ],
                 [
                     'id' => 2,
-                    'title' => 'Design Type 3: Item 2',
+                    'title' => 'Ideate and design solution through self-planning ',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -139,7 +171,7 @@ class LearningComponentController extends Controller
                 ],
                 [
                     'id' => 3,
-                    'title' => 'Design Type 3: Item 3',
+                    'title' => 'Analyse Data and interpret results through self-evaluation and revision',
                     'tasks' => [],
                     'learningOutcomes' => [
 
@@ -177,6 +209,83 @@ class LearningComponentController extends Controller
         return response()->json(
             $data[$id]
         );
+    }
+
+    public function getLearningComponentByDesignType($id){
+        $data = [
+            "1" => [
+                [
+                    'id' => 1,
+                    'title' => 'Identify problem through goal-setting',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'Ideate and design solution through self-planning',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'Construct prototype through self-monitoring',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'Test performance of the product through self-evaluation',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 5,
+                    'title' => 'Optimize the product through revision',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+            ],
+            "2" => [
+                [
+                    'id' => 1,
+                    'title' => 'Formulate inquiry questions through goal setting',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'Research and Propose Hypothesis through goal setting',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'Conduct Experiment through self-monitoring',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'Analyse Data and interpret results through self-evaluation and revision',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+            ],
+        ];
+
+        return response()->json(
+            $data[$id]
+        );
+
     }
 
 }

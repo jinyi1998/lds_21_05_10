@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import Component from './component';
 import { Grid } from '@material-ui/core';
 import {ContextStore} from '../container/designContainer'
+import InstructionBox from '../components/instructionBox';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,11 +26,15 @@ const UnitPlan = (props)  => {
     <div className={classes.root}>
         <Grid container spacing = {3}>
             <Grid item xs={12}>
-                <p> You can customize the Unit design based on the recommended learing outcomes and design patterns </p>
+                <InstructionBox 
+                    title="Unit Plan" 
+                    content= "You can customize the Unit design based on the recommended learning outcomes and learning tasks." 
+                    tips=""
+                />
             </Grid>
             {course.components.map((_components, index)=>(
                 <Grid item xs={12} key = {index}>
-                    <Component componentData = {_components} key= {index}/>
+                    <Component componentData = {_components} key= {index} index = {index}/>
                 </Grid>
             ))}
         </Grid>

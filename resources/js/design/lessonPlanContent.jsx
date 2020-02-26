@@ -7,14 +7,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {ContextStore} from '../container/designContainer'
 
 import ComponentTask from './componentTask';
+import LessonPlanEditTask from './lessonPlanEditTask';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -50,6 +47,13 @@ const LessonPlanContent = (props) => {
     const {lessonID} = props
     const { course, dispatch } = React.useContext(ContextStore);
     const {canEdit} = props
+    //edit learning task props
+    const [ openLessonTaskEdit, setOpenLessonTaskEdit] = React.useState(false);
+    const [ onEditComponentID, setOnEditComponentID] = React.useState(-1);
+    const [ onEditTasktID, setOnEditTasktID] = React.useState(-1);
+
+    const [taskMode, setTaskMode] = React.useState("lesson_select");
+
 
     const classes = useStyles();
 
@@ -100,6 +104,14 @@ const LessonPlanContent = (props) => {
             }
         );
         setSelectComponent(-1);
+    }
+    const onEditTask = () => {
+        setTaskMode("edit");
+    }
+    const onEditLessonTask = (componentID, taskID) => {
+        setOpenLessonTaskEdit(true);
+        setOnEditComponentID(componentID)
+        setOnEditTasktID(taskID)
     }
 
     const onCheckCheckbox = (event) => {
@@ -181,6 +193,7 @@ const LessonPlanContent = (props) => {
                                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                                     onChange= {onCheckCheckbox}
                                                     value = {index}
+                                                    key = {index}
                                                     // checked = {courseData.lesson[lessonID].tasks.find(_task => 
                                                     //     (_task.componentID != selectComponent && _task.taskIndex != index)
                                                     // )== 'undefined'}
@@ -190,10 +203,11 @@ const LessonPlanContent = (props) => {
                                             <ComponentTask 
                                                 TaskData = {_task} 
                                                 index = {index} 
+                                                key = {index}
                                                 componentData = {course.components[selectComponent]}
                                                 handleTaskUpdate= {()=> {}} 
-                                                onEditTasks = {()=>{}} 
-                                                mode = "view"/>
+                                                onEditTasks = {onEditTask} 
+                                                mode = {taskMode}/>
                                         </Grid>
                                     </Grid>
                                 )
@@ -218,7 +232,7 @@ const LessonPlanContent = (props) => {
         if( course.lesson[lessonID].tasks.length == 0){
            return (
             <Grid item xs ={12}>
-                <Paper variant="outlined" key ={lessonID}>
+                <Paper variant="outlined" key ={lessonID} style = {{padding: "16px", textAlign: "center"}}>
                     No Learning Task In This Lesson
                 </Paper>
             </Grid> 
@@ -226,54 +240,72 @@ const LessonPlanContent = (props) => {
         }else{
             return (
                 course.lesson[lessonID].tasks.map(
-                    _taskdata => (
-                    <Grid container item xs ={12}>
-                        <ExpansionPanel>
-                                <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                                >
-                                    <Grid item container xs={12} spacing={4}>
-                                        <Grid item xs={1} height="100%">
-                                            <div className={classes.color}>
-                                            </div>
-                                        </Grid>
-                                        <Grid item xs={11} className={classes.contentGrid}>
-                                            {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].type}
-                                        </Grid>
-                                    </Grid>
-                                    
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                <Grid item container  xs={12} spacing={4}>
-                                        <Grid item xs={1} height="100%">
-                                            <div className={classes.color}>
-                                            </div>
-                                        </Grid>
-                                        <Grid container item xs={11}>
-                                            <Grid item xs={12} className={classes.contentGrid}>
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].title}
-                                            </Grid>
-
-                                            <Grid item xs={12} className={classes.contentGrid}>
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].time} mins | 
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].target} | 
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].classType} | 
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].resource.map(_learningOutcome=> _learningOutcome)} |
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].STEMType.map(_STEMType => _STEMType)}
-                                            </Grid>
-
-                                            <Grid item xs={12} className={classes.contentGrid}>
-                                                {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].description}
-                                            </Grid>
-
-                                        </Grid>
-                                    </Grid>
-                                </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </Grid>)
+                    (_taskdata, index) => (
+                        // console.log(_taskdata)
+                        <ComponentTask 
+                            TaskData = {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex]} 
+                            index = {index} 
+                            key = {index}
+                            componentData = {course.components[_taskdata.componentID]}
+                            handleTaskUpdate= {()=> {}} 
+                            onEditTasks = {()=>{onEditLessonTask(_taskdata.componentID, _taskdata.taskIndex)}} 
+                            mode = "lesson_view"/> 
+                    )
                 )
+                    // <Grid container item xs ={12}>
+                    //     <ExpansionPanel>
+                    //             <ExpansionPanelSummary
+                    //             expandIcon={<ExpandMoreIcon />}
+                    //             aria-controls="panel1a-content"
+                    //             id="panel1a-header"
+                    //             >
+                    //                 <Grid item container xs={12} spacing={4}>
+                    //                     <Grid item xs={1} height="100%">
+                    //                         <div className={classes.color}>
+                    //                         </div>
+                    //                     </Grid>
+                    //                     <Grid item xs={11} className={classes.contentGrid}>
+                    //                         {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].type}
+                    //                     </Grid>
+                    //                 </Grid>
+                                    
+                    //             </ExpansionPanelSummary>
+                    //             <ExpansionPanelDetails>
+                    //                 {/* <ComponentTask 
+                    //                             TaskData = {_task} 
+                    //                             index = {index} 
+                    //                             componentData = {course.components[selectComponent]}
+                    //                             handleTaskUpdate= {()=> {}} 
+                    //                             onEditTasks = {()=>{}} 
+                    //                             mode = "view"/> */}
+                    //             <Grid item container  xs={12} spacing={4}>
+                    //                     <Grid item xs={1} height="100%">
+                    //                         <div className={classes.color}>
+                    //                         </div>
+                    //                     </Grid>
+                    //                     <Grid container item xs={11}>
+                    //                         <Grid item xs={12} className={classes.contentGrid}>
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].title}
+                    //                         </Grid>
+
+                    //                         <Grid item xs={12} className={classes.contentGrid}>
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].time} mins | 
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].target} | 
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].classType} | 
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].resource.map(_learningOutcome=> _learningOutcome)} |
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].STEMType.map(_STEMType => _STEMType)}
+                    //                         </Grid>
+
+                    //                         <Grid item xs={12} className={classes.contentGrid}>
+                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].description}
+                    //                         </Grid>
+
+                    //                     </Grid>
+                    //                 </Grid>
+                    //             </ExpansionPanelDetails>
+                    //     </ExpansionPanel>
+                    // </Grid>
+
             );
            
         }
@@ -323,6 +355,12 @@ const LessonPlanContent = (props) => {
     return (
         <Grid container>
             {displayContent()}
+            <LessonPlanEditTask 
+                openLessonTaskEdit = {openLessonTaskEdit}
+                setOpenLessonTaskEdit = {setOpenLessonTaskEdit}
+                onEditComponentID = {onEditComponentID}
+                onEditTasktID = {onEditTasktID}
+            />
         </Grid>
     )
 

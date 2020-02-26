@@ -438,6 +438,10 @@ class ComposerStaticInita25548d448b2a9a45f49d698e37bc0d3
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\API\\CourseController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/CourseController.php',
+        'App\\Http\\Controllers\\API\\LearningComponentController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/LearningComponentController.php',
+        'App\\Http\\Controllers\\API\\LearningOutcomesController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/LearningOutcomesController.php',
+        'App\\Http\\Controllers\\API\\LearningTaskController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/LearningTaskController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',

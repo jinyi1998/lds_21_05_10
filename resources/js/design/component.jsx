@@ -12,7 +12,10 @@ import { Grid } from '@material-ui/core';
 
 import LearningOutcome from './learningOutcomeToDo';
 import AddLearningPatternContainner from './addLearningPattern';
+import LearningTasksEditContainer from './learningTasksEdit';
+import LearningPatternEdit from './LearningPatternEdit';
 import ComponentTask from './componentTask';
+import AddLearningTask from './addLearningTask';
 
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -71,9 +74,15 @@ const Component = (props)=>{
 
     const classes = useStyles();
     const { course, dispatch } = React.useContext(ContextStore);
-    const {componentData} = props;
-    const [addLearningPatternOpen, setAddLearningPatternOpen] = React.useState(false);
+    const {componentData, index} = props;
+
+    const [editTaskOpen, setEditTaskOpen] = React.useState(false);
+    const [editPatternOpen, setEditPatternOpen] = React.useState(false);
     const [selectMode, setSelectMode] = React.useState(""); //addLearningPatternMode
+    
+    //edit learning task props
+    const [ openTaskAdd, setOpenTaskAdd] = React.useState(false);
+    const onEditComponentID = componentData.id;
 
     //#region init data 
     const learningTime = () => {
@@ -86,12 +95,16 @@ const Component = (props)=>{
     //#region action button
     const onEditTasks = () => {
       setSelectMode("edit");
-      setAddLearningPatternOpen(true);
+      setEditTaksOpen(true);
     }
 
-    const onAddTasks = () => {
-      setSelectMode("add");
-      setAddLearningPatternOpen(true);
+    const onEditPattern = () => {
+      setSelectMode("pattern");
+      setEditPatternOpen(true);
+    }
+
+    const onAddLearningTask = () => {
+      setOpenTaskAdd(true);
     }
     //#endregion
 
@@ -103,14 +116,26 @@ const Component = (props)=>{
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>{componentData.id} :  {componentData.title}</Typography>
+            <Typography className={classes.heading}>{index + 1} :  {componentData.title}</Typography>
             
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={8}>
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
                 </Grid>
+
+                {componentData.patternOptsID.length > 1 ?
+                  <Grid item xs={4}>
+                   <Button variant="contained" color="primary" onClick={()=>onEditPattern()}>
+                       Reload Learning Patterns
+                   </Button>
+                 </Grid>
+                 : 
+                 null
+                }
+              
+
                 <Grid item xs={12}> 
                   <LearningOutcome componentData ={componentData}/>
                 </Grid>
@@ -126,26 +151,50 @@ const Component = (props)=>{
                 )}
 
 
-                <Button variant="contained" color="primary" onClick={()=>onAddTasks()}>
-                    Add Learning Patterns
+
+                <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
+                    Add Learning Task
                 </Button>
 
-                <Dialog fullScreen open={addLearningPatternOpen}>
+                <AddLearningTask 
+                  openTaskAdd = {openTaskAdd}
+                  setOpenTaskAdd = {setOpenTaskAdd}
+                  onEditComponentID = {onEditComponentID}
+                />
+
+                <Dialog fullScreen open={editTaskOpen}>
                   <AppBar className={classes.appBar}>
                       <Toolbar>
-                          <IconButton edge="start" color="inherit" onClick={()=>  setAddLearningPatternOpen(false)} aria-label="close">
+                          <IconButton edge="start" color="inherit" onClick={()=>  setEditTaskOpen(false)} aria-label="close">
                           <CloseIcon />
                           </IconButton>
                           <Typography variant="h6" className={classes.title}>
-                          Adding new learning outcome
+                          Edit Learning Task
                           </Typography>
                       </Toolbar>
                   </AppBar>
-                  <AddLearningPatternContainner 
-                  componentData ={componentData} 
-                  mode={selectMode} 
-                  onClose = {()=>  setAddLearningPatternOpen(false)} />
+                  <LearningTasksEditContainer 
+                    componentData ={componentData} 
+                    mode={selectMode} 
+                    onClose = {()=>  setEditTaskOpen(false)} />
                 </Dialog>
+
+                <Dialog fullScreen open={editPatternOpen}>
+                  <AppBar className={classes.appBar}>
+                      <Toolbar>
+                          <IconButton edge="start" color="inherit" onClick={()=>  setEditPatternOpen(false)} aria-label="close">
+                          <CloseIcon />
+                          </IconButton>
+                          <Typography variant="h6" className={classes.title}>
+                              Edit Learning Pattern
+                          </Typography>
+                      </Toolbar>
+                  </AppBar>
+                  <LearningPatternEdit 
+                    componentData ={componentData} 
+                    onClose = {()=>  setEditPatternOpen(false)} />
+                </Dialog>
+                
               </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>

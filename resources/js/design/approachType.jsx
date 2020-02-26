@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
 
     gridList: {
       display: 'flex',
-      justifyContent: 'end',
-      overflow: 'scroll',
+      justifyContent: 'center',
+      // overflow: 'scroll',
       flexWrap: 'nowrap',
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
       transform: 'translateZ(0)',
@@ -25,29 +25,29 @@ const useStyles = makeStyles(theme => ({
 
 const DesignType = (props) => {
   const classes = useStyles();
-  const [designType, setDesignType] = React.useState([]); 
-  const { course, dispatch } = React.useContext(ContextStore);
+  // const [designType, setDesignType] = React.useState([]); 
+  const { course, options, dispatch } = React.useContext(ContextStore);
+  const designType = options.designType? options.designType : [];
 
+  // async function fetchDesignTypeData() {
 
-  async function fetchDesignTypeData() {
+  //   const res = await fetch(
+  //       `http://localhost:8000/api/course/getDesignTypeTemp`,
+  //       {
+  //       method: "GET",
+  //       }
+  //   )
+  //       .then(res => res.json())
+  //       .then(response => {
+  //         setDesignType(response);
+  //   })
+  //   .catch(error => console.log(error));
 
-    const res = await fetch(
-        `http://localhost:8000/api/course/getDesignTypeTemp`,
-        {
-        method: "GET",
-        }
-    )
-        .then(res => res.json())
-        .then(response => {
-          setDesignType(response);
-    })
-    .catch(error => console.log(error));
+  // }
 
-  }
-
-  React.useEffect(() => {
-    fetchDesignTypeData();
-  }, []);
+  // React.useEffect(() => {
+  //   fetchDesignTypeData();
+  // }, []);
 
   const onClick = (event, value) => {
       // event.preventDefault();
@@ -63,7 +63,7 @@ const DesignType = (props) => {
       <Typography variant="h6" gutterBottom>
         Choose the subject specific design
       </Typography>
-      <GridList className={classes.gridList} cols={2.5}>
+      <GridList className={classes.gridList} cols={4}>
           {designType.map((_data, i) => (
             <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} >
             </DesignTypeBox>

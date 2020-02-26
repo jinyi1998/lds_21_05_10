@@ -36,7 +36,7 @@ const RegisterForm = () => {
 
     const onClick = (event) => {
       event.preventDefault();
-      window.location.href = "/app";
+      window.location.href = "/app2";
   };
   
     return (

@@ -7,7 +7,7 @@ import {ContextStore} from '../container/designContainer'
 
 const DesignInfo = (props) => {
 
-  const { course, dispatch } = React.useContext(ContextStore);
+  const { course, options, dispatch } = React.useContext(ContextStore);
   
   const onChange = (event) => {
 
@@ -22,7 +22,7 @@ const DesignInfo = (props) => {
     <React.Fragment>
 
       <Typography variant="h6" gutterBottom>
-          Design type: STEM ({course.designType})
+          Design type: STEM ({options.designType.find(x => x.id== course.designType)?.name})
       </Typography>
 
       <Grid container spacing={5}>
@@ -61,6 +61,7 @@ const DesignInfo = (props) => {
             id="noOfLesson" 
             name="NO_OF_LESSON" 
             label="No. Of Lesson" 
+            type="number"
             defaultValue = {course.noOfLessons}
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}

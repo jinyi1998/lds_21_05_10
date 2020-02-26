@@ -28,7 +28,7 @@ const ComponentSelDialog = (props) => {
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+            <DialogTitle id="form-dialog-title">Add Design Step</DialogTitle>
             <DialogContent className = {classes.dialogContent}>
                 <DesignComponentSelPair component = {component} setComponent = {setComponent}/>
             </DialogContent>

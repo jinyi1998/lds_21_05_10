@@ -56,7 +56,7 @@ const AddLearningPatternContainner = (props) => {
         setLevel('');
     }
 
-    const [taskData, setTaskData] =  React.useState("");
+    const [taskData, setTaskData] =  React.useState([]);
 
     const { course, dispatch } = React.useContext(ContextStore);
 
@@ -73,8 +73,8 @@ const AddLearningPatternContainner = (props) => {
                 setTaskData(componentData.tasks);
                 break;
         }
-        }
-    , [props.mode]);
+    }
+    , [props.mode, course]);
 
     React.useEffect(()=>{
         switch(props.mode){
@@ -213,7 +213,9 @@ const AddLearningPatternContainner = (props) => {
                         <ComponentTask 
                         TaskData={_data} 
                         componentData={componentData} 
-                        key={index} mode="edit" index={index}
+                        key={index} 
+                        mode="edit" 
+                        index={index}
                         handleTaskUpdate = {handleTaskUpdate}/>
                     )}
                     <Grid item xs={12}>

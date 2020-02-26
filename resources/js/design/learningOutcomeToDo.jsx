@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,6 +19,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,6 +28,7 @@ import {ContextStore} from '../container/designContainer'
 
 import LearningOutcomeAdd from './learningOutcomeAdd';
 import LearningOutcomeAddFromSelect from './learningOutcomeAddFromSelect';
+import InstructionBox from '../components/instructionBox';
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -41,17 +43,19 @@ const useStyles = makeStyles(theme => ({
   }));
 
 const LearningOutcomeUnit = (props)=>{
+    const {options } = React.useContext(ContextStore);
     const {level, outcomeType, STEMType, description, status} = props.learningOutcomeData;
     const { onOpenDelDialog, index } = props;
 
+    const learningTypeTemp = options.learningOutcomeType;
     return (
         <ListItem>
             <ListItemText
-                primary={outcomeType }
-                secondary={description + 
-                    ( STEMType.length > 0?  ("(" +STEMType.map((_STEM) => _STEM) + ")" )
+                primary={learningTypeTemp.find(x => x.id == outcomeType)?.description + " - " + description}
+                secondary={ 
+                    ( STEMType.length > 0?  ("STEM: (" +STEMType.map((_STEM) => _STEM) + ") | " )
                     : "")  
-                    + "   Level:(" +level + ")"
+                    + "Level:(" +level + ")"
                 } 
             />
             <ListItemSecondaryAction>
@@ -68,7 +72,7 @@ const LearningOutcomeToDo = (props)=>{
     var modeLevel = "course";
     const classes = useStyles();
 
-    const { course, dispatch } = React.useContext(ContextStore);
+    const { course, dispatch, options } = React.useContext(ContextStore);
     const [learningOutcomeOpen, setLearningOutcomeOpen] = React.useState(false);
 
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
@@ -81,7 +85,7 @@ const LearningOutcomeToDo = (props)=>{
     }else{
         modeLevel = "course";
     }
-   
+
     //#region  action related
     const addLearningOutcome = () => {
         setLearningOutcomeOpen(true);
@@ -96,39 +100,49 @@ const LearningOutcomeToDo = (props)=>{
     const handleOnSave = (addedLearningOutcome, action = "") => {
         
         if(modeLevel ==  "course" ){
-            //course level 
-            if(addedLearningOutcome.id == -1){
-                addedLearningOutcome.id = course.learningOutcomes.length + 1;
-            }
             addedLearningOutcome.isCourseLevel = true
-            const data_test = [...course.learningOutcomes, addedLearningOutcome];
-            dispatch({
-                type: "SET_LEARNINGOUTCOME",
-                value: data_test
-              })
         }else{
-            //component level 
             addedLearningOutcome.isCourseLevel = false
-            if(action != "select"){
-                //add new learningout
-                if(addedLearningOutcome.id == -1){
-                    addedLearningOutcome.id = course.learningOutcomes.length + 1;
-                }
-                const data_test = [...course.learningOutcomes, addedLearningOutcome];
-                dispatch({
-                    type: "SET_LEARNINGOUTCOME",
-                    value: data_test
-                  })
-            }
-            //match to component
-            const data_test = {...componentData, learningOutcomes: [...componentData.learningOutcomes, addedLearningOutcome.id]};
-            dispatch({
-                type: "UPDATE_COMPONENT",
-                value: data_test
-              })
-        }
+            addedLearningOutcome.componentid = componentData.id;
+        }       
 
-        
+        dispatch({
+            type: "ADD_LEARNINGOUTCOME",
+            value: addedLearningOutcome
+        })
+
+        // if(modeLevel ==  "course" ){
+        //     //course level 
+        //     if(addedLearningOutcome.id == -1){
+        //         addedLearningOutcome.id = course.learningOutcomes.length + 1;
+        //     }
+        //     addedLearningOutcome.isCourseLevel = true
+        //     const data_test = [...course.learningOutcomes, addedLearningOutcome];
+        //     dispatch({
+        //         type: "SET_LEARNINGOUTCOME",
+        //         value: data_test
+        //       })
+        // }else{
+        //     //component level 
+        //     addedLearningOutcome.isCourseLevel = false
+        //     if(action != "select"){
+        //         //add new learningout
+        //         if(addedLearningOutcome.id == -1){
+        //             addedLearningOutcome.id = course.learningOutcomes.length + 1;
+        //         }
+        //         const data_test = [...course.learningOutcomes, addedLearningOutcome];
+        //         dispatch({
+        //             type: "SET_LEARNINGOUTCOME",
+        //             value: data_test
+        //           })
+        //     }
+        //     //match to component
+        //     const data_test = {...componentData, learningOutcomes: [...componentData.learningOutcomes, addedLearningOutcome.id]};
+        //     dispatch({
+        //         type: "UPDATE_COMPONENT",
+        //         value: data_test
+        //       })
+        // }
     }
 
     const onOpenDelDialog = (index) => {
@@ -177,7 +191,10 @@ const LearningOutcomeToDo = (props)=>{
         }else if(addSelector == "addNew"){
             return ( <LearningOutcomeAdd onClose={closeAddLearningOutcome} handleOnSave={handleOnSave}/>);
         }else if(addSelector == "selectFromCourse"){
-            return ( <LearningOutcomeAddFromSelect onClose={closeAddLearningOutcome} handleOnSave={handleOnSave} learningOutcomeOpts = {course.learningOutcomes}/>);
+            return ( <LearningOutcomeAddFromSelect 
+                onClose={closeAddLearningOutcome} 
+                handleOnSave={handleOnSave} 
+                learningOutcomeOpts = {course.learningOutcomes.filter(x=> x.isCourseLevel == true)}/>);
         }else{
             return (
                 <React.Fragment>
@@ -232,17 +249,22 @@ const LearningOutcomeToDo = (props)=>{
             return (
                 componentData.learningOutcomes.map(
                     (_id, index )=>
+                    <LearningOutcomeUnit 
+                        learningOutcomeData = {course.learningOutcomes.find(x => x.id == _id)} 
+                        key={index}  
+                        onOpenDelDialog = {onOpenDelDialog} 
+                        index = {index}/>  
                     //find learning outcome
-                    course.learningOutcomes.map(
-                           (_data) => 
-                            (_data.id == _id)?  
-                                <LearningOutcomeUnit 
-                                    learningOutcomeData = {_data} 
-                                    key={index}  
-                                    onOpenDelDialog = {onOpenDelDialog} 
-                                    index = {index}/>  
-                                : null
-                    )
+                    // course.learningOutcomes.map(
+                    //        (_data) => 
+                    //         (_data.id == _id)?  
+                    //             <LearningOutcomeUnit 
+                    //                 learningOutcomeData = {_data} 
+                    //                 key={index}  
+                    //                 onOpenDelDialog = {onOpenDelDialog} 
+                    //                 index = {index}/>  
+                    //             : null
+                    // )
                 )
             )
         }
@@ -271,29 +293,47 @@ const LearningOutcomeToDo = (props)=>{
     }
 
     return (
-        <ExpansionPanel defaultExpanded	={true}>
-            <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            className = {classes.expansionPanelSummary}
-            >
-                <Typography>Learning Outcomes</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <List className = {classes.list}>
-                    {displayLearningOutcomes()}
-                    <Button onClick={addLearningOutcome}>Add Learning Outcome</Button>
-                </List>
-            </ExpansionPanelDetails>
-            <Dialog fullScreen open={learningOutcomeOpen} onClose={closeAddLearningOutcome}>
-                {displayLearningOutcomeAdd()}
-            </Dialog>
+        <React.Fragment>
 
-            <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
-                {displayDelLearningOutcomeDialog()}
-            </Dialog>
-      </ExpansionPanel>
+            {modeLevel == "course"? 
+                <InstructionBox 
+                    title="Unit Level Learning Outcomes" 
+                    content= "Please define the learning outcomes for your unit" 
+                    tips="Hello World"
+                />
+                :
+                <InstructionBox 
+                    title="Component Level Learning Outcomes" 
+                    content= "Please define the learning outcomes for your component" 
+                    tips=""
+                />
+            }
+
+            <ExpansionPanel defaultExpanded	={true}>
+                <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                className = {classes.expansionPanelSummary}
+                >
+                    <Typography>{modeLevel == "course"? "Unit Level" : "Component Level"} Learning Outcomes</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <List className = {classes.list}>
+                        {displayLearningOutcomes()}
+                        <Button onClick={addLearningOutcome}>Add Learning Outcome</Button>
+                    </List>
+                </ExpansionPanelDetails>
+                
+                <Dialog fullScreen open={learningOutcomeOpen} onClose={closeAddLearningOutcome}>
+                    {displayLearningOutcomeAdd()}
+                </Dialog>
+
+                <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
+                    {displayDelLearningOutcomeDialog()}
+                </Dialog>
+        </ExpansionPanel>
+      </React.Fragment>
     );
 }
 

@@ -35769,6 +35769,35 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/@material-ui/icons/EmojiObjects.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@material-ui/icons/EmojiObjects.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@material-ui/icons/utils/createSvgIcon.js"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M12 3c-.46 0-.93.04-1.4.14-2.76.53-4.96 2.76-5.48 5.52-.48 2.61.48 5.01 2.22 6.56.43.38.66.91.66 1.47V19c0 1.1.9 2 2 2h.28c.35.6.98 1 1.72 1s1.38-.4 1.72-1H14c1.1 0 2-.9 2-2v-2.31c0-.55.22-1.09.64-1.46C18.09 13.95 19 12.08 19 10c0-3.87-3.13-7-7-7zm2 16h-4v-1h4v1zm0-2h-4v-1h4v1zm-1.5-5.59V14h-1v-2.59L9.67 9.59l.71-.71L12 10.5l1.62-1.62.71.71-1.83 1.82z"
+}), 'EmojiObjects');
+
+exports.default = _default;
+
+/***/ }),
+
 /***/ "./node_modules/@material-ui/icons/ExpandMore.js":
 /*!*******************************************************!*\
   !*** ./node_modules/@material-ui/icons/ExpandMore.js ***!
@@ -93757,6 +93786,59 @@ __webpack_require__(/*! ./container/testContainer */ "./resources/js/container/t
 
 /***/ }),
 
+/***/ "./resources/js/components/instructionBox.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/components/instructionBox.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Card */ "./node_modules/@material-ui/core/esm/Card/index.js");
+/* harmony import */ var _material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CardActions */ "./node_modules/@material-ui/core/esm/CardActions/index.js");
+/* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CardContent */ "./node_modules/@material-ui/core/esm/CardContent/index.js");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Tooltip */ "./node_modules/@material-ui/core/esm/Tooltip/index.js");
+/* harmony import */ var _material_ui_icons_EmojiObjects__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/icons/EmojiObjects */ "./node_modules/@material-ui/icons/EmojiObjects.js");
+/* harmony import */ var _material_ui_icons_EmojiObjects__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_EmojiObjects__WEBPACK_IMPORTED_MODULE_7__);
+
+
+
+
+
+
+
+
+
+var InstructionBox = function InstructionBox(props) {
+  var title = props.title,
+      content = props.content,
+      tips = props.tips;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    variant: "outlined",
+    style: {
+      margin: "16px"
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    color: "textSecondary",
+    gutterBottom: true
+  }, title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    variant: "body2",
+    component: "p"
+  }, content)), tips == "" ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardActions__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    title: tips,
+    "aria-label": "add"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_5__["default"], null, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_EmojiObjects__WEBPACK_IMPORTED_MODULE_7___default.a, null))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (InstructionBox);
+
+/***/ }),
+
 /***/ "./resources/js/components/welcome.js":
 /*!********************************************!*\
   !*** ./resources/js/components/welcome.js ***!
@@ -94176,7 +94258,7 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["ma
   };
 });
 
-var AppContainer = function AppContainer() {
+var AppContainer = function AppContainer(props) {
   var classes = useStyles(); // general menu
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(true),
@@ -94197,6 +94279,17 @@ var AppContainer = function AppContainer() {
       selectedIndex = _React$useState4[0],
       setSelectedIndex = _React$useState4[1];
 
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
+    if (props.firstLogin) {
+      setSelectedIndex('design');
+    } else {}
+  }, []);
+
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(-1),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      courseID = _React$useState6[0],
+      setCourseID = _React$useState6[1];
+
   var handleListItemClick = function handleListItemClick(event, index) {
     setSelectedIndex(index);
   };
@@ -94206,18 +94299,22 @@ var AppContainer = function AppContainer() {
       default:
       case 'myDesign':
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_dashboard_myDesign__WEBPACK_IMPORTED_MODULE_21__["default"], {
-          handleListItemClick: handleListItemClick
+          handleListItemClick: handleListItemClick,
+          setCourseID: setCourseID
         });
         break;
 
       case 'publicDesign':
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_dashboard_publicDesign__WEBPACK_IMPORTED_MODULE_22__["default"], {
-          handleListItemClick: handleListItemClick
+          handleListItemClick: handleListItemClick,
+          setCourseID: setCourseID
         });
         break;
 
       case 'design':
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_designContainer__WEBPACK_IMPORTED_MODULE_25__["default"], null);
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_designContainer__WEBPACK_IMPORTED_MODULE_25__["default"], {
+          courseID: courseID
+        });
         break;
     }
   };
@@ -94286,7 +94383,15 @@ var AppContainer = function AppContainer() {
 /* harmony default export */ __webpack_exports__["default"] = (AppContainer);
 
 if (document.getElementById('dashboard')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AppContainer, null), document.getElementById('dashboard'));
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AppContainer, {
+    firstLogin: false
+  }), document.getElementById('dashboard'));
+}
+
+if (document.getElementById('dashboard2')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(AppContainer, {
+    firstLogin: true
+  }), document.getElementById('dashboard2'));
 }
 
 /***/ }),
@@ -94310,19 +94415,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CssBaseline */ "./node_modules/@material-ui/core/esm/CssBaseline/index.js");
 /* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
 /* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _design_designStepper__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../design/designStepper */ "./resources/js/design/designStepper.jsx");
-/* harmony import */ var _design_approachType__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../design/approachType */ "./resources/js/design/approachType.jsx");
-/* harmony import */ var _design_courseInfo__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../design/courseInfo */ "./resources/js/design/courseInfo.jsx");
-/* harmony import */ var _design_componentStep__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../design/componentStep */ "./resources/js/design/componentStep.jsx");
-/* harmony import */ var _design_basicReview__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../design/basicReview */ "./resources/js/design/basicReview.jsx");
-/* harmony import */ var _design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../design/learningOutcomeToDo */ "./resources/js/design/learningOutcomeToDo.jsx");
-/* harmony import */ var _material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/Menu */ "./node_modules/@material-ui/core/esm/Menu/index.js");
-/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
-/* harmony import */ var _material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js");
-/* harmony import */ var _material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_16__);
-/* harmony import */ var _design_unitPlanContainer__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../design/unitPlanContainer */ "./resources/js/design/unitPlanContainer.jsx");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _design_designStepper__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../design/designStepper */ "./resources/js/design/designStepper.jsx");
+/* harmony import */ var _design_approachType__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../design/approachType */ "./resources/js/design/approachType.jsx");
+/* harmony import */ var _design_courseInfo__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../design/courseInfo */ "./resources/js/design/courseInfo.jsx");
+/* harmony import */ var _design_componentStep__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../design/componentStep */ "./resources/js/design/componentStep.jsx");
+/* harmony import */ var _design_basicReview__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../design/basicReview */ "./resources/js/design/basicReview.jsx");
+/* harmony import */ var _design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../design/learningOutcomeToDo */ "./resources/js/design/learningOutcomeToDo.jsx");
+/* harmony import */ var _material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/Menu */ "./node_modules/@material-ui/core/esm/Menu/index.js");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
+/* harmony import */ var _material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/icons/Menu */ "./node_modules/@material-ui/icons/Menu.js");
+/* harmony import */ var _material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _design_unitPlanContainer__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../design/unitPlanContainer */ "./resources/js/design/unitPlanContainer.jsx");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -94336,6 +94442,7 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -94381,59 +94488,62 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["ma
     }
   };
 });
-var steps = ['SUBJECT', 'UNIT', 'LEARNING COMPONENTS'];
-var course = {
-  id: 0,
-  unitTitle: "",
-  schoolName: "",
-  level: "",
-  noOfLessons: "",
-  courseDes: "",
-  designType: "",
-  components: [// {
-    //   id: 0,
-    //   title: "",
-    //   tasks: [
-    //     {
-    //       id: 0,
-    //       title: "",
-    //       assessment: [],
-    //       time: 0,
-    //       classType: "",
-    //       target: "",
-    //       resource: "",
-    //       STEMType: [],
-    //       description: "",
-    //     }
-    //   ],
-    //   learningOutcomes: [
-    //     {
-    //       id: 0,
-    //       level: "",
-    //       outcomeType: "",
-    //       STEMType: [],
-    //       description: "",
-    //       status: false
-    //     }
-    //   ]
-    // }
-  ],
-  //learning outcomes in course level
-  learningOutcomes: [// {
-    //   id: 0,
-    //   level: "",
-    //   outcomeType: "",
-    //   STEMType: [],
-    //   description: "",
-    //   isCourseLevel: false
-    // }
-  ],
-  lesson: [{
-    id: 0,
-    name: "",
-    tasks: []
-  }]
-};
+var steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'LEARNING COMPONENTS']; // const course = {
+//   id: 0,
+//   unitTitle: "",
+//   schoolName: "",
+//   level: "",
+//   noOfLessons: "",
+//   courseDes: "",
+//   designType: "",
+//   components: [
+//     // {
+//     //   id: 0,
+//     //   title: "",
+//     //   tasks: [
+//     //     {
+//     //       id: 0,
+//     //       title: "",
+//     //       assessment: [],
+//     //       time: 0,
+//     //       classType: "",
+//     //       target: "",
+//     //       resource: "",
+//     //       STEMType: [],
+//     //       description: "",
+//     //     }
+//     //   ],
+//     //   learningOutcomes: [
+//     //     {
+//     //       id: 0,
+//     //       level: "",
+//     //       outcomeType: "",
+//     //       STEMType: [],
+//     //       description: "",
+//     //       status: false
+//     //     }
+//     //   ]
+//     // }
+//   ],
+//   //learning outcomes in course level
+//   learningOutcomes: [
+//     // {
+//     //   id: 0,
+//     //   level: "",
+//     //   outcomeType: "",
+//     //   STEMType: [],
+//     //   description: "",
+//     //   isCourseLevel: false
+//     // }
+//   ],
+//   lesson: [
+//     {
+//       id: 0,
+//       name: "",
+//       tasks: []
+//     }
+//   ]
+// }
 
 var PageMenu = function PageMenu(props) {
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(null),
@@ -94460,7 +94570,7 @@ var PageMenu = function PageMenu(props) {
     "aria-controls": "simple-menu",
     "aria-haspopup": "true",
     onClick: handleClick
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_16___default.a, null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Menu__WEBPACK_IMPORTED_MODULE_17___default.a, null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Menu__WEBPACK_IMPORTED_MODULE_15__["default"], {
     id: "simple-menu",
     anchorEl: anchorEl,
     keepMounted: true,
@@ -94468,31 +94578,27 @@ var PageMenu = function PageMenu(props) {
     onClose: function onClose() {
       return handleClose(activePage);
     }
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_16__["default"], {
     onClick: function onClick() {
-      return handleClose("learningComp");
+      return handleClose("learningOutcomes");
     },
-    selected: activePage == "learningComp"
-  }, "Learning Component (Course Level)"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__["default"], {
-    onClick: function onClick() {
-      return handleClose("unitPlan");
-    },
-    selected: activePage == "unitPlan"
-  }, "Unit Info"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__["default"], {
+    selected: activePage == "learningOutcomes"
+  }, "Unit Level Learning Outcomes"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_16__["default"], {
     onClick: function onClick() {
       return handleClose("majorStep");
     },
     selected: activePage == "majorStep"
-  }, "Major Step"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_15__["default"], {
+  }, "Learning Components"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_16__["default"], {
     onClick: function onClick() {
-      return handleClose("review");
+      return handleClose("unitPlan");
     },
-    selected: activePage == "review"
-  }, "Your Design")));
+    selected: activePage == "unitPlan"
+  }, "Unit Design"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
 };
 
-var Design = function Design() {
+var Design = function Design(props) {
   var classes = useStyles();
+  var courseID = props.courseID;
 
   var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState('basic'),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
@@ -94504,15 +94610,11 @@ var Design = function Design() {
       activeStep = _React$useState6[0],
       setActiveStep = _React$useState6[1];
 
-  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(course),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      courseData = _React$useState8[0],
-      setCourseData = _React$useState8[1];
-
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_18__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_19__["ContextStore"]),
       course = _React$useContext.course,
-      dispatch = _React$useContext.dispatch; //#region data init
-  //preload learningOutcome
+      dispatch = _React$useContext.dispatch,
+      setLoadingOpen = _React$useContext.setLoadingOpen; //#region data init
+  //preload learningOutcome (Unit Level)
 
 
   function fetchlearningTypeTempData() {
@@ -94579,8 +94681,24 @@ var Design = function Design() {
               }).then(function (response) {
                 //load the default learning outcomes by api request
                 response.map(function (_respond) {
-                  var taskData = fetchlearningTaskTempData(_respond.id).then(function (taskData) {
-                    _respond.tasks = taskData;
+                  //learning Task
+                  fetchlearningPatternID(_respond.id).then(function (patternID) {
+                    fetchlearningTaskByPattern(patternID[0]).then(function (taskData) {
+                      _respond.tasks = taskData;
+                    });
+                    _respond.patternOptsID = patternID;
+                  }); //learning outcomes
+
+                  fetchlearningOutcomes(_respond.id).then(function (learningOutcomes) {
+                    learningOutcomes.map(function (learningOutcome) {
+                      learningOutcome.id = -1; //auto match the component
+
+                      learningOutcome.componentid = _respond.id;
+                      dispatch({
+                        type: "ADD_LEARNINGOUTCOME",
+                        value: learningOutcome
+                      });
+                    });
                   });
                 });
                 dispatch({
@@ -94606,9 +94724,7 @@ var Design = function Design() {
 
   function fetchlearningTaskTempData(_x) {
     return _fetchlearningTaskTempData.apply(this, arguments);
-  } //#endregion
-  // init the data once design type is changed
-
+  }
 
   function _fetchlearningTaskTempData() {
     _fetchlearningTaskTempData = _asyncToGenerator(
@@ -94643,7 +94759,196 @@ var Design = function Design() {
     return _fetchlearningTaskTempData.apply(this, arguments);
   }
 
+  function fetchlearningPatternID(_x2) {
+    return _fetchlearningPatternID.apply(this, arguments);
+  }
+
+  function _fetchlearningPatternID() {
+    _fetchlearningPatternID = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningPatternByComponent/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context4.abrupt("return", _context4.sent);
+
+            case 3:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+    return _fetchlearningPatternID.apply(this, arguments);
+  }
+
+  function fetchlearningTaskByPattern(_x3) {
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function _fetchlearningTaskByPattern() {
+    _fetchlearningTaskByPattern = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningTaskByPattern/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context5.abrupt("return", _context5.sent);
+
+            case 3:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }));
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function fetchlearningOutcomes(_x4) {
+    return _fetchlearningOutcomes.apply(this, arguments);
+  }
+
+  function _fetchlearningOutcomes() {
+    _fetchlearningOutcomes = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return fetch("http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context6.abrupt("return", _context6.sent);
+
+            case 3:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6);
+    }));
+    return _fetchlearningOutcomes.apply(this, arguments);
+  }
+
+  function saveCourse() {
+    return _saveCourse.apply(this, arguments);
+  } //#endregion
+  // init the data once design type is changed
+
+
+  function _saveCourse() {
+    _saveCourse = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              setLoadingOpen(true);
+
+              if (!(courseID == -1)) {
+                _context7.next = 7;
+                break;
+              }
+
+              _context7.next = 4;
+              return fetch('http://localhost:8000/api/course/test', {
+                method: "POST",
+                body: JSON.stringify(course),
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+                }
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                location.href = "app";
+                setLoadingOpen(false);
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 4:
+              return _context7.abrupt("return", _context7.sent);
+
+            case 7:
+              _context7.next = 9;
+              return fetch('http://localhost:8000/api/course/' + courseID, {
+                method: "PUT",
+                body: JSON.stringify(course),
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+                }
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                location.href = "app";
+                setLoadingOpen(false);
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 9:
+              return _context7.abrupt("return", _context7.sent);
+
+            case 10:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
+    }));
+    return _saveCourse.apply(this, arguments);
+  }
+
   react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    if (courseID != -1) {
+      return setActionPage('unitPlan');
+    }
+
     if (course.designType != "") {
       fetchlearningTypeTempData();
       fetchlearningComponentTempData();
@@ -94654,7 +94959,7 @@ var Design = function Design() {
   var handleNext = function handleNext() {
     if (activeStep + 1 == steps.length) {
       //final step
-      setActionPage('majorStep');
+      setActionPage('unitPlan');
     } else {
       setActiveStep(activeStep + 1);
     }
@@ -94667,18 +94972,18 @@ var Design = function Design() {
   var getStepContent = function getStepContent(step) {
     switch (step) {
       case 0:
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_approachType__WEBPACK_IMPORTED_MODULE_9__["default"], null);
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_approachType__WEBPACK_IMPORTED_MODULE_10__["default"], null);
 
       case 1:
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_courseInfo__WEBPACK_IMPORTED_MODULE_10__["default"], null);
-      // case 2:
-      //   return <DesignComponentStep />;
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_courseInfo__WEBPACK_IMPORTED_MODULE_11__["default"], null);
 
       case 2:
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_13__["default"], null);
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_14__["default"], null);
 
       case 3:
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_basicReview__WEBPACK_IMPORTED_MODULE_12__["default"], null);
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_componentStep__WEBPACK_IMPORTED_MODULE_12__["default"], null);
+      // case 3:
+      //   return  <BasicReview />
 
       default:
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, " hello ");
@@ -94689,7 +94994,7 @@ var Design = function Design() {
     switch (activePage) {
       default:
       case 'basic':
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_designStepper__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_designStepper__WEBPACK_IMPORTED_MODULE_9__["default"], {
           activeStep: activeStep,
           steps: steps
         }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, getStepContent(activeStep)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -94708,37 +95013,75 @@ var Design = function Design() {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(PageMenu, {
           activePage: activePage,
           setActionPage: setActionPage
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_componentStep__WEBPACK_IMPORTED_MODULE_11__["default"], null));
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_componentStep__WEBPACK_IMPORTED_MODULE_12__["default"], null));
 
       case 'unitPlan':
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(PageMenu, {
           activePage: activePage,
           setActionPage: setActionPage
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_unitPlanContainer__WEBPACK_IMPORTED_MODULE_17__["default"], null));
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_unitPlanContainer__WEBPACK_IMPORTED_MODULE_18__["default"], null));
 
-      case 'learningComp':
+      case 'learningOutcomes':
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(PageMenu, {
           activePage: activePage,
           setActionPage: setActionPage
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_13__["default"], null));
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_14__["default"], null));
 
       case 'review':
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(PageMenu, {
           activePage: activePage,
           setActionPage: setActionPage
-        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_basicReview__WEBPACK_IMPORTED_MODULE_12__["default"], null));
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design_basicReview__WEBPACK_IMPORTED_MODULE_13__["default"], null));
+    }
+  };
+
+  var displayTitle = function displayTitle() {
+    switch (activePage) {
+      case 'basic':
+        return "Basic Info";
+
+      case 'majorStep':
+        return "Learning Compoents";
+
+      case 'unitPlan':
+        return "Unit Design";
+
+      case 'learningOutcomes':
+        return "Learning Outcomes";
     }
   };
 
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("main", {
     className: classes.layout
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: classes.paper
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    className: classes.paper,
+    style: {
+      padding: "16px"
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    container: true,
+    spacing: 4
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8__["default"], {
     component: "h1",
     variant: "h4",
     align: "center"
-  }, "Learning Design Studio"), getActivePage())));
+  }, displayTitle())), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    item: true,
+    xs: 12
+  }, getActivePage()), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    color: "primary",
+    variant: "contained",
+    onClick: function onClick() {
+      saveCourse();
+    },
+    fullWidth: true
+  }, " Save Course"))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Design);
@@ -94761,11 +95104,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ContextStore", function() { return ContextStore; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "combineDispatchs", function() { return combineDispatchs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "courseReducer", function() { return courseReducer; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _design__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./design */ "./resources/js/container/design.jsx");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_Backdrop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Backdrop */ "./node_modules/@material-ui/core/esm/Backdrop/index.js");
+/* harmony import */ var _material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CircularProgress */ "./node_modules/@material-ui/core/esm/CircularProgress/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _design__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./design */ "./resources/js/container/design.jsx");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -94791,9 +95143,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 var courseInitState = {
   course: {
-    id: 0,
     unitTitle: "",
     schoolName: "",
     level: "",
@@ -94843,11 +95196,14 @@ var courseInitState = {
       //     name: "",
       //     tasks: []
       //   }
-    ]
+    ],
+    //index of current max learning Outcome ID
+    learningOutcomesID: 1
   }
 };
-var ContextStore = react__WEBPACK_IMPORTED_MODULE_0___default.a.createContext({
-  course: {}
+var ContextStore = react__WEBPACK_IMPORTED_MODULE_1___default.a.createContext({
+  course: {},
+  options: {}
 });
 function combineDispatchs(dispatchs) {
   return function (obj) {
@@ -94857,12 +95213,17 @@ function combineDispatchs(dispatchs) {
   };
 }
 function courseReducer(state, action) {
-  var tempComponent;
-  console.log(state);
   console.log(action);
+  console.log(state);
+  var tempComponent;
 
   switch (action.type) {
+    case "INIT_COURSE":
+      return Object.assign({}, state, {
+        course: action.value
+      });
     //#region basic info
+
     case "UNIT_TITLE":
       return Object.assign({}, state, {
         course: _objectSpread({}, state.course, {
@@ -94898,7 +95259,7 @@ function courseReducer(state, action) {
 
       return Object.assign({}, state, {
         course: _objectSpread({}, state.course, {
-          level: action.value,
+          noOfLessons: action.value,
           lesson: temp_lesson_arr
         })
       });
@@ -94969,6 +95330,28 @@ function courseReducer(state, action) {
         })
       });
 
+    case "UPDATE_LEARNINGTASK":
+      tempComponent = state.course.components.map(function (_component) {
+        if (_component.id === action.value.componentid) {
+          var tasks = _component.tasks.map(function (_task) {
+            if (_task.id == action.value.id) {
+              _task = action.value;
+            }
+
+            return _task;
+          });
+
+          _component.tasks = tasks;
+        }
+
+        return _component;
+      });
+      return Object.assign({}, state, {
+        course: _objectSpread({}, state.course, {
+          components: tempComponent
+        })
+      });
+
     case "DELETE_LEARNINGTASK":
       tempComponent = state.course.components.map(function (_component) {
         if (_component.id === action.value.componentid) {
@@ -95011,8 +95394,42 @@ function courseReducer(state, action) {
         })
       });
 
+    case "ADD_LEARNINGOUTCOME":
+      if (action.value.id == -1) {
+        //action.value.id = state.course.learningOutcomes.length + 1;
+        action.value.id = state.course.learningOutcomesID;
+      }
+
+      if (typeof action.value.componentid != 'undefined') {
+        tempComponent = state.course.components.map(function (_component) {
+          if (_component.id === action.value.componentid) {
+            _component.learningOutcomes = [].concat(_toConsumableArray(_component.learningOutcomes), [action.value.id]);
+          }
+
+          return _component;
+        });
+      } else {
+        tempComponent = state.course.components;
+      }
+
+      return Object.assign({}, state, {
+        course: _objectSpread({}, state.course, {
+          learningOutcomes: [].concat(_toConsumableArray(state.course.learningOutcomes), [action.value]),
+          components: tempComponent,
+          learningOutcomesID: state.course.learningOutcomesID + 1
+        })
+      });
+
     case "DELETE_LEARNINGOUTCOME":
       state.course.learningOutcomes.splice(action.value, 1);
+      return Object.assign({}, state, {
+        course: _objectSpread({}, state.course)
+      });
+
+    case "DELETE_LEARNINGOUTCOME_COMPONENT":
+      state.course.learningOutcomes = state.course.learningOutcomes.filter(function (x) {
+        return x.componentid != action.value;
+      });
       return Object.assign({}, state, {
         course: _objectSpread({}, state.course)
       });
@@ -95022,20 +95439,484 @@ function courseReducer(state, action) {
       return state;
   }
 }
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["makeStyles"])(function (theme) {
+  return {
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff'
+    }
+  };
+});
 
-function DesignContainer() {
-  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_0___default.a.useReducer(courseReducer, courseInitState),
+var DesignContainer = function DesignContainer(props) {
+  var classes = useStyles();
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    InitDesignOption();
+
+    if (props.courseID == -1) {} else {
+      fetchCourseData();
+    }
+  }, []);
+
+  var _React$useReducer = react__WEBPACK_IMPORTED_MODULE_1___default.a.useReducer(courseReducer, courseInitState),
       _React$useReducer2 = _slicedToArray(_React$useReducer, 2),
       State = _React$useReducer2[0],
       Dispatch = _React$useReducer2[1];
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ContextStore.Provider, {
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({}),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      optionsInit = _React$useState2[0],
+      setOptions = _React$useState2[1];
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(false),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      loadingOpen = _React$useState4[0],
+      setLoadingOpen = _React$useState4[1];
+
+  function fetchCourseData() {
+    return _fetchCourseData.apply(this, arguments);
+  } //#region Init Options Data
+
+
+  function _fetchCourseData() {
+    _fetchCourseData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              setLoadingOpen(true);
+              _context.next = 3;
+              return fetch("http://localhost:8000/api/course/" + props.courseID, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                Dispatch({
+                  type: "INIT_COURSE",
+                  value: JSON.parse(response.data)
+                });
+                setLoadingOpen(false);
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 3:
+              res = _context.sent;
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _fetchCourseData.apply(this, arguments);
+  }
+
+  function fetchDesignTypeData() {
+    return _fetchDesignTypeData.apply(this, arguments);
+  }
+
+  function _fetchDesignTypeData() {
+    _fetchDesignTypeData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return fetch("http://localhost:8000/api/course/getDesignTypeTemp", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "designType": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context2.sent;
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _fetchDesignTypeData.apply(this, arguments);
+  }
+
+  function fetchTaskTypeData() {
+    return _fetchTaskTypeData.apply(this, arguments);
+  }
+
+  function _fetchTaskTypeData() {
+    _fetchTaskTypeData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskTypeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskType": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context3.sent;
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+    return _fetchTaskTypeData.apply(this, arguments);
+  }
+
+  function fetchClassTypeData() {
+    return _fetchClassTypeData.apply(this, arguments);
+  }
+
+  function _fetchClassTypeData() {
+    _fetchClassTypeData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskClassTypeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskClassType": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context4.sent;
+
+            case 3:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+    return _fetchClassTypeData.apply(this, arguments);
+  }
+
+  function fetchClassSizeData() {
+    return _fetchClassSizeData.apply(this, arguments);
+  }
+
+  function _fetchClassSizeData() {
+    _fetchClassSizeData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              _context5.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskSizeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskSize": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context5.sent;
+
+            case 3:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }));
+    return _fetchClassSizeData.apply(this, arguments);
+  }
+
+  function fetchTaskTargetData() {
+    return _fetchTaskTargetData.apply(this, arguments);
+  }
+
+  function _fetchTaskTargetData() {
+    _fetchTaskTargetData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+        while (1) {
+          switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskTargetTypeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskTarget": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context6.sent;
+
+            case 3:
+            case "end":
+              return _context6.stop();
+          }
+        }
+      }, _callee6);
+    }));
+    return _fetchTaskTargetData.apply(this, arguments);
+  }
+
+  function fetchTaskResourceData() {
+    return _fetchTaskResourceData.apply(this, arguments);
+  }
+
+  function _fetchTaskResourceData() {
+    _fetchTaskResourceData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              _context7.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskResourceTypeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskResource": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context7.sent;
+
+            case 3:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, _callee7);
+    }));
+    return _fetchTaskResourceData.apply(this, arguments);
+  }
+
+  function fetchTaskElearningResourceData() {
+    return _fetchTaskElearningResourceData.apply(this, arguments);
+  }
+
+  function _fetchTaskElearningResourceData() {
+    _fetchTaskElearningResourceData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              _context8.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getTaskELeraningResourceTypeOption", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "taskElearingResource": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context8.sent;
+
+            case 3:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, _callee8);
+    }));
+    return _fetchTaskElearningResourceData.apply(this, arguments);
+  }
+
+  function fetchlearningTypeTempData() {
+    return _fetchlearningTypeTempData.apply(this, arguments);
+  }
+
+  function _fetchlearningTypeTempData() {
+    _fetchlearningTypeTempData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
+        while (1) {
+          switch (_context9.prev = _context9.next) {
+            case 0:
+              _context9.next = 2;
+              return fetch("http://localhost:8000/api/learningOutcome/getOutcomeType/", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "learningOutcomeType": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context9.sent;
+
+            case 3:
+            case "end":
+              return _context9.stop();
+          }
+        }
+      }, _callee9);
+    }));
+    return _fetchlearningTypeTempData.apply(this, arguments);
+  }
+
+  function fetchlearningPatternOptsData() {
+    return _fetchlearningPatternOptsData.apply(this, arguments);
+  }
+
+  function _fetchlearningPatternOptsData() {
+    _fetchlearningPatternOptsData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee10() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee10$(_context10) {
+        while (1) {
+          switch (_context10.prev = _context10.next) {
+            case 0:
+              _context10.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningPatternOpts/", {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setOptions(function (optionsInit) {
+                  return _objectSpread({}, optionsInit, {
+                    "learningPatternOpts": response
+                  });
+                });
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context10.sent;
+
+            case 3:
+            case "end":
+              return _context10.stop();
+          }
+        }
+      }, _callee10);
+    }));
+    return _fetchlearningPatternOptsData.apply(this, arguments);
+  }
+
+  var InitDesignOption = function InitDesignOption() {
+    fetchDesignTypeData();
+    fetchTaskTypeData();
+    fetchClassTypeData();
+    fetchClassSizeData();
+    fetchTaskTargetData();
+    fetchTaskResourceData();
+    fetchTaskElearningResourceData();
+    fetchlearningTypeTempData();
+    fetchlearningPatternOptsData();
+  }; //#endregion
+
+
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(ContextStore.Provider, {
     value: {
       course: State.course,
-      dispatch: combineDispatchs([Dispatch])
+      options: optionsInit,
+      dispatch: combineDispatchs([Dispatch]),
+      setLoadingOpen: setLoadingOpen
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_design__WEBPACK_IMPORTED_MODULE_2__["default"], null));
-}
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_design__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    courseID: props.courseID
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Backdrop__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    className: classes.backdrop,
+    open: loadingOpen,
+    onClick: function onClick() {
+      return setLoadingOpen(false);
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_CircularProgress__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    color: "inherit"
+  })));
+};
 
 /* harmony default export */ __webpack_exports__["default"] = (DesignContainer);
 
@@ -95194,7 +96075,7 @@ var LoginForm = function LoginForm() {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_LockOutlined__WEBPACK_IMPORTED_MODULE_3___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Typography"], {
     component: "h1",
     variant: "h5"
-  }, "Sign up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+  }, "Sign In"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
     className: classes.form
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
     container: true,
@@ -95224,7 +96105,7 @@ var LoginForm = function LoginForm() {
     color: "primary",
     className: classes.submit,
     onClick: onClick
-  }, "Sign Up"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
+  }, "Sign In"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
     container: true,
     justify: "flex-end"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Grid"], {
@@ -95309,7 +96190,7 @@ var RegisterForm = function RegisterForm() {
 
   var onClick = function onClick(event) {
     event.preventDefault();
-    window.location.href = "/app";
+    window.location.href = "/app2";
   };
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Container__WEBPACK_IMPORTED_MODULE_11__["default"], {
@@ -95751,13 +96632,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var DesignItem = function DesignItem() {
+var DesignItem = function DesignItem(props) {
+  var courseData = props.courseData,
+      setCourseID = props.setCourseID,
+      handleListItemClick = props.handleListItemClick;
+  var test = JSON.parse(courseData.data);
+
+  var _onClick = function onClick() {
+    handleListItemClick(event, 'design');
+    setCourseID(courseData.id);
+  };
+
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    button: true
+    button: true,
+    onClick: function onClick() {
+      return _onClick();
+    }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemIcon__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Dashboard__WEBPACK_IMPORTED_MODULE_8___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    primary: "My Design",
+    primary: test.unitTitle + " - " + test.courseDes,
     secondary: "Last update @ 6 Feb, 2020"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemSecondaryAction__WEBPACK_IMPORTED_MODULE_5__["default"], null, "Edit | Delete | Duplicated"));
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemSecondaryAction__WEBPACK_IMPORTED_MODULE_5__["default"], null, "Delete | Duplicated"));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (DesignItem);
@@ -95855,10 +96749,12 @@ var MyDesign = function MyDesign(props) {
   react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
     fetchData();
   }, []);
-  var handleListItemClick = props.handleListItemClick;
+  var handleListItemClick = props.handleListItemClick,
+      setCourseID = props.setCourseID;
 
   var buttonOnClick = function buttonOnClick(event) {
     handleListItemClick(event, 'design');
+    setCourseID(-1);
   };
 
   var displayCourseList = function displayCourseList() {
@@ -95870,7 +96766,9 @@ var MyDesign = function MyDesign(props) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, Object.keys(courseList).map(function (_key_courseList) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_designItem__WEBPACK_IMPORTED_MODULE_7__["default"], {
           key: _key_courseList,
-          courseData: courseList[_key_courseList]
+          courseData: courseList[_key_courseList],
+          setCourseID: setCourseID,
+          handleListItemClick: handleListItemClick
         });
       }));
     }
@@ -95998,6 +96896,244 @@ var PublicDesign = function PublicDesign() {
 
 /***/ }),
 
+/***/ "./resources/js/design/LearningPatternEdit.jsx":
+/*!*****************************************************!*\
+  !*** ./resources/js/design/LearningPatternEdit.jsx ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _components_instructionBox__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/instructionBox */ "./resources/js/components/instructionBox.jsx");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+var LearningPatternEdit = function LearningPatternEdit(props) {
+  var componentData = props.componentData,
+      onClose = props.onClose;
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(-1),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      selectedPattern = _React$useState2[0],
+      setSelectedPattern = _React$useState2[1];
+
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([]),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      taskData = _React$useState4[0],
+      setTaskData = _React$useState4[1];
+
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_8__["ContextStore"]),
+      course = _React$useContext.course,
+      options = _React$useContext.options,
+      dispatch = _React$useContext.dispatch;
+
+  var patternChange = function patternChange(event) {
+    setSelectedPattern(event.target.value);
+  };
+
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    if (selectedPattern != -1) {
+      fetchlearningTaskByPattern(selectedPattern).then(function (_res) {
+        setTaskData(_res);
+      });
+    }
+  }, [selectedPattern]);
+
+  var onSaveTask = function onSaveTask() {
+    var temp = componentData;
+    temp.learningOutcomes = [];
+    fetchlearningTaskByPattern(selectedPattern).then(function (taskData) {
+      temp.tasks = taskData;
+    }); //learning outcomes
+    //delete learning outcomes with component
+
+    dispatch({
+      type: "UPDATE_COMPONENT",
+      value: temp
+    });
+    fetchlearningOutcomes(temp.id).then(function (learningOutcomes) {
+      learningOutcomes.map(function (learningOutcome) {
+        learningOutcome.id = -1; //auto match the component
+
+        learningOutcome.componentid = temp.id;
+        dispatch({
+          type: "ADD_LEARNINGOUTCOME",
+          value: learningOutcome
+        });
+      });
+    });
+    dispatch({
+      type: "DELETE_LEARNINGOUTCOME_COMPONENT",
+      value: temp.id
+    });
+    onClose();
+  }; //#region fetch data related
+
+
+  function fetchlearningTaskByPattern(_x) {
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function _fetchlearningTaskByPattern() {
+    _fetchlearningTaskByPattern = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningTaskByPattern/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context.abrupt("return", _context.sent);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function fetchlearningOutcomes(_x2) {
+    return _fetchlearningOutcomes.apply(this, arguments);
+  } //#endregion
+
+
+  function _fetchlearningOutcomes() {
+    _fetchlearningOutcomes = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return fetch("http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _fetchlearningOutcomes.apply(this, arguments);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    title: "Reload your pre-defined learning tasks",
+    content: "Current Componet has two differnet mode of learning tasks.  Please select the mode you like in order to reload the learning tasks.  Choose the recommended lesson pattern based on the selected engineering design and self-directed learning steps",
+    tips: ""
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    labelId: "pattern-select-required-label",
+    id: "pattern-select-required",
+    onChange: patternChange,
+    value: selectedPattern,
+    fullWidth: true
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    value: -1,
+    disabled: true
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "Outcome Type")), componentData.patternOptsID.map(function (_opts, index) {
+    var _options$learningPatt;
+
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      value: _opts,
+      key: index
+    }, (_options$learningPatt = options.learningPatternOpts.find(function (x) {
+      return x.id == _opts;
+    })) === null || _options$learningPatt === void 0 ? void 0 : _options$learningPatt.description);
+  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    container: true,
+    item: true,
+    xs: 12,
+    spacing: 5
+  }, taskData === null || taskData === void 0 ? void 0 : taskData.map(function (_data, index) {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      TaskData: _data,
+      componentData: componentData,
+      key: index,
+      mode: "view",
+      index: index,
+      handleTaskUpdate: function handleTaskUpdate() {}
+    });
+  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    variant: "contained",
+    color: "primary",
+    onClick: onSaveTask
+  }, "Save")));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LearningPatternEdit);
+
+/***/ }),
+
 /***/ "./resources/js/design/addLearningPattern.jsx":
 /*!****************************************************!*\
   !*** ./resources/js/design/addLearningPattern.jsx ***!
@@ -96106,7 +97242,7 @@ var AddLearningPatternContainner = function AddLearningPatternContainner(props) 
     setLevel('');
   };
 
-  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState([]),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       taskData = _React$useState8[0],
       setTaskData = _React$useState8[1];
@@ -96129,7 +97265,7 @@ var AddLearningPatternContainner = function AddLearningPatternContainner(props) 
         setTaskData(componentData.tasks);
         break;
     }
-  }, [props.mode]);
+  }, [props.mode, course]);
   react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
     switch (props.mode) {
       default:
@@ -96294,32 +97430,25 @@ var AddLearningPatternContainner = function AddLearningPatternContainner(props) 
 
 /***/ }),
 
-/***/ "./resources/js/design/approachType.jsx":
-/*!**********************************************!*\
-  !*** ./resources/js/design/approachType.jsx ***!
-  \**********************************************/
+/***/ "./resources/js/design/addLearningTask.jsx":
+/*!*************************************************!*\
+  !*** ./resources/js/design/addLearningTask.jsx ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var _material_ui_core_GridList__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/GridList */ "./node_modules/@material-ui/core/esm/GridList/index.js");
-/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
-/* harmony import */ var _approachTypeBox__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./approachTypeBox */ "./resources/js/design/approachTypeBox.jsx");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/esm/Dialog/index.js");
+/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/DialogActions */ "./node_modules/@material-ui/core/esm/DialogActions/index.js");
+/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/esm/DialogContent/index.js");
+/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/esm/DialogContentText/index.js");
+/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/esm/DialogTitle/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -96336,74 +97465,141 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["makeStyles"])(function (theme) {
+
+
+var AddLearningTask = function AddLearningTask(props) {
+  var openTaskAdd = props.openTaskAdd,
+      setOpenTaskAdd = props.setOpenTaskAdd,
+      onEditComponentID = props.onEditComponentID;
+
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
+      course = _React$useContext.course,
+      dispatch = _React$useContext.dispatch;
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({}),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      taskData = _React$useState2[0],
+      setTaskData = _React$useState2[1];
+
+  var onSaveTask = function onSaveTask() {
+    taskData.componentid = onEditComponentID;
+    dispatch({
+      type: "ADD_LEARNINGTASK",
+      value: taskData
+    });
+    setOpenTaskAdd(false);
+  };
+
+  var handleTaskUpdate = function handleTaskUpdate(task, index) {
+    //listen task data changes
+    setTaskData(task);
+  };
+
+  if (onEditComponentID == -1) {
+    return null;
+  } else {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      open: openTaskAdd,
+      onClose: function onClose() {
+        return setOpenTaskAdd(false);
+      },
+      "aria-labelledby": "form-dialog-title"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      id: "form-dialog-title"
+    }, "Add Learning Task"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_5__["default"], null, "You may add new learning task for this component..."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      TaskData: {},
+      index: 0,
+      key: 0,
+      componentData: course.components.find(function (x) {
+        return x.id == onEditComponentID;
+      }),
+      handleTaskUpdate: handleTaskUpdate,
+      onEditTasks: function onEditTasks() {},
+      mode: "lesson_edit"
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      onClick: function onClick() {
+        return setOpenTaskAdd(false);
+      },
+      color: "primary"
+    }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      onClick: function onClick() {
+        return onSaveTask();
+      },
+      color: "primary"
+    }, "Save")));
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (AddLearningTask);
+
+/***/ }),
+
+/***/ "./resources/js/design/approachType.jsx":
+/*!**********************************************!*\
+  !*** ./resources/js/design/approachType.jsx ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_GridList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/GridList */ "./node_modules/@material-ui/core/esm/GridList/index.js");
+/* harmony import */ var _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/colors */ "./node_modules/@material-ui/core/esm/colors/index.js");
+/* harmony import */ var _approachTypeBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./approachTypeBox */ "./resources/js/design/approachTypeBox.jsx");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+
+
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["makeStyles"])(function (theme) {
   return {
     gridList: {
       display: 'flex',
-      justifyContent: 'end',
-      overflow: 'scroll',
+      justifyContent: 'center',
+      // overflow: 'scroll',
       flexWrap: 'nowrap',
       // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
       transform: 'translateZ(0)'
     },
     avatar: {
-      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_6__["red"][500]
+      backgroundColor: _material_ui_core_colors__WEBPACK_IMPORTED_MODULE_5__["red"][500]
     }
   };
 });
 
 var DesignType = function DesignType(props) {
-  var classes = useStyles();
+  var classes = useStyles(); // const [designType, setDesignType] = React.useState([]); 
 
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([]),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      designType = _React$useState2[0],
-      setDesignType = _React$useState2[1];
-
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_8__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
       course = _React$useContext.course,
+      options = _React$useContext.options,
       dispatch = _React$useContext.dispatch;
 
-  function fetchDesignTypeData() {
-    return _fetchDesignTypeData.apply(this, arguments);
-  }
-
-  function _fetchDesignTypeData() {
-    _fetchDesignTypeData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return fetch("http://localhost:8000/api/course/getDesignTypeTemp", {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setDesignType(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
-
-            case 2:
-              res = _context.sent;
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-    return _fetchDesignTypeData.apply(this, arguments);
-  }
-
-  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
-    fetchDesignTypeData();
-  }, []);
+  var designType = options.designType ? options.designType : []; // async function fetchDesignTypeData() {
+  //   const res = await fetch(
+  //       `http://localhost:8000/api/course/getDesignTypeTemp`,
+  //       {
+  //       method: "GET",
+  //       }
+  //   )
+  //       .then(res => res.json())
+  //       .then(response => {
+  //         setDesignType(response);
+  //   })
+  //   .catch(error => console.log(error));
+  // }
+  // React.useEffect(() => {
+  //   fetchDesignTypeData();
+  // }, []);
 
   var onClick = function onClick(event, value) {
     // event.preventDefault();
@@ -96413,14 +97609,14 @@ var DesignType = function DesignType(props) {
     });
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_2__["default"], {
     variant: "h6",
     gutterBottom: true
-  }, "Choose the subject specific design"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_GridList__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "Choose the subject specific design"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_GridList__WEBPACK_IMPORTED_MODULE_4__["default"], {
     className: classes.gridList,
-    cols: 2.5
+    cols: 4
   }, designType.map(function (_data, i) {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_approachTypeBox__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_approachTypeBox__WEBPACK_IMPORTED_MODULE_6__["default"], {
       designBoxData: _data,
       key: i,
       onClick: onClick
@@ -96690,13 +97886,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 /* harmony import */ var _learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./learningOutcomeToDo */ "./resources/js/design/learningOutcomeToDo.jsx");
 /* harmony import */ var _addLearningPattern__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./addLearningPattern */ "./resources/js/design/addLearningPattern.jsx");
-/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
-/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js");
-/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
-/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _learningTasksEdit__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./learningTasksEdit */ "./resources/js/design/learningTasksEdit.jsx");
+/* harmony import */ var _LearningPatternEdit__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./LearningPatternEdit */ "./resources/js/design/LearningPatternEdit.jsx");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+/* harmony import */ var _addLearningTask__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./addLearningTask */ "./resources/js/design/addLearningTask.jsx");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js");
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_18__);
+/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
+/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -96704,6 +97903,9 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
 
 
 
@@ -96773,23 +97975,36 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["ma
 var Component = function Component(props) {
   var classes = useStyles();
 
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_18__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_21__["ContextStore"]),
       course = _React$useContext.course,
       dispatch = _React$useContext.dispatch;
 
-  var componentData = props.componentData;
+  var componentData = props.componentData,
+      index = props.index;
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
-      addLearningPatternOpen = _React$useState2[0],
-      setAddLearningPatternOpen = _React$useState2[1];
+      editTaskOpen = _React$useState2[0],
+      setEditTaskOpen = _React$useState2[1];
 
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      selectMode = _React$useState4[0],
-      setSelectMode = _React$useState4[1]; //addLearningPatternMode
-  //#region init data 
+      editPatternOpen = _React$useState4[0],
+      setEditPatternOpen = _React$useState4[1];
 
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(""),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      selectMode = _React$useState6[0],
+      setSelectMode = _React$useState6[1]; //addLearningPatternMode
+  //edit learning task props
+
+
+  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      openTaskAdd = _React$useState8[0],
+      setOpenTaskAdd = _React$useState8[1];
+
+  var onEditComponentID = componentData.id; //#region init data 
 
   var learningTime = function learningTime() {
     var time = 0;
@@ -96803,12 +98018,16 @@ var Component = function Component(props) {
 
   var onEditTasks = function onEditTasks() {
     setSelectMode("edit");
-    setAddLearningPatternOpen(true);
+    setEditTaksOpen(true);
   };
 
-  var onAddTasks = function onAddTasks() {
-    setSelectMode("add");
-    setAddLearningPatternOpen(true);
+  var onEditPattern = function onEditPattern() {
+    setSelectMode("pattern");
+    setEditPatternOpen(true);
+  };
+
+  var onAddLearningTask = function onAddLearningTask() {
+    setOpenTaskAdd(true);
   }; //#endregion
 
 
@@ -96820,21 +98039,30 @@ var Component = function Component(props) {
     id: "panel1a-header"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: classes.heading
-  }, componentData.id, " :  ", componentData.title)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
+  }, index + 1, " :  ", componentData.title)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_6__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
     container: true,
     spacing: 3
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
     item: true,
-    xs: 12
+    xs: 8
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
     className: classes.subheading
-  }, "Estimated learning time: ", learningTime(), " min(s)")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
+  }, "Estimated learning time: ", learningTime(), " min(s)")), componentData.patternOptsID.length > 1 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
+    item: true,
+    xs: 4
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    variant: "contained",
+    color: "primary",
+    onClick: function onClick() {
+      return onEditPattern();
+    }
+  }, "Reload Learning Patterns")) : null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_10__["Grid"], {
     item: true,
     xs: 12
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeToDo__WEBPACK_IMPORTED_MODULE_11__["default"], {
     componentData: componentData
   })), componentData.tasks.map(function (_learningComponentData, index) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_15__["default"], {
       key: index,
       componentData: componentData,
       TaskData: _learningComponentData,
@@ -96845,28 +98073,52 @@ var Component = function Component(props) {
     variant: "contained",
     color: "primary",
     onClick: function onClick() {
-      return onAddTasks();
+      return onAddLearningTask();
     }
-  }, "Add Learning Patterns"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  }, "Add Learning Task"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_addLearningTask__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    openTaskAdd: openTaskAdd,
+    setOpenTaskAdd: setOpenTaskAdd,
+    onEditComponentID: onEditComponentID
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
     fullScreen: true,
-    open: addLearningPatternOpen
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    open: editTaskOpen
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_19__["default"], {
     className: classes.appBar
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_17__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_20__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
     edge: "start",
     color: "inherit",
     onClick: function onClick() {
-      return setAddLearningPatternOpen(false);
+      return setEditTaskOpen(false);
     },
     "aria-label": "close"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_18___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
     variant: "h6",
     className: classes.title
-  }, "Adding new learning outcome"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_addLearningPattern__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, "Edit Learning Task"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningTasksEdit__WEBPACK_IMPORTED_MODULE_13__["default"], {
     componentData: componentData,
     mode: selectMode,
     onClose: function onClose() {
-      return setAddLearningPatternOpen(false);
+      return setEditTaskOpen(false);
+    }
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    fullScreen: true,
+    open: editPatternOpen
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    className: classes.appBar
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_20__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    edge: "start",
+    color: "inherit",
+    onClick: function onClick() {
+      return setEditPatternOpen(false);
+    },
+    "aria-label": "close"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_18___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    variant: "h6",
+    className: classes.title
+  }, "Edit Learning Pattern"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_LearningPatternEdit__WEBPACK_IMPORTED_MODULE_14__["default"], {
+    componentData: componentData,
+    onClose: function onClose() {
+      return setEditPatternOpen(false);
     }
   }))))));
 };
@@ -96951,12 +98203,12 @@ var DesignComponentItem = function DesignComponentItem(props) {
     }
   }, provided.draggableProps, provided.dragHandleProps, {
     style: getItemStyle(snapshot.isDragging, provided.draggableProps.style)
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["ListItemIcon"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_DragHandle__WEBPACK_IMPORTED_MODULE_4___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["ListItemText"], {
-    primary: "Step" + (index + 1),
-    secondary: item.title
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["ListItemIcon"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_DragHandle__WEBPACK_IMPORTED_MODULE_4___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["ListItemText"] // primary={"Step" + (index+1)}
+  , {
+    primary: item.title
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["ListItemSecondaryAction"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["IconButton"], {
     onClick: function onClick() {
-      return addItems(item.title);
+      return addItems(item);
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_3___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["IconButton"], {
     onClick: function onClick() {
@@ -97052,7 +98304,7 @@ var ComponentSelDialog = function ComponentSelDialog(props) {
     fullWidth: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_5__["default"], {
     id: "form-dialog-title"
-  }, "Subscribe"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Add Design Step"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__["default"], {
     className: classes.dialogContent
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentSelPair__WEBPACK_IMPORTED_MODULE_6__["default"], {
     component: component,
@@ -97081,14 +98333,22 @@ var ComponentSelDialog = function ComponentSelDialog(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/esm/InputLabel/index.js");
-/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
-/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
-/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/esm/InputLabel/index.js");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
+/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
+/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -97104,7 +98364,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["makeStyles"])(function (theme) {
   return {
     formControl: {
       margin: theme.spacing(1),
@@ -97117,74 +98377,121 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["ma
 });
 var data = [{
   id: 1,
-  type: "Engineering Design + Self Directed Learning",
-  dataSet: ["ED+SDL 1", "ED+SDL 2", "ED+SDL 3"]
+  type: "Engineering Design + Self Directed Learning"
 }, {
   id: 2,
-  type: "Scientific Investigation + Self Directed Learning",
-  dataSet: ["SI+SDL 1", "SI+SDL 2", "SI+SDL 3"]
-}, {
-  id: 3,
-  type: "Engineering Design + Teacher Guided Learning",
-  dataSet: ["ED+TGL 1", "ED+TGL 2", "ED+TGL 3"]
-}, {
-  id: 4,
-  type: "Scientific Investigation + Teacher Guided Learning",
-  dataSet: ["SI+TGL 1", "SI+TGL 2", "SI+TGL 3"]
+  type: "Scientific Investigation + Self Directed Learning"
 }];
 
 var DesignComponentSelPair = function DesignComponentSelPair(props) {
   var dataSet = data;
 
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState("1"),
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState("1"),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       selectType = _React$useState2[0],
       setType = _React$useState2[1];
 
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([]),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      componentOpts = _React$useState4[0],
+      setComponentOpts = _React$useState4[1];
+
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(""),
+      _React$useState6 = _slicedToArray(_React$useState5, 2),
+      selectComponent_id = _React$useState6[0],
+      setSelectComponent_id = _React$useState6[1];
+
+  function fetcComponentOptsData() {
+    return _fetcComponentOptsData.apply(this, arguments);
+  }
+
+  function _fetcComponentOptsData() {
+    _fetcComponentOptsData = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var res;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("http://localhost:8000/api/learningComponent/getLearningComponentByDesignType/" + selectType, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                setComponentOpts(response);
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              res = _context.sent;
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _fetcComponentOptsData.apply(this, arguments);
+  }
+
   var classes = useStyles();
-  var component = props.component,
-      setComponent = props.setComponent;
+  var setComponent = props.setComponent;
 
   var onTypeChange = function onTypeChange(event) {
     setType(event.target.value);
   };
 
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    fetcComponentOptsData();
+    setSelectComponent_id("");
+  }, [selectType]);
+
   var onSelectComp = function onSelectComp(event) {
-    setComponent(event.target.value);
+    setSelectComponent_id(event.target.value);
+    setComponent(componentOpts.find(function (x) {
+      return x.id == event.target.value;
+    }));
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: classes.formControl,
-    fullWidrg: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    id: "demo-simple-select-label"
-  }, "Type"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    labelId: "demo-simple-select-label",
-    id: "demo-simple-select",
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: classes.formControl
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    id: "type-select-label"
+  }, "Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    labelId: "type-select-label",
+    id: "type-select",
     onChange: function onChange(event) {
       return onTypeChange(event);
-    }
-  }, dataSet.map(function (_data) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      value: _data.id
+    },
+    value: selectType
+  }, dataSet.map(function (_data, index) {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      value: _data.id,
+      key: index
     }, _data.type);
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    className: classes.formControl,
-    fullWidrg: true
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    id: "demo-simple-select-label"
-  }, "Component"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    labelId: "demo-simple-select-label",
-    id: "demo-simple-select",
+  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    className: classes.formControl
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    id: "component-select-label"
+  }, "Component"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_7__["default"], {
+    labelId: "component-select-label",
+    id: "component-select",
     onChange: function onChange(event) {
       return onSelectComp(event);
-    }
-  }, dataSet.map(function (_data) {
-    return _data.id == selectType ? _data.dataSet.map(function (__data) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        value: __data
-      }, __data);
-    }) : null;
+    },
+    value: selectComponent_id
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    value: "",
+    disabled: true
+  }, "N/A "), componentOpts.map(function (opts, index) {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      value: opts.id,
+      key: index
+    }, opts.title);
   }))));
 };
 
@@ -97201,19 +98508,22 @@ var DesignComponentSelPair = function DesignComponentSelPair(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-/* harmony import */ var _material_ui_core_RootRef__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/RootRef */ "./node_modules/@material-ui/core/esm/RootRef/index.js");
-/* harmony import */ var react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
-/* harmony import */ var _componentItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./componentItem */ "./resources/js/design/componentItem.jsx");
-/* harmony import */ var _componentSelDialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./componentSelDialog */ "./resources/js/design/componentSelDialog.jsx");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+/* harmony import */ var _material_ui_core_RootRef__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/RootRef */ "./node_modules/@material-ui/core/esm/RootRef/index.js");
+/* harmony import */ var react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-beautiful-dnd */ "./node_modules/react-beautiful-dnd/dist/react-beautiful-dnd.esm.js");
+/* harmony import */ var _componentItem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./componentItem */ "./resources/js/design/componentItem.jsx");
+/* harmony import */ var _componentSelDialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./componentSelDialog */ "./resources/js/design/componentSelDialog.jsx");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _components_instructionBox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/instructionBox */ "./resources/js/components/instructionBox.jsx");
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -97222,6 +98532,7 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -97277,12 +98588,13 @@ var getListStyle = function getListStyle(isDraggingOver) {
 };
 
 var DesignComponentStep = function DesignComponentStep(props) {
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_6__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
       course = _React$useContext.course,
+      options = _React$useContext.options,
       dispatch = _React$useContext.dispatch; // initalize if there is no preset component data 
 
 
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       open = _React$useState2[0],
       setOpen = _React$useState2[1];
@@ -97311,14 +98623,33 @@ var DesignComponentStep = function DesignComponentStep(props) {
     });
   };
 
-  var addItems = function addItems(text) {
+  var addItems = function addItems(component) {
+    // component.id = course.components.length+1,
     //sync the data to root state
+    var temp_component_id = component.id;
+    component.id = course.components.length + 1; //load preload data 
+    //learning Task
+
+    fetchlearningPatternID(temp_component_id).then(function (patternID) {
+      fetchlearningTaskByPattern(patternID).then(function (taskData) {
+        component.tasks = taskData;
+      });
+    });
     dispatch({
       type: "ADD_COMPONENT",
-      value: _objectSpread({}, course.components[0], {
-        id: course.components.length + 1,
-        title: text
-      })
+      value: component
+    }); //learning outcomes
+
+    fetchlearningOutcomes(temp_component_id).then(function (learningOutcomes) {
+      learningOutcomes.map(function (learningOutcome) {
+        learningOutcome.id = -1; //auto match the component
+
+        learningOutcome.componentid = component.id;
+        dispatch({
+          type: "ADD_LEARNINGOUTCOME",
+          value: learningOutcome
+        });
+      });
     });
   };
 
@@ -97327,26 +98658,146 @@ var DesignComponentStep = function DesignComponentStep(props) {
       type: "DELETE_COMPONENT",
       value: index
     });
-  };
+  }; //#region data fetching related
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_3__["DragDropContext"], {
+
+  function fetchlearningPatternID(_x) {
+    return _fetchlearningPatternID.apply(this, arguments);
+  }
+
+  function _fetchlearningPatternID() {
+    _fetchlearningPatternID = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningPatternByComponent/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response[0];
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context.abrupt("return", _context.sent);
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _fetchlearningPatternID.apply(this, arguments);
+  }
+
+  function fetchlearningTaskByPattern(_x2) {
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function _fetchlearningTaskByPattern() {
+    _fetchlearningTaskByPattern = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return fetch("http://localhost:8000/api/learningTask/getLearningTaskByPattern/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                console.log(response);
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _fetchlearningTaskByPattern.apply(this, arguments);
+  }
+
+  function fetchlearningOutcomes(_x3) {
+    return _fetchlearningOutcomes.apply(this, arguments);
+  } //#endregion
+
+
+  function _fetchlearningOutcomes() {
+    _fetchlearningOutcomes = _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return fetch("http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/" + id, {
+                method: "GET"
+              }).then(function (res) {
+                return res.json();
+              }).then(function (response) {
+                //load the default learning outcomes by api request
+                return response;
+              })["catch"](function (error) {
+                return console.log(error);
+              });
+
+            case 2:
+              return _context3.abrupt("return", _context3.sent);
+
+            case 3:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+    return _fetchlearningOutcomes.apply(this, arguments);
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    title: "Learning Components",
+    content: "These are the pre-defined design components for the template:" + options.designType.find(function (x) {
+      return x.id == course.designType;
+    }) + " " + "STEM to guide you to plan your unit and lesson",
+    tips: "tips for Learning Components..."
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_4__["DragDropContext"], {
     onDragEnd: function onDragEnd(result) {
       return _onDragEnd(result);
     }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_3__["Droppable"], {
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_4__["Droppable"], {
     droppableId: "droppable"
   }, function (provided, snapshot) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_RootRef__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_RootRef__WEBPACK_IMPORTED_MODULE_3__["default"], {
       rootRef: provided.innerRef
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["List"], {
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["List"], {
       style: getListStyle(snapshot.isDraggingOver)
     }, course.components.map(function (item, index) {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_3__["Draggable"], {
-        key: item.id,
-        draggableId: item.id.toString(),
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_4__["Draggable"], {
+        key: index,
+        draggableId: index.toString(),
         index: index
       }, function (provided, snapshot) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_componentItem__WEBPACK_IMPORTED_MODULE_5__["default"], {
           provided: provided,
           snapshot: snapshot,
           item: item,
@@ -97356,16 +98807,16 @@ var DesignComponentStep = function DesignComponentStep(props) {
         });
       });
     }), provided.placeholder));
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Button"], {
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_2__["Button"], {
     variant: "outlined",
     color: "primary",
     onClick: handleClickOpen,
     fullWidth: true
-  }, "Add COMPONENT"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentSelDialog__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, "Add COMPONENT"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_componentSelDialog__WEBPACK_IMPORTED_MODULE_6__["default"], {
     open: open,
     handleClose: handleClose,
     addItems: addItems
-  }));
+  })));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (DesignComponentStep);
@@ -97381,22 +98832,21 @@ var DesignComponentStep = function DesignComponentStep(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-/* harmony import */ var _material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Chip */ "./node_modules/@material-ui/core/esm/Chip/index.js");
-/* harmony import */ var _material_ui_core_Input__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/Input */ "./node_modules/@material-ui/core/esm/Input/index.js");
-/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/esm/InputLabel/index.js");
-/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
-/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+/* harmony import */ var _material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Chip */ "./node_modules/@material-ui/core/esm/Chip/index.js");
+/* harmony import */ var _material_ui_core_Input__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Input */ "./node_modules/@material-ui/core/esm/Input/index.js");
+/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/InputLabel */ "./node_modules/@material-ui/core/esm/InputLabel/index.js");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
+/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
+/* harmony import */ var _material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/FormControlLabel */ "./node_modules/@material-ui/core/esm/FormControlLabel/index.js");
 /* harmony import */ var _material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/icons/Edit */ "./node_modules/@material-ui/icons/Edit.js");
 /* harmony import */ var _material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var _material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/icons/Delete */ "./node_modules/@material-ui/icons/Delete.js");
@@ -97405,18 +98855,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15__);
 /* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
 /* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
-/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/esm/Dialog/index.js");
-/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/DialogActions */ "./node_modules/@material-ui/core/esm/DialogActions/index.js");
-/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/esm/DialogContent/index.js");
-/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/esm/DialogContentText/index.js");
-/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/esm/DialogTitle/index.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var _material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/core/Checkbox */ "./node_modules/@material-ui/core/esm/Checkbox/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/esm/Dialog/index.js");
+/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @material-ui/core/DialogActions */ "./node_modules/@material-ui/core/esm/DialogActions/index.js");
+/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/esm/DialogContent/index.js");
+/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/esm/DialogContentText/index.js");
+/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/esm/DialogTitle/index.js");
+/* harmony import */ var _material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @material-ui/core/ExpansionPanel */ "./node_modules/@material-ui/core/esm/ExpansionPanel/index.js");
+/* harmony import */ var _material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @material-ui/core/ExpansionPanelSummary */ "./node_modules/@material-ui/core/esm/ExpansionPanelSummary/index.js");
+/* harmony import */ var _material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @material-ui/core/ExpansionPanelDetails */ "./node_modules/@material-ui/core/esm/ExpansionPanelDetails/index.js");
+/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js");
+/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_28___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_28__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -97430,6 +98880,12 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
 
 
 
@@ -97468,7 +98924,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //     }
 //   ],
 
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["makeStyles"])(function (theme) {
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["makeStyles"])(function (theme) {
   return {
     root: {
       flexGrow: 1
@@ -97489,15 +98945,13 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["ma
     },
     chip: {
       margin: 2
-    },
-    color: {
-      backgroundColor: "#de5995",
-      height: "100%"
     }
   };
 });
 
 var ComponentTask = function ComponentTask(props) {
+  var _TaskData$assessment;
+
   var classes = useStyles();
   var TaskData = props.TaskData; //Task data to init the task
 
@@ -97509,36 +98963,49 @@ var ComponentTask = function ComponentTask(props) {
 
   var onEditTasks = props.onEditTasks;
 
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_18__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_19__["ContextStore"]),
       course = _React$useContext.course,
-      dispatch = _React$useContext.dispatch;
+      dispatch = _React$useContext.dispatch,
+      options = _React$useContext.options;
 
-  var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(false),
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       delDialogOpen = _React$useState2[0],
       setDelDialogOpen = _React$useState2[1];
 
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(props.mode),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      mode = _React$useState4[0],
-      setMode = _React$useState4[1];
+  var mode = props.mode;
 
-  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({
     id: TaskData.id ? TaskData.id : -1,
     type: TaskData.type ? TaskData.type : "",
     title: TaskData.title ? TaskData.title : "",
-    assessment: TaskData.learningOutcomes ? TaskData.assessment : [],
+    assessment: TaskData.assessment ? TaskData.assessment : [],
     time: TaskData.time ? TaskData.time : 0,
     classType: TaskData.classType ? TaskData.classType : "",
     target: TaskData.target ? TaskData.target : "",
     size: TaskData.size ? TaskData.size : "",
     resource: TaskData.resource ? TaskData.resource : [],
-    STEMType: TaskData.STEMType ? TaskData.STEMType : [],
-    description: TaskData.description ? TaskData.description : ""
+    e_resource: TaskData.e_resource ? TaskData.e_resource : [],
+    // STEMType: TaskData.STEMType? TaskData.STEMType : [],
+    description: TaskData.description ? TaskData.description : "",
+    content: TaskData.content ? TaskData.content : ""
   }),
+      _React$useState4 = _slicedToArray(_React$useState3, 2),
+      task = _React$useState4[0],
+      setTask = _React$useState4[1];
+
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(((_TaskData$assessment = TaskData.assessment) === null || _TaskData$assessment === void 0 ? void 0 : _TaskData$assessment.length) > 0 ? true : false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      task = _React$useState6[0],
-      setTask = _React$useState6[1];
+      isAssessment = _React$useState6[0],
+      setAssessment = _React$useState6[1];
+
+  var onChangeIsAssessment = function onChangeIsAssessment() {
+    setAssessment(!isAssessment);
+
+    if (isAssessment == false) {
+      task.assessment = [];
+    }
+  };
 
   var handleChangeMultiple = function handleChangeMultiple(event) {
     switch (event.target.name) {
@@ -97554,11 +99021,14 @@ var ComponentTask = function ComponentTask(props) {
         }));
         break;
 
-      case "STEMType":
+      case "e-resource":
         setTask(_objectSpread({}, task, {
-          STEMType: event.target.value
+          e_resource: event.target.value
         }));
         break;
+      // case "STEMType":
+      //     setTask({...task, STEMType: event.target.value});
+      //     break;
     }
   };
 
@@ -97608,285 +99078,89 @@ var ComponentTask = function ComponentTask(props) {
           description: event.target.value
         }));
         break;
+
+      case "content":
+        setTask(_objectSpread({}, task, {
+          content: event.target.value
+        }));
+        break;
     }
   };
 
-  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
     if (typeof handleTaskUpdate == 'function') {
       handleTaskUpdate(task, index);
     }
-  }, [task]); //#region init opts data
+  }, [task]);
 
-  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([{
-    "id": 1,
-    "value": "In Class",
-    "description": "In Class"
-  }, {
-    "id": 2,
-    "value": "Out Class",
-    "description": "Out Class"
-  }]),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      classTypeOtps = _React$useState8[0],
-      setClassTypeOtps = _React$useState8[1];
+  var taskTypeColor = function taskTypeColor() {
+    switch (TaskData.type) {
+      default:
+      case 1:
+        return {
+          backgroundColor: "#194d33",
+          height: "100%"
+        };
+        break;
 
-  function fetchClassTypeData() {
-    return _fetchClassTypeData.apply(this, arguments);
-  }
+      case 2:
+        return {
+          backgroundColor: "#FF6900",
+          height: "100%"
+        };
+        break;
 
-  function _fetchClassTypeData() {
-    _fetchClassTypeData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return fetch("http://localhost:8000/api/learningTask/getTaskClassTypeOption", {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setClassTypeOtps(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
+      case 3:
+        return {
+          backgroundColor: "#FCB900",
+          height: "100%"
+        };
+        break;
 
-            case 2:
-              res = _context.sent;
+      case 4:
+        return {
+          backgroundColor: "#7BDCB5",
+          height: "100%"
+        };
+        break;
 
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }));
-    return _fetchClassTypeData.apply(this, arguments);
-  }
+      case 5:
+        return {
+          backgroundColor: "#8ED1FC",
+          height: "100%"
+        };
+        break;
 
-  var _React$useState9 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([{
-    "id": 1,
-    "value": 1,
-    "description": "Whole Class"
-  }, {
-    "id": 2,
-    "value": 2,
-    "description": "6 per group"
-  }, {
-    "id": 3,
-    "value": 3,
-    "description": "5 per group"
-  }, {
-    "id": 4,
-    "value": 4,
-    "description": "4 per group"
-  }, {
-    "id": 5,
-    "value": 5,
-    "description": "3 per group"
-  }, {
-    "id": 6,
-    "value": 6,
-    "description": "2 per group"
-  }, {
-    "id": 7,
-    "value": 7,
-    "description": "individual"
-  }]),
-      _React$useState10 = _slicedToArray(_React$useState9, 2),
-      taskClassSizeOpts = _React$useState10[0],
-      setTaskClassSizeOpts = _React$useState10[1];
+      case 6:
+        return {
+          backgroundColor: "#0693E3",
+          height: "100%"
+        };
+        break;
 
-  function fetchClassSizeData() {
-    return _fetchClassSizeData.apply(this, arguments);
-  }
+      case 7:
+        return {
+          backgroundColor: "#EB144C",
+          height: "100%"
+        };
+        break;
 
-  function _fetchClassSizeData() {
-    _fetchClassSizeData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return fetch("http://localhost:8000/api/learningTask/getTaskSizeOption", {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setTaskClassSizeOpts(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
-
-            case 2:
-              res = _context2.sent;
-
-            case 3:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }));
-    return _fetchClassSizeData.apply(this, arguments);
-  }
-
-  var _React$useState11 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([{
-    "id": 1,
-    "value": "Whole Class",
-    "description": "Whole Class"
-  }, {
-    "id": 2,
-    "value": "6 per group",
-    "description": "6 per group"
-  }, {
-    "id": 3,
-    "value": "5 per group",
-    "description": "5 per group"
-  }, {
-    "id": 4,
-    "value": "4 per group",
-    "description": "4 per group"
-  }, {
-    "id": 5,
-    "value": "3 per group",
-    "description": "3 per group"
-  }, {
-    "id": 6,
-    "value": "2 per group",
-    "description": "2 per group"
-  }, {
-    "id": 7,
-    "value": "individual",
-    "description": "individual"
-  }]),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      taskTargetOpts = _React$useState12[0],
-      setTaskTargetOtps = _React$useState12[1];
-
-  function fetchTaskTargetData() {
-    return _fetchTaskTargetData.apply(this, arguments);
-  }
-
-  function _fetchTaskTargetData() {
-    _fetchTaskTargetData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return fetch("http://localhost:8000/api/learningTask/getTaskTargetTypeOption", {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setTaskTargetOtps(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
-
-            case 2:
-              res = _context3.sent;
-
-            case 3:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }));
-    return _fetchTaskTargetData.apply(this, arguments);
-  }
-
-  var _React$useState13 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([{
-    "id": 1,
-    "value": "Youtube",
-    "description": "Youtube"
-  }, {
-    "id": 2,
-    "value": "Facebook",
-    "description": "Facebook"
-  }, {
-    "id": 3,
-    "value": "Telegram",
-    "description": "Telegram"
-  }, {
-    "id": 4,
-    "value": "Wiki",
-    "description": "Wikipedia"
-  }, {
-    "id": 5,
-    "value": "textbook",
-    "description": "Textbook"
-  }, {
-    "id": 6,
-    "value": "lihkg",
-    "description": "lihkg"
-  }]),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      taskResouceOpts = _React$useState14[0],
-      setTaskResouceOpts = _React$useState14[1];
-
-  function fetchTaskResourceData() {
-    return _fetchTaskResourceData.apply(this, arguments);
-  } // React.useEffect(() => {
-  //     if(classTypeOtps.length == 0){
-  //         fetchClassTypeData();
-  //     }
-  //     if(taskClassSizeOpts.length == 0){
-  //         fetchClassSizeData();
-  //     }
-  //     if(taskTargetOpts.length == 0){
-  //         fetchTaskTargetData();
-  //     }
-  //     if(taskResouceOpts.length == 0){
-  //         fetchTaskResourceData();
-  //     }
-  // }, []);
-  //#endregion
+      case 8:
+        return {
+          backgroundColor: "#9900EF",
+          height: "100%"
+        };
+        break;
+    }
+  }; //#region init opts data
 
 
-  function _fetchTaskResourceData() {
-    _fetchTaskResourceData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return fetch("http://localhost:8000/api/learningTask/getTaskResourceTypeOption", {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setTaskResouceOpts(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
-
-            case 2:
-              res = _context4.sent;
-
-            case 3:
-            case "end":
-              return _context4.stop();
-          }
-        }
-      }, _callee4);
-    }));
-    return _fetchTaskResourceData.apply(this, arguments);
-  }
+  var classTypeOtps = options.taskClassType;
+  var taskClassSizeOpts = options.taskSize;
+  var taskTargetOpts = options.taskTarget;
+  var taskResouceOpts = options.taskResource;
+  var taskELearnResouceOpts = options.taskElearingResource;
+  var taskTypeOpts = options.taskType; //#endregion
 
   var ITEM_HEIGHT = 48;
   var ITEM_PADDING_TOP = 8;
@@ -97926,44 +99200,48 @@ var ComponentTask = function ComponentTask(props) {
 
 
   var displayView = function displayView() {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    var _taskTypeOpts$find, _taskTargetOpts$find, _taskTargetOpts$find2;
+
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       container: true,
       spacing: 4,
       xs: 12
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 1,
       height: "100%"
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-      className: classes.color
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: taskTypeColor()
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       container: true,
       item: true,
       xs: 11
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 8,
       className: classes.contentGrid
-    }, TaskData.type), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, (_taskTypeOpts$find = taskTypeOpts.find(function (x) {
+      return x.id == TaskData.type;
+    })) === null || _taskTypeOpts$find === void 0 ? void 0 : _taskTypeOpts$find.description), mode == 'view' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 4,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
       onClick: onClickEdit
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13___default.a, null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
       onClick: function onClick() {
         onClickDuplicate();
       }
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
       onClick: function onClick() {
         setDelDialogOpen(true);
       }
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_14___default.a, null))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_14___default.a, null))) : null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, TaskData.title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, TaskData.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
@@ -97971,164 +99249,304 @@ var ComponentTask = function ComponentTask(props) {
       return course.learningOutcomes.find(function (x) {
         return x.id == _learningOutcome_id;
       }).description;
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, TaskData.time, " mins | ", TaskData.target, " | ", TaskData.classType, " | ", TaskData.resource.map(function (_learningOutcome) {
-      return _learningOutcome;
-    }), "| ", TaskData.STEMType.map(function (_STEMType) {
-      return _STEMType;
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, TaskData.time, " mins |", (_taskTargetOpts$find = taskTargetOpts.find(function (x) {
+      return x.id == TaskData.target;
+    })) === null || _taskTargetOpts$find === void 0 ? void 0 : _taskTargetOpts$find.description, " |", (_taskTargetOpts$find2 = taskTargetOpts.find(function (x) {
+      return x.id == TaskData.size;
+    })) === null || _taskTargetOpts$find2 === void 0 ? void 0 : _taskTargetOpts$find2.description, " |", TaskData.resource.map(function (selected) {
+      var _taskResouceOpts$find;
+
+      return (_taskResouceOpts$find = taskResouceOpts.find(function (x) {
+        return x.id == selected;
+      })) === null || _taskResouceOpts$find === void 0 ? void 0 : _taskResouceOpts$find.description.concat(',');
+    }), " |", TaskData.e_resource.map(function (selected) {
+      var _taskELearnResouceOpt;
+
+      return (_taskELearnResouceOpt = taskELearnResouceOpts.find(function (x) {
+        return x.id == selected;
+      })) === null || _taskELearnResouceOpt === void 0 ? void 0 : _taskELearnResouceOpt.description.concat(',');
+    }), " |"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, TaskData.description)));
+    }, TaskData.description), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 12,
+      className: classes.contentGrid
+    }, TaskData.content)));
+  };
+
+  var displayLessonView = function displayLessonView() {
+    var _taskTypeOpts$find2, _taskTargetOpts$find3, _taskClassSizeOpts$fi;
+
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      container: true,
+      item: true,
+      xs: 12
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_25__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_26__["default"], {
+      expandIcon: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_28___default.a, null),
+      "aria-controls": "panel1a-content",
+      id: "panel1a-header"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      container: true,
+      xs: 12,
+      spacing: 4
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 1,
+      height: "100%"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: taskTypeColor()
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 11,
+      className: classes.contentGrid
+    }, (_taskTypeOpts$find2 = taskTypeOpts.find(function (x) {
+      return x.id == TaskData.type;
+    })) === null || _taskTypeOpts$find2 === void 0 ? void 0 : _taskTypeOpts$find2.description))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_27__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      container: true,
+      xs: 12,
+      spacing: 4
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 1,
+      height: "100%"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: taskTypeColor()
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      container: true,
+      item: true,
+      xs: 11
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 8,
+      className: classes.contentGrid
+    }, TaskData.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 4,
+      className: classes.contentGrid
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+      onClick: onClickEdit
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Edit__WEBPACK_IMPORTED_MODULE_13___default.a, null))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 12,
+      className: classes.contentGrid
+    }, TaskData.time, " mins |", (_taskTargetOpts$find3 = taskTargetOpts.find(function (x) {
+      return x.id == TaskData.target;
+    })) === null || _taskTargetOpts$find3 === void 0 ? void 0 : _taskTargetOpts$find3.description, " |", (_taskClassSizeOpts$fi = taskClassSizeOpts.find(function (x) {
+      return x.id == TaskData.size;
+    })) === null || _taskClassSizeOpts$fi === void 0 ? void 0 : _taskClassSizeOpts$fi.description, " |", TaskData.resource.map(function (selected) {
+      var _taskResouceOpts$find2;
+
+      return (_taskResouceOpts$find2 = taskResouceOpts.find(function (x) {
+        return x.id == selected;
+      })) === null || _taskResouceOpts$find2 === void 0 ? void 0 : _taskResouceOpts$find2.description.concat(',');
+    }), " |", TaskData.e_resource.map(function (selected) {
+      var _taskELearnResouceOpt2;
+
+      return (_taskELearnResouceOpt2 = taskELearnResouceOpts.find(function (x) {
+        return x.id == selected;
+      })) === null || _taskELearnResouceOpt2 === void 0 ? void 0 : _taskELearnResouceOpt2.description.concat(',');
+    }), " |"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 12,
+      className: classes.contentGrid
+    }, TaskData.description), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+      item: true,
+      xs: 12,
+      className: classes.contentGrid
+    }, TaskData.content))))));
+  };
+
+  var displayAssessment = function displayAssessment() {
+    if (isAssessment) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+        item: true,
+        xs: 12,
+        className: classes.contentGrid
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        className: classes.formControl,
+        fullWidth: true
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        id: "assessment-" + index + "-label"
+      }, "Assessment"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+        labelId: "assessment-" + index + "-label",
+        id: "assessment-" + index,
+        multiple: true,
+        defaultValue: "",
+        value: task.assessment,
+        fullWidth: true,
+        onChange: handleChangeMultiple,
+        input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          id: "select-multiple-chip"
+        }),
+        renderValue: function renderValue(selected) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: classes.chips
+          }, selected.map(function (value) {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_7__["default"], {
+              key: value,
+              label: course.learningOutcomes.find(function (x) {
+                return x.id == value;
+              }).description,
+              className: classes.chip
+            });
+          }));
+        },
+        MenuProps: MenuProps
+      }, componentData.learningOutcomes.map(function (_learningOutcome, index) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          key: _learningOutcome,
+          value: course.learningOutcomes.find(function (x) {
+            return x.id == _learningOutcome;
+          }).id
+        }, course.learningOutcomes.find(function (x) {
+          return x.id == _learningOutcome;
+        }).description);
+      }))));
+    }
   };
 
   var displayEdit = function displayEdit() {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 3
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       container: true,
       spacing: 4
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["TextField"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["TextField"], {
       id: "time-" + index,
       label: "Minutes",
       variant: "filled",
       value: task.time,
       name: "time",
       onChange: handleChange
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
-      className: classes.formControl,
-      fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      id: "assessment-" + index + "-label"
-    }, "Assessment"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
-      labelId: "assessment-" + index + "-label",
-      id: "assessment-" + index,
-      multiple: true,
-      defaultValue: "",
-      value: task.assessment,
-      fullWidth: true,
-      onChange: handleChangeMultiple,
-      input: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        id: "select-multiple-chip"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      control: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
+        checked: isAssessment,
+        onChange: function onChange() {
+          return onChangeIsAssessment();
+        },
+        value: "Assessment"
       }),
-      renderValue: function renderValue(selected) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: classes.chips
-        }, selected.map(function (value) {
-          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_8__["default"], {
-            key: value,
-            label: course.learningOutcomes.find(function (x) {
-              return x.id == value;
-            }).description,
-            className: classes.chip
-          });
-        }));
-      },
-      MenuProps: MenuProps
-    }, componentData.learningOutcomes.map(function (_learningOutcome, index) {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        key: _learningOutcome,
-        value: course.learningOutcomes.find(function (x) {
-          return x.id == _learningOutcome;
-        }).id
-      }, course.learningOutcomes.find(function (x) {
-        return x.id == _learningOutcome;
-      }).description);
-    })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+      label: "Have Assessment?"
+    })), displayAssessment(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       variant: "outlined",
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
       id: "classType-" + index + "-label"
-    }, "Place"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }, "Place"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
       labelId: "classType-" + index + "-label",
       id: "classType-" + index,
       name: "classType",
       value: task.classType,
-      onChange: handleChange
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      onChange: handleChange,
+      renderValue: function renderValue(selected) {
+        var _classTypeOtps$find;
+
+        return (_classTypeOtps$find = classTypeOtps.find(function (x) {
+          return x.id == selected;
+        })) === null || _classTypeOtps$find === void 0 ? void 0 : _classTypeOtps$find.description;
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
       value: "",
       disabled: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "None")), classTypeOtps.map(function (_opts) {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        value: _opts.value,
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("em", null, "None")), classTypeOtps.map(function (_opts) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
         key: _opts.id
       }, _opts.description);
-    })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       variant: "outlined",
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
       id: "target-" + index + "-label"
-    }, "Class Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }, "Class Type"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
       labelId: "target-" + index + "-label",
       id: "target-" + index,
       name: "target",
       value: task.target,
-      onChange: handleChange
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      onChange: handleChange,
+      renderValue: function renderValue(selected) {
+        var _taskTargetOpts$find4;
+
+        return (_taskTargetOpts$find4 = taskTargetOpts.find(function (x) {
+          return x.id == selected;
+        })) === null || _taskTargetOpts$find4 === void 0 ? void 0 : _taskTargetOpts$find4.description;
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
       value: "",
       disabled: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "None")), taskTargetOpts.map(function (_opts) {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        value: _opts.value,
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("em", null, "None")), taskTargetOpts.map(function (_opts) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
         key: _opts.id
       }, _opts.description);
-    })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       variant: "outlined",
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
       id: "size-" + index + "-label"
-    }, "Size"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }, "Size"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
       labelId: "size-" + index + "-label",
       id: "size-" + index,
       name: "size",
       value: task.size,
-      onChange: handleChange
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
+      onChange: handleChange,
+      renderValue: function renderValue(selected) {
+        var _taskClassSizeOpts$fi2;
+
+        return (_taskClassSizeOpts$fi2 = taskClassSizeOpts.find(function (x) {
+          return x.id == selected;
+        })) === null || _taskClassSizeOpts$fi2 === void 0 ? void 0 : _taskClassSizeOpts$fi2.description;
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
       value: "",
       disabled: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "None")), taskClassSizeOpts.map(function (_opts) {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        value: _opts.value,
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("em", null, "None")), taskClassSizeOpts.map(function (_opts) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
         key: _opts.id
       }, _opts.description);
-    })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
       id: "resource-" + index + "-lebal"
-    }, "Resource"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }, "Resource"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
       labelId: "resource-" + index + "-lebal",
       id: "resource-" + index,
       multiple: true,
@@ -98137,125 +99555,127 @@ var ComponentTask = function ComponentTask(props) {
       fullWidth: true,
       name: "resource",
       onChange: handleChangeMultiple,
-      input: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_8__["default"], {
         id: "resource-" + index
       }),
       renderValue: function renderValue(selected) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: classes.chips
         }, selected.map(function (value) {
-          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          var _taskResouceOpts$find3;
+
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_7__["default"], {
             key: value,
-            label: value,
+            label: (_taskResouceOpts$find3 = taskResouceOpts.find(function (x) {
+              return x.id == value;
+            })) === null || _taskResouceOpts$find3 === void 0 ? void 0 : _taskResouceOpts$find3.description,
             className: classes.chip
           });
         }));
       },
       MenuProps: MenuProps
     }, taskResouceOpts.map(function (_opts) {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        value: _opts.value,
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
         key: _opts.id
       }, _opts.description);
-    })))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
-      id: "STEMType-" + index + "-label"
-    }, "STEM Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
-      labelId: "STEMType-" + index + "-label",
-      id: "STEMType-" + index,
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      id: "e-resource-" + index + "-lebal"
+    }, "E-Learning-Tools"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+      labelId: "e-resource-" + index + "-lebal",
+      id: "e-resource-" + index,
       multiple: true,
       defaultValue: "",
-      value: task.STEMType,
-      name: "STEMType",
+      value: task.e_resource,
       fullWidth: true,
+      name: "e-resource",
       onChange: handleChangeMultiple,
-      input: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        id: "select-multiple-chip"
+      input: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Input__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        id: "e-resource-" + index
       }),
       renderValue: function renderValue(selected) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: classes.chips
         }, selected.map(function (value) {
-          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Chip__WEBPACK_IMPORTED_MODULE_7__["default"], {
             key: value,
-            label: value,
+            label: taskELearnResouceOpts.find(function (x) {
+              return x.id == value;
+            }).description,
             className: classes.chip
           });
         }));
       },
       MenuProps: MenuProps
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Science"
-    }, "Science"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Technology"
-    }, "Technology"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Engineering"
-    }, "Engineering"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Mathematics"
-    }, "Mathematics")))))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, taskELearnResouceOpts.map(function (_opts) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
+        key: _opts.id
+      }, _opts.description);
+    })))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 1,
       height: "100%"
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-      className: classes.color
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: taskTypeColor()
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 8
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       container: true,
       spacing: 4
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 8,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_11__["default"], {
       variant: "outlined",
       className: classes.formControl,
       fullWidth: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_9__["default"], {
       id: "type-" + index + "-label"
-    }, "Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }, "Type"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_16__["default"], {
       labelId: "type-" + index + "-label",
       id: "type-" + index,
       name: "type",
       value: task.type,
-      onChange: handleChange
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "",
-      disabled: true
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "None")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Discuss"
-    }, "Discuss"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Receive Infomation"
-    }, "Receive infomation"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Reading"
-    }, "Reading"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Writing"
-    }, "Writing"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      value: "Youtube"
-    }, "Youtube")))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+      onChange: handleChange,
+      renderValue: function renderValue(selected) {
+        var _taskTypeOpts$find3;
+
+        return (_taskTypeOpts$find3 = taskTypeOpts.find(function (x) {
+          return x.id == selected;
+        })) === null || _taskTypeOpts$find3 === void 0 ? void 0 : _taskTypeOpts$find3.description;
+      }
+    }, taskTypeOpts.map(function (_opts) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        value: _opts.id,
+        key: _opts.id
+      }, _opts.description);
+    })))), mode == "edit" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 4,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
       onClick: function onClick() {
         onClickDuplicate(task.id);
       }
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_FileCopy__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_17__["default"], {
       onClick: function onClick() {
         onClickDelete(task.id);
       }
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_14___default.a, null))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Delete__WEBPACK_IMPORTED_MODULE_14___default.a, null))) : null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["TextField"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["TextField"], {
       id: "title-" + index,
       name: "title",
       label: "title",
@@ -98263,11 +99683,11 @@ var ComponentTask = function ComponentTask(props) {
       onChange: handleChange,
       value: task.title,
       fullWidth: true
-    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
       item: true,
       xs: 12,
       className: classes.contentGrid
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["TextField"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["TextField"], {
       id: "description-" + index,
       name: "description",
       label: "description",
@@ -98278,26 +99698,45 @@ var ComponentTask = function ComponentTask(props) {
     })))));
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  var display = function display() {
+    switch (mode) {
+      case "view":
+      case "lesson_select":
+        return displayView();
+        break;
+
+      default:
+      case "lesson_edit":
+      case "edit":
+        return displayEdit();
+        break;
+
+      case "lesson_view":
+        return displayLessonView();
+        break;
+    }
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_4__["default"], {
     className: classes.paper
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_7__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
     container: true,
     spacing: 2,
     direction: "row",
     justify: "center"
-  }, mode === "view" ? displayView() : displayEdit()), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }, display()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_20__["default"], {
     open: delDialogOpen,
     onClose: function onClose() {
       setDelDialogOpen(false);
     }
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_23__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_24__["default"], {
     id: "form-dialog-title"
-  }, "Warning"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_21__["default"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_22__["default"], null, "Are You Sure To Delete LearningTask #(", task.id, ") This action cannot be recovered after deleted")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_20__["default"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "Warning"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_22__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_23__["default"], null, "Are You Sure To Delete LearningTask #(", task.id, ") This action cannot be recovered after deleted")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_21__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onClick: function onClick() {
       setDelDialogOpen(false);
     },
     color: "primary"
-  }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
     onClick: function onClick() {
       onClickDelete();
       setDelDialogOpen(false);
@@ -98334,8 +99773,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var DesignInfo = function DesignInfo(props) {
+  var _options$designType$f;
+
   var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_5__["ContextStore"]),
       course = _React$useContext.course,
+      options = _React$useContext.options,
       dispatch = _React$useContext.dispatch;
 
   var onChange = function onChange(event) {
@@ -98349,7 +99791,9 @@ var DesignInfo = function DesignInfo(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_1__["default"], {
     variant: "h6",
     gutterBottom: true
-  }, "Design type: STEM (", course.designType, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, "Design type: STEM (", (_options$designType$f = options.designType.find(function (x) {
+    return x.id == course.designType;
+  })) === null || _options$designType$f === void 0 ? void 0 : _options$designType$f.name, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
     container: true,
     spacing: 5
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -98393,6 +99837,7 @@ var DesignInfo = function DesignInfo(props) {
     id: "noOfLesson",
     name: "NO_OF_LESSON",
     label: "No. Of Lesson",
+    type: "number",
     defaultValue: course.noOfLessons,
     fullWidth: true,
     InputProps: {
@@ -98497,6 +99942,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_FormGroup__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/FormGroup */ "./node_modules/@material-ui/core/esm/FormGroup/index.js");
 /* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -98516,6 +99962,7 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -98570,9 +100017,9 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({
     id: -1,
-    level: "",
-    outcomeType: "",
-    STEMType: ["", ""],
+    level: -1,
+    outcomeType: -1,
+    STEMType: [],
     description: "",
     isCourseLevel: true
   }),
@@ -98580,41 +100027,51 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
       learningOutcome = _React$useState2[0],
       setLearningOutcome = _React$useState2[1];
 
-  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({
-    S: true,
-    T: true,
-    E: true,
-    M: true
-  }),
+  var _React$useState3 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState(0),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      state = _React$useState4[0],
-      setState = _React$useState4[1];
+      step = _React$useState4[0],
+      setStep = _React$useState4[1];
 
-  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({}),
+  var _React$useState5 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState({
+    S: false,
+    T: false,
+    E: false,
+    M: false
+  }),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      learningTypeTemp = _React$useState6[0],
-      setLearningTypeTemp = _React$useState6[1];
+      state = _React$useState6[0],
+      setState = _React$useState6[1];
 
-  function fetchlearningTypeTempData() {
-    return _fetchlearningTypeTempData.apply(this, arguments);
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_1___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_22__["ContextStore"]),
+      options = _React$useContext.options;
+
+  var learningTypeTemp = options.learningOutcomeType;
+
+  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([]),
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      learningLevelTemp = _React$useState8[0],
+      setLearningLevelTemp = _React$useState8[1];
+
+  function fetchlearningLevelTempData(_x) {
+    return _fetchlearningLevelTempData.apply(this, arguments);
   }
 
-  function _fetchlearningTypeTempData() {
-    _fetchlearningTypeTempData = _asyncToGenerator(
+  function _fetchlearningLevelTempData() {
+    _fetchlearningLevelTempData = _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(selectLearningType) {
       var res;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch("http://localhost:8000/api/learningOutcome/getOutcomeType/", {
+              return fetch("http://localhost:8000/api/learningOutcome/getOutcomeLevel/" + selectLearningType, {
                 method: "GET"
               }).then(function (res) {
                 return res.json();
               }).then(function (response) {
-                setLearningTypeTemp(response);
+                setLearningLevelTemp(response);
               })["catch"](function (error) {
                 return console.log(error);
               });
@@ -98629,53 +100086,6 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
         }
       }, _callee);
     }));
-    return _fetchlearningTypeTempData.apply(this, arguments);
-  }
-
-  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
-    fetchlearningTypeTempData();
-  }, []);
-
-  var _React$useState7 = react__WEBPACK_IMPORTED_MODULE_1___default.a.useState([]),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      learningLevelTemp = _React$useState8[0],
-      setLearningLevelTemp = _React$useState8[1];
-
-  function fetchlearningLevelTempData(_x) {
-    return _fetchlearningLevelTempData.apply(this, arguments);
-  }
-
-  function _fetchlearningLevelTempData() {
-    _fetchlearningLevelTempData = _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(selectLearningType) {
-      var res;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              console.log(selectLearningType);
-              _context2.next = 3;
-              return fetch("http://localhost:8000/api/learningOutcome/getOutcomeLevel/" + selectLearningType, {
-                method: "GET"
-              }).then(function (res) {
-                return res.json();
-              }).then(function (response) {
-                setLearningLevelTemp(response);
-              })["catch"](function (error) {
-                return console.log(error);
-              });
-
-            case 3:
-              res = _context2.sent;
-
-            case 4:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }));
     return _fetchlearningLevelTempData.apply(this, arguments);
   }
 
@@ -98683,14 +100093,30 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
     var selectLearningType = -1;
     Object.keys(learningTypeTemp).map(function (_key) {
       if (learningTypeTemp[_key].value == learningOutcome.outcomeType) {
-        console.log(learningTypeTemp[_key].value);
         selectLearningType = learningTypeTemp[_key].id;
       }
     });
     fetchlearningLevelTempData(selectLearningType);
   }, [learningOutcome.outcomeType]);
+  react__WEBPACK_IMPORTED_MODULE_1___default.a.useEffect(function () {
+    handleChange();
+  }, [learningOutcome]); //#region action related
 
-  var handleChange = function handleChange(name) {
+  var handleChange = function handleChange() {
+    var stepCount = 0;
+
+    if (learningOutcome.level != -1) {
+      stepCount++;
+    }
+
+    if (learningOutcome.outcomeType != -1) {
+      stepCount++;
+    }
+
+    setStep(stepCount);
+  };
+
+  var handleSTEMChange = function handleSTEMChange(name) {
     return function (event) {
       setState(_objectSpread({}, state, _defineProperty({}, name, event.target.checked)));
     };
@@ -98704,7 +100130,10 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
 
   var outcomeLevelOnchange = function outcomeLevelOnchange(event) {
     setLearningOutcome(_objectSpread({}, learningOutcome, {
-      level: event.target.value
+      level: event.target.value,
+      description: learningLevelTemp.find(function (x) {
+        return x.value == event.target.value;
+      }).description
     }));
   };
 
@@ -98730,9 +100159,129 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
       STEMType: tmpSTEMType
     }));
     handleClose();
+  }; //#endregion
+  //#region display related
+
+
+  var displayOutcomeType = function displayOutcomeType() {
+    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
+      item: true,
+      xs: 12
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      required: true,
+      className: classes.formControl,
+      fullWidth: true
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      id: "demo-simple-select-required-label"
+    }, "Outcome Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      labelId: "demo-simple-select-required-label",
+      id: "demo-simple-select-required",
+      className: classes.selectEmpty,
+      value: learningOutcome.outcomeType,
+      onChange: outcomeTypeOnchange
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      value: "",
+      disabled: true
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "Outcome Type")), Object.keys(learningTypeTemp).map(function (_key) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: learningTypeTemp[_key].value,
+        key: learningTypeTemp[_key].id
+      }, learningTypeTemp[_key].description);
+    })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_7__["default"], null, "Required")));
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  var displayOutcomeLevel = function displayOutcomeLevel() {
+    if (step > 0) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
+        item: true,
+        xs: 12
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        required: true,
+        className: classes.formControl,
+        fullWidth: true
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        id: "levels-label"
+      }, "Levels"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        labelId: "levels-label",
+        id: "levels",
+        className: classes.selectEmpty,
+        defaultValue: "",
+        onChange: outcomeLevelOnchange
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        value: "",
+        disabled: true
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "Levels")), learningLevelTemp.map(function (_learningLevelTemp) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          value: _learningLevelTemp.value,
+          key: _learningLevelTemp.id
+        }, _learningLevelTemp.description);
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_7__["default"], null, "Required")));
+    }
+  };
+
+  var displaySTEMOpts = function displaySTEMOpts() {
+    if (step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2)) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
+        item: true,
+        xs: 12
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormGroup__WEBPACK_IMPORTED_MODULE_19__["default"], {
+        row: true
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
+          checked: state.S,
+          onChange: handleSTEMChange('S'),
+          value: "checkedB",
+          color: "primary"
+        }),
+        label: "Science"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
+          checked: state.T,
+          onChange: handleSTEMChange('T'),
+          value: "checkedB",
+          color: "primary"
+        }),
+        label: "Technology"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
+          checked: state.E,
+          onChange: handleSTEMChange('E'),
+          value: "checkedB",
+          color: "primary"
+        }),
+        label: "Engineering"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
+        control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
+          checked: state.M,
+          onChange: handleSTEMChange('M'),
+          value: "checkedB",
+          color: "primary"
+        }),
+        label: "Mathamatics"
+      })));
+    }
+  };
+
+  var displayOutcomeDes = function displayOutcomeDes() {
+    if (step > 1) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
+        item: true,
+        xs: 12
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_20__["default"], {
+        required: true,
+        id: "outlined-required",
+        label: "Description of the outcome",
+        variant: "outlined",
+        value: learningOutcome.description,
+        onChange: outcomeDescchange,
+        autoFocus: true,
+        fullWidth: true
+      }));
+    }
+  }; //#endregion
+
+
+  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
     className: classes.appBar
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_13__["default"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_14__["default"], {
     edge: "start",
@@ -98746,105 +100295,17 @@ var LearningOutcomeAdd = function LearningOutcomeAdd(props) {
     autoFocus: true,
     color: "inherit",
     onClick: outcomeSave
-  }, "save"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
+  }, "save"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Paper"], {
+    style: {
+      padding: "16px"
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
     container: true,
-    spacing: 3
+    spacing: 5
   }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
     item: true,
     xs: 12
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "Add learning outcomes that specify what learners will be able to do after this unit.")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
-    item: true,
-    xs: 6
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    required: true,
-    className: classes.formControl
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    id: "demo-simple-select-required-label"
-  }, "Outcome Type"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    labelId: "demo-simple-select-required-label",
-    id: "demo-simple-select-required",
-    className: classes.selectEmpty,
-    defaultValue: "",
-    onChange: outcomeTypeOnchange
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    value: "",
-    disabled: true
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "Outcome Type")), Object.keys(learningTypeTemp).map(function (_key) {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      value: learningTypeTemp[_key].value,
-      key: learningTypeTemp[_key].id
-    }, learningTypeTemp[_key].description);
-  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_7__["default"], null, "Required"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
-    item: true,
-    xs: 6
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_8__["default"], {
-    required: true,
-    className: classes.formControl
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    id: "levels-label"
-  }, "Levels"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_9__["default"], {
-    labelId: "levels-label",
-    id: "levels",
-    className: classes.selectEmpty,
-    defaultValue: "",
-    onChange: outcomeLevelOnchange
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    value: "",
-    disabled: true
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("em", null, "Levels")), learningLevelTemp.map(function (_learningLevelTemp) {
-    return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      value: _learningLevelTemp.value,
-      key: _learningLevelTemp.id
-    }, _learningLevelTemp.description);
-  })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_7__["default"], null, "Required"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
-    item: true,
-    xs: 12
-  }, learningOutcome.outcomeType === "Generic Skills" ? null : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormGroup__WEBPACK_IMPORTED_MODULE_19__["default"], {
-    row: true
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
-    control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
-      checked: state.S,
-      onChange: handleChange('S'),
-      value: "checkedB",
-      color: "primary"
-    }),
-    label: "Science"
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
-    control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
-      checked: state.T,
-      onChange: handleChange('T'),
-      value: "checkedB",
-      color: "primary"
-    }),
-    label: "Technology"
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
-    control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
-      checked: state.E,
-      onChange: handleChange('E'),
-      value: "checkedB",
-      color: "primary"
-    }),
-    label: "Engineering"
-  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_17__["default"], {
-    control: react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_18__["default"], {
-      checked: state.M,
-      onChange: handleChange('M'),
-      value: "checkedB",
-      color: "primary"
-    }),
-    label: "Mathamatics"
-  }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_21__["Grid"], {
-    item: true,
-    xs: 12
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_20__["default"], {
-    required: true,
-    id: "outlined-required",
-    label: "Description of the outcome",
-    variant: "outlined",
-    defaultValue: "",
-    onChange: outcomeDescchange,
-    fullWidth: true
-  }))));
+  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "Add learning outcomes that specify what learners will be able to do after this unit.")), displayOutcomeType(), displayOutcomeLevel(), displaySTEMOpts(), displayOutcomeDes())));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LearningOutcomeAdd);
@@ -98873,18 +100334,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
 /* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
 /* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_Divider__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/Divider */ "./node_modules/@material-ui/core/esm/Divider/index.js");
-/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
-/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
-/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js");
-/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _material_ui_core_FormControlLabel__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/FormControlLabel */ "./node_modules/@material-ui/core/esm/FormControlLabel/index.js");
-/* harmony import */ var _material_ui_core_Checkbox__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/Checkbox */ "./node_modules/@material-ui/core/esm/Checkbox/index.js");
-/* harmony import */ var _material_ui_core_FormGroup__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/core/FormGroup */ "./node_modules/@material-ui/core/esm/FormGroup/index.js");
-/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/esm/TextField/index.js");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
+/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
+/* harmony import */ var _material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/IconButton */ "./node_modules/@material-ui/core/esm/IconButton/index.js");
+/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/icons/Close */ "./node_modules/@material-ui/icons/Close.js");
+/* harmony import */ var _material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -98898,11 +100354,6 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
 
 
 
@@ -98950,7 +100401,6 @@ var LearningOutcomeAddFromSelect = function LearningOutcomeAddFromSelect(props) 
   var handleClose = props.onClose;
   var handleOnSave = props.handleOnSave,
       learningOutcomeOpts = props.learningOutcomeOpts;
-  console.log(learningOutcomeOpts);
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({
     id: -1,
@@ -98978,27 +100428,31 @@ var LearningOutcomeAddFromSelect = function LearningOutcomeAddFromSelect(props) 
     setLearningOutcome(tempData[0]);
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_10__["default"], {
     className: classes.appBar
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_12__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_12__["default"], {
     edge: "start",
     color: "inherit",
     onClick: handleClose,
     "aria-label": "close"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_15___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_14___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_13__["default"], {
     variant: "h6",
     className: classes.title
   }, "Adding new learning outcome"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_9__["default"], {
     autoFocus: true,
     color: "inherit",
     onClick: outcomeSave
-  }, "save"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_20__["Grid"], {
+  }, "save"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: {
+      padding: "16px"
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_15__["Grid"], {
     container: true,
     spacing: 3
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_20__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_15__["Grid"], {
     item: true,
     xs: 12
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Add learning outcomes that specify what learners will be able to do after this unit.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_20__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Add learning outcomes that specify what learners will be able to do after this unit.")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_15__["Grid"], {
     item: true,
     xs: 12
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -99029,7 +100483,7 @@ var LearningOutcomeAddFromSelect = function LearningOutcomeAddFromSelect(props) 
       description: _opts.description,
       key: key
     }, _opts.description);
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_6__["default"], null, "Required")))));
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_6__["default"], null, "Required"))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LearningOutcomeAddFromSelect);
@@ -99068,27 +100522,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/esm/DialogContent/index.js");
 /* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/esm/DialogContentText/index.js");
 /* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/esm/DialogTitle/index.js");
-/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
-/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
-/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
-/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
-/* harmony import */ var _learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./learningOutcomeAdd */ "./resources/js/design/learningOutcomeAdd.jsx");
-/* harmony import */ var _learningOutcomeAddFromSelect__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./learningOutcomeAddFromSelect */ "./resources/js/design/learningOutcomeAddFromSelect.jsx");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
+/* harmony import */ var _material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @material-ui/core/Paper */ "./node_modules/@material-ui/core/esm/Paper/index.js");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js");
+/* harmony import */ var _material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @material-ui/core/Toolbar */ "./node_modules/@material-ui/core/esm/Toolbar/index.js");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./learningOutcomeAdd */ "./resources/js/design/learningOutcomeAdd.jsx");
+/* harmony import */ var _learningOutcomeAddFromSelect__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./learningOutcomeAddFromSelect */ "./resources/js/design/learningOutcomeAddFromSelect.jsx");
+/* harmony import */ var _components_instructionBox__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../components/instructionBox */ "./resources/js/components/instructionBox.jsx");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -99096,6 +100538,8 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
@@ -99138,6 +100582,11 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["ma
 });
 
 var LearningOutcomeUnit = function LearningOutcomeUnit(props) {
+  var _learningTypeTemp$fin;
+
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_24__["ContextStore"]),
+      options = _React$useContext.options;
+
   var _props$learningOutcom = props.learningOutcomeData,
       level = _props$learningOutcom.level,
       outcomeType = _props$learningOutcom.outcomeType,
@@ -99146,11 +100595,14 @@ var LearningOutcomeUnit = function LearningOutcomeUnit(props) {
       status = _props$learningOutcom.status;
   var onOpenDelDialog = props.onOpenDelDialog,
       index = props.index;
+  var learningTypeTemp = options.learningOutcomeType;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_5__["default"], {
-    primary: outcomeType,
-    secondary: description + (STEMType.length > 0 ? "(" + STEMType.map(function (_STEM) {
+    primary: ((_learningTypeTemp$fin = learningTypeTemp.find(function (x) {
+      return x.id == outcomeType;
+    })) === null || _learningTypeTemp$fin === void 0 ? void 0 : _learningTypeTemp$fin.description) + " - " + description,
+    secondary: (STEMType.length > 0 ? "STEM: (" + STEMType.map(function (_STEM) {
       return _STEM;
-    }) + ")" : "") + "   Level:(" + level + ")"
+    }) + ") | " : "") + "Level:(" + level + ")"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemSecondaryAction__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
     edge: "end",
     "aria-label": "delete",
@@ -99165,9 +100617,10 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
   var modeLevel = "course";
   var classes = useStyles();
 
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_23__["ContextStore"]),
-      course = _React$useContext.course,
-      dispatch = _React$useContext.dispatch;
+  var _React$useContext2 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_24__["ContextStore"]),
+      course = _React$useContext2.course,
+      dispatch = _React$useContext2.dispatch,
+      options = _React$useContext2.options;
 
   var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -99209,45 +100662,47 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
     var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 
     if (modeLevel == "course") {
-      //course level 
-      if (addedLearningOutcome.id == -1) {
-        addedLearningOutcome.id = course.learningOutcomes.length + 1;
-      }
-
       addedLearningOutcome.isCourseLevel = true;
-      var data_test = [].concat(_toConsumableArray(course.learningOutcomes), [addedLearningOutcome]);
-      dispatch({
-        type: "SET_LEARNINGOUTCOME",
-        value: data_test
-      });
     } else {
-      //component level 
       addedLearningOutcome.isCourseLevel = false;
-
-      if (action != "select") {
-        //add new learningout
-        if (addedLearningOutcome.id == -1) {
-          addedLearningOutcome.id = course.learningOutcomes.length + 1;
-        }
-
-        var _data_test2 = [].concat(_toConsumableArray(course.learningOutcomes), [addedLearningOutcome]);
-
-        dispatch({
-          type: "SET_LEARNINGOUTCOME",
-          value: _data_test2
-        });
-      } //match to component
-
-
-      var _data_test = _objectSpread({}, componentData, {
-        learningOutcomes: [].concat(_toConsumableArray(componentData.learningOutcomes), [addedLearningOutcome.id])
-      });
-
-      dispatch({
-        type: "UPDATE_COMPONENT",
-        value: _data_test
-      });
+      addedLearningOutcome.componentid = componentData.id;
     }
+
+    dispatch({
+      type: "ADD_LEARNINGOUTCOME",
+      value: addedLearningOutcome
+    }); // if(modeLevel ==  "course" ){
+    //     //course level 
+    //     if(addedLearningOutcome.id == -1){
+    //         addedLearningOutcome.id = course.learningOutcomes.length + 1;
+    //     }
+    //     addedLearningOutcome.isCourseLevel = true
+    //     const data_test = [...course.learningOutcomes, addedLearningOutcome];
+    //     dispatch({
+    //         type: "SET_LEARNINGOUTCOME",
+    //         value: data_test
+    //       })
+    // }else{
+    //     //component level 
+    //     addedLearningOutcome.isCourseLevel = false
+    //     if(action != "select"){
+    //         //add new learningout
+    //         if(addedLearningOutcome.id == -1){
+    //             addedLearningOutcome.id = course.learningOutcomes.length + 1;
+    //         }
+    //         const data_test = [...course.learningOutcomes, addedLearningOutcome];
+    //         dispatch({
+    //             type: "SET_LEARNINGOUTCOME",
+    //             value: data_test
+    //           })
+    //     }
+    //     //match to component
+    //     const data_test = {...componentData, learningOutcomes: [...componentData.learningOutcomes, addedLearningOutcome.id]};
+    //     dispatch({
+    //         type: "UPDATE_COMPONENT",
+    //         value: data_test
+    //       })
+    // }
   };
 
   var onOpenDelDialog = function onOpenDelDialog(index) {
@@ -99297,25 +100752,27 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
 
   var displayLearningOutcomeAdd = function displayLearningOutcomeAdd() {
     if (modeLevel == "course") {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_24__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_25__["default"], {
         onClose: closeAddLearningOutcome,
         handleOnSave: handleOnSave
       });
     } else if (addSelector == "addNew") {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_24__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAdd__WEBPACK_IMPORTED_MODULE_25__["default"], {
         onClose: closeAddLearningOutcome,
         handleOnSave: handleOnSave
       });
     } else if (addSelector == "selectFromCourse") {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAddFromSelect__WEBPACK_IMPORTED_MODULE_25__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_learningOutcomeAddFromSelect__WEBPACK_IMPORTED_MODULE_26__["default"], {
         onClose: closeAddLearningOutcome,
         handleOnSave: handleOnSave,
-        learningOutcomeOpts: course.learningOutcomes
+        learningOutcomeOpts: course.learningOutcomes.filter(function (x) {
+          return x.isCourseLevel == true;
+        })
       });
     } else {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_20__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_AppBar__WEBPACK_IMPORTED_MODULE_21__["default"], {
         className: classes.appBar
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_21__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Toolbar__WEBPACK_IMPORTED_MODULE_22__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_IconButton__WEBPACK_IMPORTED_MODULE_7__["default"], {
         edge: "start",
         color: "inherit",
         onClick: function onClick() {
@@ -99325,26 +100782,26 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_Close__WEBPACK_IMPORTED_MODULE_13___default.a, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__["default"], {
         variant: "h6",
         className: classes.title
-      }, "Adding new learning outcome"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_22__["default"], {
+      }, "Adding new learning outcome"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_23__["default"], {
         container: true,
         spacing: 3,
         margin: 3
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_22__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_23__["default"], {
         item: true,
         xs: 12
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, " Add learning outcomes that specify what learners will be able to do after this unit")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_22__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, " Add learning outcomes that specify what learners will be able to do after this unit")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_23__["default"], {
         item: true,
         xs: 6
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__["default"], {
         variant: "contained",
         color: "primary",
         onClick: function onClick() {
           return setAddSelector("selectFromCourse");
         }
-      }, "Choose from course-level learning outcomes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_22__["default"], {
+      }, "Choose from course-level learning outcomes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_23__["default"], {
         item: true,
         xs: 6
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__["default"], {
         variant: "contained",
         color: "secondary",
         onClick: function onClick() {
@@ -99367,29 +100824,38 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
     } else {
       //component learning outcome
       return componentData.learningOutcomes.map(function (_id, index) {
-        return (//find learning outcome
-          course.learningOutcomes.map(function (_data) {
-            return _data.id == _id ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LearningOutcomeUnit, {
-              learningOutcomeData: _data,
-              key: index,
-              onOpenDelDialog: onOpenDelDialog,
-              index: index
-            }) : null;
-          })
-        );
-      });
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LearningOutcomeUnit, {
+          learningOutcomeData: course.learningOutcomes.find(function (x) {
+            return x.id == _id;
+          }),
+          key: index,
+          onOpenDelDialog: onOpenDelDialog,
+          index: index
+        });
+      } //find learning outcome
+      // course.learningOutcomes.map(
+      //        (_data) => 
+      //         (_data.id == _id)?  
+      //             <LearningOutcomeUnit 
+      //                 learningOutcomeData = {_data} 
+      //                 key={index}  
+      //                 onOpenDelDialog = {onOpenDelDialog} 
+      //                 index = {index}/>  
+      //             : null
+      // )
+      );
     }
   };
 
   var displayDelLearningOutcomeDialog = function displayDelLearningOutcomeDialog() {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_18__["default"], {
       id: "form-dialog-title"
-    }, "Warning"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_16__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_17__["default"], null, "Are You Sure To Delete LearningOutcome #(", delIndex, ") This action cannot be recovered")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_15__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    }, "Warning"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_16__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_17__["default"], null, "Are You Sure To Delete LearningOutcome #(", delIndex, ") This action cannot be recovered")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_15__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__["default"], {
       onClick: function onClick() {
         setDelDialogOpen(false);
       },
       color: "primary"
-    }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__["default"], {
+    }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__["default"], {
       onClick: function onClick() {
         onDelOutcomes();
       },
@@ -99397,16 +100863,24 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
     }, "Delete")));
   };
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_9__["default"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, modeLevel == "course" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_27__["default"], {
+    title: "Unit Level Learning Outcomes",
+    content: "Please define the learning outcomes for your unit",
+    tips: "Hello World"
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_27__["default"], {
+    title: "Component Level Learning Outcomes",
+    content: "Please define the learning outcomes for your component",
+    tips: ""
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_9__["default"], {
     defaultExpanded: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_10__["default"], {
     expandIcon: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_12___default.a, null),
     "aria-controls": "panel1a-content",
     id: "panel1a-header",
     className: classes.expansionPanelSummary
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__["default"], null, "Learning Outcomes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_6__["default"], null, modeLevel == "course" ? "Unit Level" : "Component Level", " Learning Outcomes")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_2__["default"], {
     className: classes.list
-  }, displayLearningOutcomes(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_19__["default"], {
+  }, displayLearningOutcomes(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_20__["default"], {
     onClick: addLearningOutcome
   }, "Add Learning Outcome"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_14__["default"], {
     fullScreen: true,
@@ -99417,10 +100891,258 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
     onClose: function onClose() {
       setDelDialogOpen(false);
     }
-  }, displayDelLearningOutcomeDialog()));
+  }, displayDelLearningOutcomeDialog())));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LearningOutcomeToDo);
+
+/***/ }),
+
+/***/ "./resources/js/design/learningTasksEdit.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/design/learningTasksEdit.jsx ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Grid */ "./node_modules/@material-ui/core/esm/Grid/index.js");
+/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "./node_modules/@material-ui/core/esm/MenuItem/index.js");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
+  return {
+    root: {
+      padding: 25
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2)
+    },
+    appBar: {
+      position: 'relative'
+    }
+  };
+}); // const LearningPatternTaskEdit = (props) => {
+//     const {handleTaskUpdate, componentData} = props
+//     const [taskData, setTaskData] =  React.useState([]);
+//     const [patternOpts, setPatternOpts] = React.useState([])
+//     const [selectedPattern, setSelectedPattern] = React.useState(-1)
+//     const patternChange = (event) => {
+//         setSelectedPattern(event.target.value);
+//     }
+//     React.useEffect(()=> {
+//         fetchlearningPatternID(componentData.id);
+//     }
+//     , [])
+//     React.useEffect(()=> {
+//         if(selectedPattern != -1){
+//             fetchlearningTaskByPattern(selectedPattern);
+//         }  
+//     }
+//     , [selectedPattern])
+//     //#region fetch data related
+//     async function fetchlearningPatternID(id) {
+//         return await fetch(
+//             `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+//             {
+//             method: "GET",
+//             }
+//         )
+//         .then(res => res.json())
+//         .then(response => {
+//             //load the default learning outcomes by api request
+//             setPatternOpts(response);
+//         })
+//         .catch(error => console.log(error));
+//     }
+//     async function fetchlearningTaskByPattern(id) {
+//         return await fetch(
+//             `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+//             {
+//             method: "GET",
+//             }
+//         )
+//         .then(res => res.json())
+//         .then(response => {
+//             //load the default learning outcomes by api request
+//             return setTaskData(response);
+//         })
+//         .catch(error => console.log(error));
+//       }
+//     //#endregion
+//     return (
+//         <React.Fragment>    
+//             <Grid item xs={12}>
+//                 <h2>
+//                     Choose the recommended lesson pattern based on the selected engineering design and self-directed learning steps
+//                 </h2>
+//             </Grid>
+//             <Grid item xs={12}>
+//                 <Select
+//                 labelId="pattern-select-required-label"
+//                 id="pattern-select-required"
+//                 onChange = {patternChange}
+//                 fullWidth
+//                 >
+//                 <MenuItem value= {-1} disabled>
+//                     <em>Outcome Type</em>
+//                 </MenuItem>
+//                 {patternOpts.map((_opts, index)=>
+//                     <MenuItem value={_opts} key={index}>
+//                         {_opts}
+//                     </MenuItem>
+//                 )}
+//                 </Select>
+//             </Grid>
+//             <Grid container spacing={5}>
+//                 {taskData?.map((_data, index)=>
+//                     <ComponentTask 
+//                     TaskData={_data} 
+//                     componentData={componentData} 
+//                     key={index} 
+//                     mode="edit" 
+//                     index={index}
+//                     handleTaskUpdate = {handleTaskUpdate}/>
+//                 )}
+//             </Grid>
+//         </React.Fragment>  
+//     )
+// }
+
+var LearningTasksEdit = function LearningTasksEdit(props) {
+  var handleTaskUpdate = props.handleTaskUpdate,
+      componentData = props.componentData,
+      taskData = props.taskData;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: true,
+    spacing: 5
+  }, taskData.map(function (_data, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      TaskData: _data,
+      componentData: componentData,
+      key: index,
+      mode: "edit",
+      index: index,
+      handleTaskUpdate: handleTaskUpdate
+    });
+  }));
+};
+
+var LearningTasksEditContainer = function LearningTasksEditContainer(props) {
+  var componentData = props.componentData,
+      mode = props.mode,
+      onClose = props.onClose; //props.mode => tasks/ pattern
+
+  var classes = useStyles();
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState([]),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      taskData = _React$useState2[0],
+      setTaskData = _React$useState2[1];
+
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
+      course = _React$useContext.course,
+      dispatch = _React$useContext.dispatch; // update the selected taskData after onChange
+
+
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
+    switch (props.mode) {
+      default:
+        break;
+
+      case "edit":
+        setTaskData(componentData.tasks);
+        break;
+    }
+  }, [props.mode, course]);
+
+  function handleTaskUpdate(data, key) {
+    var temp = taskData.map(function (_data, index) {
+      if (index == key) {
+        return data;
+      } else {
+        return _data;
+      }
+    });
+    setTaskData(temp);
+  }
+
+  var onSaveTask = function onSaveTask() {
+    var temp = componentData;
+    temp.tasks = taskData;
+    dispatch({
+      type: "UPDATE_COMPONENT",
+      value: tempComponentData
+    });
+    onClose();
+  };
+
+  var displayContent = function displayContent() {
+    switch (mode) {
+      default:
+        return null;
+
+      case "edit":
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LearningTasksEdit, {
+          handleTaskUpdate: handleTaskUpdate,
+          componentData: componentData,
+          taskData: taskData
+        });
+      // case "pattern":
+      //     return (
+      //         <LearningPatternTaskEdit 
+      //             handleTaskUpdate = {handleTaskUpdate} 
+      //             componentData = {componentData} 
+      //         />
+      //     )
+    }
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.root
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    container: true,
+    spacing: 5
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    item: true,
+    xs: 12
+  }, displayContent()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    item: true,
+    xs: 12
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    variant: "contained",
+    color: "primary",
+    onClick: onSaveTask
+  }, "Save"))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LearningTasksEditContainer);
 
 /***/ }),
 
@@ -99541,7 +101263,8 @@ var LessonPlan = function LessonPlan(props) {
   }, selectedLessonID == -1 ? course.lesson.map(function (_lesson, index) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lessonPlanContent__WEBPACK_IMPORTED_MODULE_17__["default"], {
       lessonID: index,
-      canEdit: false
+      canEdit: false,
+      key: index
     });
   }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lessonPlanContent__WEBPACK_IMPORTED_MODULE_17__["default"], {
     lessonID: selectedLessonID,
@@ -99572,13 +101295,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/FormHelperText */ "./node_modules/@material-ui/core/esm/FormHelperText/index.js");
 /* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/FormControl */ "./node_modules/@material-ui/core/esm/FormControl/index.js");
 /* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Select */ "./node_modules/@material-ui/core/esm/Select/index.js");
-/* harmony import */ var _material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/ExpansionPanel */ "./node_modules/@material-ui/core/esm/ExpansionPanel/index.js");
-/* harmony import */ var _material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/ExpansionPanelSummary */ "./node_modules/@material-ui/core/esm/ExpansionPanelSummary/index.js");
-/* harmony import */ var _material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/ExpansionPanelDetails */ "./node_modules/@material-ui/core/esm/ExpansionPanelDetails/index.js");
-/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/icons/ExpandMore */ "./node_modules/@material-ui/icons/ExpandMore.js");
-/* harmony import */ var _material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
-/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+/* harmony import */ var _lessonPlanEditTask__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./lessonPlanEditTask */ "./resources/js/design/lessonPlanEditTask.jsx");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -99590,9 +101309,6 @@ function _nonIterableRest() { throw new TypeError("Invalid attempt to destructur
 function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
 
 
 
@@ -99657,11 +101373,32 @@ var LessonPlanContent = function LessonPlanContent(props) {
 
   var lessonID = props.lessonID;
 
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_13__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_9__["ContextStore"]),
       course = _React$useContext.course,
       dispatch = _React$useContext.dispatch;
 
-  var canEdit = props.canEdit;
+  var canEdit = props.canEdit; //edit learning task props
+
+  var _React$useState9 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(false),
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      openLessonTaskEdit = _React$useState10[0],
+      setOpenLessonTaskEdit = _React$useState10[1];
+
+  var _React$useState11 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(-1),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      onEditComponentID = _React$useState12[0],
+      setOnEditComponentID = _React$useState12[1];
+
+  var _React$useState13 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState(-1),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      onEditTasktID = _React$useState14[0],
+      setOnEditTasktID = _React$useState14[1];
+
+  var _React$useState15 = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState("lesson_select"),
+      _React$useState16 = _slicedToArray(_React$useState15, 2),
+      taskMode = _React$useState16[0],
+      setTaskMode = _React$useState16[1];
+
   var classes = useStyles();
 
   var onEdit = function onEdit() {
@@ -99705,6 +101442,16 @@ var LessonPlanContent = function LessonPlanContent(props) {
       value: temp_lesson
     });
     setSelectComponent(-1);
+  };
+
+  var onEditTask = function onEditTask() {
+    setTaskMode("edit");
+  };
+
+  var onEditLessonTask = function onEditLessonTask(componentID, taskID) {
+    setOpenLessonTaskEdit(true);
+    setOnEditComponentID(componentID);
+    setOnEditTasktID(taskID);
   };
 
   var onCheckCheckbox = function onCheckCheckbox(event) {
@@ -99776,6 +101523,8 @@ var LessonPlanContent = function LessonPlanContent(props) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
           container: true
         }, selectComponent !== "" && _typeof(course.components[selectComponent].tasks) != undefined ? course.components[selectComponent].tasks.map(function (_task, index) {
+          var _React$createElement;
+
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
             container: true,
             item: true,
@@ -99783,23 +101532,24 @@ var LessonPlanContent = function LessonPlanContent(props) {
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
             item: true,
             xs: true
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Checkbox"], _defineProperty({
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Checkbox"], (_React$createElement = {
             value: "secondary",
             color: "primary",
             inputProps: {
               'aria-label': 'secondary checkbox'
             },
             onChange: onCheckCheckbox
-          }, "value", index))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
+          }, _defineProperty(_React$createElement, "value", index), _defineProperty(_React$createElement, "key", index), _React$createElement))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
             item: true,
             xs: 11
-          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_14__["default"], {
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_10__["default"], {
             TaskData: _task,
             index: index,
+            key: index,
             componentData: course.components[selectComponent],
             handleTaskUpdate: function handleTaskUpdate() {},
-            onEditTasks: function onEditTasks() {},
-            mode: "view"
+            onEditTasks: onEditTask,
+            mode: taskMode
           })));
         }) : null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
           item: true,
@@ -99821,66 +101571,77 @@ var LessonPlanContent = function LessonPlanContent(props) {
         xs: 12
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Paper__WEBPACK_IMPORTED_MODULE_2__["default"], {
         variant: "outlined",
-        key: lessonID
+        key: lessonID,
+        style: {
+          padding: "16px",
+          textAlign: "center"
+        }
       }, "No Learning Task In This Lesson"));
     } else {
-      return course.lesson[lessonID].tasks.map(function (_taskdata) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          container: true,
-          item: true,
-          xs: 12
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_9__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_10__["default"], {
-          expandIcon: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_icons_ExpandMore__WEBPACK_IMPORTED_MODULE_12___default.a, null),
-          "aria-controls": "panel1a-content",
-          id: "panel1a-header"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          container: true,
-          xs: 12,
-          spacing: 4
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 1,
-          height: "100%"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: classes.color
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 11,
-          className: classes.contentGrid
-        }, course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].type))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelDetails__WEBPACK_IMPORTED_MODULE_11__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          container: true,
-          xs: 12,
-          spacing: 4
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 1,
-          height: "100%"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: classes.color
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          container: true,
-          item: true,
-          xs: 11
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 12,
-          className: classes.contentGrid
-        }, course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 12,
-          className: classes.contentGrid
-        }, course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].time, " mins |", course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].target, " |", course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].classType, " |", course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].resource.map(function (_learningOutcome) {
-          return _learningOutcome;
-        }), " |", course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].STEMType.map(function (_STEMType) {
-          return _STEMType;
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
-          item: true,
-          xs: 12,
-          className: classes.contentGrid
-        }, course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].description))))));
-      });
+      return course.lesson[lessonID].tasks.map(function (_taskdata, index) {
+        return (// console.log(_taskdata)
+          react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_10__["default"], {
+            TaskData: course.components[_taskdata.componentID].tasks[_taskdata.taskIndex],
+            index: index,
+            key: index,
+            componentData: course.components[_taskdata.componentID],
+            handleTaskUpdate: function handleTaskUpdate() {},
+            onEditTasks: function onEditTasks() {
+              onEditLessonTask(_taskdata.componentID, _taskdata.taskIndex);
+            },
+            mode: "lesson_view"
+          })
+        );
+      }) // <Grid container item xs ={12}>
+      //     <ExpansionPanel>
+      //             <ExpansionPanelSummary
+      //             expandIcon={<ExpandMoreIcon />}
+      //             aria-controls="panel1a-content"
+      //             id="panel1a-header"
+      //             >
+      //                 <Grid item container xs={12} spacing={4}>
+      //                     <Grid item xs={1} height="100%">
+      //                         <div className={classes.color}>
+      //                         </div>
+      //                     </Grid>
+      //                     <Grid item xs={11} className={classes.contentGrid}>
+      //                         {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].type}
+      //                     </Grid>
+      //                 </Grid>
+      //             </ExpansionPanelSummary>
+      //             <ExpansionPanelDetails>
+      //                 {/* <ComponentTask 
+      //                             TaskData = {_task} 
+      //                             index = {index} 
+      //                             componentData = {course.components[selectComponent]}
+      //                             handleTaskUpdate= {()=> {}} 
+      //                             onEditTasks = {()=>{}} 
+      //                             mode = "view"/> */}
+      //             <Grid item container  xs={12} spacing={4}>
+      //                     <Grid item xs={1} height="100%">
+      //                         <div className={classes.color}>
+      //                         </div>
+      //                     </Grid>
+      //                     <Grid container item xs={11}>
+      //                         <Grid item xs={12} className={classes.contentGrid}>
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].title}
+      //                         </Grid>
+      //                         <Grid item xs={12} className={classes.contentGrid}>
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].time} mins | 
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].target} | 
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].classType} | 
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].resource.map(_learningOutcome=> _learningOutcome)} |
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].STEMType.map(_STEMType => _STEMType)}
+      //                         </Grid>
+      //                         <Grid item xs={12} className={classes.contentGrid}>
+      //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].description}
+      //                         </Grid>
+      //                     </Grid>
+      //                 </Grid>
+      //             </ExpansionPanelDetails>
+      //     </ExpansionPanel>
+      // </Grid>
+      ;
     }
   };
 
@@ -99921,10 +101682,118 @@ var LessonPlanContent = function LessonPlanContent(props) {
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
     container: true
-  }, displayContent());
+  }, displayContent(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lessonPlanEditTask__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    openLessonTaskEdit: openLessonTaskEdit,
+    setOpenLessonTaskEdit: setOpenLessonTaskEdit,
+    onEditComponentID: onEditComponentID,
+    onEditTasktID: onEditTasktID
+  }));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LessonPlanContent);
+
+/***/ }),
+
+/***/ "./resources/js/design/lessonPlanEditTask.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/design/lessonPlanEditTask.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/Button */ "./node_modules/@material-ui/core/esm/Button/index.js");
+/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/esm/Dialog/index.js");
+/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/DialogActions */ "./node_modules/@material-ui/core/esm/DialogActions/index.js");
+/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/esm/DialogContent/index.js");
+/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "./node_modules/@material-ui/core/esm/DialogContentText/index.js");
+/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "./node_modules/@material-ui/core/esm/DialogTitle/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _componentTask__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./componentTask */ "./resources/js/design/componentTask.jsx");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+var LessonPlanEditTask = function LessonPlanEditTask(props) {
+  var onEditTasktID = props.onEditTasktID,
+      onEditComponentID = props.onEditComponentID,
+      setOpenLessonTaskEdit = props.setOpenLessonTaskEdit,
+      openLessonTaskEdit = props.openLessonTaskEdit;
+
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
+      course = _React$useContext.course,
+      dispatch = _React$useContext.dispatch;
+
+  var _React$useState = react__WEBPACK_IMPORTED_MODULE_0___default.a.useState({}),
+      _React$useState2 = _slicedToArray(_React$useState, 2),
+      taskData = _React$useState2[0],
+      setTaskData = _React$useState2[1];
+
+  var onSaveTask = function onSaveTask() {
+    taskData.componentid = course.components[onEditComponentID].id;
+    dispatch({
+      type: "UPDATE_LEARNINGTASK",
+      value: taskData
+    });
+    setOpenLessonTaskEdit(false);
+  };
+
+  var handleTaskUpdate = function handleTaskUpdate(task, index) {
+    //listen task data changes
+    setTaskData(task);
+  };
+
+  if (onEditComponentID == -1 || onEditTasktID == -1) {
+    return null;
+  } else {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      open: openLessonTaskEdit,
+      onClose: function onClose() {
+        return setOpenLessonTaskEdit(false);
+      },
+      "aria-labelledby": "form-dialog-title"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      id: "form-dialog-title"
+    }, "Edit Lesson Learning Task"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_5__["default"], null, "Any changes in this view will also affect the learning task in unit plan..."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_componentTask__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      TaskData: course.components[onEditComponentID].tasks[onEditTasktID],
+      index: 0,
+      key: 0,
+      componentData: course.components[onEditComponentID],
+      handleTaskUpdate: handleTaskUpdate,
+      onEditTasks: function onEditTasks() {},
+      mode: "lesson_edit"
+    })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      onClick: function onClick() {
+        return setOpenLessonTaskEdit(false);
+      },
+      color: "primary"
+    }, "Cancel"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      onClick: function onClick() {
+        return onSaveTask();
+      },
+      color: "primary"
+    }, "Save")));
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LessonPlanEditTask);
 
 /***/ }),
 
@@ -99939,23 +101808,18 @@ var LessonPlanContent = function LessonPlanContent(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js");
-/* harmony import */ var _material_ui_core_Box__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/Box */ "./node_modules/@material-ui/core/esm/Box/index.js");
-/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./component */ "./resources/js/design/component.jsx");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+/* harmony import */ var _component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./component */ "./resources/js/design/component.jsx");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
+/* harmony import */ var _container_designContainer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../container/designContainer */ "./resources/js/container/designContainer.jsx");
+/* harmony import */ var _components_instructionBox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/instructionBox */ "./resources/js/components/instructionBox.jsx");
 
 
 
 
 
 
-
-
-var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["makeStyles"])(function (theme) {
+var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["makeStyles"])(function (theme) {
   return {
     root: {
       flexGrow: 1,
@@ -99972,26 +101836,31 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["ma
 var UnitPlan = function UnitPlan(props) {
   var classes = useStyles();
 
-  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_7__["ContextStore"]),
+  var _React$useContext = react__WEBPACK_IMPORTED_MODULE_0___default.a.useContext(_container_designContainer__WEBPACK_IMPORTED_MODULE_4__["ContextStore"]),
       course = _React$useContext.course,
       dispatch = _React$useContext.dispatch;
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.root
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
     container: true,
     spacing: 3
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
     item: true,
     xs: 12
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, " You can customize the Unit design based on the recommended learing outcomes and design patterns ")), course.components.map(function (_components, index) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_6__["Grid"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    title: "Unit Plan",
+    content: "You can customize the Unit design based on the recommended learning outcomes and learning tasks.",
+    tips: ""
+  })), course.components.map(function (_components, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
       item: true,
       xs: 12,
       key: index
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_component__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_component__WEBPACK_IMPORTED_MODULE_2__["default"], {
       componentData: _components,
-      key: index
+      key: index,
+      index: index
     }));
   })));
 };
@@ -100169,8 +102038,8 @@ var UnitPlanContainer = function UnitPlanContainer(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/villatsyu/project/ldsk12_beta_2/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/villatsyu/project/ldsk12_beta_2/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/villatsyu/Documents/GitHub/ldsk12_beta/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/villatsyu/Documents/GitHub/ldsk12_beta/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -65,10 +65,11 @@ const LessonPlan = (props) => {
             <Grid item xs={9}>
                 {
                     selectedLessonID == -1 ? 
-                        course.lesson.map((_lesson, index) => <
-                            LessonPlanContent  lessonID = {index} canEdit = {false}/>)
-                            :
-                            <LessonPlanContent  lessonID = {selectedLessonID} canEdit = {true}/>
+                        course.lesson.map((_lesson, index) => 
+                            <LessonPlanContent  lessonID = {index} canEdit = {false}  key = {index}/>
+                        )
+                        :
+                        <LessonPlanContent  lessonID = {selectedLessonID} canEdit = {true}/>
                 }
                 
             </Grid>

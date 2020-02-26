@@ -10,6 +10,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import  DesignComponentItem  from './componentItem';
 import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../container/designContainer'
+import InstructionBox from '../components/instructionBox';
+
 
 
 // component data template
@@ -55,7 +57,7 @@ const getListStyle = isDraggingOver => ({
 
 const DesignComponentStep = (props) =>
 { 
-    const { course, dispatch } = React.useContext(ContextStore);
+    const { course, options, dispatch } = React.useContext(ContextStore);
 
     // initalize if there is no preset component data 
 
@@ -85,17 +87,40 @@ const DesignComponentStep = (props) =>
           type: "SET_COMPONENT",
           value: _items
         })
-        
     }
-    const addItems = (text) => {
-       
+
+    const addItems = (component) => {
+        // component.id = course.components.length+1,
         //sync the data to root state
+        let temp_component_id = component.id;
+        component.id = course.components.length+1
+        //load preload data 
+
+         //learning Task
+         fetchlearningPatternID(temp_component_id).then(patternID => {
+          fetchlearningTaskByPattern(patternID).then(taskData => {
+            component.tasks = taskData;
+          })
+        });
+
         dispatch({
           type: "ADD_COMPONENT",
-          value: {...course.components[0], 
-            id: course.components.length+1,
-            title: text}
+          value: component
         })
+
+        //learning outcomes
+        fetchlearningOutcomes(temp_component_id).then(learningOutcomes => {
+          learningOutcomes.map(learningOutcome => {
+            learningOutcome.id = -1;
+            //auto match the component
+            learningOutcome.componentid = component.id;
+            dispatch({
+              type: "ADD_LEARNINGOUTCOME",
+              value: learningOutcome
+            })
+          });
+        })
+    
     }
 
     const delItems = (index) => {
@@ -104,37 +129,96 @@ const DesignComponentStep = (props) =>
         value: index
       })
     }
+
+    //#region data fetching related
+
+    async function fetchlearningPatternID(id) {
+      return await fetch(
+          `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+          {
+          method: "GET",
+          }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          return response[0];
+      })
+      .catch(error => console.log(error));
+    }
+  
+    async function fetchlearningTaskByPattern(id) {
+      return await fetch(
+          `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+          {
+          method: "GET",
+          }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          console.log(response);
+          return response;
+      })
+      .catch(error => console.log(error));
+    }
+  
+    async function fetchlearningOutcomes(id) {
+      return await fetch(
+          `http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/`+ id,
+          {
+          method: "GET",
+          }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          return response;
+      })
+      .catch(error => console.log(error));
+    }
+  
+    //#endregion
     
     return(
-      <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <RootRef rootRef={provided.innerRef}>
-              <List style={getListStyle(snapshot.isDraggingOver)}>
-                {course.components.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
-                    {(provided, snapshot) => (
-                        <DesignComponentItem 
-                        provided = {provided} 
-                        snapshot = {snapshot} 
-                        item = {item} 
-                        index = {index} 
-                        addItems = {addItems}
-                        delItems = {delItems}/>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </List>
-            </RootRef>
-          )}
-        </Droppable>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth>
-            Add COMPONENT
-        </Button>
-        <ComponentSelDialog open={open} handleClose={handleClose} addItems ={addItems}/>
-       
-      </DragDropContext>
+      <React.Fragment>
+            <InstructionBox 
+                    title="Learning Components" 
+                    content= { "These are the pre-defined design components for the template:" 
+                    + options.designType.find(x=> x.id == course.designType) + " "
+                    + "STEM to guide you to plan your unit and lesson"
+                    }
+                    tips="tips for Learning Components..."
+              />
+              <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                <Droppable droppableId="droppable">
+                  {(provided, snapshot) => (
+                    <RootRef rootRef={provided.innerRef}>
+                      <List style={getListStyle(snapshot.isDraggingOver)}>
+                        {course.components.map((item, index) => (
+                          <Draggable key={index} draggableId={index.toString()} index={index}>
+                            {(provided, snapshot) => (
+                                <DesignComponentItem 
+                                provided = {provided} 
+                                snapshot = {snapshot} 
+                                item = {item} 
+                                index = {index} 
+                                addItems = {addItems}
+                                delItems = {delItems}/>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </List>
+                    </RootRef>
+                  )}
+                </Droppable>
+                <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth>
+                    Add COMPONENT
+                </Button>
+                <ComponentSelDialog open={open} handleClose={handleClose} addItems ={addItems}/>
+              </DragDropContext>
+      </React.Fragment>
     );
 }
 

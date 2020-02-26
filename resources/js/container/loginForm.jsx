@@ -63,7 +63,7 @@ const LoginForm = () => {
                 <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                Sign up
+                Sign In
                 </Typography>
                 <form className={classes.form}>
                     <Grid container spacing={2}>
@@ -84,7 +84,7 @@ const LoginForm = () => {
                         className={classes.submit}
                         onClick = {onClick}
                     >
-                        Sign Up
+                        Sign In
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
