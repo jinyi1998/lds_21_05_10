@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
@@ -75,7 +76,7 @@ class CourseController extends Controller
     {
         // pattern 
         // id => courseJson
-        $list = DB::table('demo')->select('id','data')->get();
+        $list = DB::table('demo')->select('id','data', 'updated_at')->get();
         return response()->json($list);
     }
 
@@ -118,7 +119,7 @@ class CourseController extends Controller
     {
         //
         $input = $request->all();
-        $respond =  DB::table('demo')->where('id', $id)->update(['data' => json_encode($input)]);
+        $respond =  DB::table('demo')->where('id', $id)->update(['data' => json_encode($input), 'updated_at' =>now()]);
         return response()->json($respond);
     }
 
@@ -137,7 +138,7 @@ class CourseController extends Controller
     {
         $input = $request->all();
         $id = DB::table('demo')->insertGetId(
-            ['data' => json_encode($input)]
+            ['data' => json_encode($input), 'created_at' => now(), 'updated_at' => now()]
         );
         return response()->json($id);
     }

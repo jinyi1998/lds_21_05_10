@@ -165,9 +165,17 @@ const ComponentTask = (props) => {
        }
     },[task]);
 
+    React.useEffect(()=>{
+        if(typeof handleTaskUpdate == 'function'){
+        }else{
+            //view
+            setTask(TaskData)
+        }
+     },[TaskData]);
+
     const taskTypeColor = () => {
 
-        switch(TaskData.type){
+        switch(task.type){
             default:
             case 1:
                 return({
@@ -308,8 +316,9 @@ const ComponentTask = (props) => {
 
                     <Grid item xs={12} className={classes.contentGrid}>
                         {TaskData.time} mins | 
+                        {classTypeOtps.find(x => x.id == TaskData.classType)?.description} |
                         {taskTargetOpts.find(x => x.id == TaskData.target)?.description } | 
-                        {taskTargetOpts.find(x => x.id == TaskData.size)?.description } | 
+                        {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } | 
                         {TaskData.resource.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
                         {TaskData.e_resource.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(','))} |
                         {/* {TaskData.STEMType.map(_STEMType => _STEMType.concat(','))} */}

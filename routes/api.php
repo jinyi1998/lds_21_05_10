@@ -22,6 +22,9 @@ Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp')
 Route::resource('course', 'API\CourseController');
 Route::post('course/test', 'API\CourseController@test');
 
+Route::post('file/json', 'API\FileSystemController@json');
+Route::get('file', 'API\FileSystemController@index');
+
 //Learning Outcome
 Route::get('learningOutcome/getOutcomeType', 'API\LearningOutcomesController@getOutcomeType');
 Route::get('learningOutcome/getLearningOutcomeByComponentTemp/{id}', 'API\LearningOutcomesController@getLearningOutcomeByComponentTemp');

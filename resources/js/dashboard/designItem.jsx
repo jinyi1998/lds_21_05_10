@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 const DesignItem = (props) => {
     const {courseData, setCourseID, handleListItemClick} = props;
     const test = JSON.parse(courseData.data);
+    console.log(courseData);
+    const updated_at = courseData.updated_at;
 
     const onClick = () => {
         handleListItemClick(event, 'design');
@@ -24,7 +26,7 @@ const DesignItem = (props) => {
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary={test.unitTitle+" - "+test.courseDes}  secondary="Last update @ 6 Feb, 2020" />
+            <ListItemText primary={test.unitTitle+" - "+test.courseDes}  secondary={updated_at} />
             <ListItemSecondaryAction>
                 Delete | Duplicated  
             </ListItemSecondaryAction>

@@ -7,6 +7,7 @@ import ComponentTask from './componentTask';
 import Button from '@material-ui/core/Button';
 import {ContextStore} from '../container/designContainer'
 import InstructionBox from '../components/instructionBox';
+import config from 'react-global-configuration';
 
 
 const LearningPatternEdit = (props) => {
@@ -30,10 +31,17 @@ const LearningPatternEdit = (props) => {
 
     const onSaveTask = () => {
         let temp = componentData
-
+        
         temp.learningOutcomes = []
         fetchlearningTaskByPattern(selectedPattern).then(taskData => {
-            temp.tasks = taskData;
+            if(config.get('enablePattern')){
+                temp.pattern = {
+                    id: selectedPattern,
+                    tasks: taskData
+                };
+            }else{
+                temp.tasks = taskData;
+            }
         })
 
         //learning outcomes
@@ -67,7 +75,7 @@ const LearningPatternEdit = (props) => {
 
     async function fetchlearningTaskByPattern(id) {
         return await fetch(
-            `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+            'http://'+config.get('url')+'/api/learningTask/getLearningTaskByPattern/'+ id,
             {
             method: "GET",
             }
@@ -82,7 +90,7 @@ const LearningPatternEdit = (props) => {
 
       async function fetchlearningOutcomes(id) {
         return await fetch(
-            `http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/`+ id,
+            'http://'+config.get('url')+'/api/learningOutcome/getLearningOutcomeByComponentTemp/'+ id,
             {
             method: "GET",
             }

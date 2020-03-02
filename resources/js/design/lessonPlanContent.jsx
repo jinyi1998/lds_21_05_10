@@ -66,7 +66,8 @@ const LessonPlanContent = (props) => {
     const totalTime = () => {
         var time = 0;
         course.lesson[lessonID].tasks.map((_task, index) => 
-            time +=  course.components[_task.componentID].tasks[_task.taskIndex].time
+            // time +=  course.components[_task.componentID].tasks[_task.taskIndex].time
+            time += parseInt(course.components[_task.componentID].pattern.tasks.concat(course.components[_task.componentID].tasks)[_task.taskIndex].time)
         );
         return time;
     } 
@@ -80,9 +81,9 @@ const LessonPlanContent = (props) => {
         temp_task = temp_task.filter(_task => _task.componentID != selectComponent);
 
 
-        course.components[selectComponent].tasks.map(
+        course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks).map(
             (_task, index) => {
-                if(checkBoxState.indexOf(index.toString()) != -1){
+                if(checkBoxState[index]){
                     let temp = {
                         "componentID": selectComponent,
                         "taskIndex": index
@@ -114,15 +115,8 @@ const LessonPlanContent = (props) => {
         setOnEditTasktID(taskID)
     }
 
-    const onCheckCheckbox = (event) => {
-        var tempCheckList = checkBoxState;
-        if(checkBoxState.indexOf(event.target.value) === -1){
-            // no in state => uncheck to check
-            tempCheckList.push(event.target.value);
-        }else{
-            tempCheckList = tempCheckList.filter(x => x!=event.target.value);
-        }
-        setCheckBoxState(tempCheckList);
+    const onCheckCheckbox = name => event => {
+        setCheckBoxState({ ...checkBoxState, [name]: event.target.checked });
     } 
 
     React.useEffect( ()=> {
@@ -138,8 +132,21 @@ const LessonPlanContent = (props) => {
     React.useEffect(()=> {
             if(selectComponent != -1){
                 setEditStage(2);
+                let temp = []
+                course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks).map((_data, index) => {
+                    if(course.lesson[lessonID].tasks.filter( x => x.componentID == selectComponent && x.taskIndex == index).length > 0){
+                        temp.push(true)
+                    }else{
+                        temp.push(false)
+                    }
+                })
+                // course.lesson[lessonID].tasks.map((_taskData)=> {
+                //     if(_taskData.componentID === selectComponent){
+                //         temp.push(_taskData.taskIndex)
+                //     }
+                // });
+                setCheckBoxState(temp);
             }
-            
         }
     , [selectComponent]);
 
@@ -179,39 +186,59 @@ const LessonPlanContent = (props) => {
                     )
                 break;
             case 2:
+                var filter = course.lesson.map((_lesson, index) => {
+                    if(lessonID == index){
+                        return [];
+                    }else{
+                        return course.lesson[index].tasks.filter(x => x.componentID == selectComponent).map(_task => {return _task.taskIndex})
+                    }
+                })
+                filter = [].concat.apply([], filter);
+                let taskOpts =  course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks)
+                // .filter((x, index)=>filter.indexOf(index) == -1);
+
                 return (
                     <Grid container>
                          {  (
-                            selectComponent !== "" && typeof course.components[selectComponent].tasks != undefined?
-                            course.components[selectComponent].tasks.map(
-                                (_task, index) => (
-                                    <Grid container item xs = {12}>
-                                        <Grid item xs >
-                                            <Checkbox
-                                                    value="secondary"
-                                                    color="primary"
-                                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                                                    onChange= {onCheckCheckbox}
-                                                    value = {index}
+                            selectComponent !== "" && taskOpts.length > 0?
+                            (
+                                taskOpts.map(
+                                    (_task, index) => (
+                                        (filter.indexOf(index) == -1? 
+                                        //not display other lesson selected learning tasks
+                                        <Grid container item xs = {12} key = {index}>
+                                            <Grid item xs >
+                                                <Checkbox
+                                                        value="secondary"
+                                                        color="primary"
+                                                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                                        onChange= {onCheckCheckbox(index)}
+                                                        // value = {checkBoxState[index]}
+                                                        // key = {index}
+                                                        checked = {false || checkBoxState[index]}
+                                                        // checked = {courseData.lesson[lessonID].tasks.find(_task => 
+                                                        //     (_task.componentID != selectComponent && _task.taskIndex != index)
+                                                        // )== 'undefined'}
+                                                />
+                                            </Grid>
+                                            <Grid item xs = {11}>
+                                                <ComponentTask 
+                                                    TaskData = {_task} 
+                                                    index = {index} 
                                                     key = {index}
-                                                    // checked = {courseData.lesson[lessonID].tasks.find(_task => 
-                                                    //     (_task.componentID != selectComponent && _task.taskIndex != index)
-                                                    // )== 'undefined'}
-                                            />
+                                                    componentData = {course.components[selectComponent]}
+                                                    handleTaskUpdate= {()=> {}} 
+                                                    onEditTasks = {onEditTask} 
+                                                    mode = {taskMode}/>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs = {11}>
-                                            <ComponentTask 
-                                                TaskData = {_task} 
-                                                index = {index} 
-                                                key = {index}
-                                                componentData = {course.components[selectComponent]}
-                                                handleTaskUpdate= {()=> {}} 
-                                                onEditTasks = {onEditTask} 
-                                                mode = {taskMode}/>
-                                        </Grid>
-                                    </Grid>
+                                        : 
+                                        null)
+                                       
+                                    )
                                 )
-                            ):
+                            )
+                            :
                             null
                             )
                          }
@@ -243,7 +270,8 @@ const LessonPlanContent = (props) => {
                     (_taskdata, index) => (
                         // console.log(_taskdata)
                         <ComponentTask 
-                            TaskData = {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex]} 
+                            // TaskData = {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex]}
+                            TaskData = {course.components[_taskdata.componentID].pattern.tasks.concat(course.components[_taskdata.componentID].tasks)[_taskdata.taskIndex]}  
                             index = {index} 
                             key = {index}
                             componentData = {course.components[_taskdata.componentID]}

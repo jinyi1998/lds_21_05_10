@@ -21,6 +21,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
+import config from 'react-global-configuration';
+
 const useStyles = makeStyles(theme => ({
   gridList: {
     display: 'flex',
@@ -157,7 +159,7 @@ const Design = (props) => {
   //preload learningOutcome (Unit Level)
   async function fetchlearningTypeTempData() {
     const res = await fetch(
-        `http://localhost:8000/api/learningOutcome/getDefaultOutcomeByLearningType/`+course.designType,
+        'http://'+config.get('url')+'/api/learningOutcome/getDefaultOutcomeByLearningType/'+course.designType,
         {
         method: "GET",
         }
@@ -177,7 +179,7 @@ const Design = (props) => {
   async function fetchlearningComponentTempData() {
 
       const res = await fetch(
-          `http://localhost:8000/api/learningComponent/getDefaultLearningComponentByDesignType/`+ course.designType,
+          'http://'+config.get('url')+'/api/learningComponent/getDefaultLearningComponentByDesignType/'+ course.designType,
           {
           method: "GET",
           }
@@ -189,10 +191,21 @@ const Design = (props) => {
           response.map( _respond => {
             //learning Task
             fetchlearningPatternID(_respond.id).then(patternID => {
+              let pattern = {
+                "id": patternID[0],
+                "tasks": []
+              }
+              //default first pattern
               fetchlearningTaskByPattern(patternID[0]).then(taskData => {
-                _respond.tasks = taskData;
+                if(config.get("enablePattern") ){
+                  pattern.tasks = taskData;
+                  // _respond.pattern = pattern;
+                }else{
+                  _respond.tasks = taskData;
+                }
+                _respond.pattern = pattern;
               })
-              _respond.patternOptsID = patternID
+              _respond.patternOptsID = patternID;
             });
 
             //learning outcomes
@@ -222,7 +235,7 @@ const Design = (props) => {
   //preload learningTask
   async function fetchlearningTaskTempData(id) {
     return await fetch(
-        `http://localhost:8000/api/learningTask/getDefaultLearningTaskByComponent/`+ id,
+        'http://'+config.get('url')+'/api/learningTask/getDefaultLearningTaskByComponent/'+ id,
         {
         method: "GET",
         }
@@ -237,7 +250,7 @@ const Design = (props) => {
 
   async function fetchlearningPatternID(id) {
     return await fetch(
-        `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+        'http://'+config.get('url')+'/api/learningTask/getLearningPatternByComponent/'+ id,
         {
         method: "GET",
         }
@@ -252,7 +265,7 @@ const Design = (props) => {
 
   async function fetchlearningTaskByPattern(id) {
     return await fetch(
-        `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+        'http://'+config.get('url')+'/api/learningTask/getLearningTaskByPattern/'+ id,
         {
         method: "GET",
         }
@@ -267,7 +280,7 @@ const Design = (props) => {
 
   async function fetchlearningOutcomes(id) {
     return await fetch(
-        `http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/`+ id,
+        'http://'+config.get('url')+'/api/learningOutcome/getLearningOutcomeByComponentTemp/'+ id,
         {
         method: "GET",
         }
@@ -282,9 +295,10 @@ const Design = (props) => {
 
   async function saveCourse(){
     setLoadingOpen(true);
-    if(courseID == -1){
+    if(config.get('enableDB')){
+      if(courseID == -1){
         return await fetch(
-          'http://localhost:8000/api/course/test',
+          'http://'+config.get('url')+'/api/course/test',
           {
             method: "POST",
             body:  JSON.stringify(course),
@@ -301,27 +315,45 @@ const Design = (props) => {
           return response;
       })
       .catch(error => console.log(error));
+      }else{
+        return await fetch(
+              'http://'+config.get('url')+'/api/course/'+courseID,
+              {
+                method: "PUT",
+                body:  JSON.stringify(course),
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+              }
+          )
+          .then(res => res.json())
+          .then(response => {
+              //load the default learning outcomes by api request
+              location.href = "app";
+              setLoadingOpen(false);
+              return response;
+          })
+          .catch(error => console.log(error));
+      }
     }else{
       return await fetch(
-          'http://localhost:8000/api/course/'+courseID,
-          {
-            method: "PUT",
-            body:  JSON.stringify(course),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-          }
-          }
-      )
-      .then(res => res.json())
-      .then(response => {
-          //load the default learning outcomes by api request
-          location.href = "app";
-          setLoadingOpen(false);
-          return response;
-      })
-      .catch(error => console.log(error));
+              'http://'+config.get('url')+'/api/file/json',
+              {
+                method: "POST",
+                body:  JSON.stringify(course),
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+              }
+          )
+          .then(res => {  
+            setLoadingOpen(false);
+            window.open('http://'+config.get('url')+'/api/file');
+            // location.href = "app";
+            return response;
+          })
+          .catch(error => console.log(error));    
     }
-
   }
 
   //#endregion

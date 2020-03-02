@@ -32,7 +32,7 @@ const DesignType = (props) => {
   // async function fetchDesignTypeData() {
 
   //   const res = await fetch(
-  //       `http://localhost:8000/api/course/getDesignTypeTemp`,
+  //       'http://'+config.get('url')+'/api/course/getDesignTypeTemp',
   //       {
   //       method: "GET",
   //       }

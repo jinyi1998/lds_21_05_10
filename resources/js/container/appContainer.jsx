@@ -133,6 +133,7 @@ const useStyles = makeStyles(theme => ({
   [])
 
   const [courseID, setCourseID] = React.useState(-1);
+  const [importJson, setImportJson] = React.useState({});
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -142,13 +143,13 @@ const useStyles = makeStyles(theme => ({
       switch (selectedIndex){
         default:
         case 'myDesign':
-          return <MyDesign handleListItemClick = {handleListItemClick} setCourseID = {setCourseID}/>;
+          return <MyDesign handleListItemClick = {handleListItemClick} setCourseID = {setCourseID} setImportJson = {setImportJson}/>;
           break;
         case 'publicDesign':
           return <PublicDesign handleListItemClick = {handleListItemClick} setCourseID = {setCourseID}/>;
           break;
         case 'design':
-          return <DesignContainer courseID = {courseID}/>;
+          return <DesignContainer courseID = {courseID} importJson = {importJson}/>;
           break;
       }
   }

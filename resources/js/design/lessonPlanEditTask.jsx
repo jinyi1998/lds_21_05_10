@@ -43,7 +43,8 @@ const LessonPlanEditTask = (props) => {
                         Any changes in this view will also affect the learning task in unit plan...
                     </DialogContentText>
                     <ComponentTask 
-                                TaskData = {course.components[onEditComponentID].tasks[onEditTasktID]} 
+                                // TaskData = {course.components[onEditComponentID].tasks[onEditTasktID]} 
+                                TaskData = {course.components[onEditComponentID].pattern.tasks.concat(course.components[onEditComponentID].tasks)[onEditTasktID]} 
                                 index = {0} 
                                 key = {0}
                                 componentData = {course.components[onEditComponentID]}

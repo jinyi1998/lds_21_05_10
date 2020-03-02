@@ -16,6 +16,8 @@ import LearningTasksEditContainer from './learningTasksEdit';
 import LearningPatternEdit from './LearningPatternEdit';
 import ComponentTask from './componentTask';
 import AddLearningTask from './addLearningTask';
+import LearningPattern from './learningPattern';
+
 
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -87,7 +89,8 @@ const Component = (props)=>{
     //#region init data 
     const learningTime = () => {
       var time = 0;
-      componentData.tasks.map(_task => time += _task.time);
+      componentData.tasks.map(_task => time += parseInt(_task.time));
+      componentData.pattern?.tasks.map(_task => time += parseInt(_task.time));
       return time;
     };
     //#endregion
@@ -95,7 +98,7 @@ const Component = (props)=>{
     //#region action button
     const onEditTasks = () => {
       setSelectMode("edit");
-      setEditTaksOpen(true);
+      setEditTaskOpen(true);
     }
 
     const onEditPattern = () => {
@@ -125,6 +128,10 @@ const Component = (props)=>{
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
                 </Grid>
 
+                <Grid item xs={12}> 
+                  <LearningOutcome componentData ={componentData}/>
+                </Grid>
+                
                 {componentData.patternOptsID.length > 1 ?
                   <Grid item xs={4}>
                    <Button variant="contained" color="primary" onClick={()=>onEditPattern()}>
@@ -134,12 +141,14 @@ const Component = (props)=>{
                  : 
                  null
                 }
-              
 
-                <Grid item xs={12}> 
-                  <LearningOutcome componentData ={componentData}/>
-                </Grid>
-               
+                {typeof componentData.pattern == 'undefined' || componentData.pattern.tasks.length == 0?
+                  null:  
+                  <Grid item xs = {12}>
+                      <LearningPattern componentID = {componentData.id} patternData = {componentData.pattern}/>
+                  </Grid>
+                }
+
                 {componentData.tasks.map((_learningComponentData, index) => 
                   <ComponentTask 
                     key= {index}

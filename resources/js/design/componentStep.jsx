@@ -11,7 +11,7 @@ import  DesignComponentItem  from './componentItem';
 import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../container/designContainer'
 import InstructionBox from '../components/instructionBox';
-
+import config from 'react-global-configuration';
 
 
 // component data template
@@ -97,10 +97,21 @@ const DesignComponentStep = (props) =>
         //load preload data 
 
          //learning Task
+         
          fetchlearningPatternID(temp_component_id).then(patternID => {
-          fetchlearningTaskByPattern(patternID).then(taskData => {
-            component.tasks = taskData;
+          let pattern = {
+            "id": patternID[0],
+            "tasks": []
+          }
+          fetchlearningTaskByPattern(patternID[0]).then(taskData => {
+            if(config.get("enablePattern") ){
+              pattern.tasks = taskData;
+              component.pattern = pattern;
+            }else{
+              component.tasks = taskData;
+            }
           })
+          component.patternOptsID = patternID;
         });
 
         dispatch({
@@ -134,7 +145,7 @@ const DesignComponentStep = (props) =>
 
     async function fetchlearningPatternID(id) {
       return await fetch(
-          `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+          'http://'+config.get('url')+'/api/learningTask/getLearningPatternByComponent/'+ id,
           {
           method: "GET",
           }
@@ -142,14 +153,14 @@ const DesignComponentStep = (props) =>
       .then(res => res.json())
       .then(response => {
           //load the default learning outcomes by api request
-          return response[0];
+          return response;
       })
       .catch(error => console.log(error));
     }
   
     async function fetchlearningTaskByPattern(id) {
       return await fetch(
-          `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+          'http://'+config.get('url')+'/api/learningTask/getLearningTaskByPattern/'+ id,
           {
           method: "GET",
           }
@@ -165,7 +176,7 @@ const DesignComponentStep = (props) =>
   
     async function fetchlearningOutcomes(id) {
       return await fetch(
-          `http://localhost:8000/api/learningOutcome/getLearningOutcomeByComponentTemp/`+ id,
+          'http://'+config.get('url')+'/api/learningOutcome/getLearningOutcomeByComponentTemp/'+ id,
           {
           method: "GET",
           }

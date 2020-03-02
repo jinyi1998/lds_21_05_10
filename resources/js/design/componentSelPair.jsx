@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import config from 'react-global-configuration';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -38,7 +39,7 @@ const DesignComponentSelPair = (props) => {
 
     async function fetcComponentOptsData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningComponent/getLearningComponentByDesignType/` + selectType,
+            'http://'+config.get('url')+'/api/learningComponent/getLearningComponentByDesignType/' + selectType,
             {
             method: "GET",
             }

@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 //     //#region fetch data related
 //     async function fetchlearningPatternID(id) {
 //         return await fetch(
-//             `http://localhost:8000/api/learningTask/getLearningPatternByComponent/`+ id,
+//             'http://'+config.get('url')+'/api/learningTask/getLearningPatternByComponent/'+ id,
 //             {
 //             method: "GET",
 //             }
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 
 //     async function fetchlearningTaskByPattern(id) {
 //         return await fetch(
-//             `http://localhost:8000/api/learningTask/getLearningTaskByPattern/`+ id,
+//             'http://'+config.get('url')+'/api/learningTask/getLearningTaskByPattern/'+ id,
 //             {
 //             method: "GET",
 //             }
@@ -184,7 +184,7 @@ const LearningTasksEditContainer = (props) => {
 
         dispatch({
             type: "UPDATE_COMPONENT",
-            value: tempComponentData
+            value: temp
         });
         onClose(); 
     }

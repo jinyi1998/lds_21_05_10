@@ -19,7 +19,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Paper } from '@material-ui/core';
-
+import config from 'react-global-configuration';
 import {ContextStore} from '../container/designContainer'
 
 
@@ -73,7 +73,7 @@ const LearningOutcomeAdd = (props) => {
     const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
     async function fetchlearningLevelTempData(selectLearningType) {
         const res = await fetch(
-            `http://localhost:8000/api/learningOutcome/getOutcomeLevel/`+selectLearningType,
+            'http://'+config.get('url')+'/api/learningOutcome/getOutcomeLevel/'+selectLearningType,
             {
             method: "GET",
             }

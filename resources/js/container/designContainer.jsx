@@ -3,6 +3,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
+import config from 'react-global-configuration';
 
 const courseInitState = { course: {
         unitTitle: "",
@@ -165,6 +166,21 @@ export function courseReducer(state, action) {
         //#endregion
 
         //#region learning Task Related
+        case "UNLOCKPATTERN":
+            tempComponent =  state.course.components.map((_component)=>{
+                if(_component.id === action.value){
+                    //clear pattern
+                    _component.pattern.tasks.map(_task => _component.tasks.push(_task))
+                    // delete _component.pattern
+                    _component.pattern = {id : -1, tasks: []}
+                }
+                return _component;
+              }); 
+            return Object.assign({}, state, {
+                course: {...state.course, 
+                    components: tempComponent
+                }
+            });
         case "ADD_LEARNINGTASK":
             tempComponent =  state.course.components.map((_component)=>{
                 if(_component.id === action.value.componentid){
@@ -294,14 +310,39 @@ const DesignContainer = (props) => {
     const classes = useStyles();
 
     React.useEffect(()=>{
-        InitDesignOption()
-        if(props.courseID == -1){
+        (async function anyNameFunction() {
+            setLoadingOpen(true)
+            await InitDesignOption();
+            InitCourseData()
+            setLoadingOpen(false)
+          })();
+        // InitDesignOption()
+        // InitCourseData()
+    },
+    []);
+
+    const InitCourseData = () => {
+         if(props.courseID == -1){
             
         }else{
-            fetchCourseData();
+            if(config.get("enableDB")){
+                fetchCourseData();
+            }else{
+                Dispatch({
+                    type: "INIT_COURSE",
+                    value: props.importJson
+                })
+                // setLoadingOpen(true)
+                // setTimeout( () => {
+                //     Dispatch({
+                //         type: "INIT_COURSE",
+                //         value: props.importJson
+                //     })
+                //     setLoadingOpen(false)
+                // }, 3000);
+            }
         }
-    },
-    [])
+    }
 
     const [State, Dispatch] = React.useReducer(
       courseReducer,
@@ -315,7 +356,7 @@ const DesignContainer = (props) => {
     async function fetchCourseData() {
         setLoadingOpen(true)
         const res = await fetch(
-            `http://localhost:8000/api/course/`+ props.courseID,
+            'http://'+config.get('url')+'/api/course/'+ props.courseID,
             {
             method: "GET",
             }
@@ -335,7 +376,7 @@ const DesignContainer = (props) => {
     async function fetchDesignTypeData() {
 
         const res = await fetch(
-            `http://localhost:8000/api/course/getDesignTypeTemp`,
+            'http://'+config.get('url')+'/api/course/getDesignTypeTemp',
             {
             method: "GET",
             }
@@ -353,7 +394,7 @@ const DesignContainer = (props) => {
 
     async function fetchTaskTypeData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskTypeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskTypeOption',
             {
             method: "GET",
             }
@@ -370,7 +411,7 @@ const DesignContainer = (props) => {
 
     async function fetchClassTypeData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskClassTypeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskClassTypeOption',
             {
             method: "GET",
             }
@@ -388,7 +429,7 @@ const DesignContainer = (props) => {
     async function fetchClassSizeData() {
     
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskSizeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskSizeOption',
             {
             method: "GET",
             }
@@ -405,7 +446,7 @@ const DesignContainer = (props) => {
 
     async function fetchTaskTargetData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskTargetTypeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskTargetTypeOption',
             {
             method: "GET",
             }
@@ -422,7 +463,7 @@ const DesignContainer = (props) => {
 
     async function fetchTaskResourceData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskResourceTypeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskResourceTypeOption',
             {
             method: "GET",
             }
@@ -439,7 +480,7 @@ const DesignContainer = (props) => {
 
     async function fetchTaskElearningResourceData() {
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getTaskELeraningResourceTypeOption`,
+            'http://'+config.get('url')+'/api/learningTask/getTaskELeraningResourceTypeOption',
             {
             method: "GET",
             }
@@ -457,7 +498,7 @@ const DesignContainer = (props) => {
     async function fetchlearningTypeTempData() {
 
         const res = await fetch(
-            `http://localhost:8000/api/learningOutcome/getOutcomeType/`,
+            'http://'+config.get('url')+'/api/learningOutcome/getOutcomeType/',
             {
             method: "GET",
             }
@@ -475,7 +516,7 @@ const DesignContainer = (props) => {
     async function fetchlearningPatternOptsData() {
 
         const res = await fetch(
-            `http://localhost:8000/api/learningTask/getLearningPatternOpts/`,
+            'http://'+config.get('url')+'/api/learningTask/getLearningPatternOpts/',
             {
             method: "GET",
             }
@@ -490,16 +531,16 @@ const DesignContainer = (props) => {
         .catch(error => console.log(error));
     }
 
-    const InitDesignOption = () =>{
-        fetchDesignTypeData();
-        fetchTaskTypeData();
-        fetchClassTypeData();
-        fetchClassSizeData();
-        fetchTaskTargetData();
-        fetchTaskResourceData();
-        fetchTaskElearningResourceData();
-        fetchlearningTypeTempData();
-        fetchlearningPatternOptsData();
+    async function InitDesignOption() {
+        await fetchDesignTypeData();
+        await fetchTaskTypeData();
+        await fetchClassTypeData();
+        await fetchClassSizeData();
+        await fetchTaskTargetData();
+        await fetchTaskResourceData();
+        await fetchTaskElearningResourceData();
+        await fetchlearningTypeTempData();
+        await fetchlearningPatternOptsData();
     }
     //#endregion
 
