@@ -29,7 +29,7 @@ Route::get('/app', function () {
 
 Route::get('/app2', function () {
     return view('app2');
-});
+}); 
 
 // Route::get('/design', function () {
 //     return view('design');

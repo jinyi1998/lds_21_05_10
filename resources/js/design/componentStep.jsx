@@ -196,10 +196,10 @@ const DesignComponentStep = (props) =>
             <InstructionBox 
                     title="Learning Components" 
                     content= { "These are the pre-defined design components for the template:" 
-                    + options.designType.find(x=> x.id == course.designType) + " "
+                    + options.designType.find(x=> x.id == course.designType).description + " "
                     + "STEM to guide you to plan your unit and lesson"
                     }
-                    tips="tips for Learning Components..."
+                    tips="Learning Components is the ... You can order, delete the components, duplicated in this part."
               />
               <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                 <Droppable droppableId="droppable">

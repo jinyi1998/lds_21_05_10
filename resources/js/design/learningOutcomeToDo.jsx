@@ -299,13 +299,13 @@ const LearningOutcomeToDo = (props)=>{
                 <InstructionBox 
                     title="Unit Level Learning Outcomes" 
                     content= "Please define the learning outcomes for your unit" 
-                    tips="Hello World"
+                    tips="Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"
                 />
                 :
                 <InstructionBox 
                     title="Component Level Learning Outcomes" 
                     content= "Please define the learning outcomes for your component" 
-                    tips=""
+                    tips="Component level is the learning outcome for the selected component only"
                 />
             }
 

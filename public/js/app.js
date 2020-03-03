@@ -96552,8 +96552,8 @@ var DesignComponentStep = function DesignComponentStep(props) {
     title: "Learning Components",
     content: "These are the pre-defined design components for the template:" + options.designType.find(function (x) {
       return x.id == course.designType;
-    }) + " " + "STEM to guide you to plan your unit and lesson",
-    tips: "tips for Learning Components..."
+    }).description + " " + "STEM to guide you to plan your unit and lesson",
+    tips: "Learning Components is the ... You can order, delete the components, duplicated in this part."
   }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_beautiful_dnd__WEBPACK_IMPORTED_MODULE_4__["DragDropContext"], {
     onDragEnd: function onDragEnd(result) {
       return _onDragEnd(result);
@@ -98651,11 +98651,11 @@ var LearningOutcomeToDo = function LearningOutcomeToDo(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, modeLevel == "course" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_27__["default"], {
     title: "Unit Level Learning Outcomes",
     content: "Please define the learning outcomes for your unit",
-    tips: "Hello World"
+    tips: "Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"
   }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_instructionBox__WEBPACK_IMPORTED_MODULE_27__["default"], {
     title: "Component Level Learning Outcomes",
     content: "Please define the learning outcomes for your component",
-    tips: ""
+    tips: "Component level is the learning outcome for the selected component only"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanel__WEBPACK_IMPORTED_MODULE_9__["default"], {
     defaultExpanded: true
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ExpansionPanelSummary__WEBPACK_IMPORTED_MODULE_10__["default"], {

@@ -228,7 +228,7 @@ const useStyles = makeStyles(theme => ({
 export default AppContainer;
 
 if (document.getElementById('dashboard')) {
-    ReactDOM.render(<AppContainer firstLogin = {false}/>, document.getElementById('dashboard'));
+  ReactDOM.render(<AppContainer firstLogin = {false}/>, document.getElementById('dashboard'));
 }
 if (document.getElementById('dashboard2')) {
   ReactDOM.render(<AppContainer firstLogin = {true}/>, document.getElementById('dashboard2'));
