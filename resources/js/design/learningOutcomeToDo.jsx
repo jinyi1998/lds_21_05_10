@@ -295,7 +295,7 @@ const LearningOutcomeToDo = (props)=>{
     return (
         <React.Fragment>
 
-            {modeLevel == "course"? 
+            {/* {modeLevel == "course"? 
                 <InstructionBox 
                     title="Unit Level Learning Outcomes" 
                     content= "Please define the learning outcomes for your unit" 
@@ -307,7 +307,7 @@ const LearningOutcomeToDo = (props)=>{
                     content= "Please define the learning outcomes for your component" 
                     tips="Component level is the learning outcome for the selected component only"
                 />
-            }
+            } */}
 
             <ExpansionPanel defaultExpanded	={true}>
                 <ExpansionPanelSummary
@@ -317,12 +317,32 @@ const LearningOutcomeToDo = (props)=>{
                 className = {classes.expansionPanelSummary}
                 >
                     <Typography>{modeLevel == "course"? "Unit Level" : "Component Level"} Learning Outcomes</Typography>
+                    
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <List className = {classes.list}>
-                        {displayLearningOutcomes()}
-                        <Button onClick={addLearningOutcome}>Add Learning Outcome</Button>
-                    </List>
+                    <Grid container>
+                        <Grid item xs= {12}>
+                        {modeLevel == "course"? 
+                            <InstructionBox 
+                                title="Unit Level Learning Outcomes" 
+                                content= "Please define the learning outcomes for your unit" 
+                                tips="Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"
+                            />
+                            :
+                            <InstructionBox 
+                                title="Component Level Learning Outcomes" 
+                                content= "Please define the learning outcomes for your component" 
+                                tips="Component level is the learning outcome for the selected component only"
+                            />
+                        }
+                        </Grid> 
+                        <Grid item xs={12}>
+                            <List className = {classes.list}>
+                                {displayLearningOutcomes()}
+                                <Button onClick={addLearningOutcome}>Add Learning Outcome</Button>
+                            </List>
+                        </Grid>
+                    </Grid>
                 </ExpansionPanelDetails>
                 
                 <Dialog fullScreen open={learningOutcomeOpen} onClose={closeAddLearningOutcome}>

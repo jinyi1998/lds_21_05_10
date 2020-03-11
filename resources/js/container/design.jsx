@@ -378,7 +378,6 @@ const Design = (props) => {
     }else{
       setActiveStep(activeStep + 1);
     }
-    
   };
 
   const handleBack = () => {
@@ -388,13 +387,83 @@ const Design = (props) => {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <DesignType />
+        return (
+          <React.Fragment>
+             <DesignType />
+             <div className={classes.buttons}>
+              {activeStep !== 0 && (
+                <Button onClick={handleBack} className={classes.button}>
+                  Back
+                </Button>
+              )}
+              {activeStep !== 0 &&(
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
+                  </Button>
+              )}
+            </div>
+          </React.Fragment>
+        )
       case 1:
+        return (
+          <React.Fragment>
+             <DesignInfo handleBack = {handleBack} handleNext = {handleNext}/>
+          </React.Fragment>
+        )
         return <DesignInfo />
       case 2:
-        return  <LearningOutcomeToDo />
+        return (
+          <React.Fragment>
+             <LearningOutcomeToDo />
+             <div className={classes.buttons}>
+              {activeStep !== 0 && (
+                <Button onClick={handleBack} className={classes.button}>
+                  Back
+                </Button>
+              )}
+              {activeStep !== 0 &&(
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
+                  </Button>
+              )}
+            </div>
+          </React.Fragment>
+        )
+        // return  <LearningOutcomeToDo />
       case 3:
-        return <DesignComponentStep />;
+        return (
+          <React.Fragment>
+             <DesignComponentStep />
+             <div className={classes.buttons}>
+              {activeStep !== 0 && (
+                <Button onClick={handleBack} className={classes.button}>
+                  Back
+                </Button>
+              )}
+              {activeStep !== 0 &&(
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
+                  </Button>
+              )}
+            </div>
+          </React.Fragment>
+        )
+        // return <DesignComponentStep />;
       // case 3:
       //   return  <BasicReview />
       default:
@@ -412,7 +481,7 @@ const Design = (props) => {
             <div>
               {getStepContent(activeStep)}
             </div>
-            <div className={classes.buttons}>
+            {/* <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>
                   Back
@@ -428,7 +497,7 @@ const Design = (props) => {
                     {activeStep === steps.length - 1 ? 'Save' : 'Next'}
                   </Button>
               )}
-            </div>
+            </div> */}
           </React.Fragment>
         );
       case 'majorStep':

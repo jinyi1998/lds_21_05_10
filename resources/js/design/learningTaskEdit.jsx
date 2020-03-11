@@ -10,11 +10,12 @@ import {ContextStore} from '../container/designContainer'
 import ComponentTask from './componentTask';
 
 
-const AddLearningTask = (props) => {
+const EditLearningTask = (props) => {
     const {
-        openTaskAdd
-        , setOpenTaskAdd
+        openTaskEdit
+        , setOpenTaskEdit
         , onEditComponentID
+        , TaskData
         } = props;
 
     const { course, dispatch } = React.useContext(ContextStore);
@@ -79,18 +80,18 @@ const AddLearningTask = (props) => {
         setError(tempError);
         return validated;
       }
+    
 
     const onSaveTask = () => {
-        
-        console.log(taskData);
         if(validate()){
-             taskData.componentid = onEditComponentID
+            taskData.componentid = onEditComponentID
             dispatch({
-                type: "ADD_LEARNINGTASK",
+                type: "UPDATE_LEARNINGTASK",
                 value: taskData
             });
-            setOpenTaskAdd(false);
-        }  
+            setOpenTaskEdit(false);
+        }
+        
     }
 
     const handleTaskUpdate = (task, index) => {
@@ -105,24 +106,24 @@ const AddLearningTask = (props) => {
         )
     }else{
         return (
-            <Dialog open={openTaskAdd} onClose={() => setOpenTaskAdd(false)} aria-labelledby="form-dialog-title">
+            <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Add Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         You may add new learning task for this component...
                     </DialogContentText>
                     <ComponentTask 
-                                TaskData = {{}} 
+                                TaskData = {TaskData} 
                                 index = {0} 
                                 key = {0}
                                 componentData = {course.components.find(x=>x.id == onEditComponentID )}
                                 handleTaskUpdate= {handleTaskUpdate} 
                                 onEditTasks = {()=>{}} 
-                                error = {error}
+                                error = {error} 
                                 mode = "lesson_edit"/> 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenTaskAdd(false)} >
+                    <Button onClick={() => setOpenTaskEdit(false)} >
                         Cancel
                     </Button>
                     <Button variant="contained" color="primary" onClick={() => onSaveTask()} >
@@ -135,4 +136,4 @@ const AddLearningTask = (props) => {
    
 }
 
-export default AddLearningTask;
+export default EditLearningTask;

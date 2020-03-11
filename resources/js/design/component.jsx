@@ -13,7 +13,8 @@ import { Grid } from '@material-ui/core';
 import LearningOutcome from './learningOutcomeToDo';
 import AddLearningPatternContainner from './addLearningPattern';
 import LearningTasksEditContainer from './learningTasksEdit';
-import LearningPatternEdit from './LearningPatternEdit';
+import LearningTaskEdit from './learningTaskEdit'
+import LearningPatternEdit from './learningPatternEdit';
 import ComponentTask from './componentTask';
 import AddLearningTask from './addLearningTask';
 import LearningPattern from './learningPattern';
@@ -84,6 +85,8 @@ const Component = (props)=>{
     
     //edit learning task props
     const [ openTaskAdd, setOpenTaskAdd] = React.useState(false);
+    const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
+    const [ selectTask, setSelectTask] = React.useState({});
     const onEditComponentID = componentData.id;
 
     //#region init data 
@@ -96,10 +99,15 @@ const Component = (props)=>{
     //#endregion
 
     //#region action button
-    const onEditTasks = () => {
-      setSelectMode("edit");
-      setEditTaskOpen(true);
+    // const onEditTasks = () => {
+    //   setSelectMode("edit");
+    //   setEditTaskOpen(true);
+    // }
+    const onEditTasks = (task) => {
+      setSelectTask(task);
+      setOpenTaskEdit(true);
     }
+    
 
     const onEditPattern = () => {
       setSelectMode("pattern");
@@ -169,6 +177,13 @@ const Component = (props)=>{
                   openTaskAdd = {openTaskAdd}
                   setOpenTaskAdd = {setOpenTaskAdd}
                   onEditComponentID = {onEditComponentID}
+                />
+
+                <LearningTaskEdit
+                  openTaskEdit = {openTaskEdit}
+                  setOpenTaskEdit = {setOpenTaskEdit}
+                  onEditComponentID = {onEditComponentID}
+                  TaskData = {selectTask}
                 />
 
                 <Dialog fullScreen open={editTaskOpen}>

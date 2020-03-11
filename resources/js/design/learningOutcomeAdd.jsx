@@ -300,9 +300,6 @@ const LearningOutcomeAdd = (props) => {
                         <Typography variant="h6" className={classes.title}>
                         Adding new learning outcome
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={outcomeSave}>
-                        save
-                        </Button>
                     </Toolbar>
             </AppBar>
             <Paper style={ {padding: "16px"} }>
@@ -318,6 +315,11 @@ const LearningOutcomeAdd = (props) => {
                 {displaySTEMOpts()}
                 {displayOutcomeDes()}
                 
+                <Grid item xs={12}>
+                    <Button variant="contained" color="primary" color="primary" onClick={outcomeSave} fullWidth> 
+                        save
+                    </Button>
+                </Grid>
             </Grid>
         </Paper> 
         </React.Fragment>

@@ -8,12 +8,11 @@ import { Grid, TextField } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from '@material-ui/icons/Delete';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -30,6 +29,17 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from '@material-ui/icons/Delete';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import RoomIcon from '@material-ui/icons/Room';
+import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
+import GroupIcon from '@material-ui/icons/Group';
+import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 
 //   tasks: [
 //     {
@@ -53,7 +63,6 @@ const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
-        color: theme.palette.text.secondary,
         width: '100%',
         margin: 16
     },
@@ -79,6 +88,7 @@ const ComponentTask = (props) => {
     const {handleTaskUpdate} = props; //handleTask Update callback
     const {index} = props; // component index?
     const {onEditTasks} = props;
+    const {error} = props;
     const { course, dispatch, options } = React.useContext(ContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const mode = props.mode;  
@@ -98,6 +108,7 @@ const ComponentTask = (props) => {
         description: TaskData.description? TaskData.description: "",
         content: TaskData.content? TaskData.content: "",
     });  
+
 
     const [isAssessment, setAssessment] = React.useState(
         (TaskData.assessment?.length > 0)? true: false
@@ -250,8 +261,8 @@ const ComponentTask = (props) => {
       };
     
     //#region button action related
-    const onClickEdit = () => {
-        onEditTasks();
+    const onClickEdit = (task) => {
+        onEditTasks(task);
     }
 
     const onClickDuplicate = () => {
@@ -289,7 +300,7 @@ const ComponentTask = (props) => {
                     </Grid>
                     { (mode == 'view')?
                         <Grid item xs={4} className={classes.contentGrid}>
-                            <IconButton onClick={onClickEdit}>
+                            <IconButton onClick={()=>onClickEdit(TaskData)}>
                                 <EditIcon />
                             </IconButton>
                             <IconButton onClick={()=> {onClickDuplicate()}}>
@@ -314,16 +325,50 @@ const ComponentTask = (props) => {
                        )}
                     </Grid>
 
-                    <Grid item xs={12} className={classes.contentGrid}>
+                    {/* <Grid item xs={12} className={classes.contentGrid}>
                         {TaskData.time} mins | 
                         {classTypeOtps.find(x => x.id == TaskData.classType)?.description} |
                         {taskTargetOpts.find(x => x.id == TaskData.target)?.description } | 
                         {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } | 
                         {TaskData.resource.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
                         {TaskData.e_resource.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(','))} |
-                        {/* {TaskData.STEMType.map(_STEMType => _STEMType.concat(','))} */}
-                    </Grid>
+                        
+                    </Grid> */}
+
+                    {/* <Grid item xs={12} className={classes.contentGrid}>
+                        <AccessTimeIcon />{TaskData.time} mins | 
+                        <RoomIcon /> {classTypeOtps.find(x => x.id == TaskData.classType)?.description} |
+                        <RoomIcon />  {taskTargetOpts.find(x => x.id == TaskData.target)?.description } | 
+                        <GroupIcon /> {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } | 
+                        <AssignmentIcon />{TaskData.resource.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
+                        <ImportantDevicesIcon /> {TaskData.e_resource.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(','))} |
+                    </Grid> */}
                     
+
+
+                    <Grid item xs={12} className={classes.contentGrid}>
+                        <AccessTimeIcon />{TaskData.time} mins 
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid}>
+                        <RoomIcon /> {classTypeOtps.find(x => x.id == TaskData.classType)?.description}
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid}>
+                        <GpsNotFixedIcon />  {taskTargetOpts.find(x => x.id == TaskData.target)?.description }
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid}>
+                        <GroupIcon /> {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } 
+                    </Grid>
+
+                    <Grid item xs={12} className={classes.contentGrid}>
+                        <AssignmentIcon />{TaskData.resource.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(', '))}
+                    </Grid>
+
+                    <Grid item xs={12} className={classes.contentGrid}>
+                        <ImportantDevicesIcon /> {TaskData.e_resource.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(', '))} 
+                    </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid}>
                         {TaskData.description}
@@ -365,12 +410,12 @@ const ComponentTask = (props) => {
                                     </div>
                                 </Grid>
                                 <Grid container item xs={11}>
-                                    <Grid item xs={8} className={classes.contentGrid}>
+                                    <Grid item xs={10} className={classes.contentGrid}>
                                         {TaskData.title}
                                     </Grid>
 
-                                    <Grid item xs={4} className={classes.contentGrid}>
-                                        <IconButton onClick={onClickEdit}>
+                                    <Grid container item xs={2} className={classes.contentGrid} alignItems = "flex-end">
+                                        <IconButton onClick={() => onClickEdit(TaskData)}>
                                             <EditIcon />
                                         </IconButton>
                                     </Grid>
@@ -442,7 +487,16 @@ const ComponentTask = (props) => {
             <Grid item xs={3}>
                 <Grid container spacing={4}>
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <TextField id={"time-"+ index} label="Minutes" variant="filled" value={task.time} name="time" onChange={handleChange}/>
+                        <TextField 
+                        id={"time-"+ index} 
+                        label="Minutes" 
+                        variant="filled" 
+                        value={task.time} 
+                        name="time" 
+                        onChange={handleChange}
+                        error = {! (error["time"]=="")}
+                        helperText= {! (error["time"]=="")? error["time"]:  ""}
+                        />
                     </Grid>
 
                     <Grid item xs={12} className={classes.contentGrid}>
@@ -459,7 +513,7 @@ const ComponentTask = (props) => {
                    
                     {/* classtype */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["classType"]=="")}>
                             <InputLabel  id={"classType-"+ index + "-label"}>
                                 Place
                             </InputLabel>
@@ -468,21 +522,26 @@ const ComponentTask = (props) => {
                             id={"classType-"+ index}
                             name="classType"
                             value={task.classType}
+                            helperText= {! (error["classType"]=="")? error["classType"]:  ""}
                             onChange={handleChange}
                             renderValue={selected => (
                                 classTypeOtps.find(x => x.id == selected)?.description
                             )}
                             >
-                            <MenuItem value="" disabled>
-                                <em>None</em>
-                            </MenuItem>
-                            {classTypeOtps.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
+                                <MenuItem value="" disabled>
+                                    <em>None</em>
+                                </MenuItem>
+                                {classTypeOtps.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
+
+                            <FormHelperText>
+                               {! (error["classType"]=="")? error["classType"]:  "required"}
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* target */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["target"]=="")}>
                             <InputLabel  id={"target-"+ index + "-label"}>
                                 Class Type
                             </InputLabel>
@@ -496,16 +555,19 @@ const ComponentTask = (props) => {
                                 taskTargetOpts.find(x => x.id == selected)?.description
                             )}
                             >
-                            <MenuItem value="" disabled>
-                                <em>None</em>
-                            </MenuItem>
-                            {taskTargetOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
+                                <MenuItem value="" disabled>
+                                    <em>None</em>
+                                </MenuItem>
+                                {taskTargetOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
+                            <FormHelperText>
+                                {! (error["target"]=="")? error["target"]:  ""}
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* claassize */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["size"]=="")}>
                             <InputLabel  id={"size-"+index+"-label"}>
                                 Size
                             </InputLabel>
@@ -519,17 +581,20 @@ const ComponentTask = (props) => {
                                 taskClassSizeOpts.find(x => x.id == selected)?.description
                             )}
                             >
-                            <MenuItem value="" disabled>
-                                <em>None</em>
-                            </MenuItem>
-                            {taskClassSizeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
+                                <MenuItem value="" disabled>
+                                    <em>None</em>
+                                </MenuItem>
+                                {taskClassSizeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
+                            <FormHelperText>
+                                {! (error["size"]=="")? error["size"]:  ""}
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* Resource */}
                     <Grid item xs={12} className={classes.contentGrid}>
                         <FormControl className={classes.formControl} fullWidth>
-                            <InputLabel id = {"resource-"+ index + "-lebal"}>Resource</InputLabel>
+                            <InputLabel id = {"resource-"+ index + "-lebal"}>Resource(s)</InputLabel>
                             <Select
                                 labelId = {"resource-"+ index + "-lebal"}
                                 id = {"resource-"+ index}
@@ -551,12 +616,15 @@ const ComponentTask = (props) => {
                             >
                                 {taskResouceOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
+                            <FormHelperText>
+                               You can select one or more resource(s)
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* E-Resource */}
                     <Grid item xs={12} className={classes.contentGrid}>
                         <FormControl className={classes.formControl} fullWidth>
-                            <InputLabel id = {"e-resource-"+ index + "-lebal"}>E-Learning-Tools</InputLabel>
+                            <InputLabel id = {"e-resource-"+ index + "-lebal"}>E-Learning-Tool(s)</InputLabel>
                             <Select
                                 labelId = {"e-resource-"+ index + "-lebal"}
                                 id = {"e-resource-"+ index}
@@ -578,6 +646,9 @@ const ComponentTask = (props) => {
                             >
                                 {taskELearnResouceOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
+                            <FormHelperText>
+                               You can select one or more e-learning tool(s)
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* STEM */}
@@ -629,7 +700,7 @@ const ComponentTask = (props) => {
             <Grid item xs={8}>
             <Grid container  spacing={4}>
                 <Grid item xs={8} className={classes.contentGrid}> 
-                    <FormControl variant="outlined" className={classes.formControl} fullWidth>
+                    <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["type"]=="")}>
                         <InputLabel  id={"type-"+ index +"-label"}>
                             Type
                         </InputLabel>
@@ -643,8 +714,11 @@ const ComponentTask = (props) => {
                             taskTypeOpts.find(x => x.id==selected)?.description
                         )}
                         >
-                        {taskTypeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
+                            {taskTypeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                         </Select>
+                        <FormHelperText>
+                                {! (error["type"]=="")? error["type"]:  ""}
+                        </FormHelperText>
                     </FormControl>
                 </Grid>
                
@@ -662,10 +736,28 @@ const ComponentTask = (props) => {
                         null
                     }
                 <Grid item xs={12} className={classes.contentGrid}>
-                    <TextField id={"title-"+ index} name="title" label="title" variant="filled" onChange={handleChange} value={task.title} fullWidth/>
+                    <TextField 
+                    id={"title-"+ index} 
+                    name="title" 
+                    label="title" 
+                    variant="filled" 
+                    onChange={handleChange} 
+                    value={task.title} 
+                    error = {! (error["title"]=="")}
+                    helperText= {! (error["title"]=="")? error["title"]:  ""}
+                    fullWidth/>
                 </Grid>
                 <Grid item xs={12} className={classes.contentGrid}>
-                    <TextField id={"description-" + index} name="description" label="description" variant="filled" onChange={handleChange} value={task.description} fullWidth/>
+                    <TextField 
+                    id={"description-" + index} 
+                    name="description" 
+                    label="description" 
+                    variant="filled" 
+                    onChange={handleChange} 
+                    value={task.description} 
+                    error = {! (error["description"]=="")}
+                    helperText= {! (error["description"]=="")? error["description"]:  ""}
+                    fullWidth/>
                 </Grid>
 
                 {/* <Grid item xs={12} className={classes.contentGrid}>

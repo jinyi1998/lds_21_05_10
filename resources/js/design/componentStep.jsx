@@ -52,7 +52,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    background: isDraggingOver ? 'lightgrey' : 'lightblue',
 });
 
 const DesignComponentStep = (props) =>

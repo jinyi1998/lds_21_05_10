@@ -26,6 +26,7 @@
         "@material-ui/icons": "^4.9.1",
         "react-beautiful-dnd": "^12.2.0",
         "react-global-configuration": "^1.4.0",
-        "react-model": "^3.0.3"
+        "react-model": "^3.0.3",
+        "validator": "^12.2.0"
     }
 }

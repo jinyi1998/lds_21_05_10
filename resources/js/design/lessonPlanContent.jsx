@@ -67,7 +67,7 @@ const LessonPlanContent = (props) => {
         var time = 0;
         course.lesson[lessonID].tasks.map((_task, index) => 
             // time +=  course.components[_task.componentID].tasks[_task.taskIndex].time
-            time += parseInt(course.components[_task.componentID].pattern.tasks.concat(course.components[_task.componentID].tasks)[_task.taskIndex].time)
+            time += parseInt(course.components.find(x => x.id ==_task.componentID).pattern.tasks.concat(course.components.find(x => x.id ==_task.componentID).tasks)[_task.taskIndex].time)
         );
         return time;
     } 
@@ -81,7 +81,7 @@ const LessonPlanContent = (props) => {
         temp_task = temp_task.filter(_task => _task.componentID != selectComponent);
 
 
-        course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks).map(
+        course.components.find(x => x.id == selectComponent).pattern.tasks.concat(course.components.find(x => x.id == selectComponent).tasks).map(
             (_task, index) => {
                 if(checkBoxState[index]){
                     let temp = {
@@ -133,7 +133,7 @@ const LessonPlanContent = (props) => {
             if(selectComponent != -1){
                 setEditStage(2);
                 let temp = []
-                course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks).map((_data, index) => {
+                course.components.find(x => x.id == selectComponent).pattern.tasks.concat(course.components.find(x => x.id == selectComponent).tasks).map((_data, index) => {
                     if(course.lesson[lessonID].tasks.filter( x => x.componentID == selectComponent && x.taskIndex == index).length > 0){
                         temp.push(true)
                     }else{
@@ -175,7 +175,7 @@ const LessonPlanContent = (props) => {
                                     {
                                         course.components.map(
                                             (_component, index) => (
-                                                <MenuItem value={index} key={index} index = {index}>{_component.title}</MenuItem>
+                                                <MenuItem value={_component.id} key={index} index = {index}>{_component.title}</MenuItem>
                                             )
                                         )
                                     }
@@ -194,7 +194,7 @@ const LessonPlanContent = (props) => {
                     }
                 })
                 filter = [].concat.apply([], filter);
-                let taskOpts =  course.components[selectComponent].pattern.tasks.concat(course.components[selectComponent].tasks)
+                let taskOpts =  course.components.find(x => x.id == selectComponent).pattern.tasks.concat(course.components.find(x => x.id == selectComponent).tasks)
                 // .filter((x, index)=>filter.indexOf(index) == -1);
 
                 return (
@@ -226,7 +226,7 @@ const LessonPlanContent = (props) => {
                                                     TaskData = {_task} 
                                                     index = {index} 
                                                     key = {index}
-                                                    componentData = {course.components[selectComponent]}
+                                                    componentData = {course.components.find(x => x.id == selectComponent)}
                                                     handleTaskUpdate= {()=> {}} 
                                                     onEditTasks = {onEditTask} 
                                                     mode = {taskMode}/>
@@ -270,11 +270,11 @@ const LessonPlanContent = (props) => {
                     (_taskdata, index) => (
                         // console.log(_taskdata)
                         <ComponentTask 
-                            // TaskData = {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex]}
-                            TaskData = {course.components[_taskdata.componentID].pattern.tasks.concat(course.components[_taskdata.componentID].tasks)[_taskdata.taskIndex]}  
+                            // TaskData = {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex]}
+                            TaskData = {course.components.find(x => x.id == _taskdata.componentID).pattern.tasks.concat(course.components.find(x => x.id == _taskdata.componentID).tasks)[_taskdata.taskIndex]}  
                             index = {index} 
                             key = {index}
-                            componentData = {course.components[_taskdata.componentID]}
+                            componentData = {course.components.find(x => x.id == _taskdata.componentID)}
                             handleTaskUpdate= {()=> {}} 
                             onEditTasks = {()=>{onEditLessonTask(_taskdata.componentID, _taskdata.taskIndex)}} 
                             mode = "lesson_view"/> 
@@ -293,7 +293,7 @@ const LessonPlanContent = (props) => {
                     //                         </div>
                     //                     </Grid>
                     //                     <Grid item xs={11} className={classes.contentGrid}>
-                    //                         {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].type}
+                    //                         {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].type}
                     //                     </Grid>
                     //                 </Grid>
                                     
@@ -302,7 +302,7 @@ const LessonPlanContent = (props) => {
                     //                 {/* <ComponentTask 
                     //                             TaskData = {_task} 
                     //                             index = {index} 
-                    //                             componentData = {course.components[selectComponent]}
+                    //                             componentData = {course.components.find(x => x.id == selectComponent)}
                     //                             handleTaskUpdate= {()=> {}} 
                     //                             onEditTasks = {()=>{}} 
                     //                             mode = "view"/> */}
@@ -313,19 +313,19 @@ const LessonPlanContent = (props) => {
                     //                     </Grid>
                     //                     <Grid container item xs={11}>
                     //                         <Grid item xs={12} className={classes.contentGrid}>
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].title}
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].title}
                     //                         </Grid>
 
                     //                         <Grid item xs={12} className={classes.contentGrid}>
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].time} mins | 
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].target} | 
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].classType} | 
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].resource.map(_learningOutcome=> _learningOutcome)} |
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].STEMType.map(_STEMType => _STEMType)}
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].time} mins | 
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].target} | 
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].classType} | 
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].resource.map(_learningOutcome=> _learningOutcome)} |
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].STEMType.map(_STEMType => _STEMType)}
                     //                         </Grid>
 
                     //                         <Grid item xs={12} className={classes.contentGrid}>
-                    //                             {course.components[_taskdata.componentID].tasks[_taskdata.taskIndex].description}
+                    //                             {course.components.find(x => x.id == _taskdata.componentID).tasks[_taskdata.taskIndex].description}
                     //                         </Grid>
 
                     //                     </Grid>

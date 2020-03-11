@@ -9,7 +9,7 @@ const courseInitState = { course: {
         unitTitle: "",
         schoolName: "",
         level: "",
-        noOfLessons: "",
+        noOfLessons: 1,
         courseDes: "",
         designType: "",
         components: [
@@ -216,17 +216,33 @@ export function courseReducer(state, action) {
                 }
             });
         case "DELETE_LEARNINGTASK":
+            let taskpatternIndex = -1;
             tempComponent =  state.course.components.map((_component)=>{
                 if(_component.id === action.value.componentid){
-                  //delete learning task with corresponding index
-                  _component.tasks = _component.tasks.filter(x => x.id != action.value.taskid)
+               
+                    taskpatternIndex = _component.pattern.tasks.concat(_component.tasks).findIndex(x => x.id == action.value.taskid);
+
+                //delete learning task with corresponding index
+                    _component.tasks = _component.tasks.filter(x => x.id != action.value.taskid)
                 //   _component.tasks.splice(action.value.index, 1);
                 }
                 return _component;
               });
+
+            // update lesson => unlink the related task
+            var tempLesson = state.course.lesson;
+            if(taskpatternIndex != -1){
+                tempLesson =  state.course.lesson.map((_lesson)=>{
+                    _lesson.tasks = _lesson.tasks.filter(_lessonTask => !(_lessonTask.componentID == action.value.componentid && _lessonTask.taskIndex == taskpatternIndex));
+                    return _lesson
+                });
+            }
+            
+
               return Object.assign({}, state, {
                 course: {...state.course, 
-                    components: tempComponent
+                    components: tempComponent,
+                    lesson: tempLesson
                 }
             });
         //#endregion

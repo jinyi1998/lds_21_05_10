@@ -17,7 +17,8 @@ const LessonPlanEditTask = (props) => {
     
 
     const onSaveTask = () => {
-        taskData.componentid = course.components[onEditComponentID].id
+        
+        taskData.componentid = onEditComponentID
         dispatch({
             type: "UPDATE_LEARNINGTASK",
             value: taskData
@@ -44,10 +45,10 @@ const LessonPlanEditTask = (props) => {
                     </DialogContentText>
                     <ComponentTask 
                                 // TaskData = {course.components[onEditComponentID].tasks[onEditTasktID]} 
-                                TaskData = {course.components[onEditComponentID].pattern.tasks.concat(course.components[onEditComponentID].tasks)[onEditTasktID]} 
+                                TaskData = {course.components.find(x => x.id == onEditComponentID).pattern.tasks.concat(course.components.find(x => x.id == onEditComponentID).tasks)[onEditTasktID]} 
                                 index = {0} 
                                 key = {0}
-                                componentData = {course.components[onEditComponentID]}
+                                componentData = {course.components.find(x => x.id == onEditComponentID)}
                                 handleTaskUpdate= {handleTaskUpdate} 
                                 onEditTasks = {()=>{}} 
                                 mode = "lesson_edit"/> 

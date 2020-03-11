@@ -9,13 +9,21 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import {ContextStore} from '../container/designContainer'
 
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import RoomIcon from '@material-ui/icons/Room';
+import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
+import GroupIcon from '@material-ui/icons/Group';
+import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
+
+
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
     },
     paper: {
         padding: theme.spacing(2),
-        color: theme.palette.text.secondary,
+        // color: theme.palette.text.secondary,
         width: '100%',
         margin: 16
     },
@@ -133,15 +141,44 @@ const LearningPattern = (props) => {
                         )}
                         </Grid>
 
-                        <Grid item xs={12} className={classes.contentGrid}>
+                        {/* <Grid item xs={12} className={classes.contentGrid}>
                             {TaskData.time} mins | 
                             {taskTargetOpts.find(x => x.id == TaskData.target)?.description } | 
                             {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } | 
                             {TaskData.resource?.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
                             {TaskData.e_resource?.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(','))} |
-                            {/* {TaskData.STEMType.map(_STEMType => _STEMType.concat(','))} */}
-                        </Grid>
+                        </Grid> */}
                         
+
+                        <Grid item xs={12} className={classes.contentGrid}>
+                            <AccessTimeIcon/> {TaskData.time} mins 
+                        </Grid>
+
+                        <Grid item xs={4} className={classes.contentGrid}>
+                            <RoomIcon /> {classTypeOtps.find(x => x.id == TaskData.classType)?.description}
+                        </Grid>
+
+                        <Grid item xs={4} className={classes.contentGrid}>
+                            <GpsNotFixedIcon />  {taskTargetOpts.find(x => x.id == TaskData.target)?.description }
+                        </Grid>
+
+                        <Grid item xs={4} className={classes.contentGrid}>
+                            <GroupIcon /> {taskClassSizeOpts.find(x => x.id == TaskData.size)?.description } 
+                        </Grid>
+
+                        <Grid item xs={12} className={classes.contentGrid}>
+                            <AssignmentIcon /> 
+                            {TaskData.resource.length == 0?
+                                " N/A":
+                                TaskData.resource.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(', '))}
+                        </Grid>
+
+                        <Grid item xs={12} className={classes.contentGrid}>
+                            <ImportantDevicesIcon /> 
+                            {TaskData.e_resource.length == 0? 
+                                " N/A" : 
+                                TaskData.e_resource.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(', '))} 
+                        </Grid>
                         
                         <Grid item xs={12} className={classes.contentGrid}>
                             {TaskData.description}

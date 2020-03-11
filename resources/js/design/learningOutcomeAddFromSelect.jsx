@@ -76,9 +76,7 @@ const LearningOutcomeAddFromSelect = (props) => {
                     <Typography variant="h6" className={classes.title}>
                     Adding new learning outcome
                     </Typography>
-                    <Button autoFocus color="inherit" onClick={outcomeSave}>
-                    save
-                    </Button>
+                   
                 </Toolbar>
             </AppBar>
 
@@ -95,22 +93,22 @@ const LearningOutcomeAddFromSelect = (props) => {
                         labelId="demo-simple-select-required-label"
                         id="demo-simple-select-required"
                         className={classes.selectEmpty}
-                        defaultValue = ''
                         onChange = {(evnet)=>outcomeOnChange(event)}
+                        value = {learningOutcome.description}
                         fullWidth
                         >
                             <MenuItem value='' disabled>
                                 <em>Outcome Type</em>
                             </MenuItem>
                             {
-                                learningOutcomeOpts.map((_opts,key)=> 
+                                learningOutcomeOpts.map((_opts, key)=> 
                                 <MenuItem 
                                     id={_opts.id}
                                     value={_opts.description} 
-                                    level = {_opts.description} 
-                                    outcomeType = {_opts.outcomeType} 
-                                    STEMType = {_opts.STEMType}
-                                    description = {_opts.description}
+                                    // level = {_opts.description} 
+                                    // outcomeType = {_opts.outcomeType} 
+                                    // STEMType = {_opts.STEMType}
+                                    // description = {_opts.description}
                                     key={key}>
                                         {_opts.description}
                                 </MenuItem>)
@@ -119,7 +117,12 @@ const LearningOutcomeAddFromSelect = (props) => {
                         <FormHelperText>Required</FormHelperText>
                     </FormControl>
                 </Grid>
-
+                
+                <Grid item xs={12}>
+                    <Button variant="contained" color="primary" color="primary" onClick={outcomeSave} fullWidth> 
+                        save
+                    </Button>
+                </Grid>
             </Grid>
             </div>
         </React.Fragment> 
