@@ -1,7 +1,7 @@
 const configuration = {
     url: 'localhost:8000',
     enablePattern: true,
-    enableDB: false
+    enableDB: true
 };
  
 export default configuration;

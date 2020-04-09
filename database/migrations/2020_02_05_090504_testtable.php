@@ -14,10 +14,10 @@ class Testtable extends Migration
     public function up()
     {
         //
-        Schema::create('users', function(Blueprint $table)
-        {
-            $table->increments('id');
-        });
+        // Schema::create('users', function(Blueprint $table)
+        // {
+        //     $table->increments('id');
+        // });
     }
 
     /**

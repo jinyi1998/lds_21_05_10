@@ -52,7 +52,7 @@ const LoginForm = () => {
     const classes = useStyles();
     const onClick = (event) => {
         event.preventDefault();
-        window.location.href = "/app";
+        window.location.href = "/mydesign";
     };
 
     return (

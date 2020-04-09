@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Component from './component';
+import Component from './component/component';
+import ComponentContainer from './component/componentContainer';
 import { Grid } from '@material-ui/core';
 import {ContextStore} from '../container/designContainer'
 import InstructionBox from '../components/instructionBox';
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 const UnitPlan = (props)  => {
   const classes = useStyles();
   const { course, dispatch } = React.useContext(ContextStore);
-
+  
   return (
     <div className={classes.root}>
         <Grid container spacing = {3}>
@@ -32,9 +33,15 @@ const UnitPlan = (props)  => {
                     tips=""
                 />
             </Grid>
-            {course.components.map((_components, index)=>(
+            {/* {course.componentid.map((_component, index)=>(
                 <Grid item xs={12} key = {index}>
-                    <Component componentData = {_components} key= {index} index = {index}/>
+                    <ComponentContainer componentID = {_component.component_id} key= {index} index = {index}/>
+                </Grid>
+            ))} */}
+
+            {course.components.map((_component, index)=>(
+                <Grid item xs={12} key = {index}>
+                    <ComponentContainer component = {_component} componentID = {_component.id} key= {index} index = {index}/>
                 </Grid>
             ))}
         </Grid>

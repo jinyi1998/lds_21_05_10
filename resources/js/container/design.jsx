@@ -10,9 +10,9 @@ import DesignStepper from '../design/designStepper';
 
 import DesignType from '../design/approachType';
 import DesignInfo from '../design/courseInfo';
-import DesignComponentStep from '../design/componentStep';
+import DesignComponentStep from '../design/component/componentStep';
 import BasicReview from '../design/basicReview';
-import LearningOutcomeToDo from '../design/learningOutcomeToDo';
+import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
 
 
 import Menu from '@material-ui/core/Menu';
@@ -153,7 +153,7 @@ const Design = (props) => {
   const [activePage, setActionPage] = React.useState('basic');
   const [activeStep, setActiveStep] = React.useState(0);
   
-  const { course, dispatch, setLoadingOpen } = React.useContext(ContextStore);
+  const { course, dispatch, options, setLoadingOpen } = React.useContext(ContextStore);
   
   //#region data init
   //preload learningOutcome (Unit Level)
@@ -177,183 +177,142 @@ const Design = (props) => {
 
   //preload learningComponent
   async function fetchlearningComponentTempData() {
-
-      const res = await fetch(
-          'http://'+config.get('url')+'/api/learningComponent/getDefaultLearningComponentByDesignType/'+ course.designType,
-          {
-          method: "GET",
-          }
-      )
-      .then(res => res.json())
-      .then(response => {
-          //load the default learning outcomes by api request
-
-          response.map( _respond => {
-            //learning Task
-            fetchlearningPatternID(_respond.id).then(patternID => {
-              let pattern = {
-                "id": patternID[0],
-                "tasks": []
-              }
-              //default first pattern
-              fetchlearningTaskByPattern(patternID[0]).then(taskData => {
-                if(config.get("enablePattern") ){
-                  pattern.tasks = taskData;
-                  // _respond.pattern = pattern;
-                }else{
-                  _respond.tasks = taskData;
-                }
-                _respond.pattern = pattern;
-              })
-              _respond.patternOptsID = patternID;
-            });
-
-            //learning outcomes
-            fetchlearningOutcomes(_respond.id).then(learningOutcomes => {
-              learningOutcomes.map(learningOutcome => {
-                learningOutcome.id = -1;
-                //auto match the component
-                learningOutcome.componentid = _respond.id;
-                dispatch({
-                  type: "ADD_LEARNINGOUTCOME",
-                  value: learningOutcome
-                })
-  
-              });
-             
-            })
-          });
-          dispatch({
-            type: "SET_COMPONENT",
-            value: response
-          })    
+    updateCourse();
+    const res = await fetch(
+      'http://'+config.get('url')+'/api/learningComponent/getDefaultLearningComponentByDesignType2/'+ course.designType,
+      {
+      method: "GET",
+      }
+    ).then(res => res.json())
+    .then(response => {
+        response.map( (templateID, index) => {
+        // learning componet
+        getComponentTemplateFata(templateID).then(component => {
+          component.component_template_id = component.id
+          component.course_id = course.id
+          component.sequence = index + 1
+          importComponentTemplateToComponent(component)
+        });
       })
-      .catch(error => console.log(error));
-
+    })
   }
+
+  async function getComponentTemplateFata(id) {
+
+    return await fetch(
+      'http://'+config.get('url')+'/api/learningComponentTemplate/'+ id,
+      {
+      method: "GET",
+      }
+    ).then(res => res.json())
+  }
+
+  async function importComponentTemplateToComponent(componentTemplate) {
+    return await fetch(
+      'http://'+config.get('url')+'/api/learningComponent',
+      {
+        method: "POST",
+        body:  JSON.stringify(componentTemplate),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }
+    ).then(res => res.json())
+    .then(response => {
+      return response;
+    })
+  }
+
+  async function updateCourse() {
+    setLoadingOpen(true)  
+
+    var json = {
+        "design_type_id": course.designType,
+    };
+    const res = await fetch(
+        'http://'+config.get('url')+'/api/course/'+ course.id,
+        {
+          method: "PUT",
+          body:  JSON.stringify(json),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }
+    )
+        .then(res => res.json())
+        .then(response => {
+            dispatch({
+                type: "INIT_COURSE",
+                value: response
+            })
+            setLoadingOpen(false)
+    })
+    .catch(error => console.log(error));
+}
 
   //preload learningTask
-  async function fetchlearningTaskTempData(id) {
-    return await fetch(
-        'http://'+config.get('url')+'/api/learningTask/getDefaultLearningTaskByComponent/'+ id,
-        {
-        method: "GET",
-        }
-    )
-    .then(res => res.json())
-    .then(response => {
-        //load the default learning outcomes by api request
-        return response;
-    })
-    .catch(error => console.log(error));
-  }
-
-  async function fetchlearningPatternID(id) {
-    return await fetch(
-        'http://'+config.get('url')+'/api/learningTask/getLearningPatternByComponent/'+ id,
-        {
-        method: "GET",
-        }
-    )
-    .then(res => res.json())
-    .then(response => {
-        //load the default learning outcomes by api request
-        return response;
-    })
-    .catch(error => console.log(error));
-  }
-
-  async function fetchlearningTaskByPattern(id) {
-    return await fetch(
-        'http://'+config.get('url')+'/api/learningTask/getLearningTaskByPattern/'+ id,
-        {
-        method: "GET",
-        }
-    )
-    .then(res => res.json())
-    .then(response => {
-        //load the default learning outcomes by api request
-        return response;
-    })
-    .catch(error => console.log(error));
-  }
-
-  async function fetchlearningOutcomes(id) {
-    return await fetch(
-        'http://'+config.get('url')+'/api/learningOutcome/getLearningOutcomeByComponentTemp/'+ id,
-        {
-        method: "GET",
-        }
-    )
-    .then(res => res.json())
-    .then(response => {
-        //load the default learning outcomes by api request
-        return response;
-    })
-    .catch(error => console.log(error));
-  }
-
   async function saveCourse(){
-    setLoadingOpen(true);
-    if(config.get('enableDB')){
-      if(courseID == -1){
-        return await fetch(
-          'http://'+config.get('url')+'/api/course/test',
-          {
-            method: "POST",
-            body:  JSON.stringify(course),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-          }
-          }
-      )
-      .then(res => res.json())
-      .then(response => {
-          //load the default learning outcomes by api request
-          location.href = "app";
-          setLoadingOpen(false);
-          return response;
-      })
-      .catch(error => console.log(error));
-      }else{
-        return await fetch(
-              'http://'+config.get('url')+'/api/course/'+courseID,
-              {
-                method: "PUT",
-                body:  JSON.stringify(course),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-              }
-              }
-          )
-          .then(res => res.json())
-          .then(response => {
-              //load the default learning outcomes by api request
-              location.href = "app";
-              setLoadingOpen(false);
-              return response;
-          })
-          .catch(error => console.log(error));
-      }
-    }else{
-      return await fetch(
-              'http://'+config.get('url')+'/api/file/json',
-              {
-                method: "POST",
-                body:  JSON.stringify(course),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-              }
-              }
-          )
-          .then(res => {  
-            setLoadingOpen(false);
-            window.open('http://'+config.get('url')+'/api/file');
-            // location.href = "app";
-            return response;
-          })
-          .catch(error => console.log(error));    
-    }
+    // setLoadingOpen(true);
+    // if(config.get('enableDB')){
+    //   if(courseID == -1){
+    //     return await fetch(
+    //       'http://'+config.get('url')+'/api/course',
+    //       {
+    //         method: "POST",
+    //         body:  JSON.stringify(course),
+    //         headers: {
+    //           "Content-type": "application/json; charset=UTF-8"
+    //         }
+    //       }
+    //   )
+    //   .then(res => res.json())
+    //   .then(response => {
+    //       //load the default learning outcomes by api request
+    //       location.href = "app";
+    //       setLoadingOpen(false);
+    //       return response;
+    //   })
+    //   .catch(error => console.log(error));
+    //   }else{
+    //     return await fetch(
+    //           'http://'+config.get('url')+'/api/course/'+courseID,
+    //           {
+    //             method: "PUT",
+    //             body:  JSON.stringify(course),
+    //             headers: {
+    //               "Content-type": "application/json; charset=UTF-8"
+    //           }
+    //           }
+    //       )
+    //       .then(res => res.json())
+    //       .then(response => {
+    //           //load the default learning outcomes by api request
+    //           location.href = "app";
+    //           setLoadingOpen(false);
+    //           return response;
+    //       })
+    //       .catch(error => console.log(error));
+    //   }
+    // }else{
+    //   return await fetch(
+    //           'http://'+config.get('url')+'/api/file/json',
+    //           {
+    //             method: "POST",
+    //             body:  JSON.stringify(course),
+    //             headers: {
+    //               "Content-type": "application/json; charset=UTF-8"
+    //           }
+    //           }
+    //       )
+    //       .then(res => {  
+    //         setLoadingOpen(false);
+    //         window.open('http://'+config.get('url')+'/api/file');
+    //         // location.href = "app";
+    //         return response;
+    //       })
+    //       .catch(error => console.log(error));    
+    // }
+    window.location.href = "/mydesign";
   }
 
   //#endregion
@@ -361,9 +320,18 @@ const Design = (props) => {
   // init the data once design type is changed
   React.useEffect(() => {
       if(courseID != -1){
+        // if(course.component.length == 0){
+
+        // }else if(course.unit_title == ""){
+        //   setActiveStep(1);
+        // }else{
+        //   return setActionPage('unitPlan');
+        // }
+
         return setActionPage('unitPlan');
+       
       }
-      if(course.designType != ""){
+      if(course.designType != "" && course.designType != null){
         fetchlearningTypeTempData();
         fetchlearningComponentTempData();
         handleNext();
@@ -419,7 +387,7 @@ const Design = (props) => {
       case 2:
         return (
           <React.Fragment>
-             <LearningOutcomeToDo />
+             <LearningOutcomeContainer />
              <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>
@@ -518,7 +486,7 @@ const Design = (props) => {
           return( 
           <React.Fragment>
             <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <LearningOutcomeToDo  />
+            <LearningOutcomeContainer  />
        </React.Fragment>);
       case 'review':
         return( 

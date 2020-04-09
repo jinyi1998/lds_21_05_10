@@ -31,6 +31,24 @@ Route::get('/app2', function () {
     return view('app2');
 }); 
 
+Route::get('/designstudio', function () {
+    return view('designstudio', ["courseid" => -1]);
+}); 
+
+Route::get('/designstudio/{id}', function ($id) {
+    return view('designstudio', ["courseid" => $id]);
+}); 
+
+Route::get('/mydesign', function () {
+    return view('mydesign');
+}); 
+
+Route::get('/publicdesign', function () {
+    return view('designstudio');
+}); 
+
+
+
 // Route::get('/design', function () {
 //     return view('design');
 // });

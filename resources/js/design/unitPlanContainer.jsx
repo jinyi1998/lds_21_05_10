@@ -9,7 +9,7 @@ import { Grid } from '@material-ui/core';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import UnitPlan from './unitPlan';
-import LessonPlan from './lessonPlan';
+import LessonPlan from './lesson/lessonPlan';
 
 const useStyles = makeStyles(theme => ({
     root: {

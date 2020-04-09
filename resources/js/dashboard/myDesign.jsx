@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
@@ -14,19 +15,19 @@ const MyDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
 
-    const {setImportJson} = props;
-    const {handleListItemClick, setCourseID} = props;
+    // const {setImportJson} = props;
+    // const {handleListItemClick, setCourseID} = props;
 
-    let fileReader = new FileReader();
-    fileReader.onload = event => {
-        setImportJson(JSON.parse(event.target.result));
-        setCourseID(1);
-        handleListItemClick(event, 'design');
-    };
+    // let fileReader = new FileReader();
+    // fileReader.onload = event => {
+    //     setImportJson(JSON.parse(event.target.result));
+    //     setCourseID(1);
+    //     handleListItemClick(event, 'design');
+    // };
 
-    const handleFile = (event) => {
-        fileReader.readAsText(event.target.files[0])
-    }
+    // const handleFile = (event) => {
+    //     fileReader.readAsText(event.target.files[0])
+    // }
 
     //call api to get the data
     async function fetchData() {
@@ -39,48 +40,19 @@ const MyDesign = (props)=>{
         )
             .then(res => res.json())
             .then(response => {
-            setCourseList(response);
-            // console.log(courseList);
-            // console.log(response);
+                setCourseList(response);
+                // console.log(response);
         })
         .catch(error => console.log(error));
 
     }
     
     React.useEffect(() => {
-        if(config.get('enableDB')){
-            fetchData();
-        }
+        // if(config.get('enableDB')){
+        //     fetchData();
+        // }
+        fetchData();
     }, []);
-
-
-    const buttonOnClick = (event) => {
-        handleListItemClick(event, 'design');
-        setCourseID(-1);
-    }
-
-    const displayCourseList = () => {
-        if(Object.entries(courseList).length === 0 && courseList.constructor === Object || courseList.length == 0){
-            return (
-                <ListItem>
-                  no available design
-                </ListItem>
-            );
-        }else{
-            return (
-            <div>
-                {Object.keys(courseList).map((_key_courseList) =>  
-                    <DesigmItem 
-                    key ={_key_courseList} 
-                    courseData = {courseList[_key_courseList]}
-                    setCourseID = {setCourseID} 
-                    handleListItemClick = {handleListItemClick}
-                /> ) }
-            </div>);
-        }
-    }
-
-
 
     return (
         <React.Fragment>
@@ -94,27 +66,7 @@ const MyDesign = (props)=>{
                  
                 <Grid item xs = {4}>
                     
-                    {config.get("enableDB")?  
-                        null
-                        :
-                        (
-                            
-                        <React.Fragment>
-                            <Button
-                            variant="contained"
-                            component="label"
-                            >
-                                <CloudUploadIcon />
-                                Upload File
-                                <input
-                                    type="file"
-                                    onChange = {handleFile}
-                                    hidden
-                                />
-                            </Button>
-                        </React.Fragment>)
-                    }
-                    <Button variant="contained" color="primary" onClick={ (event)=> buttonOnClick(event) }>
+                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
                         Add new design
                     </Button>
                 </Grid>
@@ -122,9 +74,19 @@ const MyDesign = (props)=>{
                 <Grid item xs = {12}>
                     <Paper>
                         <List>
-                            <div>
-                                {displayCourseList()}
-                            </div>
+                           {
+                               courseList.length == 0? 
+                                <ListItem>
+                                    no available design
+                                </ListItem>
+                                :
+                                courseList.map(_course => 
+                                    <DesigmItem 
+                                        key ={_course} 
+                                        courseData = {_course}
+                                    />
+                                )
+                           }
                         </List>
                     </Paper>
                 </Grid>
@@ -133,3 +95,6 @@ const MyDesign = (props)=>{
     );
 }
 export default MyDesign;
+if (document.getElementById('mydesign')) {
+    ReactDOM.render(<MyDesign/>, document.getElementById('mydesign'));
+}

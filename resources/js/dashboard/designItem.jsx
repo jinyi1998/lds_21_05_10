@@ -12,21 +12,19 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 const DesignItem = (props) => {
-    const {courseData, setCourseID, handleListItemClick} = props;
-    const test = JSON.parse(courseData.data);
-    console.log(courseData);
+    const {courseData} = props;
     const updated_at = courseData.updated_at;
 
     const onClick = () => {
-        handleListItemClick(event, 'design');
-        setCourseID(courseData.id);
+        window.location.href = "designstudio/"+ courseData.id;
     }
+
     return (
         <ListItem button onClick={()=>onClick()}>
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary={test.unitTitle+" - "+test.courseDes}  secondary={updated_at} />
+            <ListItemText primary={courseData.unit_title+" - "+courseData.description}  secondary={updated_at} />
             <ListItemSecondaryAction>
                 Delete | Duplicated  
             </ListItemSecondaryAction>

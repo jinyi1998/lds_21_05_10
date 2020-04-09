@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {ContextStore} from '../container/designContainer'
+import config from 'react-global-configuration';
 import validator from 'validator';
 
 const useStyles = makeStyles(theme => ({
@@ -22,38 +23,40 @@ const useStyles = makeStyles(theme => ({
 const DesignInfo = (props) => {
 
   const classes = useStyles();
-  const { course, options, dispatch } = React.useContext(ContextStore);
+  const { course, options, dispatch, setLoadingOpen } = React.useContext(ContextStore);
 
-  const [courseData, setCourseData] = React.useState(course);
+  const [ courseData, setCourseData ] = React.useState(course);
+  const [ lesson_time, setLessonTime ] = React.useState(45);
+
   const [error, setError] = React.useState({
-    "unitTitle": "",
-    "schoolName": "",
+    "unit_title": "",
     "level": "",
-    "noOfLessons": "",
-    "courseDes": "",
+    "no_of_lesson": "",
+    "description": "",
+    "lesson_time": "",
   });
   
   const validate = () => {
     var validated = true;
     var tempError = {
-      "unitTitle": "",
-      "schoolName": "",
+      "unit_title": "",
       "level": "",
-      "noOfLessons": "",
-      "courseDes": "",
+      "no_of_lesson": "",
+      "description": "",
+      "lesson_time": "",
     }
 
-    if(validator.isEmpty(courseData.unitTitle.toString())){
-      tempError["unitTitle"] = "Please enter the course unit title";
+    if(validator.isEmpty(courseData.unit_title.toString())){
+      tempError["unit_title"] = "Please enter the course unit title";
       // setError({...error, unitTitle: "Please enter the course unit title"})
       validated = false;
     }
 
-    if(validator.isEmpty(courseData.schoolName.toString())){
-      tempError["schoolName"] = "Please enter the school name";
-      // setError({...error, schoolName: "Please enter the school name"})
-      validated = false;
-    }
+    // if(validator.isEmpty(courseData.schoolName.toString())){
+    //   tempError["schoolName"] = "Please enter the school name";
+    //   // setError({...error, schoolName: "Please enter the school name"})
+    //   validated = false;
+    // }
 
     if(validator.isEmpty(courseData.level.toString())){
       tempError["level"] = "Please enter the course level";
@@ -61,14 +64,20 @@ const DesignInfo = (props) => {
       validated = false;
     }
 
-    if(!validator.isInt(courseData.noOfLessons.toString(), {min: 1, max: 100})){
-       tempError["noOfLessons"] = "Please enter the number of lessons between 1 and 100";
-       setError({...error, noOfLessons: "error"})
+    if(!validator.isInt(courseData.no_of_lesson.toString(), {min: 1, max: 100})){
+       tempError["no_of_lesson"] = "Please enter the number of lessons between 1 and 100";
+      //  setError({...error, no_of_lesson: "error"})
        validated = false;
     }
 
-    if(validator.isEmpty(courseData.courseDes.toString())){
-      tempError["courseDes"] = "Please enter the course description";
+    if(!validator.isInt(lesson_time.toString(), {min: 1, max: 120})){
+      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 12-";
+     //  setError({...error, no_of_lesson: "error"})
+      validated = false;
+   }
+
+    if(validator.isEmpty(courseData.description.toString())){
+      tempError["description"] = "Please enter the course description";
       // setError({...error, courseDes: "Please enter the course description"})
       validated = false;
     }
@@ -78,49 +87,99 @@ const DesignInfo = (props) => {
   }
 
   const onChange = (event) => {
-
-
-    setCourseData( {...courseData, [event.target.id]: event.target.value} 
-    );
-
-    // handleUpdate(event.target.name, event.target.value);
-    // dispatch({
-    //   type: event.target.name,
-    //   value: event.target.value
-    // });
+    if(event.target.id == "lesson_time"){
+      setLessonTime(event.target.value);
+    }
+    else{
+      setCourseData( {...courseData, [event.target.id]: event.target.value});
+    }   
   }
 
   const onNext = () => {
     if(validate()){
-      dispatch({
-        type: "UNIT_TITLE",
-        value: courseData.unitTitle
-      });
+      // dispatch({
+      //   type: "UNIT_TITLE",
+      //   value: courseData.unitTitle
+      // });
   
-      dispatch({
-        type: "SCHOOL_NAME",
-        value: courseData.schoolName
-      });
+      // dispatch({
+      //   type: "SCHOOL_NAME",
+      //   value: courseData.schoolName
+      // });
   
-      dispatch({
-        type: "LEVEL",
-        value: courseData.level
-      });
+      // dispatch({
+      //   type: "LEVEL",
+      //   value: courseData.level
+      // });
   
-      dispatch({
-        type: "NO_OF_LESSON",
-        value: courseData.noOfLessons
-      });
+      // dispatch({
+      //   type: "NO_OF_LESSON",
+      //   value: courseData.noOfLessons
+      // });
   
-      dispatch({
-        type: "COURSE_DES",
-        value: courseData.courseDes
-      });
+      // dispatch({
+      //   type: "COURSE_DES",
+      //   value: courseData.courseDes
+      // });
+      updateCourse();
   
       handleNext();
     }
-    
   }
+
+  async function updateCourse() {
+    setLoadingOpen(true)
+    for(var i = 0; i<courseData.no_of_lesson; i++){
+      var lessonjson = {
+        "time": lesson_time,
+        "title": 'Lesson' + (i+1),
+        "sequence": i + 1,
+        "course_id": course.id,
+      };
+      await fetch(
+        'http://'+config.get('url')+'/api/lesson',
+        {
+          method: "POST",
+          body:  JSON.stringify(lessonjson),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }
+      )
+          .then(res => res.json())
+          .then(response => {
+              setLoadingOpen(false)
+      })
+      .catch(error => console.log(error));
+    }
+    
+
+    var json = {
+        "unit_title": courseData.unit_title,
+        "level": courseData.level,
+        "no_of_lesson": courseData.no_of_lesson,
+        "description": courseData.description,
+    };
+    const res = await fetch(
+        'http://'+config.get('url')+'/api/course/'+ course.id,
+        {
+          method: "PUT",
+          body:  JSON.stringify(json),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        }
+    )
+        .then(res => res.json())
+        .then(response => {
+            dispatch({
+                type: "INIT_COURSE",
+                value: response
+            })
+            setLoadingOpen(false)
+    })
+    .catch(error => console.log(error));
+}
 
   const {handleNext, handleBack} =  props;
 
@@ -128,23 +187,23 @@ const DesignInfo = (props) => {
     <React.Fragment>
 
       <Typography variant="h6" gutterBottom>
-          Design type: STEM ({options.designType.find(x => x.id== course.designType)?.name})
+          Design type: STEM ({options.designType.find(x => x.id== course.design_type_id)?.name})
       </Typography>
 
       <Grid container spacing={5}>
-        <Grid item xs={6} md={6}>
+        <Grid item xs={12} md={12}>
           <TextField  
-          id="unitTitle" 
-          name="UNIT_TITLE" 
+          id="unit_title" 
+          name="unit_title" 
           label="Unit Title" 
-          value = {courseData.unitTitle}
-          error = {! (error["unitTitle"]=="")}
-          helperText= {! (error["unitTitle"]=="")? error["unitTitle"]:  ""}
+          value = {courseData.unit_title}
+          error = {! (error["unit_title"]=="")}
+          helperText= {! (error["unit_title"]=="")? error["unit_title"]:  ""}
           fullWidth 
           onChange={onChange}/>
         </Grid>
 
-        <Grid item xs={6} md={6}>
+        {/* <Grid item xs={6} md={6}>
           <TextField 
           id="schoolName" 
           name="SCHOOL_NAME"
@@ -154,12 +213,12 @@ const DesignInfo = (props) => {
           helperText= {! (error["schoolName"]=="")? error["schoolName"]:  ""}
           fullWidth 
           onChange={onChange}/>
-        </Grid>
+        </Grid> */}
         
         <Grid item xs={12} md={6}>
           <TextField 
             id="level" 
-            name="LEVEL" 
+            name="level" 
             label="Level" 
             value = {courseData.level}
             error = {! (error["level"]=="")}
@@ -170,13 +229,27 @@ const DesignInfo = (props) => {
 
         <Grid item xs={12} md={6}>
           <TextField 
-            id="noOfLessons" 
-            name="NO_OF_LESSON" 
+            id="lesson_time" 
+            name="lesson_time" 
+            label="Time per lesson" 
+            type="number"
+            value = {lesson_time}
+            error = {! (error["lesson_time"]=="")}
+            helperText= {! (error["lesson_time"]=="")? error["lesson_time"]:  ""}
+            fullWidth 
+            InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
+            onChange={onChange} />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <TextField 
+            id="no_of_lesson" 
+            name="no_of_lesson" 
             label="No. Of Lesson" 
             type="number"
-            value = {courseData.noOfLessons}
-            error = {! (error["noOfLessons"]=="")}
-            helperText= {! (error["noOfLessons"]=="")? error["noOfLessons"]:  ""}
+            value = {courseData.no_of_lesson}
+            error = {! (error["no_of_lesson"]=="")}
+            helperText= {! (error["no_of_lesson"]=="")? error["no_of_lesson"]:  ""}
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
             onChange={onChange} />
@@ -185,13 +258,13 @@ const DesignInfo = (props) => {
         
         <Grid item xs={12} md={12}>
           <TextField 
-            id="courseDes" 
-            name="COURSE_DES" 
-            value = {courseData.courseDes} 
+            id="description" 
+            name="description" 
+            value = {courseData.description} 
             label="Course Description" 
             multiline
-            error = {! (error["courseDes"]=="")}
-            helperText= {! (error["courseDes"]=="")? error["courseDes"]:  ""}
+            error = {! (error["description"]=="")}
+            helperText= {! (error["description"]=="")? error["description"]:  ""}
             fullWidth 
             rows={5}
             onChange={onChange}/>

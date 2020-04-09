@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Course;
+
 
 class CourseController extends Controller
 {
@@ -76,8 +78,10 @@ class CourseController extends Controller
     {
         // pattern 
         // id => courseJson
-        $list = DB::table('demo')->select('id','data', 'updated_at')->get();
-        return response()->json($list);
+
+        // $list = DB::table('demo')->select('id','data', 'updated_at')->get();
+        // return response()->json($list);
+        return response()->json(Course::all());
     }
 
     /**
@@ -88,11 +92,21 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        $id = DB::table('demo')->insertGetId(
-            ['data' => json_encode($input)]
-        );
-        return response()->json($id);
+        // $input = $request->all();
+        // $id = DB::table('demo')->insertGetId([
+        //     'data' => json_encode($input)
+        //     , 'created_by' => 1
+        //     , 'updated_by' => 1
+        //     , 'is_deleted' => false
+        //     , 'created_at' => now()
+        //     , 'updated_at' => now()
+        // ]);
+        // return response()->json($id);
+
+        $course = new Course();
+        $course = CourseController::save($course, $request);
+
+        return CourseController::show($course->id);
     }
 
     /**
@@ -101,10 +115,12 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public static function show($id)
     {
         //
-        $course = DB::table('demo')->find($id);
+        // $course = DB::table('demo')->find($id);
+        // return response()->json($course);
+        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid'])->find($id);
         return response()->json($course);
     }
 
@@ -118,9 +134,13 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $input = $request->all();
-        $respond =  DB::table('demo')->where('id', $id)->update(['data' => json_encode($input), 'updated_at' =>now()]);
-        return response()->json($respond);
+        // $input = $request->all();
+        // $respond =  DB::table('demo')->where('id', $id)->update(['data' => json_encode($input), 'updated_at' =>now()]);
+        // return response()->json($respond);
+        $course = Course::find($id);
+        $course = CourseController::save($course, $request);
+        return CourseController::show($course->id);
+
     }
 
     /**
@@ -132,16 +152,40 @@ class CourseController extends Controller
     public function destroy($id)
     {
         //
+    } 
+
+    public static function save(Course $course, Request $request){
+
+        if($request->has('unit_title')){
+            $course->unit_title = $request->unit_title;
+        }
+        if($request->has('level')){
+            $course->level = $request->level;
+        }
+        if($request->has('no_of_lesson')){
+            $course->no_of_lesson = $request->no_of_lesson;
+        }
+        if($request->has('description')){
+            $course->description = $request->description;
+        }
+        if($request->has('design_type_id')){
+            $course->design_type_id = $request->design_type_id;
+        }
+
+        // if($request->has('componentid')){
+        //     foreach($request->componentid as $_component){
+        //         $course->componentid = $request->design_type_id;
+        //     }   
+        // }
+        $course->created_by = 1;
+        $course->updated_by = 1;
+        $course->is_deleted = 0;
+        $course->updated_at = now();
+        $course->save();
+
+        return $course;
     }
 
-    public function test(Request $request)
-    {
-        $input = $request->all();
-        $id = DB::table('demo')->insertGetId(
-            ['data' => json_encode($input), 'created_at' => now(), 'updated_at' => now()]
-        );
-        return response()->json($id);
-    }
 
     public function getDesignTypeTemp(){
         return response()->json([

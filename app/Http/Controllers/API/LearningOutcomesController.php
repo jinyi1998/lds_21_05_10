@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\LearningOutcome;
 
 class LearningOutcomesController extends Controller
 {
@@ -15,7 +16,8 @@ class LearningOutcomesController extends Controller
     public function index()
     {
         //
-        return "hello world";
+        $outcomes = LearningOutcome::All();
+        return response()->json($outcomes);
     }
 
     /**
@@ -24,9 +26,12 @@ class LearningOutcomesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public static function store(Request $request)
     {
         //
+        $outcome = new LearningOutcome;
+        $outcome = LearningOutcomesController::save($outcome, $request);
+        return response()->json($outcome);
     }
 
     /**
@@ -38,6 +43,8 @@ class LearningOutcomesController extends Controller
     public function show($id)
     {
         //
+        $outcome = LearningOutcome::with(['componentid'])->find($id);
+        return response()->json($outcome);
     }
 
     /**
@@ -50,6 +57,26 @@ class LearningOutcomesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $outcome = LearningOutcome::find($id);
+        $outcome->level = $request->level;
+        $outcome->description = $request->description;
+        $outcome->STEMType = $request->STEMType;
+        $outcome->isCourseLevel = $request->isCourseLevel;
+        $outcome->updated_by = 1;
+        $outcome->is_deleted = 0;
+        $outcome->updated_at = now();
+
+        if($request->has('component_id')){
+            $outcome->componentid()->create([
+                'outcome_id' => $pattern->id,
+                'component_id' => $request->component_id,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0
+            ]);
+        }
+
+        $outcome->save();
     }
 
     /**
@@ -61,6 +88,45 @@ class LearningOutcomesController extends Controller
     public function destroy($id)
     {
         //
+        $outcome = LearningOutcome::find($id);
+        $outcome->delete();
+        return response()->json("");
+    }
+
+    public static function save(LearningOutcome $outcome, Request $request){
+        $outcome->level = $request->level;
+        $outcome->outcomeType = $request->outcomeType;
+        $outcome->description = $request->description;
+        $outcome->STEMType = $request->STEMType;
+        $outcome->isCourseLevel = $request->isCourseLevel;
+        $outcome->created_by = 1;
+        $outcome->updated_by = 1;
+        $outcome->is_deleted = 0;
+        $outcome->created_at = now();
+        $outcome->updated_at = now();
+
+        $outcome->save();
+
+        if($request->has('component_id')){
+            $outcome->componentid()->create([
+                'outcome_id' => $outcome->id,
+                'component_id' => $request->component_id,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0
+            ]);
+        }
+
+        if($request->has('course_id') && $outcome->isCourseLevel == true){
+            $outcome->courseid()->create([
+                'outcome_id' => $outcome->id,
+                'course_id' => $request->course_id,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0
+            ]);
+        }   
+        return $outcome;
     }
 
     public function getDefaultOutcomeByLearningType($id){

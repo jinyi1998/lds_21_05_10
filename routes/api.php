@@ -17,11 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::resource('opts', 'API\LearningTaskOptsController');
+
 //Course Controller
 Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
 Route::resource('course', 'API\CourseController');
-Route::post('course/test', 'API\CourseController@test');
 
+
+//File System
 Route::post('file/json', 'API\FileSystemController@json');
 Route::get('file', 'API\FileSystemController@index');
 
@@ -33,14 +36,31 @@ Route::get('learningOutcome/getDefaultOutcomeByLearningType/{id}', 'API\Learning
 Route::resource('learningOutcome', 'API\LearningOutcomesController');
 
 //Learning Component Controller
-Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
-'API\LearningComponentController@getDefaultLearningComponentByDesignType');
+// Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
+// 'API\LearningComponentController@getDefaultLearningComponentByDesignType');
 
-Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
-'API\LearningComponentController@getDefaultLearningComponentByDesignType');
+Route::get('learningComponent/getDefaultLearningComponentByDesignType2/{id}', 
+'API\LearningComponentController@getDefaultLearningComponentByDesignType2');
+
 
 Route::get('learningComponent/getLearningComponentByDesignType/{id}', 
 'API\LearningComponentController@getLearningComponentByDesignType');
+
+Route::get('learningComponent/getPatternOpts/{id}', 
+'API\LearningComponentController@getPatternOpts');
+
+Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
+'API\LearningComponentController@getDefaultLearningComponentByDesignType');
+
+Route::resource('learningComponent', 'API\LearningComponentController');
+
+
+//Learning Pattern Controller
+Route::put('learningPattern/unlockPattern/{id}', 
+'API\LearningPatternController@unlockPattern');
+Route::resource('learningPattern', 
+'API\LearningPatternController');
+
 
 //Learning Task Controller
 Route::get('learningTask/getDefaultLearningTaskByComponent/{id}', 
@@ -79,3 +99,13 @@ Route::get('learningTask/getTaskELeraningResourceTypeOption',
 Route::get('learningTask/getLearningPatternOpts', 
 'API\LearningTaskController@getLearningPatternOpts');
 
+Route::resource('learningTask', 'API\LearningTaskController');
+
+//Learning Lesson
+Route::resource('lesson', 'API\LessonController');
+
+
+//template related
+Route::resource('learningComponentTemplate', 'API\LearningComponentTemplateController');
+Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
+Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');

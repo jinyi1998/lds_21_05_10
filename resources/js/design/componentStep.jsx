@@ -7,7 +7,7 @@ import {
 
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import  DesignComponentItem  from './componentItem';
+import  DesignComponentItem  from './component/componentItem';
 import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../container/designContainer'
 import InstructionBox from '../components/instructionBox';
@@ -168,7 +168,7 @@ const DesignComponentStep = (props) =>
       .then(res => res.json())
       .then(response => {
           //load the default learning outcomes by api request
-          console.log(response);
+          // console.log(response);
           return response;
       })
       .catch(error => console.log(error));

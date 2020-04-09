@@ -18,8 +18,11 @@ class Demo extends Migration
         {
             $table->increments('id');
             $table->json('data');
-            $table->smallInteger('createBy');
-            $table->timestamps(0);
+            $table->smallInteger('created_by');
+            $table->smallInteger('updated_by');
+            $table->boolean('is_deleted');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
@@ -30,6 +33,6 @@ class Demo extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('demo');
     }
 }
