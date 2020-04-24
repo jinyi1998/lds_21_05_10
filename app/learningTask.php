@@ -69,7 +69,6 @@ class LearningTask extends Model
     }
 
 
-
     public function assessment(){
         return $this->hasManyThrough(
             'App\LearningOutcome',
@@ -79,6 +78,17 @@ class LearningTask extends Model
             'id', // local table local id
             'learningoutcome_id' //middle relation table target id
         );
+    }
+
+    public function assessment_with_component(){
+        return $this->hasManyThrough(
+            'App\LearningOutcome',
+            'App\TaskAssessmentRelation',
+            'learningtask_id', //middle retioan table local id
+            'id', // target table target id
+            'id', // local table local id
+            'learningoutcome_id' //middle relation table target id
+        )->with(['component']);
     }
 
 

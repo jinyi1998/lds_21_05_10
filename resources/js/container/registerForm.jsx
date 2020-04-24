@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import config from 'react-global-configuration';
+import validator from 'validator';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -34,10 +36,100 @@ const useStyles = makeStyles(theme => ({
 const RegisterForm = () => {
     const classes = useStyles();
 
+    const [data, setData] = React.useState({
+      "name": "",
+      "email": "",
+      "school": "",
+      "password": "",
+      "passwordcomfirm": ""
+    })
+
+    const dataOnChange = (event) => {
+      setData({
+        ...data,
+        [event.target.name]: event.target.value
+      })
+    }
+
     const onClick = (event) => {
       event.preventDefault();
-      window.location.href = "/designstudio";
+      // window.location.href = "/designstudio";
+      if(validate()){
+        // console.log(JSON.stringify(data));
+        register();
+      }
   };
+
+
+  const [error, setError] = React.useState({
+    "name": "",
+    "email": "",
+    "school": "",
+    "password": "",
+    "passwordcomfirm": ""
+  });
+  
+  const validate = () => {
+    var validated = true;
+    var tempError = {
+      "name": "",
+      "email": "",
+      "school": "",
+      "password": "",
+      "passwordcomfirm": "",
+    }
+
+    if(validator.isEmpty(data.name.toString())){
+      tempError["name"] = "Please enter the user name";
+      validated = false;
+    }
+
+
+    if(!validator.isEmail(data.email.toString())){
+      tempError["email"] = "Please enter the correct email";
+      validated = false;
+    }
+
+    if(validator.isEmpty(data.school.toString())){
+      tempError["school"] = "Please enter the school";
+      validated = false;
+    }
+
+    if(validator.isEmpty(data.password.toString())){
+      tempError["password"] = "Please enter the password";
+      validated = false;
+    }
+
+    if(data.password != data.passwordcomfirm){
+      tempError["password"] = "Please check the password again. The password is different from password comfirm.";
+      tempError["passwordcomfirm"] = "Please check the password again. The password is different from password comfirm.";
+      validated = false;
+    }
+
+    setError(tempError);
+    return validated;
+  }
+  async function register() {
+    // await fetch(
+    //   'http://'+config.get('url')+'/register',
+    //   {
+    //     method: "POST",
+    //     body:  JSON.stringify(data),
+    //     headers: {
+    //       "Content-type": "application/json; charset=UTF-8",
+    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     }
+    //   }
+    // )
+    //     .then(res => res.json())
+    //     .then(response => {
+
+    // })
+    // .catch(error => console.log(error));
+    document.form.submit();
+
+  }
+    
   
     return (
       <Container component="main" maxWidth="xs">
@@ -49,7 +141,7 @@ const RegisterForm = () => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate action="/app">
+          <form id= "form" name="form" className={classes.form}  action="/register" method="POST">
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -60,20 +152,14 @@ const RegisterForm = () => {
                   fullWidth
                   id="name"
                   label="Name"
+                  value = {data.name}
+                  onChange = {dataOnChange}
+                  error = {! (error["name"]=="")}
+                  helperText= {! (error["name"]=="")? error["name"]:  ""}
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="school"
-                  label="School"
-                  name="school"
-                  autoComplete="lname"
-                />
-              </Grid>
+           
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -82,9 +168,28 @@ const RegisterForm = () => {
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
+                  value = {data.email}
+                  onChange = {dataOnChange}
+                  error = {! (error["email"]=="")}
+                  helperText= {! (error["email"]=="")? error["email"]:  ""}
                 />
               </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="school"
+                  label="School"
+                  name="school"
+                  value = {data.school}
+                  onChange = {dataOnChange}
+                  error = {! (error["school"]=="")}
+                  helperText= {! (error["school"]=="")? error["school"]:  ""}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -93,8 +198,11 @@ const RegisterForm = () => {
                   name="password"
                   label="Password"
                   type="password"
+                  value = {data.password}
+                  onChange = {dataOnChange}
+                  error = {! (error["password"]=="")}
+                  helperText= {! (error["password"]=="")? error["password"]:  ""}
                   id="password"
-                  autoComplete="current-password"
                 />
               </Grid>
 
@@ -106,8 +214,11 @@ const RegisterForm = () => {
                   name="passwordcomfirm"
                   label="Password Comfirm"
                   type="password"
+                  value = {data.passwordcomfirm}
+                  onChange = {dataOnChange}
+                  error = {! (error["passwordcomfirm"]=="")}
+                  helperText= {! (error["passwordcomfirm"]=="")? error["passwordcomfirm"]:  ""}
                   id="passwordcomfirm"
-                  autoComplete="current-password"
                 />
               </Grid>
     
@@ -122,12 +233,13 @@ const RegisterForm = () => {
             >
               Sign Up
             </Button>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              href="home"
+              href="/"
             >
               Cancel
             </Button>

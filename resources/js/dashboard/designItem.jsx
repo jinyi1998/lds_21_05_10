@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 const DesignItem = (props) => {
     const {courseData} = props;
     const updated_at = courseData.updated_at;
+    const user = courseData.createdby;
 
     const onClick = () => {
         window.location.href = "designstudio/"+ courseData.id;
@@ -24,7 +25,9 @@ const DesignItem = (props) => {
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary={courseData.unit_title+" - "+courseData.description}  secondary={updated_at} />
+            <ListItemText 
+                primary={courseData.unit_title+" - "+courseData.description}  
+                secondary={"Update At:" + updated_at + " || " + "Created By: " + user.name + "@" + user.school} />
             <ListItemSecondaryAction>
                 Delete | Duplicated  
             </ListItemSecondaryAction>

@@ -10,6 +10,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import UnitPlan from './unitPlan';
 import LessonPlan from './lesson/lessonPlan';
+import DashBoardContainer from './dashboard/dashboardContainer';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -92,7 +93,7 @@ const UnitPlanContainer = (props)=>{
                   <LessonPlan />
               </TabPanel>
               <TabPanel value={value} index={2}>
-                  <div>This is DashBoard</div>
+                  <DashBoardContainer />
               </TabPanel>
             </Grid>
         </Grid>

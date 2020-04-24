@@ -139,11 +139,16 @@ class LearningComponentController extends Controller
         $component->save();
 
         // outcomes
+        $outcome_asso = [];
         if($request->has('outcomes')){
             foreach($request->outcomes as $_outcome){
                 $_outcome['component_id'] =  $component->id;
                 $request_outcome = new \Illuminate\Http\Request($_outcome);
-                LearningOutcomesController::store($request_outcome);
+                $outcome = LearningOutcomesController::store($request_outcome)->getContent();;
+                $outcome = json_decode($outcome);
+                $temp["outcome_template_id"] = $_outcome['id'];
+                $temp["outcome_id"] = $outcome->id;
+                array_push($outcome_asso, $temp);
             }
         }
 
@@ -154,6 +159,15 @@ class LearningComponentController extends Controller
             foreach(  $_pattern['tasks'] as $key => $_task){
                 $_task['sequence'] = $key;
                 $_pattern['tasks'][$key]['sequence'] = $key + 1;
+
+                foreach($outcome_asso as $_outcome_asso){
+                   foreach($_task['assessmentid'] as $assessment_key => $_assessment){
+                        if($_task['assessmentid'][$assessment_key]['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
+                            $_pattern['tasks'][$key]['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
+                            // return $_assessment;
+                        }
+                   }
+                }
             }
             $request_pattern = new \Illuminate\Http\Request( $_pattern);
             LearningPatternController::store($request_pattern);
@@ -170,6 +184,15 @@ class LearningComponentController extends Controller
             foreach($request->tasks as $_task){
                 $_task['component_id'] =  $component->id;
     
+
+                foreach($outcome_asso as $_outcome_asso){
+                    foreach($_task['assessmentid'] as $assessment_key => $_assessment){
+                        if($_assessment['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
+                            $_task['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
+                        }
+                    }
+                }
+                
                 $request_task = new \Illuminate\Http\Request($_task);
                 LearningTaskController::store($request_task);
                  //add to component task relation

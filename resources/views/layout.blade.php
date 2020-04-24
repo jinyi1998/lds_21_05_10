@@ -29,7 +29,7 @@
                 </div> -->
 
                 <div class="row">
-                    <div id="topmenu" class="col-12" style="height: 64px;">
+                    <div id="topmenu" class="col-12" style="height: 128px;" data-user = {{$user}}>
                     </div>
                     <div id="sidemenu" class="col-2">
                     </div>

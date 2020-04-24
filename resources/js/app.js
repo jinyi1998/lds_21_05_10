@@ -9,7 +9,7 @@ require('./container/loginForm');
 
 require('./container/design');
 require('./container/designContainer');
-require('./container/appContainer');
+// require('./container/appContainer');
 // require('./components/appLayout');
 require('./components/sideMenu');
 require('./components/topMenu');

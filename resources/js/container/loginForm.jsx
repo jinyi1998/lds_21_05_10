@@ -14,6 +14,8 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import config from 'react-global-configuration';
+import validator from 'validator';
 
 function Copyright() {
     return (
@@ -50,10 +52,62 @@ const useStyles = makeStyles(theme => ({
   
 const LoginForm = () => {
     const classes = useStyles();
+    const [data, setData] = React.useState({
+      "email": "",
+      "password": "",
+    })
     const onClick = (event) => {
         event.preventDefault();
-        window.location.href = "/mydesign";
+        // window.location.href = "/mydesign";
+        if(validate()){
+          document.form.submit();
+        }
+        console.log(data);
     };
+
+    const dataOnChange = (event) => {
+      setData({
+        ...data,
+        [event.target.name]: event.target.value
+      })
+    }
+
+    const [error, setError] = React.useState({
+      "name": "",
+      "email": "",
+      "password": "",
+    });
+    
+    const validate = () => {
+      var validated = true;
+      var tempError = {
+        "name": "",
+        "email": "",
+        "password": "",
+      }
+  
+      // if(validator.isEmpty(data.name.toString())){
+      //   tempError["name"] = "Please enter the user name";
+      //   // setError({...error, level: "Please enter the course level"})
+      //   validated = false;
+      // }
+  
+  
+      if(!validator.isEmail(data.email.toString())){
+        tempError["email"] = "Please enter the correct email";
+        // setError({...error, unitTitle: "Please enter the course unit title"})
+        validated = false;
+      }
+  
+      if(validator.isEmpty(data.password.toString())){
+        tempError["password"] = "Please enter the password";
+        // setError({...error, level: "Please enter the course level"})
+        validated = false;
+      }
+      setError(tempError);
+      return validated;
+    }
+
 
     return (
         <Container component="main" maxWidth="xs">
@@ -65,15 +119,30 @@ const LoginForm = () => {
                 <Typography component="h1" variant="h5">
                 Sign In
                 </Typography>
-                <form className={classes.form}>
+                <form id="form" name="form" className={classes.form} method="POST" action="login">
                     <Grid container spacing={2}>
+                    
                         <Grid item xs={12}>
-                        <FormLabel name="lbl_email">E-Mail:</FormLabel>
-                        <TextField name ="email" defaultValue="" fullWidth/>
+                          <FormLabel name="lbl_email">E-Mail Address:</FormLabel>
+                          <TextField 
+                            name ="email" 
+                            value={data.email} 
+                            onChange = {dataOnChange}  
+                            error = {! (error["email"]=="")}
+                            helperText= {! (error["email"]=="")? error["email"]:  ""}
+                            fullWidth/>
                         </Grid>
+
                         <Grid item xs={12}>
-                        <FormLabel name="lbl_password">Password:</FormLabel>
-                        <TextField name ="password" defaultValue="" fullWidth/>
+                          <FormLabel name="lbl_password">Password:</FormLabel>
+                          <TextField 
+                            name ="password" 
+                            type = "password"
+                            value={data.password} 
+                            onChange = {dataOnChange} 
+                            error = {! (error["password"]=="")}
+                            helperText= {! (error["password"]=="")? error["password"]:  ""}
+                            fullWidth/>
                         </Grid>
                     </Grid>
                     <Button
@@ -85,6 +154,16 @@ const LoginForm = () => {
                         onClick = {onClick}
                     >
                         Sign In
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      href="/"
+                    >
+                      Cancel
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>

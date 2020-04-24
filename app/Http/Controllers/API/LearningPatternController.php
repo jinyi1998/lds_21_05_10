@@ -158,7 +158,8 @@ class LearningPatternController extends Controller
             LearningTaskController::save(new LearningTask(), $request);
         }
         //delete all the pattern_task relation first
-        $pattern->tasksid()->delete();
+        $pattern->tasks()->delete();
+        // $pattern->tasksid()->delete();
         $pattern->componentid()->delete();
         $pattern->delete();
         return response()->json("");

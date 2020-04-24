@@ -26,7 +26,7 @@ const DesignInfo = (props) => {
   const { course, options, dispatch, setLoadingOpen } = React.useContext(ContextStore);
 
   const [ courseData, setCourseData ] = React.useState(course);
-  const [ lesson_time, setLessonTime ] = React.useState(45);
+  const [ lesson_time, setLessonTime ] = React.useState(0);
 
   const [error, setError] = React.useState({
     "unit_title": "",
@@ -70,7 +70,7 @@ const DesignInfo = (props) => {
        validated = false;
     }
 
-    if(!validator.isInt(lesson_time.toString(), {min: 1, max: 120})){
+    if(!validator.isInt(lesson_time.toString(), {min: 0, max: 120})){
       tempError["lesson_time"] = "Please enter the time of lessons between 1 and 12-";
      //  setError({...error, no_of_lesson: "error"})
       validated = false;
@@ -227,7 +227,7 @@ const DesignInfo = (props) => {
             onChange={onChange} />
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <TextField 
             id="lesson_time" 
             name="lesson_time" 
@@ -239,7 +239,7 @@ const DesignInfo = (props) => {
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
             onChange={onChange} />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12} md={6}>
           <TextField 

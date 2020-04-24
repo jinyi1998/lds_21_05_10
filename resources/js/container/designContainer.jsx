@@ -161,6 +161,23 @@ const DesignContainerNew = (props) => {
     });
 
     const [loadingOpen, setLoadingOpen] = React.useState(false);
+    const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
+
+    const taskTypeColor = (task_type)=>{
+
+        try{
+            var color = taskTypeColorValue.find(x => x.id == task_type);
+            return ({
+                backgroundColor:  color.color,
+                height: "100%"
+            });
+        }catch{
+            return ({
+                backgroundColor:  "#194d33",
+                height: "100%"
+            });
+        }
+    }
     
     async function fetchNewCourseData() {
         setLoadingOpen(true)
@@ -275,8 +292,9 @@ const DesignContainerNew = (props) => {
                     "taskTarget": response.classTargetOpts,
                     "taskResource": response.resourceOpts,
                     "taskElearingResource": response.elearningtoolOpts,
-                }) 
+                })
             );
+            setTaskTypeColorValue(response.learningTasktypeOpts)
         })
         .catch(error => console.log(error));
     }
@@ -302,6 +320,7 @@ const DesignContainerNew = (props) => {
           setLoadingOpen: setLoadingOpen,
           fetchCourseData: fetchCourseData,
           refreshCourse: refreshCourse,
+          taskTypeColor: taskTypeColor,
         }}
       >
         <Design courseID={props.courseID}/>

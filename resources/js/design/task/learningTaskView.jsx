@@ -77,7 +77,7 @@ const LearningTaskView = (props) => {
 
     const {taskID, taskData, onEditearningTask} = props;
     // const {onEditTasks} = props;
-    const {course, options, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const {course, options, setLoadingOpen, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const {editBtn, duplicateBtn, deleteBtn} = props;
 
@@ -161,61 +161,6 @@ const LearningTaskView = (props) => {
         setTask(taskData);
     }
     , [props])
-
-    const taskTypeColor = () => {
-        switch(task.type){
-            default:
-            case 1:
-                return({
-                    backgroundColor:  "#194d33",
-                    height: "100%"
-                });
-                break;
-            case 2:
-                return({
-                    backgroundColor:  "#FF6900",
-                    height: "100%"
-                });
-                break
-            case 3:
-                return({
-                    backgroundColor:  "#FCB900",
-                    height: "100%"
-                });
-                break;
-            case 4:
-                return({
-                    backgroundColor:  "#7BDCB5",
-                    height: "100%"
-                });
-                break;
-            case 5:
-                return({
-                    backgroundColor:  "#8ED1FC",
-                    height: "100%"
-                });
-                break;
-            case 6:
-                return({
-                    backgroundColor:  "#0693E3",
-                    height: "100%"
-                });
-                break;
-            case 7:
-                return({
-                    backgroundColor:  "#EB144C",
-                    height: "100%"
-                });
-                break;
-            case 8:
-                return({
-                    backgroundColor:  "#9900EF",
-                    height: "100%"
-                });
-                break;
-        }  
-    }
-
     //#region init opts data
 
     const classTypeOtps = options.taskClassType;
@@ -247,7 +192,7 @@ const LearningTaskView = (props) => {
         return (
             <Grid item container spacing={4} xs={12}>
                 <Grid item xs={1} height="100%">
-                    <div style={taskTypeColor()}>
+                    <div style={taskTypeColor(task.type)}>
                     </div>
                 </Grid>
                 <Grid container item xs={11}>

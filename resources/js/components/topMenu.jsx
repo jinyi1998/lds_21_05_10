@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme => ({
  const TopMenu = (props) => {
 
   const classes = useStyles();
+  const user = JSON.parse(props.value);
 
   // general menu
   const [open, setOpen] = React.useState(false);
@@ -97,10 +98,10 @@ const useStyles = makeStyles(theme => ({
             >
                 <MenuIcon />
             </IconButton> */}
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                Learning Design Studio
-            </Typography>
-            <ToolMenu />
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                  Learning Design Studio
+              </Typography>
+              <ToolMenu user ={user}/>
             </Toolbar>
         </AppBar>
 
@@ -110,5 +111,5 @@ const useStyles = makeStyles(theme => ({
 export default TopMenu;
 
 if (document.getElementById('topmenu')) {
-  ReactDOM.render(<TopMenu/>, document.getElementById('topmenu'));
+  ReactDOM.render(<TopMenu value={document.getElementById('topmenu').dataset.user} />, document.getElementById('topmenu'));
 }

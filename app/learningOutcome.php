@@ -11,6 +11,17 @@ class LearningOutcome extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    public function component(){
+        return $this->hasManyThrough(
+            'App\Component',
+            'App\ComponentOutcomeRelation',
+            'outcome_id', //middle retioan table local id
+            'id', // target table target id
+            'id', // local table local id
+            'component_id' //middle relation table target id
+        );
+    }
+
     public function componentid(){
         return $this->belongsTo('App\ComponentOutcomeRelation', 'id', 'outcome_id');
     }

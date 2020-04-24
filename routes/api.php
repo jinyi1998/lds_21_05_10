@@ -21,7 +21,7 @@ Route::resource('opts', 'API\LearningTaskOptsController');
 
 //Course Controller
 Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
-Route::resource('course', 'API\CourseController');
+// Route::resource('course', 'API\CourseController');
 
 
 //File System
@@ -104,6 +104,9 @@ Route::resource('learningTask', 'API\LearningTaskController');
 //Learning Lesson
 Route::resource('lesson', 'API\LessonController');
 
+Route::resource('courseanalysis', 'API\CourseAnalysisController');
+Route::resource('componentanalysis', 'API\LearningComponentAnalysisController');
+Route::resource('lessonanalysis', 'API\LessonAnalysisController');
 
 //template related
 Route::resource('learningComponentTemplate', 'API\LearningComponentTemplateController');

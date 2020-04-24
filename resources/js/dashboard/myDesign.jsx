@@ -48,9 +48,6 @@ const MyDesign = (props)=>{
     }
     
     React.useEffect(() => {
-        // if(config.get('enableDB')){
-        //     fetchData();
-        // }
         fetchData();
     }, []);
 
@@ -59,7 +56,7 @@ const MyDesign = (props)=>{
             <Grid container spacing={4} justify="space-between">
                 <Grid item xs = {4}>
                     <Typography component="h1" variant="h6" color="inherit" noWrap>
-                        Learning Design Studio
+                        My Design Area
                     </Typography>
                 </Grid>
                  
@@ -82,7 +79,7 @@ const MyDesign = (props)=>{
                                 :
                                 courseList.map(_course => 
                                     <DesigmItem 
-                                        key ={_course} 
+                                        key ={_course.id} 
                                         courseData = {_course}
                                     />
                                 )

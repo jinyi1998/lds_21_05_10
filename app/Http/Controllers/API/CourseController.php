@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Course;
+use Auth;
 
 
 class CourseController extends Controller
@@ -68,7 +69,10 @@ class CourseController extends Controller
     *     ]
     *   }
 */
-   
+    public function __construct()
+    {
+        $this->middleware('api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -81,6 +85,7 @@ class CourseController extends Controller
 
         // $list = DB::table('demo')->select('id','data', 'updated_at')->get();
         // return response()->json($list);
+        return response()->json(  \Auth::user());
         return response()->json(Course::all());
     }
 

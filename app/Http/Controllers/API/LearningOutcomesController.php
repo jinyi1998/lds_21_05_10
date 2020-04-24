@@ -77,6 +77,8 @@ class LearningOutcomesController extends Controller
         }
 
         $outcome->save();
+
+        return response()->json($outcome);
     }
 
     /**

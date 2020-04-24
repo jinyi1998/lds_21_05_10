@@ -92,14 +92,11 @@ const useStyles = makeStyles(theme => ({
   const [open, setOpen] = React.useState(false);
  
 
-  const [selectedIndex, setSelectedIndex] = React.useState('myDesign');
-  React.useEffect(()=>{
-      setSelectedIndex('design');
-  }, []
-  )
+  const [selectedIndex, setSelectedIndex] = React.useState('mydesign');
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
+    window.location.href = "/"+index;
   };
 
   return (
@@ -123,16 +120,18 @@ const useStyles = makeStyles(theme => ({
             <List>
                 <div>
                     <ListItem button  
-                            onClick={event => handleListItemClick(event, 'myDesign')} 
-                            selected={selectedIndex == 'myDesign'} >
+                            onClick={event => handleListItemClick(event, 'mydesign')} 
+                            // selected={selectedIndex == 'mydesign'} 
+                            >
                         <ListItemIcon>
                             <DashboardIcon />
                         </ListItemIcon>
                         <ListItemText primary="My Design" />
                     </ListItem>
                     <ListItem button
-                            onClick={event => handleListItemClick(event, 'publicDesign')} 
-                            selected={selectedIndex == 'publicDesign'}>
+                            onClick={event => handleListItemClick(event, 'publicdesign')} 
+                            // selected={selectedIndex == 'publicdesign'}
+                            >
                         <ListItemIcon>
                             <ShoppingCartIcon />
                         </ListItemIcon>

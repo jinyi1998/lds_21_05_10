@@ -123,7 +123,7 @@ const LearningTaskContainer = (props) => {
     
         setError(tempError);
         return validated;
-      }
+    }
 
     //#region api data function 
     // async function fetchlearningTask(id) {
@@ -202,61 +202,6 @@ const LearningTaskContainer = (props) => {
     //     setTask(taskData);
     // }
     // , [])
-    const taskTypeColor = () => {
-
-        switch(task.type){
-            default:
-            case 1:
-                return({
-                    backgroundColor:  "#194d33",
-                    height: "100%"
-                });
-                break;
-            case 2:
-                return({
-                    backgroundColor:  "#FF6900",
-                    height: "100%"
-                });
-                break
-            case 3:
-                return({
-                    backgroundColor:  "#FCB900",
-                    height: "100%"
-                });
-                break;
-            case 4:
-                return({
-                    backgroundColor:  "#7BDCB5",
-                    height: "100%"
-                });
-                break;
-            case 5:
-                return({
-                    backgroundColor:  "#8ED1FC",
-                    height: "100%"
-                });
-                break;
-            case 6:
-                return({
-                    backgroundColor:  "#0693E3",
-                    height: "100%"
-                });
-                break;
-            case 7:
-                return({
-                    backgroundColor:  "#EB144C",
-                    height: "100%"
-                });
-                break;
-            case 8:
-                return({
-                    backgroundColor:  "#9900EF",
-                    height: "100%"
-                });
-                break;
-        }  
-    }
-
     //#region init opts data
 
     //#endregion

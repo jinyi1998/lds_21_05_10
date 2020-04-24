@@ -22,6 +22,17 @@ class Lesson extends Model
         )->with(['resourceid', 'toolid']);
     }
 
+    public function tasks_analysis(){
+        return $this->hasManyThrough(
+            'App\LearningTask',
+            'App\LessonTaskRelation',
+            'lesson_id', //PatternTaskRelation compoent id
+            'id', // LearningPattern id
+            'id', // component id
+            'task_id' //PatternTaskRelation task id
+        )->with(['resourceid', 'toolid', 'assessment_with_component']);
+    }
+
     public function tasksid(){
         return $this->hasMany(
             'App\LessonTaskRelation',

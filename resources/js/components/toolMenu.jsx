@@ -10,11 +10,20 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+
 import LangDialog from './languageDialog';
 import AccDialog from './accDialog';
 
-const ToolMenu = () => {
+const ToolMenu = (props) => {
      //user menu 
+     const {user} = props;
+
     const [anchorEl, setUserMenuOpen] = React.useState(null);
 
     const onClickUserIcon = event => {
@@ -24,6 +33,7 @@ const ToolMenu = () => {
     const OnCloseUserMenu = (type) => {
         switch(type){
             default:
+                break;
             case 'language':
                 handleLangOpen();
                 break;
@@ -31,7 +41,7 @@ const ToolMenu = () => {
                 handleAccOpen(); 
                 break;
             case 'logout':
-                location.href = "login";
+                location.href = "/logout";
                 break;
         }
         setUserMenuOpen(null);
@@ -72,13 +82,33 @@ const ToolMenu = () => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={OnCloseUserMenu}
-            >
-                <MenuItem onClick={()=> OnCloseUserMenu('language')}>Lanuage Setting</MenuItem>
-                <MenuItem onClick={()=>OnCloseUserMenu('myaccount')}>My account</MenuItem>
+            >   
+               
+                <Card variant="outlined" >
+                    <Grid container alignContent="center" alignItems= "center" justify = "center" spacing={1}>
+                        <Grid item xs ={12} container alignContent="center" alignItems= "center" justify = "center">
+                            <Avatar> {user.name.substring(0, 1)}</Avatar> 
+                        </Grid>
+                        <Grid item xs ={12} container alignContent="center" alignItems= "center" justify = "center">
+                        <Typography  color="textPrimary">
+                                {user.name}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs ={12} container alignContent="center" alignItems= "center" justify = "center">
+                        <Typography variant="body2" component="p" color="textSecondary">
+                                {user.email}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs ={12} container alignContent="center" alignItems= "center" justify = "center">
+                            <Button size="small" onClick={()=>OnCloseUserMenu('myaccount')}>Change your password</Button>
+                        </Grid>
+                    </Grid>
+                </Card>
+                <MenuItem onClick={()=> OnCloseUserMenu('language')}>Language Setting</MenuItem>
                 <MenuItem onClick={()=>OnCloseUserMenu('logout')}>Logout</MenuItem>
             </Menu>
 
-            <AccDialog accDialogOpen = {accDialogOpen}  handleAccClose = {handleAccClose}/>
+            <AccDialog accDialogOpen = {accDialogOpen}  handleAccClose = {handleAccClose} user = {user}/>
             <LangDialog langDialogOpen = {langDialogOpen} handleLangClose = {handleLangClose}/>
             
         </div>

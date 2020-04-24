@@ -13,7 +13,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const AccDialog = (props) => {
 
-    const {accDialogOpen, handleAccClose} = props;
+    const {accDialogOpen, handleAccClose, user} = props;
     return (
         <Dialog open={accDialogOpen} onClose={()=> handleAccClose()} aria-labelledby="form-dialog-title">
             <form>
@@ -25,6 +25,7 @@ const AccDialog = (props) => {
                             autoComplete="fname"
                             name="firstName"
                             variant="outlined"
+                            value = {user.name}
                             required
                             id="firstName"
                             label="Name"
@@ -38,6 +39,7 @@ const AccDialog = (props) => {
                             required
                             id="email"
                             label="Email Address"
+                            value = {user.email}
                             name="email"
                             autoComplete="email"
                         />
@@ -51,6 +53,7 @@ const AccDialog = (props) => {
                             name="password"
                             label="Current Password"
                             type="password"
+                            value = {user.password}
                             id="password"
                             autoComplete="current-password"
                         />

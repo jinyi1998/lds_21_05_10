@@ -82,7 +82,7 @@ export default function Welcome() {
             <Button variant="contained" color="primary" href="login" className={classes.btn}>
                 Log in
             </Button>
-            <Button variant="contained" color="primary" onClick={()=> window.open("https://www.youtube.com/watch?v=7h9uEUvQjcs", "_blank")} className={classes.btn}>
+            <Button variant="contained" color="primary" onClick={()=> window.open("https://ldshe.cite.hku.hk/users/about/guide.php", "_blank")} className={classes.btn}>
                 Watch a demo
             </Button>
         </Grid> 
