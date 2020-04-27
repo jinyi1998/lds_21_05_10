@@ -145,6 +145,12 @@ class CourseControllerTest extends Controller
         return response()->json($course);
     }
 
+    public function clearCourseComponent(Request $request){
+        $course = Course::find($request->course_id);
+        $course->components()->delete();
+        return response()->json($course);
+    }
+
     public function getDesignTypeTemp(){
         return response()->json([
             [

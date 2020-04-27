@@ -50,63 +50,6 @@ const useStyles = makeStyles(theme => ({
 
 const steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'LEARNING COMPONENTS'];
 
-// const course = {
-//   id: 0,
-//   unitTitle: "",
-//   schoolName: "",
-//   level: "",
-//   noOfLessons: "",
-//   courseDes: "",
-//   designType: "",
-//   components: [
-//     // {
-//     //   id: 0,
-//     //   title: "",
-//     //   tasks: [
-//     //     {
-//     //       id: 0,
-//     //       title: "",
-//     //       assessment: [],
-//     //       time: 0,
-//     //       classType: "",
-//     //       target: "",
-//     //       resource: "",
-//     //       STEMType: [],
-//     //       description: "",
-//     //     }
-//     //   ],
-//     //   learningOutcomes: [
-//     //     {
-//     //       id: 0,
-//     //       level: "",
-//     //       outcomeType: "",
-//     //       STEMType: [],
-//     //       description: "",
-//     //       status: false
-//     //     }
-//     //   ]
-//     // }
-//   ],
-//   //learning outcomes in course level
-//   learningOutcomes: [
-//     // {
-//     //   id: 0,
-//     //   level: "",
-//     //   outcomeType: "",
-//     //   STEMType: [],
-//     //   description: "",
-//     //   isCourseLevel: false
-//     // }
-//   ],
-//   lesson: [
-//     {
-//       id: 0,
-//       name: "",
-//       tasks: []
-//     }
-//   ]
-// }
-
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {activePage, setActionPage} = props;
@@ -157,23 +100,23 @@ const Design = (props) => {
   
   //#region data init
   //preload learningOutcome (Unit Level)
-  async function fetchlearningTypeTempData() {
-    const res = await fetch(
-        'http://'+config.get('url')+'/api/learningOutcome/getDefaultOutcomeByLearningType/'+course.designType,
-        {
-        method: "GET",
-        }
-    )
-    .then(res => res.json())
-    .then(response => {
-        //load the default learning outcomes by api request
-        dispatch({
-          type: "SET_LEARNINGOUTCOME",
-          value: response
-        })
-    })
-    .catch(error => console.log(error));
-  }
+  // async function fetchlearningTypeTempData() {
+  //   const res = await fetch(
+  //       'http://'+config.get('url')+'/api/learningOutcome/getDefaultOutcomeByLearningType/'+course.designType,
+  //       {
+  //       method: "GET",
+  //       }
+  //   )
+  //   .then(res => res.json())
+  //   .then(response => {
+  //       //load the default learning outcomes by api request
+  //       dispatch({
+  //         type: "SET_LEARNINGOUTCOME",
+  //         value: response
+  //       })
+  //   })
+  //   .catch(error => console.log(error));
+  // }
 
   //preload learningComponent
   async function fetchlearningComponentTempData() {
@@ -205,6 +148,25 @@ const Design = (props) => {
       method: "GET",
       }
     ).then(res => res.json())
+  }
+
+  async function clearCourseComponent() {
+    var json = {
+      course_id: course.id
+    };
+    return await fetch(
+      'http://'+config.get('url')+'/api/course/clearCourseComponent',
+      {
+        method: "POST",
+        body:  JSON.stringify(json),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }
+    ).then(res => res.json())
+    .then(response => {
+      return response;
+    })
   }
 
   async function importComponentTemplateToComponent(componentTemplate) {
@@ -319,25 +281,39 @@ const Design = (props) => {
 
   // init the data once design type is changed
   React.useEffect(() => {
-      if(courseID != -1){
-        // if(course.component.length == 0){
 
-        // }else if(course.unit_title == ""){
-        //   setActiveStep(1);
-        // }else{
-        //   return setActionPage('unitPlan');
-        // }
-
-        return setActionPage('unitPlan');
-       
-      }
       if(course.designType != "" && course.designType != null){
-        fetchlearningTypeTempData();
+        // fetchlearningTypeTempData();
+        clearCourseComponent();
         fetchlearningComponentTempData();
         handleNext();
       }
     
   }, [course.designType]);
+
+  React.useEffect(() => {
+    setLoadingOpen(true)
+    if(courseID != -1){
+
+      if(course.isinited){
+
+        if(course.components.length == 0){
+          setLoadingOpen(false)
+        }else if(course.unit_title == "" || course.description == "" || course.level == ""  ){
+          setLoadingOpen(false)
+          setActiveStep(1);
+        }else{
+          setLoadingOpen(false)
+          return setActionPage('unitPlan');
+        }
+      }
+      
+    }else{
+      setLoadingOpen(false)
+    }
+  }, [course.isinited]);
+  
+
 
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
@@ -435,7 +411,7 @@ const Design = (props) => {
       // case 3:
       //   return  <BasicReview />
       default:
-        return <div> hello </div>;
+        return <div> Some Error Occur </div>;
     }
   }
 

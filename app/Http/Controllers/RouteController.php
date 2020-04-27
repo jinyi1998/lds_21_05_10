@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 
 class RouteController extends Controller
@@ -43,5 +44,24 @@ class RouteController extends Controller
         $user_temp = \json_encode($user);
 
         return view('publicdesign', ['user'=> $user_temp]);
+    }
+
+    public function changePassword(Request $request){
+        try{
+            $credentials = $request->only('email', 'password');
+
+            if (Auth::attempt($credentials)) {
+                $request->user()->fill([
+                    'password' => Hash::make($request->new_password),
+                    'name' => $request->name
+                ])->save();
+                return response()->json('success');
+            }
+            return response()->json('auth_fail');
+        }catch(Exception $e){
+            return response()->json($request);
+        }
+      
+       
     }
 }

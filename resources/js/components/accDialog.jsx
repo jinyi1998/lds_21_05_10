@@ -10,10 +10,100 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import config from 'react-global-configuration';
+import validator from 'validator';
 
 const AccDialog = (props) => {
 
-    const {accDialogOpen, handleAccClose, user} = props;
+    async function updatePassword() {
+        return await fetch(
+          'http://'+config.get('url')+'/api/user/changepassword',
+          {
+            method: "POST",
+            body:  JSON.stringify(user),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }
+        ).then(res => res.json())
+        .then(response => {
+          if(response == "success"){
+            handleAccClose();
+          }else{
+            setError({...error, password: "auth_fail, please check your password"})
+          }
+        })
+      }
+
+    const {accDialogOpen, handleAccClose} = props;
+
+    const [error, setError] = React.useState({
+        "email": "",
+          "name": "",
+          "password": "",
+          "new_password": "",
+          "new_password_confirm": "",
+    });
+      
+    const validate = () => {
+        var validated = true;
+        var tempError = {
+          "email": "",
+          "name": "",
+          "password": "",
+          "new_password": "",
+          "new_password_confirm": "",
+        }
+    
+        if(validator.isEmpty(user.name.toString())){
+            tempError["name"] = "Please enter the user name";
+            validated = false;
+        }
+
+        if(validator.isEmpty(user.password.toString())){
+            tempError["password"] = "Please enter the current password";
+            validated = false;
+          }
+
+        if(validator.isEmpty(user.new_password.toString())){
+            tempError["new_password"] = "Please enter the new password";
+            validated = false;
+        }
+
+        if(validator.isEmpty(user.new_password_confirm.toString())){
+            tempError["new_password_confirm"] = "Please enter the confirm new password ";
+            validated = false;
+        }
+        
+
+        if(user.new_password_confirm != user.new_password){
+            tempError["new_password"] = "New password does not equal new_password_confirm .Please enter the new password";
+            tempError["new_password_confirm"] = "Please check the confirm new password";
+            validated = false;
+        }
+        setError(tempError);
+        return validated;
+    }
+
+    const [user, setUser] = React.useState({
+        "id": props.user.id,
+        "name": props.user.name,
+        "email": props.user.email,
+        "password": "",
+        "new_password": "",
+        "new_password_confirm": "",
+    });
+
+    const onChange = (event) => {
+        setUser( {...user, [event.target.id]: event.target.value});
+    }
+
+    const onClickSubmit = () => {
+        if(validate()){
+            updatePassword();
+        }
+    }
+
     return (
         <Dialog open={accDialogOpen} onClose={()=> handleAccClose()} aria-labelledby="form-dialog-title">
             <form>
@@ -22,14 +112,15 @@ const AccDialog = (props) => {
                 <Grid container spacing={2}>
                     <Grid item xs={6} sm={6}>
                         <TextField
-                            autoComplete="fname"
-                            name="firstName"
+                            name="name"
                             variant="outlined"
                             value = {user.name}
                             required
-                            id="firstName"
+                            id="name"
+                            onChange = {onChange}
                             label="Name"
-                            autoFocus
+                            error = {! (error["name"]=="")}
+                            helperText= {! (error["name"]=="")? error["name"]:  ""}
                         />
                     </Grid>
 
@@ -41,7 +132,10 @@ const AccDialog = (props) => {
                             label="Email Address"
                             value = {user.email}
                             name="email"
-                            autoComplete="email"
+                            onChange = {onChange}
+                            error = {! (error["email"]=="")}
+                            helperText= {! (error["email"]=="")? error["email"]:  ""}
+                            disabled
                         />
                     </Grid>
 
@@ -53,9 +147,11 @@ const AccDialog = (props) => {
                             name="password"
                             label="Current Password"
                             type="password"
+                            onChange = {onChange}
                             value = {user.password}
+                            error = {! (error["password"]=="")}
+                            helperText= {! (error["password"]=="")? error["password"]:  ""}
                             id="password"
-                            autoComplete="current-password"
                         />
                     </Grid> 
 
@@ -67,6 +163,10 @@ const AccDialog = (props) => {
                             name="new_password"
                             label="New Password"
                             type="password"
+                            onChange = {onChange}
+                            value = {user.new_password}
+                            error = {! (error["new_password"]=="")}
+                            helperText= {! (error["new_password"]=="")? error["new_password"]:  ""}
                             id="new_password"
                             autoComplete="new-password"
                         />
@@ -77,11 +177,14 @@ const AccDialog = (props) => {
                             variant="outlined"
                             required
                             fullWidth
-                            name="confirm_new_password"
+                            name="new_password_confirm"
                             label="Confirm New Password"
                             type="password"
-                            id="confirm_new_password"
-                            autoComplete="current-password"
+                            onChange = {onChange}
+                            value = {user.new_password_confirm}
+                            error = {! (error["new_password_confirm"]=="")}
+                            helperText= {! (error["new_password_confirm"]=="")? error["new_password_confirm"]:  ""}
+                            id="new_password_confirm"
                         />
                     </Grid> 
                 </Grid>
@@ -91,7 +194,7 @@ const AccDialog = (props) => {
                     <Button onClick={handleAccClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleAccClose} color="primary">
+                    <Button onClick={()=>{onClickSubmit()}} color="primary">
                         Confirm
                     </Button>
                 </DialogActions>

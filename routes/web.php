@@ -49,6 +49,7 @@ Route::get('/app2', function () {
 
 
 Auth::routes();
+Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@changePassword');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('test', '\App\Http\Controllers\testcontroller@test');
 
@@ -59,6 +60,7 @@ Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign'
 
 
 Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
+Route::post('/api/course/clearCourseComponent', 'CourseControllerTest@clearCourseComponent');
 Route::resource('/api/course', 'CourseControllerTest');
 
 
