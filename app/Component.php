@@ -65,7 +65,7 @@ class Component extends Model
             'id', // target table target id
             'id', // local table local id
             'task_id' //middle relation table target id
-        )->with(["assessmentid", "resourceid", "toolid", "componentid"])->orderBy('sequence');
+        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('sequence');
     }
 
     public function courseid(){

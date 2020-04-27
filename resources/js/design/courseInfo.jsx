@@ -129,6 +129,20 @@ const DesignInfo = (props) => {
 
   async function updateCourse() {
     setLoadingOpen(true)
+    var course_json = {
+      course_id: course.id,
+    }
+    await fetch(
+      'http://'+config.get('url')+'/api/course/clearCourseLesson',
+      {
+        method: "POST",
+        body:  JSON.stringify(course_json),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }
+    )
+
     for(var i = 0; i<courseData.no_of_lesson; i++){
       var lessonjson = {
         "time": lesson_time,

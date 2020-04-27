@@ -31,6 +31,8 @@ import RoomIcon from '@material-ui/icons/Room';
 import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+
 
 import config from 'react-global-configuration';
 //   tasks: [
@@ -235,10 +237,11 @@ const LearningTaskView = (props) => {
                     </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid}>
-                       {/* {TaskData.assessment.map(
-                           _learningOutcome_id => 
-                           course.learningOutcomes.find( x => x.id == _learningOutcome_id).description
-                       )} */}
+                       <AssessmentIcon />
+                       {task.assessment?.map(
+                           _assessment => 
+                           _assessment.description
+                       )}
                     </Grid>
 
                     <Grid item xs={12} className={classes.contentGrid}>

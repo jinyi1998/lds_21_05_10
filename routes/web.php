@@ -61,6 +61,7 @@ Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign'
 
 Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
 Route::post('/api/course/clearCourseComponent', 'CourseControllerTest@clearCourseComponent');
+Route::post('/api/course/clearCourseLesson', 'CourseControllerTest@clearCourseLesson');
 Route::resource('/api/course', 'CourseControllerTest');
 
 
