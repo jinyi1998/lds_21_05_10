@@ -51,7 +51,8 @@ class LearningTaskController extends Controller
             'resourceid', 
             'toolid', 
             'patternid',
-            'componentid'
+            'componentid',
+            'lessonid'
         ])->find($id);
         return response()->json($task);
     }
@@ -1552,9 +1553,9 @@ class LearningTaskController extends Controller
         if($request->has('description')){
             $task->description = $request->description;
         }
-        if($request->has('sequence')){
-            $task->sequence = $request->sequence;
-        }
+        // if($request->has('sequence')){
+        //     $task->sequence = $request->sequence;
+        // }
 
         $task->is_deleted = 0;
         $task->created_by = 1;
@@ -1566,13 +1567,24 @@ class LearningTaskController extends Controller
         //assessment
         if($request->has('component_id')){
             $task->componentid()->delete();
-            $task->componentid()->create([
-                'task_id' => $task->id,
-                'component_id' => $request->component_id,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => 0
-            ]);
+            if($request->has('sequence')){
+                $task->componentid()->create([
+                    'task_id' => $task->id,
+                    'component_id' => $request->component_id,
+                    'sequence' => $request->sequence,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }else{
+                $task->componentid()->create([
+                    'task_id' => $task->id,
+                    'component_id' => $request->component_id,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }
         }
 
         if($request->has('assessmentid') ){

@@ -84,26 +84,15 @@ class LearningPatternController extends Controller
             //     $task->delete();
             // }
             foreach($request->tasks as $key => $_task){
-                $_task['sequence'] = $key + 1;
+                // $_task['sequence'] = $key + 1;
                 $request_task = new \Illuminate\Http\Request($_task);
-                $task = LearningTaskController::save(new LearningTask,$request_task);
-                // $task = $pattern->tasks()->updateOrCreate([
-                //     'title' => $_task['title'],
-                //     'time' => $_task['time'],
-                //     'type' => $_task['type'],
-                //     'class_type' => $_task['class_type'],
-                //     'target' => $_task['target'],
-                //     'size' => $_task['size'],
-                //     'description' => $_task['description'],
-                //     'toolid' => $_task['toolid'],
-                //     'learningtask.created_by' => 1,
-                //     'learningtask.updated_by' => 1,
-                //     'learningtask.is_deleted' => 0
-                // ]);
+                $task = LearningTaskController::save(new LearningTask, $request_task);
+
     
                 // return response()->json($task);
                 $taskRelation = new PatternTaskRelation([
                     'pattern_id' => $pattern->id,
+                    'sequence' =>  $key + 1,
                     'task_id' => $task->id,
                     'created_by' => 1,
                     'updated_by' => 1,
@@ -153,6 +142,7 @@ class LearningPatternController extends Controller
         //add tasks to tasks
         foreach( $pattern->tasks as $_task){
             $_task['component_id'] = $pattern->componentid->component_id;
+            $_task['sequence'] = $_task->patternid->sequence;
             $request = new \Illuminate\Http\Request();
             $request->merge($_task->toArray());
             LearningTaskController::save(new LearningTask(), $request);

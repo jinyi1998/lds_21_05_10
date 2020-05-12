@@ -10,6 +10,7 @@ class LearningOutcome extends Model
     protected $table = 'learningoutcome';
     protected $primaryKey = 'id';
     public $timestamps = true;
+    public $with = ['componentid', 'courseid'];
 
     public function component(){
         return $this->hasManyThrough(
@@ -23,7 +24,7 @@ class LearningOutcome extends Model
     }
 
     public function componentid(){
-        return $this->belongsTo('App\ComponentOutcomeRelation', 'id', 'outcome_id');
+        return $this->hasMany('App\ComponentOutcomeRelation', 'outcome_id', 'id');
     }
 
     public function courseid(){

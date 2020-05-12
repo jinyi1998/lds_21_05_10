@@ -36,7 +36,7 @@ class Component extends Model
         return $this->hasMany(
             'App\ComponentOutcomeRelation',
             'component_id'
-        )->where('is_deleted', 0)->select(['outcome_id','component_id']);
+        )->where('is_deleted', 0)->orderBy('component_outcome_relational.sequence')->select(['id','outcome_id','component_id', 'sequence']);
     } 
 
     public function outcomes(){
@@ -47,7 +47,7 @@ class Component extends Model
             'id', // target table target id
             'id', // local table local id
             'outcome_id' //middle relation table target id
-        );
+        )->orderBy('component_outcome_relational.sequence');
     }
 
     public function taskid(){
@@ -65,7 +65,7 @@ class Component extends Model
             'id', // target table target id
             'id', // local table local id
             'task_id' //middle relation table target id
-        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('sequence');
+        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('component_task_relational.sequence');
     }
 
     public function courseid(){

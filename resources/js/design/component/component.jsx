@@ -65,28 +65,6 @@ const Component = ()=>{
       componentID,
       index} = React.useContext(ComponentContext);
 
-  //   React.useEffect(()=>{
-  //     fetchlearningComponentData(componentID)
-  //   }, [componentID])
-
-  //   React.useEffect(()=>{
-  //     fetchlearningComponentData(componentID)
-  //   }, [refresh])
-
-  //   async function fetchlearningComponentData(id) {
-  //     const res = await fetch(
-  //         'http://'+config.get('url')+'/api/learningComponent/'+id,
-  //         {
-  //         method: "GET",
-  //         }
-  //     )
-  //     .then(res => res.json())
-  //     .then(response => {
-  //       setComponent(response);
-  //     })
-  //     .catch(error => console.log(error));
-  // }
-
     //#region init data 
     const learningTime = () => {
       var time = 0;
@@ -110,15 +88,25 @@ const Component = ()=>{
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>{index + 1} :  {component.title}</Typography>
+            <Grid container spacing = {3}>
+              <Grid item xs={12}>
+                <Typography className={classes.heading}>{index + 1} :  {component.title}</Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                  <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
+              </Grid>
+            </Grid>
+          
+          
             
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-              <Grid container spacing={3}>
+              <Grid container spacing={2}>
               
-                <Grid item xs={8}>
+                {/* <Grid item xs={8}>
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12}> 
                   <LearningOutcomeContainer component ={component}/>

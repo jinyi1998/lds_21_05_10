@@ -77,6 +77,9 @@ class LessonController extends Controller
     public function destroy($id)
     {
         //
+        $lesson = Lesson::find($id);
+        $lesson->delete();
+        return response()->json('success');
     }
 
     public static function save(Lesson $lesson, Request $request){
@@ -104,6 +107,7 @@ class LessonController extends Controller
             foreach($request->tasks_id as $_task){
                 $lesson->tasksid()->create([
                     'task_id' => $_task["task_id"],
+                    'sequence'=> $_task["sequence"],
                     'lesson_id' => $lesson->id,
                     'created_by' => 1,
                     'updated_by' => 1,

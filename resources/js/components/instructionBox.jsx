@@ -14,7 +14,7 @@ const InstructionBox = (props) => {
         <React.Fragment>
              <Card variant="outlined" style={{margin: "16px"}}>
                 <CardContent>
-                    <Typography variant="h5" gutterBottom>
+                    {/* <Typography variant="h5" gutterBottom>
                         {title}
                         {tips == ""? 
                             null 
@@ -32,9 +32,9 @@ const InstructionBox = (props) => {
                                     <InfoIcon/>
                                 </Tooltip>  
                         }
-                    </Typography>
+                    </Typography> */}
 
-                    <Typography variant="body2" color="textSecondary" component="p">
+                    <Typography variant="body1" color="textPrimary" component="p">
                         {content}
                     </Typography>
                 </CardContent>

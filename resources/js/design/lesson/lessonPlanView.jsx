@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import {ContextStore} from '../../container/designContainer'
+import List from '@material-ui/core/List';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -20,40 +21,20 @@ import validator from 'validator';
 
 import LearningTaskLessonView from '../task/learningTaskLessonView';
 import config from 'react-global-configuration';
-import { useState } from 'react';
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    contentGrid: {
-        textAlign: "left"
-    },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-      },
-    chip: {
-        margin: 2,
-    },
-    color:{
-        backgroundColor: "#de5995",
-        height: "100%"
-    },
-  }));
+import RootRef from "@material-ui/core/RootRef";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-//   tasks : [ { componetID, taskIndex }]
+const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? 'lightgrey' : '',
+});
 
 const LessonPlanView = (props) => {
 
     const {setEditMode} = props;
     const canEdit = props.canEdit;
 
-    const [lesson, setLesson] = useState(props.lesson);
+    const [lesson, setLesson] = React.useState(props.lesson);
     const {setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
@@ -174,6 +155,74 @@ const LessonPlanView = (props) => {
      
     }
 
+    async function updateLearningTaskLessonRelation(task_relation) {
+        setLoadingOpen(true);
+
+        return await fetch(
+            'http://'+config.get('url')+'/api/lessonTaskRelation/'+ task_relation.id,
+            {
+                method: "PUT",
+                body:  JSON.stringify(task_relation),
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+                }
+            }
+        )
+        .then(res => res.json())
+        .then(response => {
+            //load the default learning outcomes by api request
+            setLoadingOpen(false);
+            refreshCourse();
+        })
+        .catch(error => console.log(error));
+     
+    }
+
+
+
+    const onDragEnd = (result) => {
+         // dropped outside the list
+         if (!result.destination) {
+            return;
+        }
+
+        //sync the data to root state
+        var tempTasks =  JSON.parse(JSON.stringify(lesson.tasks));
+
+        tempTasks.map((_task, index)=> {
+            if(_task.lessonid.sequence == null){
+                tempTasks[index].lessonid.sequence = index + 1;
+            }
+        });
+
+        var sourceTask = {
+          id: tempTasks[result.source.index].lessonid.id,
+          sequence: tempTasks[result.destination.index].lessonid.sequence
+        }
+
+        if(result.source.index < result.destination.index){
+          for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence - 1
+            }
+            // console.log(tempTask);
+            updateLearningTaskLessonRelation(tempTask);
+         }
+        }else{
+
+          for(var i = result.destination.index; i < result.source.index; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence + 1
+            }
+            // console.log(tempTask);
+            updateLearningTaskLessonRelation(tempTask);
+          }
+        }
+        // console.log(sourceTask);
+        updateLearningTaskLessonRelation(sourceTask);
+    }
 
     const onSaveTask = () => {
         if(validate()){
@@ -208,25 +257,62 @@ const LessonPlanView = (props) => {
                     Estimated learning time: {totalTime()} min(s)
                 </Grid>
                 
-                {   
-                lesson.tasks.length > 0 ?
-                    lesson.tasks.map(
-                        _task => 
-                        <LearningTaskLessonView 
-                            taskID = {_task.id} 
-                            taskData = {_task} 
-                            // onEditearningTask = {()=>{}
-                            onEditearningTask = {onEditearningTask}
-                            key = {_task.id}
-                        />
-                    )
-                    : 
-                    <Grid item xs ={12}>
-                    <Paper variant="outlined" style = {{padding: "16px", textAlign: "center"}}>
-                        No Learning Task In This Lesson
-                    </Paper>
-                </Grid> 
-                }
+                <Grid item xs ={12}>
+                    {/* <Paper variant="outlined" style = {{padding: "16px", textAlign: "center", width: '100%'}}>
+                    {   
+                    lesson.tasks.length > 0 ?
+                        lesson.tasks.map(
+                            _task => 
+                            <LearningTaskLessonView 
+                                taskID = {_task.id} 
+                                taskData = {_task} 
+                                // onEditearningTask = {()=>{}
+                                onEditearningTask = {onEditearningTask}
+                                key = {_task.id}
+                            />
+                        )
+                        : 
+                        <Grid item xs ={12}>    
+                            No Learning Task In This Lesson
+                        </Grid> 
+                    }
+                    </Paper> */}
+
+                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                        <Droppable droppableId="droppable">
+                        {(provided, snapshot) => (
+                            <RootRef rootRef={provided.innerRef}>
+                                <List style={getListStyle(snapshot.isDraggingOver)}>
+                                {   
+                                    lesson.tasks.length > 0 ?
+                                        lesson.tasks.map(
+                                            (_task, index) => 
+                                            <Draggable key={index} draggableId={index.toString()} index={index}>
+                                                {(provided, snapshot) => (
+                                                    <LearningTaskLessonView 
+                                                    provided = {provided} 
+                                                    snapshot = {snapshot} 
+                                                    taskID = {_task.id} 
+                                                    taskData = {_task} 
+                                                    // onEditearningTask = {()=>{}
+                                                    onEditearningTask = {onEditearningTask}
+                                                    key = {_task.id}
+                                                    />
+                                                )}
+                                            </Draggable>
+                                        )
+                                        : 
+                                        <Grid item xs ={12}>    
+                                            No Learning Task In This Lesson
+                                        </Grid> 
+                                    }
+                                    {provided.placeholder}
+                                </List>
+                            </RootRef>
+                        )}
+                        </Droppable>
+                    </DragDropContext>
+                 </Grid>
 
                 {canEdit == true? 
                     <Grid item xs ={12}>

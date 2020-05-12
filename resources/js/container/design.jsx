@@ -82,6 +82,7 @@ const PageMenu = (props) => {
         <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Learning Components</MenuItem>
         <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Unit Design</MenuItem>
         <CssBaseline />
+        <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activePage == "courseinfo"}>Course Information</MenuItem>
         {/* <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem> */}
       </Menu>
     </div>
@@ -130,7 +131,7 @@ const Design = (props) => {
     .then(response => {
         response.map( (templateID, index) => {
         // learning componet
-        getComponentTemplateFata(templateID).then(component => {
+        getComponentTemplateData(templateID).then(component => {
           component.component_template_id = component.id
           component.course_id = course.id
           component.sequence = index + 1
@@ -140,7 +141,7 @@ const Design = (props) => {
     })
   }
 
-  async function getComponentTemplateFata(id) {
+  async function getComponentTemplateData(id) {
 
     return await fetch(
       'http://'+config.get('url')+'/api/learningComponentTemplate/'+ id,
@@ -214,66 +215,6 @@ const Design = (props) => {
 
   //preload learningTask
   async function saveCourse(){
-    // setLoadingOpen(true);
-    // if(config.get('enableDB')){
-    //   if(courseID == -1){
-    //     return await fetch(
-    //       'http://'+config.get('url')+'/api/course',
-    //       {
-    //         method: "POST",
-    //         body:  JSON.stringify(course),
-    //         headers: {
-    //           "Content-type": "application/json; charset=UTF-8"
-    //         }
-    //       }
-    //   )
-    //   .then(res => res.json())
-    //   .then(response => {
-    //       //load the default learning outcomes by api request
-    //       location.href = "app";
-    //       setLoadingOpen(false);
-    //       return response;
-    //   })
-    //   .catch(error => console.log(error));
-    //   }else{
-    //     return await fetch(
-    //           'http://'+config.get('url')+'/api/course/'+courseID,
-    //           {
-    //             method: "PUT",
-    //             body:  JSON.stringify(course),
-    //             headers: {
-    //               "Content-type": "application/json; charset=UTF-8"
-    //           }
-    //           }
-    //       )
-    //       .then(res => res.json())
-    //       .then(response => {
-    //           //load the default learning outcomes by api request
-    //           location.href = "app";
-    //           setLoadingOpen(false);
-    //           return response;
-    //       })
-    //       .catch(error => console.log(error));
-    //   }
-    // }else{
-    //   return await fetch(
-    //           'http://'+config.get('url')+'/api/file/json',
-    //           {
-    //             method: "POST",
-    //             body:  JSON.stringify(course),
-    //             headers: {
-    //               "Content-type": "application/json; charset=UTF-8"
-    //           }
-    //           }
-    //       )
-    //       .then(res => {  
-    //         setLoadingOpen(false);
-    //         window.open('http://'+config.get('url')+'/api/file');
-    //         // location.href = "app";
-    //         return response;
-    //       })
-    //       .catch(error => console.log(error));    
-    // }
     window.location.href = "/mydesign";
   }
 
@@ -347,7 +288,8 @@ const Design = (props) => {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
+                    {/* {activeStep === steps.length - 1 ? 'Save' : 'Next'} */}
+                    Next
                   </Button>
               )}
             </div>
@@ -356,7 +298,7 @@ const Design = (props) => {
       case 1:
         return (
           <React.Fragment>
-             <DesignInfo handleBack = {handleBack} handleNext = {handleNext}/>
+             <DesignInfo handleBack = {handleBack} handleNext = {handleNext} isStep = {true}/>
           </React.Fragment>
         )
         return <DesignInfo />
@@ -470,6 +412,13 @@ const Design = (props) => {
           <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
           <BasicReview/>
         </React.Fragment>);
+      case 'courseinfo':
+        return(
+          <React.Fragment>
+            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
+            <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
+          </React.Fragment>
+        )
     }
   }
 
@@ -477,13 +426,15 @@ const Design = (props) => {
   const displayTitle = () => {
     switch(activePage){
       case 'basic': 
-        return "Basic Info";
+        return "Basic Setup";
       case 'majorStep':
-        return "Learning Compoents"
+        return "Learning Components"
       case 'unitPlan':
         return "Unit Design"
       case 'learningOutcomes':
-          return "Learning Outcomes"
+          return "Unit Level Learning Outcomes"
+      case 'courseinfo':
+          return "Course Information"
     }
   }
 
@@ -502,7 +453,7 @@ const Design = (props) => {
               {getActivePage()}
             </Grid>
             <Grid item xs = {12}>
-              <Button color="primary" variant="contained" onClick={() => {saveCourse()} } fullWidth > Save Course</Button>
+              <Button color="primary" variant="contained" onClick={() => {saveCourse()} } fullWidth > Close</Button>
             </Grid>
           </Grid>
         </Paper>

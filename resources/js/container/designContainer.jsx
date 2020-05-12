@@ -169,7 +169,8 @@ const DesignContainerNew = (props) => {
             var color = taskTypeColorValue.find(x => x.id == task_type);
             return ({
                 backgroundColor:  color.color,
-                height: "100%"
+                height: "100%",
+                width: "12px"
             });
         }catch{
             return ({
@@ -189,11 +190,11 @@ const DesignContainerNew = (props) => {
         )
             .then(res => res.json())
             .then(response => {
-                Dispatch({
-                    type: "INIT_COURSE",
-                    value: response
-                })
-            setLoadingOpen(false)
+                // Dispatch({
+                //     type: "INIT_COURSE",
+                //     value: response
+                // })
+           window.location.href = 'designstudio/'+response.id;
         })
         .catch(error => console.log(error));
     }

@@ -7,6 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Typography from '@material-ui/core/Typography';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -32,6 +33,9 @@ import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 
 import config from 'react-global-configuration';
@@ -49,6 +53,16 @@ import config from 'react-global-configuration';
 //       description: "",
 //     }
 //   ],
+
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  
+    ...(isDragging && {
+      background: "rgb(235,235,235)"
+    })
+});
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -81,7 +95,10 @@ const LearningTaskView = (props) => {
     // const {onEditTasks} = props;
     const {course, options, setLoadingOpen, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
+    const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
+    const [duplicateTo, setDuplicateTo] = React.useState( -1);
     const {editBtn, duplicateBtn, deleteBtn} = props;
+    const {provided, snapshot, index} = props;
 
     const [task, setTask] = React.useState({
         id: -1,
@@ -90,6 +107,7 @@ const LearningTaskView = (props) => {
         assessment: [],
         time: 0,
         class_type: 1,
+        componentid: {},
         target: 1,
         size: 1,
         toolid: [],
@@ -98,6 +116,28 @@ const LearningTaskView = (props) => {
         description: "",
         content: "",
     });  
+
+    const getDraggable = (provided, snapshot) => {
+        if(typeof provided == 'undefined'){
+            return (
+               null
+            );
+        }else{
+            return (
+                {
+                    // styles we need to apply on draggables
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    style: getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )
+                }
+            );
+        }
+    }
+    
 
     async function fetchlearningTask(id) {
         setLoadingOpen(true);
@@ -119,26 +159,30 @@ const LearningTaskView = (props) => {
 
     async function duplicateLearningTask() {
         setLoadingOpen(true);
-        var json = task;
-        json['component_id'] = task.componentid.component_id;
-        json['sequence'] = props.lastestindex;
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningTask/',
-            {
-                method: "POST",
-                body:  JSON.stringify(json),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
+        if(duplicateTo != -1){
+            var json = task;
+            json['component_id'] = duplicateTo;
+            json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
+
+            return await fetch(
+                'http://'+config.get('url')+'/api/learningTask/',
+                {
+                    method: "POST",
+                    body:  JSON.stringify(json),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
                 }
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            refreshCourse();
-            setLoadingOpen(false);    
-        })
-        .catch(error => console.log(error));
+            )
+            .then(res => res.json())
+            .then(response => {
+                //load the default learning outcomes by api request
+                refreshCourse();
+                setLoadingOpen(false);  
+                setDuplicateDialogOpen(false);  
+            })
+            .catch(error => console.log(error));
+        }
     }
 
     async function deleteLearningTask() {
@@ -173,8 +217,6 @@ const LearningTaskView = (props) => {
     const taskTypeOpts = options.taskType;
     //#endregion
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
     
     //#region button action related
     const onClickEdit = () => {
@@ -182,6 +224,10 @@ const LearningTaskView = (props) => {
     }
 
     const onClickDuplicate = () => {
+        setDuplicateDialogOpen(true);
+    }
+
+    const onConfirmDuplicate = () => {
         duplicateLearningTask();
     }
 
@@ -192,17 +238,33 @@ const LearningTaskView = (props) => {
 
     const displayView = () => {
         return (
-            <Grid item container spacing={4} xs={12}>
-                <Grid item xs={1} height="100%">
-                    <div style={taskTypeColor(task.type)}>
-                    </div>
+            <Grid item container spacing={2} xs={12}  
+               {...getDraggable(provided, snapshot)}
+            >
+                <Grid container item xs={1} height="100%">
+                    {typeof provided == 'undefined'?    
+                        null
+                    :
+                        <Grid item xs ={4} container  justify="center" alignItems="center">
+                            <DragHandleIcon />
+                        </Grid>
+                    }
+                 
+                    <Grid item xs ={8}>
+                        <div style={taskTypeColor(task.type)}/>
+                    </Grid>
+
                 </Grid>
-                <Grid container item xs={11}>
-                    <Grid item xs={8} className={classes.contentGrid}>
-                        {taskTypeOpts.find(x => x.id == task.type)?.description } 
+
+                
+                <Grid container item xs={10}>
+                    <Grid item xs={10} className={classes.contentGrid}>
+                        <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}}>
+                            {task.title}
+                        </Typography>
                     </Grid>
                    
-                    <Grid item xs={4} className={classes.contentGrid}>
+                    <Grid item xs={2} className={classes.contentGrid}>
                         {
                             editBtn == true?
                                 <IconButton onClick={()=>onClickEdit()}>
@@ -233,43 +295,68 @@ const LearningTaskView = (props) => {
                     </Grid>
                    
                     <Grid item xs={12} className={classes.contentGrid}>
-                        {task.title}
+                        {taskTypeOpts.find(x => x.id == task.type)?.description } 
                     </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid}>
-                       <AssessmentIcon />
+                        <Tooltip title="Learning Outcome" aria-label="lo">
+                            <AssessmentIcon />
+                        </Tooltip>
+                      
                        {task.assessment?.map(
                            _assessment => 
-                           _assessment.description
+                           _assessment.description.concat(', ')
                        )}
                     </Grid>
 
-                    <Grid item xs={12} className={classes.contentGrid}>
-                        <AccessTimeIcon />{task.time} mins 
+                    <Grid item xs={3} className={classes.contentGrid}>
+                        <Tooltip title="Task Time" aria-label="time">
+                            <AccessTimeIcon />
+                        </Tooltip>
+                        {task.time} mins 
+                      
                     </Grid>
 
-                    <Grid item xs={4} className={classes.contentGrid}>
-                        <RoomIcon /> {classTypeOtps.find(x => x.id == task.class_type)?.description}
+                    <Grid item xs={3} className={classes.contentGrid}>
+                        <Tooltip title="Class Type" aria-label="classtype">
+                            <RoomIcon /> 
+                        </Tooltip>
+                        {classTypeOtps.find(x => x.id == task.class_type)?.description}
                     </Grid>
 
-                    <Grid item xs={4} className={classes.contentGrid}>
-                        <GpsNotFixedIcon />  {taskTargetOpts.find(x => x.id == task.target)?.description }
+                    <Grid item xs={3} className={classes.contentGrid}>
+                        <Tooltip title="Class Target" aria-label="classtarget">
+                            <GpsNotFixedIcon /> 
+                        </Tooltip>
+                        {taskTargetOpts.find(x => x.id == task.target)?.description }
+                     
                     </Grid>
 
-                    <Grid item xs={4} className={classes.contentGrid}>
-                        <GroupIcon /> {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
+                    <Grid item xs={3} className={classes.contentGrid}>
+                        <Tooltip title="Class Size" aria-label="classtarget">
+                            <GroupIcon /> 
+                        </Tooltip>
+                        {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
                     </Grid>
 
-                    <Grid item xs={12} className={classes.contentGrid}>
-                        <AssignmentIcon />{task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
+                    <Grid item xs={6} className={classes.contentGrid}>
+                        <Tooltip title="Resource" aria-label="classtarget">
+                            <AssignmentIcon />
+                        </Tooltip>  
+                        {task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                     </Grid>
 
-                    <Grid item xs={12} className={classes.contentGrid}>
-                        <ImportantDevicesIcon /> {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
+                    <Grid item xs={6} className={classes.contentGrid}>
+                        <Tooltip title="E-Learning Tools" aria-label="classtarget">
+                            <ImportantDevicesIcon /> 
+                        </Tooltip>  
+                        {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
                     </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid}>
-                        {task.description}
+                        <Typography color = "textSecondary" gutterBottom>
+                            {task.description}
+                        </Typography>
                     </Grid>
 
                 </Grid>
@@ -288,6 +375,7 @@ const LearningTaskView = (props) => {
                 displayView()
             }
         </Grid>
+
         <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
                 <DialogTitle id="form-dialog-title">Warning</DialogTitle>
                 <DialogContent>
@@ -302,6 +390,33 @@ const LearningTaskView = (props) => {
                     </Button>
                     <Button onClick={()=>{onClickDelete(); setDelDialogOpen(false)} } color="primary">
                         Delete
+                    </Button>
+                </DialogActions>
+        </Dialog>
+
+        <Dialog open={duplicateDialogOpen} onClose={()=>{setDuplicateDialogOpen(false)}}>
+                <DialogTitle id="form-dialog-title">Duplicate Learning Task</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Please select the component you wanna duplicate to.
+                    </DialogContentText>
+                    <Select value = {duplicateTo} onChange = {(event) => setDuplicateTo(event.target.value)} fullWidth>
+                        <MenuItem value = {-1} disabled> 
+                            Duplicate to component
+                        </MenuItem>
+                        {course.components.map(_component => 
+                            <MenuItem value = {_component.id} key = {_component.id}> 
+                                {_component.title}
+                            </MenuItem>
+                        )}
+                    </Select>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>{setDuplicateDialogOpen(false)}} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={()=>{onConfirmDuplicate()} } color="primary">
+                        Duplicate
                     </Button>
                 </DialogActions>
         </Dialog>

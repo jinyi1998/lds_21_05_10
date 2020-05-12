@@ -56,98 +56,101 @@ class LearningTasksOtpsSeeder extends Seeder
             ],
         ]);
 
-        DB::table('learningTasktypeOpts')->insert([
-            [
-                'description' => 'Receiving and interpreting information',
-                'color' => '#194d33',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Exploration through conversation',
-                'color' => '#FF6900',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Construction: Conceptual/visual artefacts',
-                'color' => '#FCB900',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Presentation, performance and illustration',
-                'color' => '#7BDCB5',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Informaton exploration',
-                'color' => '#8ED1FC',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Self/Peer-Assessment',
-                'color' => '#0693E3',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Revision',
-                'color' => '#EB144C',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Tangible/immersive investigation',
-                'color' => '#9900EF',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Reflection',
-                'color' => '#069113',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'description' => 'Presentations, illustration, and performance',
-                'color' => '#EB1FFC',
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => false,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-        ]);
+        if(! DB::table('learningTasktypeOpts') ->where('id', 1)->exists()){
+            DB::table('learningTasktypeOpts')->insert([
+                [
+                    'description' => 'Receiving and interpreting information',
+                    'color' => '#194d33',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Exploration through conversation',
+                    'color' => '#FF6900',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Construction: Conceptual/visual artefacts',
+                    'color' => '#FCB900',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Presentation, performance and illustration',
+                    'color' => '#7BDCB5',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Informaton exploration',
+                    'color' => '#8ED1FC',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Self/Peer-Assessment',
+                    'color' => '#0693E3',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Revision',
+                    'color' => '#EB144C',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Tangible/immersive investigation',
+                    'color' => '#9900EF',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Reflection',
+                    'color' => '#069113',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'description' => 'Presentations, illustration, and performance',
+                    'color' => '#EB1FFC',
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+            ]);
+        }
+      
 
         DB::table('classSizeOpts')->insert([
             [

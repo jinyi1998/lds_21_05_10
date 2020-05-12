@@ -12,9 +12,28 @@ import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
+import AddIcon from '@material-ui/icons/Add';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SchoolIcon from '@material-ui/icons/School';
+import config from 'react-global-configuration';
+
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 import LessonPlanContainer from './lessonPlanContainer';
 
@@ -41,10 +60,12 @@ const useStyles = makeStyles(theme => ({
 
 const LessonPlan = (props) => {
 
-    const { course } = React.useContext(ContextStore);
+    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
 
     const classes = useStyles();
     const [selectedLessonID, setSelectedLessonID] = React.useState(-1);
+    const [onDeletelLessonID, setOnDeleteLessonID] = React.useState(-1);
+    const [deleteDialog, setDeleteDialog] = React.useState(false);
     const [lesson, setLesson] = React.useState({
         id: -1,
         title: "",
@@ -65,6 +86,88 @@ const LessonPlan = (props) => {
         setLesson(course.lessons.find(x=> x.id == lessonID));
     }
 
+    const onAddLessson = () => {
+        setLoadingOpen(true)
+        var lessonjson = {
+            "time": 0,
+            "title": 'Lesson' + (course.lessons.length+1),
+            "sequence": course.lessons.length + 1,
+            "course_id": course.id,
+        };
+
+        fetch(
+            'http://'+config.get('url')+'/api/lesson',
+            {
+              method: "POST",
+              body:  JSON.stringify(lessonjson),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            }
+          )
+              .then(res => res.json())
+              .then(response => {
+                  setLoadingOpen(false)
+
+                  // update the course no of lessons
+                  updateCourseNoOfLesson(course.lessons.length + 1);
+          })
+          .catch(error => console.log(error));
+
+    }
+
+    const onDeleteDialog = (lesson_id) => {
+        setOnDeleteLessonID(lesson_id);
+        setDeleteDialog(true);
+    }
+
+    const onDeleteLesson = () => {
+        if(selectedLessonID == onDeletelLessonID){
+            setSelectedLessonID(-1)
+        }
+        //delete the lesson
+        setLoadingOpen(true)
+         fetch(
+            'http://'+config.get('url')+'/api/lesson/'+onDeletelLessonID,
+            {
+              method: "DELETE",
+            }
+          )
+              .then(res => res.json())
+              .then(response => {
+
+                  // update the course no of lessons
+                  updateCourseNoOfLesson(course.lessons.length - 1);
+          })
+          .catch(error => console.log(error));
+
+
+    }
+
+    const updateCourseNoOfLesson = (no_of_lesson) => {
+        var json = {        
+            "no_of_lesson": no_of_lesson,
+        };
+       fetch(
+            'http://'+config.get('url')+'/api/course/'+ course.id,
+            {
+              method: "PUT",
+              body:  JSON.stringify(json),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            }
+        )
+            .then(res => res.json())
+            .then(response => {
+                refreshCourse();
+                setLoadingOpen(false)
+                setDeleteDialog(false);
+        })
+        .catch(error => console.log(error));
+    }
+
+
     React.useEffect(()=>{
         setLesson(course.lessons.find(x=> x.id == selectedLessonID));
     },
@@ -75,17 +178,36 @@ const LessonPlan = (props) => {
         <Grid container >
             <Grid item xs={3}>
                 <Paper className={classes.paper}>
-                    <MenuList>
+                    <List>
                         {course.lessons.map((_lessons, index) => 
-                            <MenuItem 
+                            <ListItem 
                                 onClick = {() => onChangeLesson(_lessons.id)} 
                                 key={index}  
-                                selected={selectedLessonID == _lessons.id}>
-                                {_lessons.title}
-                            </MenuItem>
+                                selected={selectedLessonID == _lessons.id}
+                                button
+                                >
+                                <ListItemIcon>
+                                    <SchoolIcon />
+                                </ListItemIcon>
+                                <ListItemText primary= {_lessons.title} />
+                                <ListItemSecondaryAction>
+                                    <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
                         )}
-                        <MenuItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} >View All</MenuItem>
-                    </MenuList>
+                        <ListItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} >View All</ListItem>
+                    </List>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<AddIcon />}
+                        fullWidth
+                        onClick = {onAddLessson}
+                    >
+                        Add Lesson
+                    </Button>
                 </Paper>
             </Grid>
             <Grid item xs={9}>
@@ -99,6 +221,23 @@ const LessonPlan = (props) => {
                 }
                 
             </Grid>
+            <Dialog open={deleteDialog} onClose={()=>{setDeleteDialog(false)}}>
+                <DialogTitle id="form-dialog-title">Warning</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are You Sure To Delete Lesson #(lesson id: {onDeletelLessonID})
+                        This action cannot be recovered after deleted
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>{setDeleteDialog(false)}} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={()=>{onDeleteLesson()} } color="primary">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Grid>
     )
 }

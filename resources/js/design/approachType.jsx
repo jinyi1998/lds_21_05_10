@@ -61,7 +61,7 @@ const DesignType = (props) => {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Choose the subject specific design
+        Choose the combination of disciplinary practice and pedagogical approach
       </Typography>
       <GridList className={classes.gridList} cols={4}>
           {designType.map((_data, i) => (

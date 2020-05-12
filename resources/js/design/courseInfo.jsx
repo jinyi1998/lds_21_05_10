@@ -9,6 +9,12 @@ import {ContextStore} from '../container/designContainer'
 import config from 'react-global-configuration';
 import validator from 'validator';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
@@ -27,6 +33,7 @@ const DesignInfo = (props) => {
 
   const [ courseData, setCourseData ] = React.useState(course);
   const [ lesson_time, setLessonTime ] = React.useState(0);
+  const [ lessonWarning, setLessonWarning ] = React.useState(false);
 
   const [error, setError] = React.useState({
     "unit_title": "",
@@ -97,33 +104,25 @@ const DesignInfo = (props) => {
 
   const onNext = () => {
     if(validate()){
-      // dispatch({
-      //   type: "UNIT_TITLE",
-      //   value: courseData.unitTitle
-      // });
-  
-      // dispatch({
-      //   type: "SCHOOL_NAME",
-      //   value: courseData.schoolName
-      // });
-  
-      // dispatch({
-      //   type: "LEVEL",
-      //   value: courseData.level
-      // });
-  
-      // dispatch({
-      //   type: "NO_OF_LESSON",
-      //   value: courseData.noOfLessons
-      // });
-  
-      // dispatch({
-      //   type: "COURSE_DES",
-      //   value: courseData.courseDes
-      // });
       updateCourse();
-  
       handleNext();
+    }
+  }
+
+  const onSave = () => {
+    if(course.no_of_lesson > courseData.no_of_lesson){
+      setLessonWarning(true);
+    }else{
+      if(validate()){
+        updateCourse();
+      }
+    }
+  }
+
+  const onConfirm = () =>{
+    if(validate()){
+      updateCourse();
+      setLessonWarning(false);
     }
   }
 
@@ -132,39 +131,92 @@ const DesignInfo = (props) => {
     var course_json = {
       course_id: course.id,
     }
-    await fetch(
-      'http://'+config.get('url')+'/api/course/clearCourseLesson',
-      {
-        method: "POST",
-        body:  JSON.stringify(course_json),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
+
+    if(course.lessons.length > 0){
+      // already init-ed the lesson
+      if(course.no_of_lesson > courseData.no_of_lesson){
+        //del lesson
+        for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
+          
+          var lessonid = course.lessons[i].id;
+          await fetch(
+            'http://'+config.get('url')+'/api/lesson/' +lessonid,
+            {
+              method: "DELETE",
+            }
+          )
+              .then(res => res.json())
+              .then(response => {
+                  setLoadingOpen(false)
+          })
+          .catch(error => console.log(error));
+        }
+
+      }else if(course.no_of_lesson < courseData.no_of_lesson){
+        //add new lesson 
+        for(var i = course.no_of_lesson; i < courseData.no_of_lesson; i++){
+          let int_i = parseInt(i);
+          var lessonjson = {
+            "time": lesson_time,
+            "title": 'Lesson' + (int_i + 1),
+            "sequence": int_i + 1,
+            "course_id": course.id,
+          };
+          await fetch(
+            'http://'+config.get('url')+'/api/lesson',
+            {
+              method: "POST",
+              body:  JSON.stringify(lessonjson),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            }
+          )
+              .then(res => res.json())
+              .then(response => {
+                  setLoadingOpen(false)
+          })
+          .catch(error => console.log(error));
         }
       }
-    )
-
-    for(var i = 0; i<courseData.no_of_lesson; i++){
-      var lessonjson = {
-        "time": lesson_time,
-        "title": 'Lesson' + (i+1),
-        "sequence": i + 1,
-        "course_id": course.id,
-      };
-      await fetch(
-        'http://'+config.get('url')+'/api/lesson',
-        {
-          method: "POST",
-          body:  JSON.stringify(lessonjson),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
+     
+    }else{
+        
+        await fetch(
+          'http://'+config.get('url')+'/api/course/clearCourseLesson',
+          {
+            method: "POST",
+            body:  JSON.stringify(course_json),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
           }
+        )
+          
+      // init the lesson with input no of lesson
+        for(var i = 0; i<courseData.no_of_lesson; i++){
+          var lessonjson = {
+            "time": lesson_time,
+            "title": 'Lesson' + (i+1),
+            "sequence": i + 1,
+            "course_id": course.id,
+          };
+          await fetch(
+            'http://'+config.get('url')+'/api/lesson',
+            {
+              method: "POST",
+              body:  JSON.stringify(lessonjson),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            }
+          )
+              .then(res => res.json())
+              .then(response => {
+                  setLoadingOpen(false)
+          })
+          .catch(error => console.log(error));
         }
-      )
-          .then(res => res.json())
-          .then(response => {
-              setLoadingOpen(false)
-      })
-      .catch(error => console.log(error));
     }
     
 
@@ -195,7 +247,7 @@ const DesignInfo = (props) => {
     .catch(error => console.log(error));
 }
 
-  const {handleNext, handleBack} =  props;
+  const {handleNext, handleBack, isStep} =  props;
 
   return (
     <React.Fragment>
@@ -284,19 +336,53 @@ const DesignInfo = (props) => {
             onChange={onChange}/>
         </Grid>
       </Grid>
+      
       <div className={classes.buttons}>
-          <Button onClick={handleBack}>
-            Back
-          </Button>
+          {isStep? 
+            <Button onClick={handleBack}>
+              Back
+            </Button>
+          :
+            null
+          }
 
-          <Button
+          {isStep? 
+            <Button
             variant="contained"
             color="primary"
             onClick={() => onNext()}
           >
             Next
           </Button>
+          :
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => onSave()}
+          >
+            Save
+          </Button>
+          }
+         
       </div>
+
+      <Dialog open={lessonWarning} onClose={() => setLessonWarning(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
+                <DialogTitle id="form-dialog-title">Warning!!!</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Detected you have decreased the number of lessons. It will delete the lessons behind the no of lesson. Are you sure to continue?
+                    </DialogContentText>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={() => setLessonWarning(false)} >
+                        Cancel
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={() => onConfirm()} >
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
     </React.Fragment>
   );
 }

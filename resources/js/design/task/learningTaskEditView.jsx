@@ -6,6 +6,7 @@ import { Grid, TextField } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 import MenuItem from '@material-ui/core/MenuItem';
@@ -84,23 +85,6 @@ const LearningTaskEditView = (props) => {
     const [resource, setResource] = React.useState([])
     const [assessment, setAssessment] = React.useState([])
 
-    // async function fetchlearningTask(id) {
-    //     setLoadingOpen(true);
-    //     return await fetch(
-    //         'http://'+config.get('url')+'/api/learningTask/'+ id,
-    //         {
-    //         method: "GET",
-    //         }
-    //     )
-    //     .then(res => res.json())
-    //     .then(response => {
-    //         //load the default learning outcomes by api request
-    //         setLoadingOpen(false);
-    //         setTask(response);
-          
-    //     })
-    //     .catch(error => console.log(error));
-    // }
 
     React.useEffect( ()=>{  
         // fetchlearningTask(taskID)
@@ -123,6 +107,13 @@ const LearningTaskEditView = (props) => {
             // setTask({...task, id: -1});
             // console.log(taskData);
         }
+        var classTargetInit = {
+            target: {
+                "name": "target",
+                "value": taskData.class_type
+            }
+        }
+        handleChange(classTargetInit);
     }
     , [taskID])
 
@@ -152,7 +143,7 @@ const LearningTaskEditView = (props) => {
 
     React.useEffect( ()=>{  
         // update the original learningoutcome
-        if(task.id != -999 && showAssessment){
+        if(task.id != -999){
            var assessmentid = {}
            assessmentid =  assessment.map(_assessment => {
                return {"learningoutcome_id": _assessment, "learningtask_id": task.id}
@@ -176,10 +167,12 @@ const LearningTaskEditView = (props) => {
 
 
     const onChangeIsAssessment = () => {
-        setHasAssessment(!hasAssessment);
-        if(hasAssessment == false){
+        if(hasAssessment == true){
+            // clear assessment if uncheck has assessment
             setAssessment([]);
         }
+        setHasAssessment(!hasAssessment);
+     
     }
 
     const handleChangeMultiple = event => {
@@ -215,7 +208,17 @@ const LearningTaskEditView = (props) => {
                 setTask({...task, class_type: event.target.value});
                 break;
             case "target":
-                setTask({...task, target: event.target.value});
+                var temp = options.taskSize;
+                if(event.target.value == 1 ){
+                    temp = temp.filter(x => x.id == 1)
+                }else if(event.target.value == 3){
+                    temp = temp.filter(x => x.id == 7)
+                }else{
+                    temp = temp.filter(x => ![1,7].includes(x.id))
+                }
+                setTaskClassSizeOpts(temp)
+                setTask({...task, size: temp[0].id, target: event.target.value});
+                // setTask({...task, target: event.target.value});
                 break;
             case "size":
                 setTask({...task, size: event.target.value});
@@ -235,11 +238,12 @@ const LearningTaskEditView = (props) => {
     //#region init opts data
 
     const classTypeOtps = options.taskClassType;
-    const taskClassSizeOpts = options.taskSize;
+    const [taskClassSizeOpts, setTaskClassSizeOpts] = React.useState(options.taskSize);
     const taskTargetOpts = options.taskTarget;
     const taskResouceOpts = options.taskResource;
     const taskELearnResouceOpts = options.taskElearingResource;
     const taskTypeOpts = options.taskType;
+
     //#endregion
 
     const ITEM_HEIGHT = 48;
@@ -259,7 +263,7 @@ const LearningTaskEditView = (props) => {
             return (
                 <Grid item xs={12} className={classes.contentGrid}>
                 <FormControl className={classes.formControl} fullWidth>
-                    <InputLabel id={"assessment-"+ taskID+"-label"}>Assessment</InputLabel>
+                    <InputLabel id={"assessment-"+ taskID+"-label"}>Outcome(s)</InputLabel>
                     <Select
                         labelId={"assessment-"+ taskID+"-label"}
                         id={"assessment-"+ taskID}
@@ -273,14 +277,26 @@ const LearningTaskEditView = (props) => {
                         renderValue={selected => (
                             <div className={classes.chips}>
                             {selected.map(value => (
-                                <Chip key={value} label={component.outcomes.find(x=> x.id == value).description} className={classes.chip} />
+                                <Chip key={value} label={component.outcomes.find(x=> x.id == value).description} className={classes.chip}  style={{whiteSpace: 'normal' }} />
                             ))}
                             </div>
                         )}
                         MenuProps={MenuProps}
                     >
-                        {component.outcomes.map(_outcome => (
-                            <MenuItem key={_outcome.id} value= {_outcome.id}>
+                        <ListSubheader>
+                            Component LO
+                        </ListSubheader>
+                        {component.outcomes.filter(_outcome => _outcome.isCourseLevel == false).map(_outcome => (
+                            <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
+                              {_outcome.description}
+                          </MenuItem>
+                        ))}
+
+                        <ListSubheader>
+                            Unit LO
+                        </ListSubheader>
+                        {component.outcomes.filter(_outcome => _outcome.isCourseLevel == true).map(_outcome => (
+                            <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
                               {_outcome.description}
                           </MenuItem>
                         ))}
@@ -305,13 +321,14 @@ const LearningTaskEditView = (props) => {
         justify="center"
         >   
             <Grid item xs={3}>
-                <Grid container spacing={4}>
+                <Grid container spacing={2}>
                     <Grid item xs={12} className={classes.contentGrid}>
                         <TextField 
                         id={"time-"+ taskID} 
                         label="Minutes" 
                         variant="filled" 
                         value={task.time} 
+                        type="number"
                         name="time" 
                         onChange={handleChange}
                         error = {! (error["time"]=="")}
@@ -339,49 +356,51 @@ const LearningTaskEditView = (props) => {
                    
                     {/* classtype */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["classType"]=="")}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["classType"]=="")} margin='dense'>
                             <InputLabel  id={"classType-"+ taskID + "-label"}>
-                                Place
+                                Class Type
                             </InputLabel>
                             <Select
                             labelId={"classType-"+ taskID + "-label"}
                             id={"classType-"+ taskID}
                             name="class_type"
                             value={task.class_type}
+                            size = "small"
                             onChange={handleChange}
                             renderValue={selected => (
                                 classTypeOtps.find(x => x.id == selected)?.description
                             )}
                             >
-                                <MenuItem value="" disabled>
-                                    <em>None</em>
+                                <MenuItem value={-1} disabled>
+                                    <em>Please select the class type</em>
                                 </MenuItem>
                                 {classTypeOtps.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
 
                             <FormHelperText>
-                               {! (error["classType"]=="")? error["classType"]:  "required"}
+                               {! (error["classType"]=="")? error["classType"]:  ""}
                             </FormHelperText>
                         </FormControl>
                     </Grid>
                     {/* target */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["target"]=="")}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["target"]=="")} margin='dense'>
                             <InputLabel  id={"target-"+ taskID + "-label"}>
-                                Class Type
+                                Class Target
                             </InputLabel>
                             <Select
                             labelId={"target-"+ taskID + "-label"}
                             id={"target-"+taskID}
                             name="target"
+                            size="small"
                             value={task.target}
                             onChange={handleChange}
                             renderValue={selected => (
                                 taskTargetOpts.find(x => x.id == selected)?.description
                             )}
                             >
-                                <MenuItem value="" disabled>
-                                    <em>None</em>
+                                <MenuItem value={-1} disabled>
+                                    <em>Please select the class target</em>
                                 </MenuItem>
                                 {taskTargetOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
@@ -392,7 +411,7 @@ const LearningTaskEditView = (props) => {
                     </Grid>
                     {/* claassize */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["size"]=="")}>
+                        <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["size"]=="")} margin='dense'>
                             <InputLabel  id={"size-"+taskID+"-label"}>
                                 Size
                             </InputLabel>
@@ -400,14 +419,15 @@ const LearningTaskEditView = (props) => {
                             labelId={"size-"+taskID+"-label"}
                             id={"size-"+ taskID}
                             name="size"
+                            size="small"
                             value={task.size}
                             onChange={handleChange}
                             renderValue={selected => (
                                 taskClassSizeOpts.find(x => x.id == selected)?.description
                             )}
                             >
-                                <MenuItem value="" disabled>
-                                    <em>None</em>
+                                <MenuItem value={-1} disabled>
+                                    <em>Please select the class size</em>
                                 </MenuItem>
                                 {taskClassSizeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>
@@ -418,7 +438,7 @@ const LearningTaskEditView = (props) => {
                     </Grid>
                     {/* Resource */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl className={classes.formControl} fullWidth>
+                        <FormControl className={classes.formControl} fullWidth margin='dense'>
                             <InputLabel id = {"resource-"+ taskID + "-lebal"}>Resource(s)</InputLabel>
                             <Select
                                 labelId = {"resource-"+ taskID + "-lebal"}
@@ -429,6 +449,7 @@ const LearningTaskEditView = (props) => {
                                 name = "resource"
                                 onChange={handleChangeMultiple}
                                 input = {<Input id={"resource-"+ taskID} />}
+                                size = "small"
                                 renderValue={selected => (
                                     <div className={classes.chips}>
                                     {selected.map(value => (
@@ -447,7 +468,7 @@ const LearningTaskEditView = (props) => {
                     </Grid>
                     {/* E-Resource */}
                     <Grid item xs={12} className={classes.contentGrid}>
-                        <FormControl className={classes.formControl} fullWidth>
+                        <FormControl className={classes.formControl} fullWidth margin='dense'>
                             <InputLabel id = {"e-resource-"+ taskID + "-lebal"}>E-Learning-Tool(s)</InputLabel>
                             <Select
                                 labelId = {"e-resource-"+ taskID + "-lebal"}
@@ -456,6 +477,7 @@ const LearningTaskEditView = (props) => {
                                 value = {tool}
                                 fullWidth
                                 name = "e-resource"
+                                size = "small"
                                 onChange={handleChangeMultiple}
                                 input = {<Input id={"e-resource-"+ taskID} />}
                                 renderValue={selected => (
@@ -511,24 +533,26 @@ const LearningTaskEditView = (props) => {
                         <TextField 
                         id={"title-"+ taskID} 
                         name="title" 
-                        label="title" 
+                        label="Title" 
                         variant="filled" 
                         onChange={handleChange} 
                         value={task.title} 
                         error = {! (error["title"]=="")}
                         helperText= {! (error["title"]=="")? error["title"]:  ""}
+                        multiline
                         fullWidth/>
                     </Grid>
                     <Grid item xs={12} className={classes.contentGrid}>
                         <TextField 
                         id={"description-" + taskID} 
                         name="description" 
-                        label="description" 
+                        label="Description" 
                         variant="filled" 
                         onChange={handleChange} 
                         value={task.description} 
                         error = {! (error["description"]=="")}
                         helperText= {! (error["description"]=="")? error["description"]:  ""}
+                        multiline
                         fullWidth/>
                     </Grid>
                 </Grid>

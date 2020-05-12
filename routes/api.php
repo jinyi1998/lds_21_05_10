@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::resource('opts', 'API\LearningTaskOptsController');
 
@@ -29,11 +29,17 @@ Route::post('file/json', 'API\FileSystemController@json');
 Route::get('file', 'API\FileSystemController@index');
 
 //Learning Outcome
+
 Route::get('learningOutcome/getOutcomeType', 'API\LearningOutcomesController@getOutcomeType');
-Route::get('learningOutcome/getLearningOutcomeByComponentTemp/{id}', 'API\LearningOutcomesController@getLearningOutcomeByComponentTemp');
+// Route::get('learningOutcome/getLearningOutcomeByComponentTemp/{id}', 'API\LearningOutcomesController@getLearningOutcomeByComponentTemp');
 Route::get('learningOutcome/getOutcomeLevel/{id}', 'API\LearningOutcomesController@getOutcomeLevel');
-Route::get('learningOutcome/getDefaultOutcomeByLearningType/{id}', 'API\LearningOutcomesController@getDefaultOutcomeByLearningType');
+// Route::get('learningOutcome/getDefaultOutcomeByLearningType/{id}', 'API\LearningOutcomesController@getDefaultOutcomeByLearningType');
+Route::delete('learningOutcome/destroyComponentRelation/{outcome_id}/{component_id}', 'API\LearningOutcomesController@destroyComponentRelation');
 Route::resource('learningOutcome', 'API\LearningOutcomesController');
+
+//Learning Outcome Relation
+Route::resource('courseOutcomeRelation', 'API\CourseOutcomeRelationController');
+Route::resource('componentOutcomeRelation', 'API\ComponentOutcomeRelationController');
 
 //Learning Component Controller
 // Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
@@ -53,6 +59,13 @@ Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}',
 'API\LearningComponentController@getDefaultLearningComponentByDesignType');
 
 Route::resource('learningComponent', 'API\LearningComponentController');
+
+//Learning Component Task Relation Controller
+Route::resource('componentTaskRelation', 'API\ComponentTaskController');
+
+//Lesson Task Relation Controller
+Route::resource('lessonTaskRelation', 'API\LessonTaskRelationController');
+
 
 
 //Learning Pattern Controller

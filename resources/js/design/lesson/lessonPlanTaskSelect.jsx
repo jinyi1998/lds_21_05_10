@@ -42,15 +42,19 @@ const LessonPlanTaskSelect = (props) => {
     
     const onSave = () => {
         var task_arr = []
+        var i = 1;
 
-        const idList = Object.keys(checkBoxState);
-        idList.map( task_id => {
+        const taskList = Object.keys(checkBoxState);
+        taskList.map( task_id => {
             if(checkBoxState[task_id] == true){
+                console.log(lesson.tasks);
                 var temp = {
                     "lesson_id": lesson.id,
-                    "task_id": task_id
+                    "task_id": task_id,
+                    "sequence": lesson.tasks.length + i 
                 };
                 task_arr.push(temp);
+                i++;
             }
         })
 

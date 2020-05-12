@@ -6,30 +6,6 @@ import LessonPlanView from './lessonPlanView';
 import LessonPlanTaskSelect from './lessonPlanTaskSelect';
 import config from 'react-global-configuration';
 
-const useStyles = makeStyles(theme => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    contentGrid: {
-        textAlign: "left"
-    },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-      },
-    chip: {
-        margin: 2,
-    },
-    color:{
-        backgroundColor: "#de5995",
-        height: "100%"
-    },
-  }));
-
 //   tasks : [ { componetID, taskIndex }]
 
 const LessonPlanContainer = (props) => {

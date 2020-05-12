@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             LearningComponentTemplateSeeder::class,
             LearningPatternTemplateSeeder::class,
             LearningOutcomeTemplateSeeder::class,
-            RelationalTemplateSeeder::class
+            RelationalTemplateSeeder::class,
         ]);
     }
 }

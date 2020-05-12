@@ -67,8 +67,8 @@ class LearningOutcomesController extends Controller
         $outcome->updated_at = now();
 
         if($request->has('component_id')){
-            $outcome->componentid()->create([
-                'outcome_id' => $pattern->id,
+            $outcome->componentid()->updateOrCreate([
+                'outcome_id' => $id,
                 'component_id' => $request->component_id,
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -94,6 +94,27 @@ class LearningOutcomesController extends Controller
         $outcome->delete();
         return response()->json("");
     }
+
+      /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyComponentRelation($outcome_id, $component_id)
+    {
+        //
+        $outcome = LearningOutcome::find($outcome_id);
+
+        foreach($outcome->componentid as $_component_id){
+            if($_component_id->component_id == $component_id){
+                $_component_id->delete(); // <-- direct deletion
+                return response()->json('success');
+            }
+        }
+        return response()->json("no this outcome");
+    }
+
 
     public static function save(LearningOutcome $outcome, Request $request){
         $outcome->level = $request->level;
@@ -131,298 +152,6 @@ class LearningOutcomesController extends Controller
         return $outcome;
     }
 
-    public function getDefaultOutcomeByLearningType($id){
-        $data = [
-            "1" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Design Thinking",
-                    'isCourseLevel' => true
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Communication Skill",
-                    'isCourseLevel' => true
-                ],
-            ],
-            "2" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 2,
-                    'STEMType' => ["E"],
-                    'description' => "learning outcome 1",
-                    'isCourseLevel' => true
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S", "T"],
-                    'description' => "learning outcome 2",
-                    'isCourseLevel' => true
-                ],
-
-            ],
-            "3" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "learning outcome 1",
-                    'isCourseLevel' => true
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 2,
-                    'STEMType' => ["S", "T", "E", "M"],
-                    'description' => "learning outcome 2",
-                    'isCourseLevel' => true
-                ],
-
-            ],
-            "4" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "learning outcome 1",
-                    'isCourseLevel' => true
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 2,
-                    'STEMType' => [],
-                    'description' => "learning outcome 2",
-                    'isCourseLevel' => true
-                ],
-                [ 
-                    'id' => 3,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "learning outcome 3",
-                    'isCourseLevel' => true
-                ],
-            ]
-        ];
-        return response()->json($data[$id]);
-    }
-
-    public function getLearningOutcomeByComponentTemp($id){
-        $data = [
-            "1" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Empathize with users (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Define design problems (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 3,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Goal setting",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "2" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Ideate innovative solutions (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Self-planning",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "3" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Build prototype (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Self-monitoring",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "4" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Test solution (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Self-evaluation",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "5" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["E"],
-                    'description' => "Test solution (design thinking)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Revision",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "6" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => "Gathering observational evidence about the problem(s)",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => "Formulate inquiry questions",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 3,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Goal setting",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "7" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => "Propose hypothesis",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Goal setting",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "8" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => " Fair test",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => " Self-planning",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "9" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => "Collect evidence",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Self-monitoring",
-                    'isCourseLevel' => false
-                ],
-            ],
-            "10" => [
-                [ 
-                    'id' => 1,
-                    'level' => "",
-                    'outcomeType' => 1,
-                    'STEMType' => ["S"],
-                    'description' => "Reasoning and make claims",
-                    'isCourseLevel' => false
-                ],
-                [ 
-                    'id' => 2,
-                    'level' => "",
-                    'outcomeType' => 3,
-                    'STEMType' => [],
-                    'description' => "Self-evaluation and Revision",
-                    'isCourseLevel' => false
-                ],
-            ],
-        ];
-        return response()->json(
-            $data[$id]
-        );
-
-    }
 
     public function getOutcomeType(){
         //
@@ -448,48 +177,97 @@ class LearningOutcomesController extends Controller
 
     public function getOutcomeLevel($id = 1){
 
-        switch ($id){
-            default:
-            case 3:
-                return response()->json([
-                    [
-                        'id' => 1,
-                        'description' => 'Pedagogical level 1',
-                        'value' => 'PL1'
-                    ],
-                    [
-                        'id' => 2,
-                        'description' => 'Pedagogical level 2',
-                        'value' => 'PL2'
-                    ],
-                    [
-                        'id' => 3,
-                        'description' => 'Pedagogical level 3',
-                        'value' => 'PL3'
-                    ],
-                ]);
-                break;
-            case 1:
-            case 2:
-                return response()->json([
-                    [
-                        'id' => 1,
-                        'description' => 'Bloom\'s taxonomy level 1',
-                        'value' => 'BT1'
-                    ],
-                    [
-                        'id' => 2,
-                        'description' => 'Bloom\'s taxonomy level 2',
-                        'value' => 'BT2'
-                    ],
-                    [
-                        'id' => 3,
-                        'description' => 'Bloom\'s taxonomy level 3',
-                        'value' => 'BT3'
-                    ],
-                ]);
-                break;
-        }
+
+        return response()->json([
+            [
+                'id' => 1,
+                'description' => 'Remember',
+                'value' => ['Recall', 'Relate', 'Recognize', 'Memorize', 'Repeat', 'Record', 'List']                
+            ],
+            [
+                'id' => 2,
+                'description' => 'Comprehend',
+                'value' => ['Estimate', 'Discuss', 'Describe', 'Recognize', 'Explain', 'Express', 'Identify']                
+            ],
+            [
+                'id' => 3,
+                'description' => 'Apply',
+                'value' => ['Interpret', 'Apply', 'Emply', 'Use', 'Demonstrate', 'Dramatize', 'Practice', 'Illustrate', 'Operate', 'Schedule', 'Shop', 'Sketch']
+            ],
+            [
+                'id' => 4,
+                'description' => 'Analyze',
+                'value' => ['Distinguish', 'Analyze', 'Differentiate', 'Appraise', 'Calculate', 'Experiment', 'Test'
+                , 'Compare', 'Contrast', 'Criticize', 'Diagram', 'Inspect', 'Debate', 'Inventory', 'Question', 'Relate']
+            ],
+            [
+                'id' => 5,
+                'description' => 'Evaluation',
+                'value' => ['Judge', 'Appraise', 'Rate', 'Evaluate', 'Compare', 'Revise', 'Score', 'Select', 'Choose', 'Assess estimate', 'Measure']
+            ],
+            [
+                'id' => 6,
+                'description' => 'Create',
+                'value' => ['Compose Plan', 'Propose', 'Design', 'Formulate', 'Arrange', 'Collect', 'Construct', 'Create', 'Set up', 'Organize', 'Manage', 'Prepare']
+            ],
+        ]);
+        // switch ($id){
+        //     default:
+        //     case 3:
+        //         return response()->json([
+        //             [
+        //                 'id' => 1,
+        //                 'description' => 'Pedagogical level 1',
+        //                 'value' => 'Pedagogical level 1'
+        //             ],
+        //             [
+        //                 'id' => 2,
+        //                 'description' => 'Pedagogical level 2',
+        //                 'value' => 'Pedagogical level 2'
+        //             ],
+        //             [
+        //                 'id' => 3,
+        //                 'description' => 'Pedagogical level 3',
+        //                 'value' => 'Pedagogical level 3'
+        //             ],
+        //         ]);
+        //         break;
+        //     case 1:
+        //     case 2:
+        //         return response()->json([
+        //             [
+        //                 'id' => 1,
+        //                 'description' => 'Remember',
+        //                 'value' => 'Recall, relate, recognize, memorize'
+        //             ],
+        //             [
+        //                 'id' => 2,
+        //                 'description' => 'Comprehend',
+        //                 'value' => 'Comprehend...'
+        //             ],
+        //             [
+        //                 'id' => 3,
+        //                 'description' => 'Apply',
+        //                 'value' => 'Apply...'
+        //             ],
+        //             [
+        //                 'id' => 4,
+        //                 'description' => 'Analyze',
+        //                 'value' => 'Analyze...'
+        //             ],
+        //             [
+        //                 'id' => 5,
+        //                 'description' => 'Evaluation',
+        //                 'value' => 'Evaluation...'
+        //             ],
+        //             [
+        //                 'id' => 6,
+        //                 'description' => 'Create',
+        //                 'value' => 'Create...'
+        //             ],
+        //         ]);
+        //         break;
+        // }
 
     }
 

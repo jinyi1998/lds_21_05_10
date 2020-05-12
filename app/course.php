@@ -27,7 +27,7 @@ class Course extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'component_id' //LearningPatternTemplate pattern id
-        )->with(['tasks', 'outcomes', 'patterns'])->orderBy('sequence');
+        )->with(['tasks', 'outcomes', 'patterns', 'outcomeid'])->orderBy('sequence');
     }
 
     public function createdby(){
@@ -61,7 +61,7 @@ class Course extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'outcome_id' //LearningPatternTemplate pattern id
-        );
+        )->orderBy('course_outcome_relation.sequence');
     }
 
     public function outcomeid(){

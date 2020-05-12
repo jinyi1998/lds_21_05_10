@@ -19,7 +19,7 @@ class Lesson extends Model
             'id', // LearningPattern id
             'id', // component id
             'task_id' //PatternTaskRelation task id
-        )->with(['resourceid', 'toolid']);
+        )->with(['resourceid', 'toolid', 'pattern', 'component', 'lessonid'])->orderBy('lesson_task_relation.sequence');
     }
 
     public function tasks_analysis(){

@@ -43,16 +43,9 @@ import config from 'react-global-configuration';
 //   }
 // ],
 // a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-   
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightgrey' : 'lightblue',
+    background: isDraggingOver ? 'lightgrey' : '',
 });
 
 const DesignComponentStep = (props) =>
@@ -104,12 +97,7 @@ const DesignComponentStep = (props) =>
           }
         }
         fetchUpdateLearningComponent(sourceComponent);
-       
-        // setTimeout(refreshCourse(), 3000);
-        // refreshCourse();
-        // var sourceComponent = course.components[result.source.index];
-        // sourceComponent.sequence = course.components[result.destination.index];
-        // fetchUpdateLearningComponent(sourceComponent);
+    
     }
 
     async function addComponentFromTemplate(id){

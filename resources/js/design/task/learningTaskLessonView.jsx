@@ -10,7 +10,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import Typography from '@material-ui/core/Typography';
 import EditIcon from "@material-ui/icons/Edit";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -18,6 +18,11 @@ import RoomIcon from '@material-ui/icons/Room';
 import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
+import Tooltip from '@material-ui/core/Tooltip';
+
+
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+
 import config from 'react-global-configuration';
 //   tasks: [
 //     {
@@ -34,6 +39,15 @@ import config from 'react-global-configuration';
 //     }
 //   ],
 
+const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  
+    ...(isDragging && {
+      background: "rgb(235,235,235)"
+    })
+  });
+
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -42,7 +56,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         width: '100%',
-        margin: 16
+        margin: '16px'
     },
     contentGrid: {
         textAlign: "left"
@@ -62,6 +76,7 @@ const LearningTaskLessonView = (props) => {
     const classes = useStyles();
 
     const {taskID, taskData, onEditearningTask} = props;
+    const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
     const {error} = props;
     const {course, options, setLoadingOpen, taskTypeColor } = React.useContext(ContextStore);
@@ -79,6 +94,8 @@ const LearningTaskLessonView = (props) => {
         size: 1,
         toolid: [],
         resourceid: [],
+        component: {},
+        pattern: {component: {}},
         // STEMType: [],
         description: "",
         content: "",
@@ -88,7 +105,6 @@ const LearningTaskLessonView = (props) => {
         setTask(taskData);
     }
     , [taskID, taskData])
-
 
     //#region init opts data
 
@@ -100,17 +116,6 @@ const LearningTaskLessonView = (props) => {
     const taskTypeOpts = options.taskType;
     //#endregion
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-          },
-        },
-      };
-    
     //#region button action related
     const onClickEdit = () => {
         onEditearningTask(task);
@@ -126,13 +131,25 @@ const LearningTaskLessonView = (props) => {
     //#endregion
 
     return (
-    <Paper className={classes.paper}>
-        <Grid container 
-        spacing={2} 
-        direction="row"
-        justify="center"
+    <div >
+        <Grid 
+            container 
+            spacing={2} 
+            direction="row"
+            justify="center"
+            ref = {provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(
+                snapshot.isDragging,
+                provided.draggableProps.style
+            )}
         >   
-            <Grid container item xs ={12}>
+            <Grid container item xs ={1} justify="center" alignItems="center">
+                <DragHandleIcon />
+            </Grid>
+
+            <Grid container item xs ={11}>
                 <ExpansionPanel  style={{width: '100%'}}>
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -145,7 +162,14 @@ const LearningTaskLessonView = (props) => {
                                     </div>
                                 </Grid>
                                 <Grid item xs={11} className={classes.contentGrid}>
-                                    {taskTypeOpts.find(x => x.id == task.type)?.description}
+                                    <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}}>
+                                        Component #
+                                        {(task.component == null? 
+                                            (task.pattern.component.sequence? task.pattern.component.sequence : null) 
+                                            :(task.component.sequence? task.component.sequence: null) 
+                                        )} - {task.title}
+                                    </Typography>
+                                  
                                 </Grid>
                             </Grid>
                             
@@ -158,24 +182,9 @@ const LearningTaskLessonView = (props) => {
                                 </Grid>
 
                                 <Grid container item xs={10}>
-                                    {/* <Grid item xs={10} className={classes.contentGrid}>
-                                        {task.title}
-                                    </Grid>
-
-                                    <Grid item xs={12} className={classes.contentGrid}>
-                                        {task.time} mins | 
-                                        {taskTargetOpts.find(x => x.id == task.target)?.description } | 
-                                        {taskClassSizeOpts.find(x => x.id == task.size)?.description } | 
-                                        {task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
-                                        {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected)?.description.concat(','))} | 
-                                    </Grid>
-
-                                    <Grid item xs={12} className={classes.contentGrid}>
-                                        {task.description}
-                                    </Grid> */}
                                 
                                     <Grid item xs={12} className={classes.contentGrid}>
-                                        {task.title}
+                                        {taskTypeOpts.find(x => x.id == task.type)?.description}
                                     </Grid>
                                     
                                     <Grid item xs={12} className={classes.contentGrid}>
@@ -185,32 +194,52 @@ const LearningTaskLessonView = (props) => {
                                     )} */}
                                     </Grid>
 
-                                    <Grid item xs={12} className={classes.contentGrid}>
-                                        <AccessTimeIcon />{task.time} mins 
+                                    <Grid item xs={3} className={classes.contentGrid}>
+                                        <Tooltip title="Task Time" aria-label="time">
+                                            <AccessTimeIcon />
+                                        </Tooltip>
+                                        {task.time} mins 
                                     </Grid>
 
-                                    <Grid item xs={4} className={classes.contentGrid}>
-                                        <RoomIcon /> {classTypeOtps.find(x => x.id == task.class_type)?.description}
+                                    <Grid item xs={3} className={classes.contentGrid}>
+                                        <Tooltip title="Class Type" aria-label="classtype">
+                                            <RoomIcon /> 
+                                        </Tooltip>
+                                        {classTypeOtps.find(x => x.id == task.class_type)?.description}
                                     </Grid>
 
-                                    <Grid item xs={4} className={classes.contentGrid}>
-                                        <GpsNotFixedIcon />  {taskTargetOpts.find(x => x.id == task.target)?.description }
+                                    <Grid item xs={3} className={classes.contentGrid}>
+                                        <Tooltip title="Class Target" aria-label="classtarget">
+                                            <GpsNotFixedIcon /> 
+                                        </Tooltip>
+                                        {taskTargetOpts.find(x => x.id == task.target)?.description }
                                     </Grid>
 
-                                    <Grid item xs={4} className={classes.contentGrid}>
-                                        <GroupIcon /> {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
+                                    <Grid item xs={3} className={classes.contentGrid}>
+                                        <Tooltip title="Class Size" aria-label="classtarget">
+                                            <GroupIcon /> 
+                                        </Tooltip>
+                                        {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
                                     </Grid>
 
-                                    <Grid item xs={12} className={classes.contentGrid}>
-                                        <AssignmentIcon />{task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
+                                    <Grid item xs={6} className={classes.contentGrid}>
+                                        <Tooltip title="Resource" aria-label="classtarget">
+                                            <AssignmentIcon />
+                                        </Tooltip>  
+                                        {task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                                     </Grid>
 
-                                    <Grid item xs={12} className={classes.contentGrid}>
-                                        <ImportantDevicesIcon /> {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
+                                    <Grid item xs={6} className={classes.contentGrid}>
+                                        <Tooltip title="E-Learning Tools" aria-label="classtarget">
+                                            <ImportantDevicesIcon /> 
+                                        </Tooltip>  
+                                        {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
                                     </Grid>
                                     
                                     <Grid item xs={12} className={classes.contentGrid}>
-                                        {task.description}
+                                        <Typography color = "textSecondary" gutterBottom>
+                                            {task.description}
+                                        </Typography>
                                     </Grid>
                                 </Grid>
 
@@ -225,7 +254,7 @@ const LearningTaskLessonView = (props) => {
             </Grid>
 
         </Grid>
-    </Paper>
+    </div>
     );
 }
 

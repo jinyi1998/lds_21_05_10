@@ -6,44 +6,18 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import config from 'react-global-configuration';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
+import Paper from '@material-ui/core/Paper';
 import { Grid } from '@material-ui/core';
 
+import {ContextStore} from '../../container/designContainer'
 
-// learningOutcomes: [
-//     {
-//       id: 0,
-//       level: "",
-//       outcomeType: "",
-//       STEMType: ["", ""],
-//       description: "",
-//       status: ""
-//     }
-//   ]
-const useStyles = makeStyles(theme => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    appBar: {
-        position: 'relative',
-      },
-  }));
 
 const LearningOutcomeAddFromSelect = (props) => {
-    const classes = useStyles();
-    const handleClose = props.onClose;
-    const {handleOnSave, learningOutcomeOpts} = props;
-
+    const {onClose, componentID} = props;
+    const {setLoadingOpen, course, refreshCourse } = React.useContext(ContextStore);
     const [learningOutcome, setLearningOutcome] = React.useState({
         id: -1,
         level: "",
@@ -55,77 +29,77 @@ const LearningOutcomeAddFromSelect = (props) => {
 
 
     const outcomeSave = event => {
-        //binding of STEM Type to learningOutcome like object 
-        //sync the record to root state
-        handleOnSave({...learningOutcome}, "select");
-        handleClose();
+        // link the 
+        if(learningOutcome.id != -1){
+            setLoadingOpen(true);
+            var json = learningOutcome;
+            json["component_id"] = componentID;
+            fetch(
+                'http://'+config.get('url')+'/api/learningOutcome/'+ learningOutcome.id,
+                {
+                    method: "PUT",
+                    body:  JSON.stringify(json),
+                    headers: {
+                      "Content-type": "application/json; charset=UTF-8"
+                    }
+                }
+            )
+            .then(res => res.json())
+            .then(response => {
+                //load the default learning outcomes by api request
+                
+                refreshCourse();
+                setLoadingOpen(false);
+            })
+            .catch(error => console.log(error));
+        }
+        onClose();
     }
 
-    const outcomeOnChange = (event) => {
-        const tempData = learningOutcomeOpts.filter(_opts => _opts.id==event.target.id);
-        setLearningOutcome(tempData[0]);
+    const onSelectChange = (event) => {
+        var outcome = course.outcomes.find(_x => _x.id == event.target.value);
+        setLearningOutcome(outcome);
     }
 
     return (
         <React.Fragment>
-            <AppBar className={classes.appBar}>
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-                    <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                    Adding new learning outcome
-                    </Typography>
-                   
-                </Toolbar>
-            </AppBar>
 
-            <div style= { {padding: "16px" }}>
-                <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <h3>Add learning outcomes that specify what learners will be able to do after this unit.</h3>
-                </Grid>
+            <Paper style={ {padding: "16px"} }>
+            
 
+            <Grid container spacing={5}>
                 <Grid item xs={12}>
-                    <FormControl required className={classes.formControl} fullWidth>
-                        <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-required-label"
-                        id="demo-simple-select-required"
-                        className={classes.selectEmpty}
-                        onChange = {(evnet)=>outcomeOnChange(event)}
-                        value = {learningOutcome.description}
-                        fullWidth
-                        >
-                            <MenuItem value='' disabled>
-                                <em>Outcome Type</em>
-                            </MenuItem>
-                            {
-                                learningOutcomeOpts.map((_opts, key)=> 
-                                <MenuItem 
-                                    id={_opts.id}
-                                    value={_opts.description} 
-                                    // level = {_opts.description} 
-                                    // outcomeType = {_opts.outcomeType} 
-                                    // STEMType = {_opts.STEMType}
-                                    // description = {_opts.description}
-                                    key={key}>
-                                        {_opts.description}
-                                </MenuItem>)
-                            }
-                        </Select>
-                        <FormHelperText>Required</FormHelperText>
-                    </FormControl>
+                    <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
                 </Grid>
                 
+                <Grid item xs={12}>
+                   <Select 
+                    fullWidth
+                    value = {learningOutcome.id}
+                    onChange = {onSelectChange}
+                    >  
+                       <MenuItem value = {-1} disabled>
+                           Unit Level learningOutcome
+                       </MenuItem>
+                        {
+                        course.outcomes.map(_outcome =>  
+                            <MenuItem value={_outcome.id} key = {_outcome.id}>
+                                {_outcome.description}
+                            </MenuItem>
+                        )
+                        }
+                      
+                   </Select>
+                </Grid>
+
                 <Grid item xs={12}>
                     <Button variant="contained" color="primary" color="primary" onClick={outcomeSave} fullWidth> 
                         save
                     </Button>
                 </Grid>
             </Grid>
-            </div>
-        </React.Fragment> 
+        </Paper> 
+    </React.Fragment>
         
     );
 

@@ -60,14 +60,41 @@ class LearningTask extends Model
         return $this->hasOne('App\ClassSizeOpts', 'id');
     }
 
+    public function lessonid(){
+        return $this->belongsTo('App\LessonTaskRelation', 'id','task_id');
+    }
+
+    public function pattern(){
+        return $this->hasOneThrough(
+            'App\LearningPattern',
+            'App\PatternTaskRelation',
+            'task_id', 
+            'id',
+            'id', 
+            'pattern_id' 
+        )->with(['component']);
+    }
+
     public function patternid(){
         return $this->belongsTo('App\PatternTaskRelation', 'id','task_id');
+    }
+
+    public function component(){
+        return $this->hasOneThrough(
+            'App\Component',
+            'App\ComponentTaskRelation',
+            'task_id', 
+            'id',
+            'id', 
+            'component_id' 
+        );
     }
 
     public function componentid(){
         return $this->belongsTo('App\ComponentTaskRelation', 'id','task_id');
     }
 
+  
 
     public function assessment(){
         return $this->hasManyThrough(

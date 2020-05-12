@@ -51,7 +51,7 @@ Route::get('/app2', function () {
 Auth::routes();
 Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@changePassword');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::get('test', '\App\Http\Controllers\testcontroller@test');
+// Route::get('test', '\App\Http\Controllers\testcontroller@test');
 
 Route::get('/designstudio', '\App\Http\Controllers\RouteController@designstudio');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
