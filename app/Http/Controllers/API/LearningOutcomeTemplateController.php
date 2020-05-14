@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LearningOutcomeTemplateController extends Controller
 {
@@ -63,5 +64,13 @@ class LearningOutcomeTemplateController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getOutcomeTempByDesignType($id){
+        $data = DB::table('designtype_outcome_template_relation') 
+        ->join('learningoutcome_template', 'learningoutcome_template.id', '=', 'designtype_outcome_template_relation.outcome_id')
+        ->where('designtype_outcome_template_relation.designtype_id', '=', $id)
+        ->select('learningoutcome_template.*')->get();
+        return response()->json($data);
     }
 }

@@ -8,7 +8,7 @@ class ComponentOutcomeTemplateRelation extends Model
 {
     //
         //
-        protected $table = 'component_outcome_template_relational';
+        protected $table = 'component_outcome_template_relation';
         protected $primaryKey = 'id';
         public $timestamps = true;
 }

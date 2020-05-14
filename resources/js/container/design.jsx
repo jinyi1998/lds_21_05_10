@@ -119,6 +119,49 @@ const Design = (props) => {
   //   .catch(error => console.log(error));
   // }
 
+  //preload learningOutcome (Unit Level)
+  async function fetchlearningOutcomeTempData() {
+    const res = await fetch(
+      'http://'+config.get('url')+'/api/learningOutcomeTemplate/getOutcomeTempByDesignType/'+ course.designType,
+      {
+      method: "GET",
+      }
+    ).then(res => res.json())
+    .then(response => {
+        response.map( (_outcome, index) => {
+          console.log(_outcome);
+          var _outcome_temp = _outcome;
+          _outcome_temp.course_id = course.id
+          importOutcomeTemplateToCourse(_outcome_temp);
+
+        // learning componet
+        // getComponentTemplateData(templateID).then(component => {
+        //   component.component_template_id = component.id
+        //   component.course_id = course.id
+        //   component.sequence = index + 1
+        //   importComponentTemplateToComponent(outcome
+        // });
+      })
+    })
+  }
+
+
+  async function importOutcomeTemplateToCourse(outcome) {
+    return await fetch(
+      'http://'+config.get('url')+'/api/learningOutcome',
+      {
+        method: "POST",
+        body:  JSON.stringify(outcome),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }
+    ).then(res => res.json())
+    .then(response => {
+      return response;
+    })
+  }
+
   //preload learningComponent
   async function fetchlearningComponentTempData() {
     updateCourse();
@@ -227,6 +270,7 @@ const Design = (props) => {
         // fetchlearningTypeTempData();
         clearCourseComponent();
         fetchlearningComponentTempData();
+        fetchlearningOutcomeTempData();
         handleNext();
       }
     

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ComponentPatternTemplateRelation extends Model
 {
     //
-    protected $table = 'component_pattern_template_relational';
+    protected $table = 'component_pattern_template_relation';
     protected $primaryKey = 'id';
     public $timestamps = true;
 }

@@ -226,14 +226,14 @@ const LearningTaskLessonView = (props) => {
                                         <Tooltip title="Resource" aria-label="classtarget">
                                             <AssignmentIcon />
                                         </Tooltip>  
-                                        {task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
+                                        {task.resourceid.length == 0? "N/A" : task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                                     </Grid>
 
                                     <Grid item xs={6} className={classes.contentGrid}>
                                         <Tooltip title="E-Learning Tools" aria-label="classtarget">
                                             <ImportantDevicesIcon /> 
                                         </Tooltip>  
-                                        {task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
+                                        {task.toolid.length == 0? "N/A" : task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
                                     </Grid>
                                     
                                     <Grid item xs={12} className={classes.contentGrid}>

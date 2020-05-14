@@ -1,5 +1,5 @@
 const configuration = {
-    url: 'localhost:8000',
+    url: window.location.hostname +(window.location.port ? ':'+window.location.port: ''),
     enablePattern: true,
     enableDB: true
 };

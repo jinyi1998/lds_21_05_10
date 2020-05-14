@@ -13,13 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call([
-            DesignTypeSeeder::class,
-            LearningTasksOtpsSeeder::class,
-            LearningTaskTemplateSeeder::class,
-            LearningComponentTemplateSeeder::class,
-            LearningPatternTemplateSeeder::class,
-            LearningOutcomeTemplateSeeder::class,
-            RelationalTemplateSeeder::class,
+            // RelationalTemplateSeeder::class,
         ]);
     }
 }
