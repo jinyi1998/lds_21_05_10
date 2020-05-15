@@ -58,25 +58,26 @@ class LearningOutcomesController extends Controller
     {
         //
         $outcome = LearningOutcome::find($id);
-        $outcome->level = $request->level;
-        $outcome->description = $request->description;
-        $outcome->STEMType = $request->STEMType;
-        $outcome->isCourseLevel = $request->isCourseLevel;
-        $outcome->updated_by = 1;
-        $outcome->is_deleted = 0;
-        $outcome->updated_at = now();
+        $outcome = LearningOutcomesController::save($outcome, $request);
+        // $outcome->level = $request->level;
+        // $outcome->description = $request->description;
+        // $outcome->STEMType = $request->STEMType;
+        // $outcome->isCourseLevel = $request->isCourseLevel;
+        // $outcome->updated_by = 1;
+        // $outcome->is_deleted = 0;
+        // $outcome->updated_at = now();
 
-        if($request->has('component_id')){
-            $outcome->componentid()->updateOrCreate([
-                'outcome_id' => $id,
-                'component_id' => $request->component_id,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => 0
-            ]);
-        }
+        // if($request->has('component_id')){
+        //     $outcome->componentid()->updateOrCreate([
+        //         'outcome_id' => $id,
+        //         'component_id' => $request->component_id,
+        //         'created_by' => 1,
+        //         'updated_by' => 1,
+        //         'is_deleted' => 0
+        //     ]);
+        // }
 
-        $outcome->save();
+        // $outcome->save();
 
         return response()->json($outcome);
     }
@@ -128,16 +129,41 @@ class LearningOutcomesController extends Controller
         $outcome->created_at = now();
         $outcome->updated_at = now();
 
+        if($request->has('template_id')){
+            $outcome->template_id = $request->template_id;
+        }
+
         $outcome->save();
 
         if($request->has('component_id')){
-            $outcome->componentid()->create([
+            $outcome->componentid()->updateOrCreate([
                 'outcome_id' => $outcome->id,
                 'component_id' => $request->component_id,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => 0
             ]);
+        }
+
+        if($request->has('unit_outcomeid')){
+            if($outcome->unit_outcomeid()->exists()){
+                $outcome->unit_outcomeid()->update([
+                    'component_outcomeid' => $outcome->id,
+                    'unit_outcomeid' => $request->unit_outcomeid,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }else{
+                $outcome->unit_outcomeid()->create([
+                    'component_outcomeid' => $outcome->id,
+                    'unit_outcomeid' => $request->unit_outcomeid,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }
+          
         }
 
         if($request->has('course_id') && $outcome->isCourseLevel == true){
@@ -148,7 +174,7 @@ class LearningOutcomesController extends Controller
                 'updated_by' => 1,
                 'is_deleted' => 0
             ]);
-        }   
+        }      
         return $outcome;
     }
 

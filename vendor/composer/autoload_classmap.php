@@ -59,6 +59,7 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\LearningOutcome' => $baseDir . '/app/learningOutcome.php',
+    'App\\LearningOutcomeCLOULORelation' => $baseDir . '/app/LearningOutcomeCLOULORelation.php',
     'App\\LearningOutcomeTemplate' => $baseDir . '/app/learningOutcomeTemplate.php',
     'App\\LearningPattern' => $baseDir . '/app/LearningPattern.php',
     'App\\LearningPatternTemplate' => $baseDir . '/app/learningPatternTemplate.php',

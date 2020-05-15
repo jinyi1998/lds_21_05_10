@@ -134,13 +134,6 @@ const Design = (props) => {
           _outcome_temp.course_id = course.id
           importOutcomeTemplateToCourse(_outcome_temp);
 
-        // learning componet
-        // getComponentTemplateData(templateID).then(component => {
-        //   component.component_template_id = component.id
-        //   component.course_id = course.id
-        //   component.sequence = index + 1
-        //   importComponentTemplateToComponent(outcome
-        // });
       })
     })
   }

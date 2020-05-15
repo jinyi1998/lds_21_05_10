@@ -47,7 +47,7 @@ class Component extends Model
             'id', // target table target id
             'id', // local table local id
             'outcome_id' //middle relation table target id
-        )->orderBy('component_outcome_relational.sequence');
+        )->with(['unit_outcomeid'])->orderBy('component_outcome_relational.sequence');
     }
 
     public function taskid(){

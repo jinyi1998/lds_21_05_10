@@ -30,4 +30,8 @@ class LearningOutcome extends Model
     public function courseid(){
         return $this->belongsTo('App\CourseOutcomeRelation', 'id', 'outcome_id');
     }
+
+    public function unit_outcomeid(){
+        return $this->hasOne('App\LearningOutcomeCLOULORelation', 'component_outcomeid');
+    }
 }

@@ -30,6 +30,6 @@ class ComponentTemplate extends Model
             'id', // target table target id
             'id', // local table local id
             'outcome_id' //middle relation table target id
-        );
+        )->with(['unit_outcomeid']);
     }
 }

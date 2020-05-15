@@ -489,6 +489,7 @@ class ComposerStaticInita25548d448b2a9a45f49d698e37bc0d3
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\LearningOutcome' => __DIR__ . '/../..' . '/app/learningOutcome.php',
+        'App\\LearningOutcomeCLOULORelation' => __DIR__ . '/../..' . '/app/LearningOutcomeCLOULORelation.php',
         'App\\LearningOutcomeTemplate' => __DIR__ . '/../..' . '/app/learningOutcomeTemplate.php',
         'App\\LearningPattern' => __DIR__ . '/../..' . '/app/LearningPattern.php',
         'App\\LearningPatternTemplate' => __DIR__ . '/../..' . '/app/learningPatternTemplate.php',

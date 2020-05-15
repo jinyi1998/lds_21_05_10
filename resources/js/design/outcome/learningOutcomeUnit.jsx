@@ -53,7 +53,7 @@ const LearningOutcomeUnit = (props)=>{
     React.useEffect(()=>{
         setOutcome(props.learningOutcome);
     }, [props.learningOutcome]);
-    
+
     return (
         <ListItem
         ContainerComponent="li"
@@ -79,7 +79,7 @@ const LearningOutcomeUnit = (props)=>{
                     <React.Fragment>
                         <Typography component={'span'} display="inline" color = "textPrimary"> STEM TYPE: ( {outcome.STEMType} )  </Typography>
                         <Typography component={'span'} display="inline" color = "textPrimary"> Bloom Taxonomy Level: {outcome.level}   </Typography>
-                        <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography>
+                        {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
                     </React.Fragment>
                   
                 } 

@@ -47,14 +47,17 @@ const LearningOutcomeEdit = (props) => {
     const classes = useStyles();
     const handleClose = props.onClose;
     const {handleOnSave, courseID, componentID, outcomeID} = props;
-    const { refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
+    const [checked, setChecked] = React.useState(false);
+
 
     const [learningOutcome, setLearningOutcome] = React.useState({
         level: "",
         outcomeType: -1,
         STEMType: "",
         description: "",
-        isCourseLevel: true
+        isCourseLevel: true,
+        unit_outcomeid: -1
       });
 
     const [step, setStep] = React.useState(0);
@@ -91,10 +94,14 @@ const LearningOutcomeEdit = (props) => {
                 outcomeType: -1,
                 STEMType: "",
                 description: "",
-                isCourseLevel: true
+                isCourseLevel: true,
+                unit_outcomeid: -1
             });
         }else{
-            setLearningOutcome(props.learningOutcome);
+            setLearningOutcome({
+                ...props.learningOutcome,
+                unit_outcomeid: props.learningOutcome.unit_outcomeid.unit_outcomeid
+            });
         } 
     }, [outcomeID]);
 
@@ -143,6 +150,18 @@ const LearningOutcomeEdit = (props) => {
         handleChange();
     }, [learningOutcome]);
 
+    React.useEffect(()=>{
+        var clo = course.outcomes.find(x=> x.id == learningOutcome.unit_outcomeid);
+        if(typeof clo != 'undefined'){
+            setLearningOutcome({
+                ...clo,
+                isCourseLevel: false,
+                unit_outcomeid: clo.id
+             });
+        }
+      
+    }, [checked]);
+
     //#region action related
     const handleChange = () => {
         var stepCount = 0;
@@ -184,6 +203,12 @@ const LearningOutcomeEdit = (props) => {
     const outcomeDescchange = value => {
    
         setLearningOutcome({...learningOutcome, description:value});
+    }
+
+    const unitOutcomeChange = event => {
+        setLearningOutcome({...learningOutcome, 
+            unit_outcomeid: event.target.value, 
+        });
     }
 
     const outcomeSave = event => {
@@ -264,6 +289,7 @@ const LearningOutcomeEdit = (props) => {
                         className={classes.selectEmpty}
                         value = {learningOutcome.outcomeType}
                         onChange = {outcomeTypeOnchange}
+                        disabled = {checked}
                         >
                             <MenuItem value={-1} disabled>
                                 <em>Outcome Type</em>
@@ -296,6 +322,7 @@ const LearningOutcomeEdit = (props) => {
                             className={classes.selectEmpty}
                             value = {learningOutcome.level}
                             onChange = {outcomeLevelOnchange}
+                            disabled = {checked}
                             >
                                 <MenuItem value='' disabled>
                                     <em>Levels</em>
@@ -318,6 +345,56 @@ const LearningOutcomeEdit = (props) => {
         }  
     }
 
+    const displayParentUnitOutcome = () => {
+        if(step > 0 && componentID != -1 && typeof componentID != "undefined"){
+            return (
+                <React.Fragment>
+
+                    <Grid item xs={8}>
+                        <FormControl required className={classes.formControl} fullWidth>
+                            <InputLabel id="unit-label">Unit Level Learning Outcome</InputLabel>
+                            <Select
+                            labelId="unit-label"
+                            id="unit"
+                            className={classes.selectEmpty}
+                            value = {learningOutcome.unit_outcomeid}
+                            onChange = {unitOutcomeChange}
+                            disabled = {checked}
+                            >
+                                <MenuItem value={-1} disabled>
+                                    <em>Unit Level Learning Outcomes</em>
+                                </MenuItem>
+                                {
+                                    course.outcomes.map(ulo=> 
+                                        (<MenuItem 
+                                            value={ulo.id} 
+                                            key={ulo.id}>
+                                                {ulo.description}
+                                        </MenuItem>)
+                                    )
+                                }
+                            </Select> 
+                            <FormHelperText>Required</FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={4}>
+                        <FormControlLabel
+                            control={
+                            <Checkbox
+                                checked={state.checkedB}
+                                onChange={()=> setChecked(!checked)}
+                                color="primary"
+                            />
+                            }
+                            label="Same As Unit Level Outcome"
+                        />
+                    </Grid>
+                </React.Fragment>
+            )
+        }  
+    }
+
     const displaySTEMOpts = () => {
         if(step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2) ){
             return (
@@ -330,6 +407,7 @@ const LearningOutcomeEdit = (props) => {
                                 onChange={handleSTEMChange('S')}
                                 value="checkedB"
                                 color="primary"
+                                disabled = {checked}
                             />
                             }
                             label="Science"
@@ -342,6 +420,7 @@ const LearningOutcomeEdit = (props) => {
                                 onChange={handleSTEMChange('T')}
                                 value="checkedB"
                                 color="primary"
+                                disabled = {checked}
                             />
                             }
                             label="Technology"
@@ -354,6 +433,7 @@ const LearningOutcomeEdit = (props) => {
                                 onChange={handleSTEMChange('E')}
                                 value="checkedB"
                                 color="primary"
+                                disabled = {checked}
                             />
                             }
                             label="Engineering"
@@ -366,6 +446,7 @@ const LearningOutcomeEdit = (props) => {
                                 onChange={handleSTEMChange('M')}
                                 value="checkedB"
                                 color="primary"
+                                disabled = {checked}
                             />
                             }
                             label="Mathamatics"
@@ -394,6 +475,7 @@ const LearningOutcomeEdit = (props) => {
                                 {...params}
                                 label="Description of the outcome"
                                 variant="outlined"
+                                disabled = {checked}
                                 fullWidth/>
                             )}
                         />
@@ -424,7 +506,7 @@ const LearningOutcomeEdit = (props) => {
                 <Grid item xs={12}>
                     <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
                 </Grid>
-
+                {displayParentUnitOutcome()}
                 {displayOutcomeType()}
                 {displayOutcomeLevel()}
                 {displaySTEMOpts()}

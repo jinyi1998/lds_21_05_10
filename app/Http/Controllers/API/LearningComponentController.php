@@ -9,6 +9,7 @@ use App\ComponentTemplate;
 use App\LearningPatternTemplate;
 use App\LeariningTaskTemplate;
 use App\ComponentPatternTemplateRelation;
+use Illuminate\Support\Facades\DB;
 
 class LearningComponentController extends Controller
 {
@@ -143,6 +144,20 @@ class LearningComponentController extends Controller
         if($request->has('outcomes')){
             foreach($request->outcomes as $_outcome){
                 $_outcome['component_id'] =  $component->id;
+                if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
+                    // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
+                    $uloid = DB::table('course_outcome_relation') 
+                    ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
+                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid']['unit_outcomeid'])
+                    ->where('course_outcome_relation.course_id', '=', $request->course_id)
+                    ->select('learningoutcome.id as outcome_id')->limit(1)->get();
+
+                    $uloid = json_decode($uloid, true);
+                    
+                    $_outcome['unit_outcomeid'] =  $uloid[0]['outcome_id'];
+                }
+
+                // return response()->json($_outcome);
                 $request_outcome = new \Illuminate\Http\Request($_outcome);
                 $outcome = LearningOutcomesController::store($request_outcome)->getContent();;
                 $outcome = json_decode($outcome);
