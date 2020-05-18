@@ -20,7 +20,7 @@ const generateColor = (num) => {
 
 
 const ComponentAnalysisContainer = ()=>{
-    const { course, options } = React.useContext(ContextStore);
+    const { course, options, taskTypeColor } = React.useContext(ContextStore);
     const [component, setComponent] = React.useState(course.components[0].id);
     
     const [data, setData] = React.useState({
@@ -31,11 +31,24 @@ const ComponentAnalysisContainer = ()=>{
         tasks_by_lesson: {}
     })
 
-
     React.useEffect( ()=>{
         fetchcomponentanalysis(component)
     }
     , [component])
+
+    const genTaskTypeColor = (tasktype_id) => {
+        var temp = [];
+        tasktype_id.map((_id)=>{
+            try{
+                var _temp = taskTypeColor(_id);
+                temp.push(_temp.backgroundColor);
+            }catch (_unused) {
+                temp.push('#' +  Math.random().toString(16).substr(-6));
+            }
+        })
+        return temp;
+    }
+
 
     async function fetchcomponentanalysis(id) {
         const res = await fetch(
@@ -83,8 +96,8 @@ const ComponentAnalysisContainer = ()=>{
         }
         temp_tasks_time_by_type["labels"] = Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp_tasks_time_by_type["datasets"][0]["data"] = Object.values(data['tasks_time_by_type'])
-        temp_tasks_time_by_type["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_time_by_type']).length)
-        temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] = Object.values(data['tasks_time_by_type']).map( _x => {return generateColor()});
+        temp_tasks_time_by_type["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
+        temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
 
         let temp_tasks_num_by_type = {
             labels: [],
@@ -96,8 +109,8 @@ const ComponentAnalysisContainer = ()=>{
         }
         temp_tasks_num_by_type["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp_tasks_num_by_type["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
-        temp_tasks_num_by_type["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_num_by_type']).length)
-        temp_tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] = Object.values(data['tasks_num_by_type']).map( _x => {return generateColor()});
+        temp_tasks_num_by_type["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
+        temp_tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
 
         let temp_tasks_time_by_task = {
             labels: [],
@@ -111,7 +124,7 @@ const ComponentAnalysisContainer = ()=>{
         temp_tasks_time_by_task["labels"] = Object.keys(data['tasks_time_by_task'])
         temp_tasks_time_by_task["datasets"][0]["data"] = Object.values(data['tasks_time_by_task'])
         temp_tasks_time_by_task["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_time_by_task']).length)
-        temp_tasks_time_by_task["datasets"][0]["hoverBackgroundColor"] = Object.values(data['tasks_time_by_task']).map( _x => {return generateColor()});
+        temp_tasks_time_by_task["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
 
         setData({
             task_assessment: temp_task_assessment,
@@ -140,6 +153,7 @@ const ComponentAnalysisContainer = ()=>{
                             value={_component.id} 
                             selected = {component == _component.id} 
                             onClick = {()=>{setComponent(_component.id)}}
+                            key = {_component.id} 
                         />
 
                 )}

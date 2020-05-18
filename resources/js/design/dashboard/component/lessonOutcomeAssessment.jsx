@@ -38,12 +38,12 @@ const LessonOutcomeAssessment = (props)=>{
     const displayColor = (outcome_id) => {
         try{
             if(data.task[taskID].outcome_id.includes(parseInt(outcome_id))){
-                return {"background-color": "#00BFFF88"}
+                return {"backgroundColor": "#00BFFF88"}
             }else{
-                return {"background-color": "#00BFFF11"}
+                return {"backgroundColor": "#00BFFF11"}
             }
         }catch{
-            return {"background-color": "#00BFFF11"}
+            return {"backgroundColor": "#00BFFF11"}
         }
     }
 
@@ -61,6 +61,7 @@ const LessonOutcomeAssessment = (props)=>{
                         <ListItemText 
                             primary={"Learning Outcome: "+ outcome_id} 
                             secondary = {data.outcome[outcome_id]}
+                            key = {outcome_id}
                         />
                     </ListItem>
                     )
@@ -73,6 +74,7 @@ const LessonOutcomeAssessment = (props)=>{
             alignItems="center"
             >
                 <ListItemText 
+                    key = {1}
                     primary={"No Learning Assessment in this lesson"} 
                 />
             </ListItem>
@@ -99,7 +101,9 @@ const LessonOutcomeAssessment = (props)=>{
        return (
             Object.keys(data.component).map( component_id => {
                 return(
-                    <ExpansionPanel>
+                    <ExpansionPanel
+                        key = {component_id}
+                    >
                         <ExpansionPanelSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -110,7 +114,7 @@ const LessonOutcomeAssessment = (props)=>{
                         </ExpansionPanelSummary>
 
                         <ExpansionPanelDetails>
-                            <List component="nav" fullWidth>
+                            <List component="nav">
                                 { Object.keys(data.task).map( task_id => 
                                     {
                                         if(data.task[task_id].component_id == component_id){

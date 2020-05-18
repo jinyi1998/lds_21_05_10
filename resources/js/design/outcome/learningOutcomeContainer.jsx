@@ -455,7 +455,7 @@ const LearningOutcomeContainer = (props)=>{
                     {course.outcomes.map(
                         (_ulo, index )=>
                         (
-                            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                            <DragDropContext onDragEnd={(result) => onDragEnd(result)} key = {index}>
                                     <Droppable droppableId="droppable">
                                     {(provided, snapshot) => (
                                         <RootRef rootRef={provided.innerRef}>

@@ -36,9 +36,9 @@ const ComponentOutcomeAssessment = (props)=>{
 
     const displayColor = (boolean) => {
         if(boolean){
-            return {"background-color": "#00BFFF77"}
+            return {"backgroundColor": "#00BFFF77"}
         }else{
-            return {"background-color": "#00BFFF11"}
+            return {"backgroundColor": "#00BFFF11"}
         }
     }
 
@@ -60,6 +60,7 @@ const ComponentOutcomeAssessment = (props)=>{
             // has assessment
             return (
                 <ExpansionPanel
+                key = {_task.id}
                 >
                     <ExpansionPanelSummary
                         expandIcon={<ExpandMoreIcon />}
@@ -81,6 +82,7 @@ const ComponentOutcomeAssessment = (props)=>{
                                         >
                                             <ListItemText
                                                 primary = { "learning task #" + _id  + "--" +  _task.learningtask_title[index]}
+                                                key = {"learning_task_"+_id}
                                             />
                                          </ListItem>
                                     )
@@ -97,10 +99,12 @@ const ComponentOutcomeAssessment = (props)=>{
                 button
                 alignItems="center"
                 style = {displayColor(_task.has_assessment)}
+                key = {1}
             >
                 <ListItemText 
                     primary={"Learning Outcome: "+ _task.description} 
                     secondary = {displayWarnText(_task.has_assessment)}
+                    key = {1}
                 />
             </ListItem>
 
@@ -112,7 +116,7 @@ const ComponentOutcomeAssessment = (props)=>{
     return (
         <Grid container item xs = {12} alignContent="center">
             <Grid item xs = {12} >
-                <List component="nav" fullWidth>
+                <List component="nav">
                     {
                         data.map(_task => 
                             displayOutcomeDetail(_task)

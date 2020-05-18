@@ -54,7 +54,8 @@ const LessonAnalysisContainer = ()=>{
 
             if( response["tasks_time_by_task"].length == 0){
                 setData({
-                    title: "lesson # " + lesson,
+                    // title: "lesson # " + lesson,
+                    title: course.lessons.find(_x => _x.id == lesson).title,
                     tasks_time_by_task:  {},
                     tasks_num_by_type: {},
                     tasks_num_by_class_type: {},
@@ -97,7 +98,7 @@ const LessonAnalysisContainer = ()=>{
         }
         tasks_num_by_type["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         tasks_num_by_type["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
-        tasks_num_by_type["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_num_by_type']).length)
+        tasks_num_by_type["datasets"][0]["backgroundColor"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
         tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_type']).length)
 
         var tasks_num_by_class_type = {
@@ -140,9 +141,10 @@ const LessonAnalysisContainer = ()=>{
         tasks_num_by_size["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_size']).length)
 
         //#endregion
-    
+        
         setData({
-            title: "lesson # " + lesson,
+            // title: "lesson # " + lesson,
+            title: course.lessons.find(_x => _x.id == lesson).title,
             tasks_time_by_task:  tasks_time_by_task,
             tasks_num_by_type: tasks_num_by_type,
             tasks_num_by_class_type: tasks_num_by_class_type,
@@ -169,6 +171,7 @@ const LessonAnalysisContainer = ()=>{
                             value={_lesson.id} 
                             selected = {lesson == _lesson.id} 
                             onClick = {()=>{setLesson(_lesson.id)}}
+                            key = {_lesson.id} 
                         />
 
                 )}

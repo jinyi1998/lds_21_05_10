@@ -846,16 +846,225 @@ class CreateLearningtaskTemplate extends Migration
             $table->foreign('learningoutcome_id')->references('id')->on('learningtask_template');
         });
 
-        // DB::table('learningtask_template_assessment')->insert([
-        //     [
-        //         'id' => 1,
-        //         'learningtask_id' => '',
-        //         'learningoutcome_id' => '',
-        //         'created_by' => 1,
-        //         'updated_by' => 1,
-        //         'is_deleted' => 0,
-        //     ]
-        // ]);
+        DB::table('learningtask_template_assessment')->insert([
+            // 1
+            [
+                'learningtask_id' => 4,
+                'learningoutcome_id' => 5,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 4,
+                'learningoutcome_id' => 6,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 4,
+                'learningoutcome_id' => 7,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //8
+            [
+                'learningtask_id' => 8,
+                'learningoutcome_id' => 5,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 8,
+                'learningoutcome_id' => 6,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 8,
+                'learningoutcome_id' => 7,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //13
+            [
+                'learningtask_id' => 13,
+                'learningoutcome_id' => 8,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 13,
+                'learningoutcome_id' => 9,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //15
+            [
+                'learningtask_id' => 15,
+                'learningoutcome_id' => 11,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //17
+            [
+                'learningtask_id' => 17,
+                'learningoutcome_id' => 10,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //20
+            [
+                'learningtask_id' => 20,
+                'learningoutcome_id' => 12,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 20,
+                'learningoutcome_id' => 13,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //23
+            [
+                'learningtask_id' => 23,
+                'learningoutcome_id' => 12,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 23,
+                'learningoutcome_id' => 13,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //27
+            [
+                'learningtask_id' => 27,
+                'learningoutcome_id' => 14,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 27,
+                'learningoutcome_id' => 26,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //31
+            [
+                'learningtask_id' => 31,
+                'learningoutcome_id' => 15,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 31,
+                'learningoutcome_id' => 16,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 31,
+                'learningoutcome_id' => 17,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //36
+            [
+                'learningtask_id' => 36,
+                'learningoutcome_id' => 18,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 36,
+                'learningoutcome_id' => 27,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //40
+            [
+                'learningtask_id' => 40,
+                'learningoutcome_id' => 19,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 40,
+                'learningoutcome_id' => 20,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //42
+            [
+                'learningtask_id' => 42,
+                'learningoutcome_id' => 22,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //44
+            [
+                'learningtask_id' => 44,
+                'learningoutcome_id' => 21,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 44,
+                'learningoutcome_id' => 22,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            //51
+            [
+                'learningtask_id' => 51,
+                'learningoutcome_id' => 23,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 51,
+                'learningoutcome_id' => 24,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+            [
+                'learningtask_id' => 51,
+                'learningoutcome_id' => 25,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0,
+            ],
+        ]);
 
         Schema::create('learningtask_template_resource', function (Blueprint $table) {
             $table->bigIncrements('id');

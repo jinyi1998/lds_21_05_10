@@ -119,13 +119,13 @@ class LearningComponentAnalysisController extends Controller
                 }
                 
                 if(!isset( $tasks_time_by_task[$task->title])){
-                    $tasks_time_by_task[$task->id] = 0;
+                    $tasks_time_by_task[$task->title] = 0;
                 }
 
                 $tasks_time_by_type[$task->type] +=  $task->time;
                 $tasks_num_by_type[$task->type] +=  1;
 
-                $tasks_time_by_task[$task->id] += $task->time;
+                $tasks_time_by_task[$task->title] += $task->time;
                 
             }
         }
@@ -138,13 +138,13 @@ class LearningComponentAnalysisController extends Controller
                     $tasks_num_by_type[$task->type] = 0;
                 }
                 if(!isset( $tasks_time_by_task[$task->title])){
-                    $tasks_time_by_task[$task->id] = 0;
+                    $tasks_time_by_task[$task->title] = 0;
                 }
 
                 $tasks_time_by_type[$task->type] +=  $task->time;
                 $tasks_num_by_type[$task->type] +=  1;
 
-                $tasks_time_by_task[$task->id] += $task->time;
+                $tasks_time_by_task[$task->title] += $task->time;
             }
         }
 

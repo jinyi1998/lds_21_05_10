@@ -38,12 +38,12 @@ const ComponentTaskLesson = (props)=>{
     const displayColor = (lesson_id) => {
         try{
             if(data.task[taskID].lesson_id == parseInt(lesson_id)){
-                return {"background-color": "#00BFFF88"}
+                return {"backgroundColor": "#00BFFF88"}
             }else{
-                return {"background-color": "#00BFFF11"}
+                return {"backgroundColor": "#00BFFF11"}
             }
         }catch{
-            return {"background-color": "#00BFFF11"}
+            return {"backgroundColor": "#00BFFF11"}
         }
     }
 
@@ -61,6 +61,7 @@ const ComponentTaskLesson = (props)=>{
                         <ListItemText 
                             primary={"Lesson #"+ lesson_id} 
                             secondary = {data.lesson[lesson_id]}
+                            key = {lesson_id}
                         />
                     </ListItem>
                     )
@@ -71,9 +72,11 @@ const ComponentTaskLesson = (props)=>{
             return (
             <ListItem 
             alignItems="center"
+            key = {1}
             >
                 <ListItemText 
                     primary={"No Lesson in this component"} 
+                    key = {1}
                 />
             </ListItem>
             )
@@ -97,7 +100,7 @@ const ComponentTaskLesson = (props)=>{
                                     <ListItemText
                                         primary = { "Learning Task #" + task_id}
                                         secondary = { data.task[task_id].task_title}
-                                        // key = {task_id}
+                                        key = {task_id}
                                     />
                                     </ListItem>
                             )
