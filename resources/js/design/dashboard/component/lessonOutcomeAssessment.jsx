@@ -130,7 +130,7 @@ const LessonOutcomeAssessment = (props)=>{
                                                         secondary = { data.task[task_id].task_title}
                                                         key = {task_id}
                                                     />
-                                                    </ListItem>
+                                                </ListItem>
                                             )
                                         }
                                     }

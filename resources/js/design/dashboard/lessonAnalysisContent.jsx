@@ -9,6 +9,8 @@ const useStyles = makeStyles((theme) => ({
 
     paper: {
       padding: theme.spacing(2),
+      width: '100%',
+      textAlign: 'center'
     },
   }));
 
@@ -34,7 +36,7 @@ const LessonAnalysisContainer = (props)=>{
             return ( 
                 <Grid container item xs = {12}>
                       <Paper className = {classes.paper}>
-                      <h5>No tasks data... You may need to add some tasks to this lesson first</h5>
+                        <h5>No tasks data... You may need to add some tasks to this lesson first</h5>
                       </Paper>
                 </Grid> 
             )

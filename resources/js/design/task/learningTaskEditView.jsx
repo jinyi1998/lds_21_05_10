@@ -107,13 +107,23 @@ const LearningTaskEditView = (props) => {
             // setTask({...task, id: -1});
             // console.log(taskData);
         }
-        var classTargetInit = {
-            target: {
-                "name": "target",
-                "value": taskData.class_type
-            }
+        // var classTargetInit = {
+        //     target: {
+        //         "name": "target",
+        //         "value": taskData.class_type
+        //     }
+        // }
+        // handleChange(classTargetInit);
+
+        var temp = options.taskSize;
+        if(task.target == 1 ){
+            temp = temp.filter(x => x.id == 1)
+        }else if(task.target == 3){
+            temp = temp.filter(x => x.id == 7)
+        }else{
+            temp = temp.filter(x => ![1,7].includes(x.id))
         }
-        handleChange(classTargetInit);
+        setTaskClassSizeOpts(temp)
     }
     , [taskID])
 

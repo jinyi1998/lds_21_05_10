@@ -96,7 +96,8 @@ class LearningComponentAnalysisController extends Controller
             learningoutcome.description, 
             if( GROUP_CONCAT(DISTINCT learningtask_assessment.learningtask_id) is null, false, true) as has_assessment, 
             GROUP_CONCAT(DISTINCT learningtask_assessment.learningtask_id) as learningtask_id,
-            GROUP_CONCAT(learningtask.title) as learningtask_title
+            GROUP_CONCAT(learningtask.title) as learningtask_title,
+            GROUP_CONCAT(learningtask.type) as learningtask_type
             '
             ))
             // ->select(DB::raw('distinct learningoutcome.*, if(learningtask_assessment.learningtask_id is null, 0, learningtask_assessment.learningtask_id) as learningtask_id'))

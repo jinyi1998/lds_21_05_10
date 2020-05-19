@@ -77,7 +77,7 @@ const ComponentAnalysisContainer = ()=>{
         let temp_task_assessment = data['task_assessment'].map( _data => 
             {
                 Object.keys(_data).map(key => {
-                    if((key == "learningtask_id" || key == "learningtask_title") && _data[key] != null){
+                    if((key == "learningtask_id" || key == "learningtask_title" || key == "learningtask_type") && _data[key] != null){
                         _data[key] = _data[key].split(",");
                     }else{
                         _data[key] = _data[key];
