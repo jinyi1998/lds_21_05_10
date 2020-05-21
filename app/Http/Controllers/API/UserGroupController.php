@@ -28,7 +28,7 @@ class UserGroupController extends Controller
     public function store(Request $request)
     {
         //
-        $usergroup = Usergroup::find($id);
+        $usergroup = new Usergroup();
         $usergroup = UserGroupController::save($usergroup, $request);
         return response()->json($usergroup);
     }
@@ -99,17 +99,21 @@ class UserGroupController extends Controller
         }else{
             $usergroup->updated_by = 1;
         }
+        $usergroup->is_deleted = 0;
+        $usergroup->save();
 
         if($request->has('users')){
             foreach((array)$request->users as $_user){
                 $usergroup->userid()->updateOrCreate([
-                    'usergroup_id' => $_user->usergroup_id,
-                    'user_id' => $_user->user_id,
+                    'usergroup_id' => $_user['usergroup_id'],
+                    'user_id' => $_user['user_id'],
+                    'permission' => 1,
                     'updated_at' => now(),
                     'created_by' => 1,
                     'updated_by' => 1,
                     'is_deleted' => 0
                 ]);
+                // return $_user;
             }
         }
         $usergroup->updated_at = now();

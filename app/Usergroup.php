@@ -16,6 +16,6 @@ class Usergroup extends Model
         return $this->hasMany(
             'App\UsergroupUserRelation',
             'user_id'
-        )->where('is_deleted', 0)->select(['course_id','component_id']);
+        )->where('is_deleted', 0)->select(['user_id','usergroup_id']);
     }
 }
