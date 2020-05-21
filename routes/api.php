@@ -126,3 +126,6 @@ Route::get('learningOutcomeTemplate/getOutcomeTempByDesignType/{id}', 'API\Learn
 Route::resource('learningComponentTemplate', 'API\LearningComponentTemplateController');
 Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
+
+
+Route::resource('usergroup', 'API\UsergroupController');

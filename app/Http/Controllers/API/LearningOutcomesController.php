@@ -146,7 +146,10 @@ class LearningOutcomesController extends Controller
         }
 
         if($request->has('unit_outcomeid')){
-            if($outcome->unit_outcomeid()->exists()){
+            if($request->unit_outcomeid == -1){
+                // do nothing
+            }   
+            else if($outcome->unit_outcomeid()->exists()){
                 $outcome->unit_outcomeid()->update([
                     'component_outcomeid' => $outcome->id,
                     'unit_outcomeid' => $request->unit_outcomeid,
