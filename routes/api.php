@@ -128,4 +128,6 @@ Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateControlle
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 
 
-Route::resource('usergroup', 'API\UsergroupController');
+Route::resource('usergroup', 'API\UserGroupController');
+Route::resource('usergroupuser', 'API\UserGroupUserController');
+Route::resource('usergroupusertemp', 'API\UserGroupUserTempController');

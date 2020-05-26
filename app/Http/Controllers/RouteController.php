@@ -46,6 +46,24 @@ class RouteController extends Controller
         return view('publicdesign', ['user'=> $user_temp]);
     }
 
+    public function usergroups(){
+        $user['id'] =  Auth::user()->id;
+        $user['name'] =  Auth::user()->name;
+        $user['email'] =  Auth::user()->email;
+        $user_temp = \json_encode($user);
+
+        return view('usergroups', ['user'=> $user_temp]);
+    }
+
+    public function usergroup($id){
+        $user['id'] =  Auth::user()->id;
+        $user['name'] =  Auth::user()->name;
+        $user['email'] =  Auth::user()->email;
+        $user_temp = \json_encode($user);
+
+        return view('usergroup', ['user'=> $user_temp, 'usergroupid' => $id]);
+    }
+
     public function changePassword(Request $request){
         try{
             $credentials = $request->only('email', 'password');

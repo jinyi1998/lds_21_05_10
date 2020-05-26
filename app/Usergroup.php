@@ -15,7 +15,38 @@ class Usergroup extends Model
     public function userid(){
         return $this->hasMany(
             'App\UsergroupUserRelation',
-            'user_id'
-        )->where('is_deleted', 0)->select(['user_id','usergroup_id']);
+            'usergroup_id'
+        )->select(['user_id','usergroup_id']);
     }
+
+    public function users(){
+        return $this->hasManyThrough(
+            'App\User',
+            'App\UsergroupUserRelation',
+            'usergroup_id',
+            'id',
+            'id',
+            'user_id'
+        )->select('users.name', 'users.school', 'users.email', 'usergroup_user_relation.created_at', 'usergroup_user_relation.id as relation_id');
+    }
+
+    public function useridtemp(){
+        return $this->hasMany(
+            'App\UsergroupUserTempRelation',
+            'usergroup_id'
+        )->select(['user_id','usergroup_id']);
+    }
+
+    public function userstemp(){
+        return $this->hasManyThrough(
+            'App\User',
+            'App\UsergroupUserTempRelation',
+            'usergroup_id',
+            'id',
+            'id',
+            'user_id'
+        )->select('users.name', 'users.school', 'users.email', 'usergroup_user_temp_relation.created_at', 'usergroup_user_temp_relation.id as relation_id');
+    }
+
+
 }

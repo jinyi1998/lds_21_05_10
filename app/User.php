@@ -36,4 +36,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function usergroupid(){
+        return $this->hasMany(
+            'App\UsergroupUserRelation',
+            'user_id',
+            'id'
+        )->select(['user_id','usergroup_id']);
+    }
+
+    public function usergroup(){
+        return $this->hasManyThrough(
+            'App\Usergroup',
+            'App\UsergroupUserRelation',
+            'user_id',
+            'id',
+            'id',
+            'usergroup_id'
+        )->select(['Usergroup.id','name']);
+    }
 }

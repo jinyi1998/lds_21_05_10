@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Course;
+use App\User;
 use Auth;
 
 class CourseControllerTest extends Controller
@@ -29,7 +30,7 @@ class CourseControllerTest extends Controller
         // return response()->json($list);
         // return response()->json(  \Auth::user());
 
-        $course = Course::with(['createdby'])->where('created_by', Auth::user()->id)->get();
+        $course = Course::with(['createdby','usergroupid'])->where('created_by', Auth::user()->id)->get();
         return response()->json($course);
     }
 
@@ -124,6 +125,23 @@ class CourseControllerTest extends Controller
         if($request->has('created_by')){
             $course->created_by =  $request->created_by;
         }
+
+        if($request->has('coursetype')){
+            $course->coursetype =  $request->coursetype;
+        }
+
+        if($request->has('usergroupid')){
+            $course->usergroupid()->delete();
+            foreach((array) $request->usergroupid as $_usergroup){
+                $course->usergroupid()->create([
+                    'course_id' => $_usergroup['course_id'],
+                    'usergroup_id' => $_usergroup['usergroup_id'],
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }
+        }
         // if($request->has('componentid')){
         //     foreach($request->componentid as $_component){
         //         $course->componentid = $request->design_type_id;
@@ -141,8 +159,26 @@ class CourseControllerTest extends Controller
 
     public function showAll()
     {
-        $course = Course::with(['createdby'])->get();
+        $course = Course::with(['createdby', 'usergroupid'])->where("coursetype", '=', 3)->get();
         return response()->json($course);
+    }
+
+
+    public function showUsergroup($id)
+    {
+        // $courses = Course::has('usergroupid', '=', $id)->with(['createdby'])->get();
+        $data = Course::with(['createdby', 'usergroupid'])->get();
+        $courses = array();
+
+        foreach($data as $key => $course){
+      
+            $x = $course->usergroupid()->where('usergroup_id', $id)->get();
+            if ($x->count()){
+                array_push($courses, $course);
+                // $courses.add($course);
+            }
+        }
+        return response()->json($courses);
     }
 
     public function clearCourseComponent(Request $request){
@@ -157,6 +193,12 @@ class CourseControllerTest extends Controller
         return response()->json($course);
     }
 
+
+    public function getAvaUserGroup(){
+        $usergroups = User::with(['usergroup'])->find(Auth::user()->id)->usergroup;
+        // $usergroups = Auth::user()->with(['usergroupid'()';
+        return response()->json($usergroups);
+    }
 
     public function getDesignTypeTemp(){
         return response()->json([

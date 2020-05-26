@@ -57,9 +57,14 @@ Route::get('/designstudio', '\App\Http\Controllers\RouteController@designstudio'
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
 Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');
 Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign');
+Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
+Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
+
 
 
 Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
+Route::get('/api/course/showUsergroup/{id}', 'CourseControllerTest@showUsergroup');
+Route::get('/api/course/getAvaUserGroup', 'CourseControllerTest@getAvaUserGroup');
 Route::post('/api/course/clearCourseComponent', 'CourseControllerTest@clearCourseComponent');
 Route::post('/api/course/clearCourseLesson', 'CourseControllerTest@clearCourseLesson');
 Route::resource('/api/course', 'CourseControllerTest');

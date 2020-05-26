@@ -17,6 +17,8 @@ require('./container/testContainer');
 require('./container/test');
 require('./dashboard/myDesign');
 require('./dashboard/publicDesign');
+require('./usergroup/container/usergroupsListViewContainer');
+require('./usergroup/container/usergroupContainer');
 
 
 window.$ = window.jQuery = require('jquery');

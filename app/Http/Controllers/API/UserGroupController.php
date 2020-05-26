@@ -15,7 +15,7 @@ class UserGroupController extends Controller
      */
     public function index()
     {
-        $usergroup = Usergroup::all();
+        $usergroup = Usergroup::with(['userid', 'useridtemp'])->get();
         return \response()->json($usergroup);
     }
 
@@ -42,7 +42,7 @@ class UserGroupController extends Controller
     public function show($id)
     {
         //
-        $usergroup = Usergroup::find($id);
+        $usergroup = Usergroup::with(['users', 'userstemp'])->find($id);
         return \response()->json($usergroup);
     }
 
@@ -105,15 +105,14 @@ class UserGroupController extends Controller
         if($request->has('users')){
             foreach((array)$request->users as $_user){
                 $usergroup->userid()->updateOrCreate([
-                    'usergroup_id' => $_user['usergroup_id'],
                     'user_id' => $_user['user_id'],
+                    'usergroup_id' => $usergroup->id,
                     'permission' => 1,
                     'updated_at' => now(),
                     'created_by' => 1,
                     'updated_by' => 1,
                     'is_deleted' => 0
                 ]);
-                // return $_user;
             }
         }
         $usergroup->updated_at = now();

@@ -14,6 +14,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 const PublicDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
+    const [usergroup, setUsergroup] = React.useState([]); 
 
     // const {setImportJson} = props;
     // const {handleListItemClick, setCourseID} = props;
@@ -46,12 +47,29 @@ const PublicDesign = (props)=>{
         .catch(error => console.log(error));
 
     }
+    async function fetchUsergroupData() {
+
+        const res = await fetch(
+            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
+            {
+            method: "GET",
+            }
+        )
+            .then(res => res.json())
+            .then(response => {
+                setUsergroup(response);
+                // console.log(response);
+        })
+        .catch(error => console.log(error));
+
+    }
     
     React.useEffect(() => {
         // if(config.get('enableDB')){
         //     fetchData();
         // }
         fetchData();
+        fetchUsergroupData();
     }, []);
 
     return (
@@ -84,6 +102,7 @@ const PublicDesign = (props)=>{
                                     <DesigmItem 
                                         key ={_course.id} 
                                         courseData = {_course}
+                                        usergroup = {usergroup}
                                     />
                                 )
                            }

@@ -89,4 +89,11 @@ class Course extends Model
             'course_id'
         )->where('is_deleted', 0)->select(['course_id','lesson_id']);
     }
+
+    public function usergroupid(){
+        return $this->hasMany(
+            'App\UsergroupCourseRelation',
+            'course_id'
+        )->select(['usergroup_id', 'course_id']);
+    }
 }
