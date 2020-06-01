@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'LEARNING COMPONENTS'];
+const steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENTS DESIGN'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -77,12 +77,13 @@ const PageMenu = (props) => {
         open={Boolean(anchorEl)}
         onClose={()=> handleClose(activePage)}
       >
-        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activePage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
-        <CssBaseline />
-        <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Learning Components</MenuItem>
-        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Unit Design</MenuItem>
-        <CssBaseline />
         <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activePage == "courseinfo"}>Course Information</MenuItem>
+        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activePage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
+        <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Curriculum Components</MenuItem>
+        <CssBaseline />
+        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Curriculum Component Design</MenuItem>
+        <CssBaseline />
+      
         {/* <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem> */}
       </Menu>
     </div>
@@ -275,14 +276,21 @@ const Design = (props) => {
 
       if(course.isinited){
 
+        // if(course.components.length == 0){
+        //   setLoadingOpen(false)
+        // }else if(course.unit_title == "" || course.description == "" || course.level == ""  ){
+        //   setLoadingOpen(false)
+        //   setActiveStep(1);
+        // }else{
+        //   setLoadingOpen(false)
+        //   return setActionPage('unitPlan');
+        // }
+
         if(course.components.length == 0){
           setLoadingOpen(false)
-        }else if(course.unit_title == "" || course.description == "" || course.level == ""  ){
-          setLoadingOpen(false)
-          setActiveStep(1);
         }else{
           setLoadingOpen(false)
-          return setActionPage('unitPlan');
+          setActiveStep(1);
         }
       }
       
@@ -296,7 +304,8 @@ const Design = (props) => {
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
       //final step
-      setActionPage('unitPlan');
+      // setActionPage('unitPlan');
+      window.location.href = "/mydesign";
     }else{
       setActiveStep(activeStep + 1);
     }
@@ -380,7 +389,30 @@ const Design = (props) => {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  </Button>
+              )}
+            </div>
+          </React.Fragment>
+        )
+      case 4:
+        return (
+          <React.Fragment>
+            <UnitPlanContainer/>
+             <div className={classes.buttons}>
+              {activeStep !== 0 && (
+                <Button onClick={handleBack} className={classes.button}>
+                  Back
+                </Button>
+              )}
+              {activeStep !== 0 &&(
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
               )}
             </div>
@@ -400,27 +432,10 @@ const Design = (props) => {
       case 'basic': 
         return (
           <React.Fragment>
-            <DesignStepper activeStep = {activeStep} steps={steps} />
+            <DesignStepper activeStep = {activeStep} steps={steps} setActiveStep = {setActiveStep} />
             <div>
               {getStepContent(activeStep)}
             </div>
-            {/* <div className={classes.buttons}>
-              {activeStep !== 0 && (
-                <Button onClick={handleBack} className={classes.button}>
-                  Back
-                </Button>
-              )}
-              {activeStep !== 0 &&(
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? 'Save' : 'Next'}
-                  </Button>
-              )}
-            </div> */}
           </React.Fragment>
         );
       case 'majorStep':
@@ -481,17 +496,17 @@ const Design = (props) => {
       <main className={classes.layout}>
         <Paper className={classes.paper} style ={{padding: "16px"}}>
           <Grid container spacing = {4}>
-            <Grid item xs = {12}>
+            {/* <Grid item xs = {12}>
               <Typography component="h1" variant="h4" align="center">
                 {displayTitle()}
               </Typography>
-            </Grid>
+            </Grid> */}
             <Grid item xs = {12}>
               {getActivePage()}
             </Grid>
-            <Grid item xs = {12}>
+            {/* <Grid item xs = {12}>
               <Button color="primary" variant="contained" onClick={() => {saveCourse()} } fullWidth > Close</Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Paper>
       </main>

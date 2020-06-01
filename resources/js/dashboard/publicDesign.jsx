@@ -103,6 +103,8 @@ const PublicDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
+                                        enableShare = {false}
+                                        enableDelete = {false}
                                     />
                                 )
                            }

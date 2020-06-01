@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +17,24 @@ import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
 import config from 'react-global-configuration';
 
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+export const ContextStore = React.createContext({
+    setLoadingOpen: ()=> {},
+    user: {}
+});
+
+const useStyles = makeStyles((theme) => ({
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
+}));
+
+  
 const UsergroupsListViewContainer = (props) => {
+    const classes = useStyles();
     const [usergroups, setUsergroups] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState({
         "name": "",
@@ -24,9 +42,10 @@ const UsergroupsListViewContainer = (props) => {
         "type": 1,
     });
     const [user, setUser] = React.useState(JSON.parse(props.user));
-    console.log(user);
+
     const [createGroupViewOpen, setCreateGroupViewOpen] = React.useState(false);
     const [joinGroupWarningOpen, setJoinGroupWarningOpen] = React.useState(false);
+    const [loadingOpen, setLoadingOpen] = React.useState(false)
 
     React.useEffect(()=>{
         fetchusergroups()
@@ -35,6 +54,7 @@ const UsergroupsListViewContainer = (props) => {
 
     //#region API Data
     async function fetchusergroups() {
+        setLoadingOpen(true)
         const res = await fetch(
             'http://'+config.get('url')+'/api/usergroup/',
             {
@@ -44,11 +64,13 @@ const UsergroupsListViewContainer = (props) => {
         .then(res => res.json())
         .then(response => {
             setUsergroups(response)
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
 
     async function createUsergroup() {
+        setLoadingOpen(true)
         var json = {
             ...usergroup,
             users: [{
@@ -69,11 +91,13 @@ const UsergroupsListViewContainer = (props) => {
         .then(response => {
             // setUsergroups(response)
             fetchusergroups()
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
 
     async function userJoinUsergroup(usergroup_id) {
+        setLoadingOpen(true)
         var json = {
             'user_id': user.id,
             'usergroup_id': usergroup_id
@@ -92,6 +116,7 @@ const UsergroupsListViewContainer = (props) => {
         .then(response => {
             // setUsergroups(response)
             fetchusergroups()
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
@@ -173,57 +198,67 @@ const UsergroupsListViewContainer = (props) => {
     }
 
     return (
-        <React.Fragment>
-            <Grid container spacing = {2}>
-                <Grid item xs={12}>
-                    <Button variant="contained" color="primary" onClick={onClickCreateGroup}  startIcon={<AddIcon />} >
-                        Add Group
-                    </Button>
+        <ContextStore.Provider
+        value = {{
+            setLoadingOpen: setLoadingOpen,
+            user: user
+        }}
+        >
+            <React.Fragment>
+                <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+                <Grid container spacing = {2}>
+                    <Grid item xs={12}>
+                        <Button variant="contained" color="primary" onClick={onClickCreateGroup}  startIcon={<AddIcon />} >
+                            Add Group
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {displayPublicUserGroups()}
+                    </Grid>
+
+                    <Grid item xs={12}>
+                    {displayPrivateUserGroups()}
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    {displayPublicUserGroups()}
-                </Grid>
 
-                <Grid item xs={12}>
-                   {displayPrivateUserGroups()}
-                </Grid>
-            </Grid>
+                <Dialog open={createGroupViewOpen} onClose={() => setCreateGroupViewOpen(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
+                    <DialogTitle id="form-dialog-title">Create User group </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            You may create your own user group here...
+                        </DialogContentText>
+                        <UsergroupInfoEditView usergroup = {usergroup} setUsergroup = {setUsergroup}/>
+                    </DialogContent>
 
-            <Dialog open={createGroupViewOpen} onClose={() => setCreateGroupViewOpen(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
-                <DialogTitle id="form-dialog-title">Create User group </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        You may create your own user group here...
-                    </DialogContentText>
-                    <UsergroupInfoEditView usergroup = {usergroup} setUsergroup = {setUsergroup}/>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={() => setCreateGroupViewOpen(false)} >
-                        Cancel
-                    </Button>
-                    <Button variant="contained" color="primary" onClick = {() => onClickCreateGroupSave()}>
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                    <DialogActions>
+                        <Button onClick={() => setCreateGroupViewOpen(false)} >
+                            Cancel
+                        </Button>
+                        <Button variant="contained" color="primary" onClick = {() => onClickCreateGroupSave()}>
+                            Save
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
 
-            <Dialog open={joinGroupWarningOpen} onClose={() => setJoinGroupWarningOpen(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
-                <DialogTitle id="form-dialog-title">Warning </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        You need to join the group first...
-                    </DialogContentText>
-                </DialogContent>
+                <Dialog open={joinGroupWarningOpen} onClose={() => setJoinGroupWarningOpen(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
+                    <DialogTitle id="form-dialog-title">Warning </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            You need to join the group first...
+                        </DialogContentText>
+                    </DialogContent>
 
-                <DialogActions>
-                    <Button onClick={() => setJoinGroupWarningOpen(false)} >
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </React.Fragment>
+                    <DialogActions>
+                        <Button onClick={() => setJoinGroupWarningOpen(false)} >
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </React.Fragment>
+        </ContextStore.Provider>
     );
 }
 export default UsergroupsListViewContainer;

@@ -6,12 +6,20 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
 const DesignStepper = (props) => {
-    const {activeStep, steps} = props;
+    const {setActiveStep ,activeStep, steps} = props;
+
+    const onClickStepIcon = (index) => {
+        if(activeStep > 1){
+            setActiveStep(index)
+        }else{
+
+        }
+    }
 
     return (
-        <Stepper activeStep={activeStep}>
-            {steps.map(label => (
-                <Step key={label}>
+        <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map( (label, index) => (
+                <Step key={label} onClick={() => onClickStepIcon(index)}>
                     <StepLabel>{label}</StepLabel>
                 </Step>
             ))}

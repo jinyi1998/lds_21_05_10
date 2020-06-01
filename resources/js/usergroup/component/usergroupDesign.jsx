@@ -1,25 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import DesigmItem from './designItem';
+import DesigmItem from '../../dashboard/designItem';
 import Typography from '@material-ui/core/Typography';
 import config from 'react-global-configuration';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
+import {ContextStore} from '../container/usergroupContainer';
 
 const UsergroupDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
+    const { user, setLoadingOpen } = React.useContext(ContextStore);
 
     //call api to get the data
     async function fetchData() {
-
+        setLoadingOpen(true)
         const res = await fetch(
             'http://'+config.get('url')+'/api/course/showUsergroup/'+props.usergroupid,
             {
@@ -29,6 +29,7 @@ const UsergroupDesign = (props)=>{
             .then(res => res.json())
             .then(response => {
                 setCourseList(response);
+                setLoadingOpen(false)
                 // console.log(response);
         })
         .catch(error => console.log(error));
@@ -36,7 +37,7 @@ const UsergroupDesign = (props)=>{
     }
     
     async function fetchUsergroupData() {
-
+        setLoadingOpen(true)
         const res = await fetch(
             'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
             {
@@ -46,6 +47,7 @@ const UsergroupDesign = (props)=>{
             .then(res => res.json())
             .then(response => {
                 setUsergroup(response);
+                setLoadingOpen(false)
                 // console.log(response);
         })
         .catch(error => console.log(error));
@@ -80,7 +82,9 @@ const UsergroupDesign = (props)=>{
                                     <DesigmItem 
                                         key ={_course.id} 
                                         courseData = {_course}
-                                         usergroup = {usergroup}
+                                        usergroup = {usergroup}
+                                        enableShare = {false}
+                                        enableDelete = {false}
                                     />
                                 )
                            }

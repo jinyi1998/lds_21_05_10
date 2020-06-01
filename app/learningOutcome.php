@@ -34,4 +34,8 @@ class LearningOutcome extends Model
     public function unit_outcomeid(){
         return $this->hasOne('App\LearningOutcomeCLOULORelation', 'component_outcomeid');
     }
+
+    public function component_outcomeid(){
+        return $this->hasMany('App\LearningOutcomeCLOULORelation', 'unit_outcomeid');
+    }
 }

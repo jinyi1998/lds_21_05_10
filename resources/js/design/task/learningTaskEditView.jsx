@@ -183,7 +183,7 @@ const LearningTaskEditView = (props) => {
     },[task])
     
     const [hasAssessment, setHasAssessment] = React.useState(
-       true
+       false
     );
 
 

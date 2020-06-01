@@ -5,10 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import UsergroupDesign from '../../dashboard/usergroupDesign';
+import UsergroupDesign from '../component/usergroupDesign';
 import UsergroupMemberList from '../component/usergroupMemberList';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import config from 'react-global-configuration';
 
 function TabPanel(props) {
@@ -49,7 +50,17 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
+
+export const ContextStore = React.createContext({
+  setLoadingOpen: ()=>{},
+  user: {}
+  
+});
 
 
 const UsergroupContainer = (props) => {
@@ -58,6 +69,7 @@ const UsergroupContainer = (props) => {
   const [usergroup, setUsergroup] = React.useState({
     users: [],
   });
+  const [loadingOpen, setLoadingOpen] = React.useState(false)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -136,32 +148,45 @@ React.useEffect(()=>{
 },[])
 
   return (
-    <React.Fragment>
-        <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Design Garden" {...a11yProps(0)} />
-          <Tab label="Member Management" {...a11yProps(1)} />
-          {/* <Tab label="Setting" {...a11yProps(2)} /> */}
-        </Tabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
+    <ContextStore.Provider
+      value = {{
+        setLoadingOpen: setLoadingOpen,
+        user: props.user
+      }}
+    >
+       <React.Fragment>
+        <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
+              <CircularProgress color="inherit" />
+          </Backdrop>
 
-        <UsergroupDesign usergroupid = {props.usergroupid}/>
+          <AppBar position="static">
+            <Tabs value={value} onChange={handleChange} centered>
+              <Tab label="Design Garden" {...a11yProps(0)} />
+              <Tab label="Member Management" {...a11yProps(1)} />
+              {/* <Tab label="Setting" {...a11yProps(2)} /> */}
+            </Tabs>
+          </AppBar>
 
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-         <UsergroupMemberList 
-            usergroup = {usergroup} 
-            approveUserJoinGroup = {approveUserJoinGroup}
-            declineUserJoinGroup = {declineUserJoinGroup}
-            removeUser = {removeUser}
+          <TabPanel value={value} index={0}>
+            <UsergroupDesign usergroupid = {props.usergroupid}/>
+          </TabPanel>
 
-         />
-      </TabPanel>
-      {/* <TabPanel value={value} index={2}>
-        Setting
-      </TabPanel> */}
-    </React.Fragment>
+          <TabPanel value={value} index={1}>
+            <UsergroupMemberList 
+                usergroup = {usergroup} 
+                approveUserJoinGroup = {approveUserJoinGroup}
+                declineUserJoinGroup = {declineUserJoinGroup}
+                removeUser = {removeUser}
+
+            />
+          </TabPanel>
+          {/* <TabPanel value={value} index={2}>
+            Setting
+          </TabPanel> */}
+      </React.Fragment>
+
+    </ContextStore.Provider>
+   
     
 
   );

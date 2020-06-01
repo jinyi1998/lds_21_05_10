@@ -65,7 +65,7 @@ const DesignType = (props) => {
       </Typography>
       <GridList className={classes.gridList} cols={4}>
           {designType.map((_data, i) => (
-            <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} >
+            <DesignTypeBox designBoxData={_data} key={i} onClick={onClick}>
             </DesignTypeBox>
           ))}
       </GridList>

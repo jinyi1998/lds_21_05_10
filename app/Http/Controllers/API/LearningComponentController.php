@@ -146,6 +146,7 @@ class LearningComponentController extends Controller
                 $_outcome['component_id'] =  $component->id;
                 if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
                     // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
+
                     $uloid = DB::table('course_outcome_relation') 
                     ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
                     ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid']['unit_outcomeid'])

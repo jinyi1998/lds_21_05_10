@@ -19,6 +19,7 @@ import { Grid, Paper } from '@material-ui/core';
 import config from 'react-global-configuration';
 import {ContextStore} from '../../container/designContainer'
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import validator from 'validator';
 
 // learningOutcomes: [
 //     {
@@ -68,6 +69,15 @@ const LearningOutcomeEdit = (props) => {
         M: false,
       });
     
+
+    const [ error, setError] = React.useState({
+        level: "",
+        outcomeType: "",
+        STEMType: "",
+        description: "",
+        unit_outcomeid: ""
+    });
+
     const { options } = React.useContext(ContextStore);
     const learningTypeTemp = options.learningOutcomeType;
 
@@ -97,12 +107,16 @@ const LearningOutcomeEdit = (props) => {
                 isCourseLevel: true,
                 unit_outcomeid: -1
             });
-        }else{
+        }else if(componentID != -1 && typeof componentID != "undefined"){
             setLearningOutcome({
                 ...props.learningOutcome,
                 unit_outcomeid: props.learningOutcome.unit_outcomeid.unit_outcomeid
             });
-        } 
+        }else{
+            setLearningOutcome({
+                ...props.learningOutcome,
+            });
+        }
     }, [outcomeID]);
 
     React.useEffect(()=>{
@@ -274,6 +288,51 @@ const LearningOutcomeEdit = (props) => {
 
         handleClose();
     }
+
+    const onClickSave = event => {
+        if(validate()){
+            outcomeSave(event);
+        }else{
+            //
+        }
+    }
+
+    const validate = () => {
+        var validated = true;
+        var tempError = {
+            level: "",
+            outcomeType: "",
+            STEMType: "",
+            description: "",
+            unit_outcomeid: ""
+        }
+
+        if(validator.isEmpty(learningOutcome.level.toString())){
+            tempError["level"] = "Please enter the outcome level";
+            validated = false;
+          }
+      
+        if(validator.isEmpty(learningOutcome.outcomeType.toString()) || learningOutcome.outcomeType == -1){
+            tempError["outcomeType"] = "Please enter the outcome type";
+            validated = false;
+        }
+    
+        if(validator.isEmpty(learningOutcome.description.toString())){
+            tempError["description"] = "Please enter the description";
+            validated = false;
+        }
+        
+        if(componentID != -1 && typeof componentID != "undefined"){
+            if(learningOutcome.unit_outcomeid == -1){
+                tempError["unit_outcomeid"] = "Please enter the parent ulo";
+                validated = false;
+            }
+        }
+    
+    
+        setError(tempError);
+        return validated;
+    }
     //#endregion
     
 
@@ -281,7 +340,7 @@ const LearningOutcomeEdit = (props) => {
     const displayOutcomeType = () => {
         return (
             <Grid item xs={12}>
-                    <FormControl required className={classes.formControl} fullWidth>
+                    <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
                         <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
                         <Select
                         labelId="demo-simple-select-required-label"
@@ -302,7 +361,7 @@ const LearningOutcomeEdit = (props) => {
                                 </MenuItem>)
                             )}
                         </Select>
-                        <FormHelperText>Required</FormHelperText>
+                                <FormHelperText>{error['outcomeType'] ==""? "Required": error['outcomeType']}</FormHelperText>
                     </FormControl>
             </Grid>
         )
@@ -323,6 +382,7 @@ const LearningOutcomeEdit = (props) => {
                             value = {learningOutcome.level}
                             onChange = {outcomeLevelOnchange}
                             disabled = {checked}
+                            error = {error['level']!=""}
                             >
                                 <MenuItem value='' disabled>
                                     <em>Levels</em>
@@ -337,7 +397,7 @@ const LearningOutcomeEdit = (props) => {
                                     )
                                 }
                             </Select> 
-                            <FormHelperText>Required</FormHelperText>
+                            <FormHelperText>{error['level'] == "" ? "Required": error['level']}</FormHelperText>
                         </FormControl>
                     </Grid>
                 </React.Fragment>
@@ -360,21 +420,27 @@ const LearningOutcomeEdit = (props) => {
                             value = {learningOutcome.unit_outcomeid}
                             onChange = {unitOutcomeChange}
                             disabled = {checked}
+                            error = {error['unit_outcomeid']!=""}
                             >
                                 <MenuItem value={-1} disabled>
                                     <em>Unit Level Learning Outcomes</em>
                                 </MenuItem>
                                 {
-                                    course.outcomes.map(ulo=> 
+                                    course.outcomes.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType)?.length > 0? 
+                                        course.outcomes.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType).map(ulo=> 
                                         (<MenuItem 
                                             value={ulo.id} 
                                             key={ulo.id}>
                                                 {ulo.description}
-                                        </MenuItem>)
-                                    )
+                                        </MenuItem>))
+                                        :
+                                        // <MenuItem value = ""  disabled>
+                                        //         No corresponding unit learning outcome.
+                                        // </MenuItem>
+                                        null
                                 }
                             </Select> 
-                            <FormHelperText>Required</FormHelperText>
+                            <FormHelperText>{error['unit_outcomeid']==""? "Required": error['unit_outcomeid']}</FormHelperText>
                         </FormControl>
                     </Grid>
 
@@ -472,11 +538,14 @@ const LearningOutcomeEdit = (props) => {
                               }}
                             renderInput={(params) => (
                                 <TextField 
-                                {...params}
-                                label="Description of the outcome"
-                                variant="outlined"
-                                disabled = {checked}
-                                fullWidth/>
+                                    {...params}
+                                    label="Description of the outcome"
+                                    variant="outlined"
+                                    disabled = {checked}
+                                    fullWidth
+                                    error = {error['description']!=""}
+                                    helperText={error['description'] == ""? "Required": error['description']}
+                                />
                             )}
                         />
 {/*  
@@ -506,14 +575,14 @@ const LearningOutcomeEdit = (props) => {
                 <Grid item xs={12}>
                     <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
                 </Grid>
-                {displayParentUnitOutcome()}
                 {displayOutcomeType()}
+                {displayParentUnitOutcome()}
                 {displayOutcomeLevel()}
                 {displaySTEMOpts()}
                 {displayOutcomeDes()}
                 
                 <Grid item xs={12}>
-                    <Button variant="contained" color="primary" color="primary" onClick={outcomeSave} fullWidth> 
+                    <Button variant="contained" color="primary" color="primary" onClick={onClickSave} fullWidth> 
                         save
                     </Button>
                 </Grid>

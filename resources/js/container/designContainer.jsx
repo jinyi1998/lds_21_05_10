@@ -4,6 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
 import config from 'react-global-configuration';
+// import Tour from 'reactour'
 
 const courseInitState = { 
     course: {
@@ -120,6 +121,30 @@ const useStyles = makeStyles(theme => ({
 
 const DesignContainerNew = (props) => {
     const classes = useStyles();
+    // const [tourOpen, setTourOpen] = React.useState(true);
+
+    // const steps = [
+    //     {
+    //       selector: '[data-tour="reactour_designtype"]',
+    //       content: ({ goTo, inDOM }) => (
+    //         <div>
+    //           <br />
+    //           {inDOM && '🎉 Look at your step!'}
+    //           Testing tesing
+    //         </div>
+    //       ),
+    //     },
+    //     {
+    //         selector: '[data-tour="reactour_designtype"]',
+    //         content: ({ goTo, inDOM }) => (
+    //           <div>
+    //             <br />
+    //             {inDOM && '🎉 Look at your step2!'}
+    //             Testing tesing Zzzzz 
+    //           </div>
+    //         ),
+    //     }
+    // ]
 
     React.useEffect(()=>{
         (async function anyNameFunction() {
@@ -325,6 +350,10 @@ const DesignContainerNew = (props) => {
         }}
       >
         <Design courseID={props.courseID}/>
+        {/* <Tour
+            steps={steps}
+            isOpen={tourOpen}
+            onRequestClose={()=>{setTourOpen(false)}} /> */}
         <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
             <CircularProgress color="inherit" />
         </Backdrop>

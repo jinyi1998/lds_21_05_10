@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\LearningOutcome;
 
 class LearningOutcomesController extends Controller
@@ -59,25 +60,6 @@ class LearningOutcomesController extends Controller
         //
         $outcome = LearningOutcome::find($id);
         $outcome = LearningOutcomesController::save($outcome, $request);
-        // $outcome->level = $request->level;
-        // $outcome->description = $request->description;
-        // $outcome->STEMType = $request->STEMType;
-        // $outcome->isCourseLevel = $request->isCourseLevel;
-        // $outcome->updated_by = 1;
-        // $outcome->is_deleted = 0;
-        // $outcome->updated_at = now();
-
-        // if($request->has('component_id')){
-        //     $outcome->componentid()->updateOrCreate([
-        //         'outcome_id' => $id,
-        //         'component_id' => $request->component_id,
-        //         'created_by' => 1,
-        //         'updated_by' => 1,
-        //         'is_deleted' => 0
-        //     ]);
-        // }
-
-        // $outcome->save();
 
         return response()->json($outcome);
     }
@@ -92,6 +74,11 @@ class LearningOutcomesController extends Controller
     {
         //
         $outcome = LearningOutcome::find($id);
+        // return response()->json($outcome->component_outcomeid);
+        foreach($outcome->component_outcomeid as $_clo_id){
+            $clo_outcome = LearningOutcome::find($_clo_id['component_outcomeid']);
+            $clo_outcome->delete();
+        }
         $outcome->delete();
         return response()->json("");
     }
@@ -136,12 +123,14 @@ class LearningOutcomesController extends Controller
         $outcome->save();
 
         if($request->has('component_id')){
+            $sequence = DB::table('component_outcome_relational')->where('component_id', $request->component_id)->count();
             $outcome->componentid()->updateOrCreate([
                 'outcome_id' => $outcome->id,
                 'component_id' => $request->component_id,
                 'created_by' => 1,
                 'updated_by' => 1,
-                'is_deleted' => 0
+                'is_deleted' => 0,
+                'sequence' =>  $sequence + 1,
             ]);
         }
 
@@ -170,13 +159,19 @@ class LearningOutcomesController extends Controller
         }
 
         if($request->has('course_id') && $outcome->isCourseLevel == true){
-            $outcome->courseid()->create([
-                'outcome_id' => $outcome->id,
-                'course_id' => $request->course_id,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => 0
-            ]);
+            $sequence = DB::table('course_outcome_relation')->where('course_id', $request->course_id)->count();
+            if($outcome->courseid()->exists()){
+
+            }else{
+                $outcome->courseid()->create([
+                    'outcome_id' => $outcome->id,
+                    'course_id' => $request->course_id,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0,
+                    'sequence' => $sequence + 1
+                ]);
+            }
         }      
         return $outcome;
     }
@@ -187,12 +182,12 @@ class LearningOutcomesController extends Controller
         return response()->json([
             [
                 'id' => 1,
-                'description' => 'Disciplinary Knowledge',
+                'description' => 'Disciplinary Skills',
                 'value' => 1
             ],
             [
                 'id' => 2,
-                'description' => 'Disciplinary Skills',
+                'description' => 'Disciplinary Knowledge',
                 'value' => 2
             ],
             [

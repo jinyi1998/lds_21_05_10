@@ -23,6 +23,9 @@ const DesignItem = (props) => {
     const {courseData, usergroup} = props;
     const updated_at = courseData.updated_at;
     const creator = courseData.createdby;
+    const enableShare = props.enableShare? props.enableShare : false;
+    const enableDelete = props.enableDelete? props.enableDelete : false;
+
 
     const [shareDialogOpen, setShareDialogOpen] = React.useState(false); 
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
@@ -51,13 +54,24 @@ const DesignItem = (props) => {
                     primary={courseData.unit_title+" - "+courseData.description}  
                     secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school} />
                 <ListItemSecondaryAction>
-                    <IconButton aria-label="share" onClick = {onClickShare}>
-                        <ShareIcon />
-                    </IconButton>
-
-                    <IconButton aria-label="delete" onClick = {onClickDelete}>
-                        <DeleteIcon />
-                    </IconButton>
+                    {
+                        enableShare?
+                        <IconButton aria-label="share" onClick = {onClickShare}>
+                            <ShareIcon />
+                        </IconButton>
+                        :
+                        null
+                    }
+                  
+                    {
+                        enableDelete? 
+                        <IconButton aria-label="delete" onClick = {onClickDelete}>
+                            <DeleteIcon />
+                        </IconButton>
+                        : 
+                        null
+                    }
+                   
 
                 </ListItemSecondaryAction>
             </ListItem>

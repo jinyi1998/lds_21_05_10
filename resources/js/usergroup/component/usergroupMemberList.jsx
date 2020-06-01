@@ -15,10 +15,13 @@ import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import {ContextStore} from '../container/usergroupContainer';
+
 
 const UsergroupMemberList = (props) => {
     const {approveUserJoinGroup, declineUserJoinGroup, removeUser} = props;
     const [usergroup, setUsergroup] = React.useState(props.usergroup);
+    const { setLoadingOpen } = React.useContext(ContextStore);
 
 
     React.useEffect(()=>{
@@ -56,12 +59,12 @@ const UsergroupMemberList = (props) => {
                        <ListSubheader> Current Group Users</ListSubheader>
                        {
                            usergroup.users.length == 0? 
-                            <ListItem>
+                            <ListItem key = {1}>
                                 No Members...
                             </ListItem>
                             :
                             usergroup.users.map(user => 
-                                <ListItem>
+                                <ListItem key = {user.id}>
                                     <ListItemIcon>
                                         <DashboardOutlinedIcon />
                                     </ListItemIcon>
@@ -70,9 +73,15 @@ const UsergroupMemberList = (props) => {
                                         secondary={"Join date:" + user.created_at }
                                     />
                                     <ListItemSecondaryAction>
-                                        <ListItemIcon aria-label="remove" onClick = {()=>onClickRemove(user)}>
-                                            <DeleteOutlineIcon />
-                                        </ListItemIcon>
+                                        {
+                                            user.id == usergroup.create_by?
+                                            null
+                                            :
+                                            <ListItemIcon aria-label="remove" onClick = {()=>onClickRemove(user)}>
+                                                <DeleteOutlineIcon />
+                                            </ListItemIcon>
+                                        }
+                                       
                                     </ListItemSecondaryAction>
                                 </ListItem>
                             )
@@ -80,12 +89,12 @@ const UsergroupMemberList = (props) => {
                         <ListSubheader> Waiting Approve Group Users</ListSubheader>
                         {
                            usergroup.userstemp.length == 0? 
-                            <ListItem>
-                                No user wait to join this group...
+                            <ListItem key = {1}>
+                                No user request to join this group...
                             </ListItem>
                             :
                             usergroup.userstemp.map(user => 
-                                <ListItem>
+                                <ListItem key = {user.id}>
                                     <ListItemIcon>
                                     <DashboardOutlinedIcon />
                                     </ListItemIcon>
