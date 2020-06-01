@@ -53,6 +53,6 @@ class User extends Authenticatable
             'id',
             'id',
             'usergroup_id'
-        )->select(['Usergroup.id','name']);
+        )->select(['usergroup.id','name']);
     }
 }
