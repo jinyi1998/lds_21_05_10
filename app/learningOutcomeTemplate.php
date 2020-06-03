@@ -12,7 +12,7 @@ class LearningOutcomeTemplate extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    public function unit_outcomeid(){
+    public function unit_outcomeid_temp(){
         return $this->belongsTo('App\LearningOutcomeCLOULOTemplateRelation', 'id', 'component_outcomeid');
     }
 }

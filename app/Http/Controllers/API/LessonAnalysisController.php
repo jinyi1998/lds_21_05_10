@@ -80,10 +80,11 @@ class LessonAnalysisController extends Controller
         // ))
         ->select('learningtask.id as task_id', 
         'learningtask.title as task_title',
+        'learningtask.type as task_type',
         'component.id as component_id', 
         'component.title as component_title',
-         'learningoutcome.id as outcome_id',
-          'learningoutcome.description as outcome_description')
+        'learningoutcome.id as outcome_id',
+        'learningoutcome.description as outcome_description')
         ->get();
 
         $lesson_task_with_component['task'] = [];
@@ -104,6 +105,7 @@ class LessonAnalysisController extends Controller
                     $lesson_task_with_component['task'][$_temp->task_id]['task_id'] = $_temp->task_id;
                     $lesson_task_with_component['task'][$_temp->task_id]['task_title'] = $_temp->task_title;
                     $lesson_task_with_component['task'][$_temp->task_id]['component_id'] = $_temp->component_id;
+                    $lesson_task_with_component['task'][$_temp->task_id]['task_type'] = $_temp->task_type;
                     $lesson_task_with_component['task'][$_temp->task_id]['outcome_id'] = [];
                     if($_temp->outcome_id > 0){
                         array_push( $lesson_task_with_component['task'][$_temp->task_id]['outcome_id'],  $_temp->outcome_id);

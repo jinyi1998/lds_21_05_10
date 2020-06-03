@@ -26,10 +26,18 @@ const generateColor = (num) => {
     var temp = []
     for(var i = 0; i< num; i++){
         temp.push('#' +  Math.random().toString(16).substr(-6));
+        // temp.push('#' + "0abab5");
     }
     return temp;
 }
 
+const generateHoverColor = (num) => {
+    var temp = []
+    for(var i = 0; i< num; i++){
+        temp.push('#' + "0abab5");
+    }
+    return temp;
+}
 
 
 
@@ -98,12 +106,12 @@ const CourseAnalysisContainer = ()=>{
         temp["tasks_num_by_type"]["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp["tasks_num_by_type"]["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
         temp["tasks_num_by_type"]["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp["tasks_num_by_type"]["datasets"][0]["hoverBackgroundColor"] =generateColor(Object.keys(data['tasks_time_by_type']).length)
+        temp["tasks_num_by_type"]["datasets"][0]["hoverBackgroundColor"] =generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         temp["tasks_time_by_type"]["labels"] = Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp["tasks_time_by_type"]["datasets"][0]["data"] = Object.values(data['tasks_time_by_type'])
         temp["tasks_time_by_type"]["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp["tasks_time_by_type"]["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_time_by_type']).length)
+        temp["tasks_time_by_type"]["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
     
         //#endregion
     

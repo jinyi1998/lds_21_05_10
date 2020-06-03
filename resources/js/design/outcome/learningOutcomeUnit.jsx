@@ -70,14 +70,19 @@ const LearningOutcomeUnit = (props)=>{
             <ListItemText
                 primary={learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description + " - " + outcome.description}
                 secondary={ 
-                    // ( outcome.STEMType.length > 0?  ("STEM: (" +outcome.STEMType.map((_STEM) => _STEM) + ") | " )
-                    // : "")  
-                    // "   STEMP TYPE: (" + outcome.STEMType + " ) "
-                    // + 
-                    // "   Level:( " +outcome.level + " )  "
-                    // +
                     <React.Fragment>
-                        <Typography component={'span'} display="inline" color = "textPrimary"> STEM TYPE: ( {outcome.STEMType} )  </Typography>
+                        {
+                            outcome.outcomeType == 3?
+                            null
+                            :
+                            <Typography component={'span'} display="inline" color = "textPrimary"> STEM TYPE: ( {
+                                outcome.STEMType == ""?
+                                    "N/A"
+                                    :
+                                    outcome.STEMType
+                            } )  </Typography>
+                        }
+                      
                         <Typography component={'span'} display="inline" color = "textPrimary"> Bloom Taxonomy Level: {outcome.level}   </Typography>
                         {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
                     </React.Fragment>

@@ -11,6 +11,12 @@ import {ContextStore} from '../../container/designContainer'
 
 import LearningTaskLessonView from '../task/learningTaskLessonView';
 import LearningTaskView from '../task/learningTaskView';
+
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import config from 'react-global-configuration';
 
 //   tasks : [ { componetID, taskIndex }]
@@ -47,7 +53,6 @@ const LessonPlanTaskSelect = (props) => {
         const taskList = Object.keys(checkBoxState);
         taskList.map( task_id => {
             if(checkBoxState[task_id] == true){
-                console.log(lesson.tasks);
                 var temp = {
                     "lesson_id": lesson.id,
                     "task_id": task_id,
@@ -222,11 +227,11 @@ const LessonPlanTaskSelect = (props) => {
                             null
                             )
                          }
-                        <Grid item xs = {12}>
+                        {/* <Grid item xs = {12}>
                             <Button variant="contained" color="primary" fullWidth onClick = {onSave}>
                                 Save
                             </Button>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                    
                 )
@@ -236,9 +241,31 @@ const LessonPlanTaskSelect = (props) => {
 
 
     return (
-        <Grid container>
-            {displayEditContent()}
-        </Grid>
+        <React.Fragment>
+            <DialogTitle id="form-dialog-title">Add your tasks into lesson</DialogTitle>
+            <DialogContent>
+                <Grid container>
+                    {displayEditContent()}
+                </Grid>
+            </DialogContent>
+            <DialogActions>
+                {/* <Button onClick={handleClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleClose} color="primary">
+                    Subscribe
+                </Button> */}
+                 {stage == 2?
+                    <Button variant="contained" color="primary" fullWidth onClick = {onSave}>
+                        Save
+                    </Button>
+                    :
+                    null
+                 }
+                 
+            </DialogActions>
+        </React.Fragment>
+      
     )
 
 }

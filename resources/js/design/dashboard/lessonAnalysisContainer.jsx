@@ -15,6 +15,15 @@ const generateColor = (num) => {
     var temp = []
     for(var i = 0; i< num; i++){
         temp.push('#' +  Math.random().toString(16).substr(-6));
+        // temp.push('#' + "0abab5");
+    }
+    return temp;
+}
+
+const generateHoverColor = (num) => {
+    var temp = []
+    for(var i = 0; i< num; i++){
+        temp.push('#' + "0abab5");
     }
     return temp;
 }
@@ -99,7 +108,7 @@ const LessonAnalysisContainer = ()=>{
         tasks_num_by_type["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         tasks_num_by_type["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
         tasks_num_by_type["datasets"][0]["backgroundColor"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_type']).length)
+        tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_num_by_type']).length)
 
         var tasks_num_by_class_type = {
             labels: [],
@@ -112,7 +121,7 @@ const LessonAnalysisContainer = ()=>{
         tasks_num_by_class_type["labels"] = Object.keys(data['tasks_num_by_class_type']).map( _id => options.taskClassType.find(x=> x.id == _id)?.description)
         tasks_num_by_class_type["datasets"][0]["data"] = Object.values(data['tasks_num_by_class_type'])
         tasks_num_by_class_type["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_num_by_class_type']).length)
-        tasks_num_by_class_type["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_class_type']).length)
+        tasks_num_by_class_type["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_num_by_class_type']).length)
 
         var tasks_num_by_target = {
             labels: [],
@@ -125,7 +134,7 @@ const LessonAnalysisContainer = ()=>{
         tasks_num_by_target["labels"] = Object.keys(data['tasks_num_by_target']).map( _id => options.taskTarget.find(x=> x.id == _id)?.description)
         tasks_num_by_target["datasets"][0]["data"] = Object.values(data['tasks_num_by_target'])
         tasks_num_by_target["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_num_by_target']).length)
-        tasks_num_by_target["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_target']).length)
+        tasks_num_by_target["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_num_by_target']).length)
 
         var tasks_num_by_size = {
             labels: [],
@@ -138,7 +147,7 @@ const LessonAnalysisContainer = ()=>{
         tasks_num_by_size["labels"] = Object.keys(data['tasks_num_by_size']).map( _id => options.taskSize.find(x=> x.id == _id)?.description)
         tasks_num_by_size["datasets"][0]["data"] = Object.values(data['tasks_num_by_size'])
         tasks_num_by_size["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_num_by_size']).length)
-        tasks_num_by_size["datasets"][0]["hoverBackgroundColor"] = generateColor(Object.keys(data['tasks_num_by_size']).length)
+        tasks_num_by_size["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_num_by_size']).length)
 
         //#endregion
         

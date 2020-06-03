@@ -12,6 +12,23 @@ class Component extends Model
     public $timestamps = true;
 
 
+    protected static function boot() 
+    {
+      parent::boot();
+ 
+      static::deleting(function($components) {
+         foreach ($components->outcomes()->get() as $outcomes) {
+            $outcomes->delete();
+         }
+         foreach ($components->patterns()->get() as $patterns) {
+            $patterns->delete();
+         }
+         foreach ($components->tasks()->get() as $tasks) {
+            $tasks->delete();
+         }
+      });
+    }
+
     //get the retlated pattern id 
     public function patternid(){
         return $this->hasMany(

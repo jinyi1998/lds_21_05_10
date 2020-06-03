@@ -105,6 +105,8 @@ class LearningOutcomesController extends Controller
 
 
     public static function save(LearningOutcome $outcome, Request $request){
+
+        // return \response()->json($request);
         $outcome->level = $request->level;
         $outcome->outcomeType = $request->outcomeType;
         $outcome->description = $request->description;
@@ -124,14 +126,27 @@ class LearningOutcomesController extends Controller
 
         if($request->has('component_id')){
             $sequence = DB::table('component_outcome_relational')->where('component_id', $request->component_id)->count();
-            $outcome->componentid()->updateOrCreate([
-                'outcome_id' => $outcome->id,
-                'component_id' => $request->component_id,
-                'created_by' => 1,
-                'updated_by' => 1,
-                'is_deleted' => 0,
-                'sequence' =>  $sequence + 1,
-            ]);
+            if( $outcome->componentid()->exists()){
+                $outcome->componentid()->update([
+                    // 'id' =>  $outcome->componentid()->get()->id,
+                    'outcome_id' => $outcome->id,
+                    'component_id' => $request->component_id,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0,
+                    'sequence' =>  $sequence + 1,
+                ]);
+            }else{
+                $outcome->componentid()->create([
+                    'outcome_id' => $outcome->id,
+                    'component_id' => $request->component_id,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0,
+                    'sequence' =>  $sequence + 1,
+                ]);
+            }
+       
         }
 
         if($request->has('unit_outcomeid')){

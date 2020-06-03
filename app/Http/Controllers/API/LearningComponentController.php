@@ -9,6 +9,7 @@ use App\ComponentTemplate;
 use App\LearningPatternTemplate;
 use App\LeariningTaskTemplate;
 use App\ComponentPatternTemplateRelation;
+use App\LearningOutcomeTemplate;
 use Illuminate\Support\Facades\DB;
 
 class LearningComponentController extends Controller
@@ -88,6 +89,11 @@ class LearningComponentController extends Controller
     public function destroy($id)
     {
         //
+        $component = Component::find($id);
+
+        $component->delete();
+
+        return response()->json('success');
     }
     
     public function getDefaultLearningComponentByDesignType2($id){
@@ -144,23 +150,46 @@ class LearningComponentController extends Controller
         if($request->has('outcomes')){
             foreach($request->outcomes as $_outcome){
                 $_outcome['component_id'] =  $component->id;
-                if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
+                //
+
+                if($request->has('course_id') && isset($_outcome['unit_outcomeid_temp'])  && $_outcome['unit_outcomeid_temp'] != null ){
                     // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
-
-                    $uloid = DB::table('course_outcome_relation') 
+                    $count = DB::table('course_outcome_relation') 
                     ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid']['unit_outcomeid'])
+                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcomeid'])
                     ->where('course_outcome_relation.course_id', '=', $request->course_id)
-                    ->select('learningoutcome.id as outcome_id')->limit(1)->get();
+                    ->count();
 
-                    $uloid = json_decode($uloid, true);
-                    
-                    $_outcome['unit_outcomeid'] =  $uloid[0]['outcome_id'];
+                    if($count > 0){
+                        $uloid = DB::table('course_outcome_relation') 
+                        ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
+                        ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcomeid'])
+                        ->where('course_outcome_relation.course_id', '=', $request->course_id)
+                        ->select('learningoutcome.id as outcome_id')->limit(1)->get();
+    
+                        $uloid = json_decode($uloid, true);
+                        
+                        $_outcome['unit_outcomeid'] =  $uloid[0]['outcome_id'];
+                    }else{
+                        $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcomeid'])->get();
+                        $new_unit_outcome = json_decode($new_unit_outcome, true);
+                        $new_unit_outcome[0]['course_id'] = $request->course_id;
+                        $new_unit_outcome[0]['template_id'] = $new_unit_outcome[0]['id'];
+                        $request_new_unit_outcome = new \Illuminate\Http\Request($new_unit_outcome[0]);
+                        $new_unit_outcome = LearningOutcomesController::store($request_new_unit_outcome)->getContent();
+                        $new_unit_outcome = json_decode($new_unit_outcome);
+
+                        $_outcome['unit_outcomeid'] =  $new_unit_outcome->id;
+                    }
+
+                 
+                }else if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
+                    // do nothing
+                    $_outcome['unit_outcomeid'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
                 }
 
-                // return response()->json($_outcome);
                 $request_outcome = new \Illuminate\Http\Request($_outcome);
-                $outcome = LearningOutcomesController::store($request_outcome)->getContent();;
+                $outcome = LearningOutcomesController::store($request_outcome)->getContent();
                 $outcome = json_decode($outcome);
                 $temp["outcome_template_id"] = $_outcome['id'];
                 $temp["outcome_id"] = $outcome->id;
@@ -362,28 +391,36 @@ class LearningComponentController extends Controller
             ],
             "2" => [
                 [
-                    'id' => 1,
+                    'id' => 6,
                     'title' => 'Formulate inquiry questions through goal setting',
                     'tasks' => [],
                     'learningOutcomes' => [
                     ],
                 ],
                 [
-                    'id' => 2,
+                    'id' => 7,
                     'title' => 'Research and Propose Hypothesis through goal setting',
                     'tasks' => [],
                     'learningOutcomes' => [
                     ],
                 ],
                 [
-                    'id' => 3,
+                    'id' => 8,
+                    'title' => 'Design Experiment through self-monitoring',
+                    'tasks' => [],
+                    'learningOutcomes' => [
+                    ],
+                ],
+
+                [
+                    'id' => 9,
                     'title' => 'Conduct Experiment through self-monitoring',
                     'tasks' => [],
                     'learningOutcomes' => [
                     ],
                 ],
                 [
-                    'id' => 4,
+                    'id' => 10,
                     'title' => 'Analyse Data and interpret results through self-evaluation and revision',
                     'tasks' => [],
                     'learningOutcomes' => [

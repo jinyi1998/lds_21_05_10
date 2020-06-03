@@ -320,7 +320,7 @@ const Design = (props) => {
       case 0:
         return (
           <React.Fragment>
-             <DesignType />
+             <DesignType handleNext = {handleNext}/>
              <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>

@@ -183,6 +183,7 @@ class CourseControllerTest extends Controller
 
     public function clearCourseComponent(Request $request){
         $course = Course::find($request->course_id);
+        $course->outcomes()->delete();
         $course->components()->delete();
         return response()->json($course);
     }

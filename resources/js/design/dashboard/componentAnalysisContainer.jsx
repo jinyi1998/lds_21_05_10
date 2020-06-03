@@ -12,6 +12,14 @@ const generateColor = (num) => {
     var temp = []
     for(var i = 0; i< num; i++){
         temp.push('#' +  Math.random().toString(16).substr(-6));
+        // temp.push('#' + "0abab5");
+    }
+    return temp;
+}
+const generateHoverColor = (num) => {
+    var temp = []
+    for(var i = 0; i< num; i++){
+        temp.push('#' + "0abab5");
     }
     return temp;
 }
@@ -97,7 +105,7 @@ const ComponentAnalysisContainer = ()=>{
         temp_tasks_time_by_type["labels"] = Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp_tasks_time_by_type["datasets"][0]["data"] = Object.values(data['tasks_time_by_type'])
         temp_tasks_time_by_type["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
+        temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         let temp_tasks_num_by_type = {
             labels: [],
@@ -110,7 +118,7 @@ const ComponentAnalysisContainer = ()=>{
         temp_tasks_num_by_type["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp_tasks_num_by_type["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
         temp_tasks_num_by_type["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp_tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
+        temp_tasks_num_by_type["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         let temp_tasks_time_by_task = {
             labels: [],
@@ -124,7 +132,7 @@ const ComponentAnalysisContainer = ()=>{
         temp_tasks_time_by_task["labels"] = Object.keys(data['tasks_time_by_task'])
         temp_tasks_time_by_task["datasets"][0]["data"] = Object.values(data['tasks_time_by_task'])
         temp_tasks_time_by_task["datasets"][0]["backgroundColor"] = generateColor(Object.keys(data['tasks_time_by_task']).length)
-        temp_tasks_time_by_task["datasets"][0]["hoverBackgroundColor"] =  generateColor(Object.keys(data['tasks_time_by_type']).length)
+        temp_tasks_time_by_task["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         setData({
             task_assessment: temp_task_assessment,

@@ -72,7 +72,7 @@ const ComponentOutcomeAssessment = (props)=>{
                         id= {_task.id}
                         style = {displayColor(_task.has_assessment)}
                     >
-                        <Typography className={classes.heading}>Learning Outcome: {_task.description} </Typography>
+                        <Typography className={classes.heading}> {_task.description} </Typography>
                     </ExpansionPanelSummary>
     
                     <ExpansionPanelDetails>

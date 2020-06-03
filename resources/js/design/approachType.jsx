@@ -5,6 +5,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import { red } from '@material-ui/core/colors';
 import DesignTypeBox from './approachTypeBox';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
 import {ContextStore} from '../container/designContainer'
 
 const useStyles = makeStyles(theme => ({
@@ -23,11 +31,69 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+
 const DesignType = (props) => {
   const classes = useStyles();
   // const [designType, setDesignType] = React.useState([]); 
   const { course, options, dispatch } = React.useContext(ContextStore);
   const designType = options.designType? options.designType : [];
+  const {handleNext} = props;
+  const [open, setOpen] = React.useState(false);
+  const [warningType, setWarningType] =  React.useState('match');
+  const [value, setValue] = React.useState(-1);
+
+
+  const displayWarningDialog = () => {
+    return (
+      <Dialog
+        open={open}
+        keepMounted
+        onClose={()=>setOpen(false)}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">Warning!!!</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+           {warningType == "match"?
+           "Detected you have selected the same design before. Are you going to re-initalize the all outcomes/ components/ lessons data?"
+           :
+           "Detected you select a different design. The system will re-initalize all of the outcomes/ components/ lessons data. Are you sure to continue"
+           }
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          
+          {warningType == "match"?
+            <React.Fragment>
+               <Button onClick={()=>{setOpen(false); handleNext()}} color="primary">
+                  Skip Data re-initalize
+              </Button>
+              <Button onClick={()=>{onDispatch(); setOpen(false);}} color="primary">
+                  Continue with Data re-initalize
+              </Button>
+            </React.Fragment>
+           
+            :
+            null
+          }
+           {warningType == "different"?
+            <React.Fragment>
+                <Button onClick={()=>setOpen(false)} color="primary">
+                  Cancel
+              </Button>
+              <Button onClick={()=>{onDispatch(); setOpen(false);}} color="primary">
+                  Continue
+              </Button>
+            </React.Fragment>
+            :
+            null
+          }
+        </DialogActions>
+      </Dialog>
+    )
+  }
+
 
   // async function fetchDesignTypeData() {
 
@@ -49,13 +115,39 @@ const DesignType = (props) => {
   //   fetchDesignTypeData();
   // }, []);
 
-  const onClick = (event, value) => {
+  const onClick = (event, design_type) => {
       // event.preventDefault();
-      dispatch({
-        type: "DESIGN_TYPE",
-        value: value
-      });
+
+      if(course.components.length == 0){
+          dispatch({
+            type: "DESIGN_TYPE",
+            value: design_type
+          });
+      }else{
+        if(design_type == course.design_type_id){
+          setWarningType('match');
+          setValue(design_type);
+          setOpen(true);
+        }else{
+          setWarningType('different');
+          setValue(design_type);
+          setOpen(true);
+        }
+      }
+      // dispatch({
+      //   type: "DESIGN_TYPE",
+      //   value: value
+      // });
   };
+
+  const onDispatch = () => {
+    dispatch({
+      type: "DESIGN_TYPE",
+      value: value
+    });
+  }
+
+
 
 
   return (
@@ -69,6 +161,8 @@ const DesignType = (props) => {
             </DesignTypeBox>
           ))}
       </GridList>
+
+      {displayWarningDialog()}
     </React.Fragment>
   );
 }

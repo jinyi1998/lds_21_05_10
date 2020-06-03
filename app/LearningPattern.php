@@ -11,6 +11,23 @@ class LearningPattern extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+     /**
+   * Override parent boot and Call deleting event
+   *
+   * @return void
+   */
+   protected static function boot() 
+   {
+     parent::boot();
+
+     static::deleting(function($patterns) {
+        foreach ($patterns->tasks()->get() as $tasks) {
+           $tasks->delete();
+        }
+     });
+   }
+
+
     public function tasks(){
         return $this->hasManyThrough(
             'App\LearningTask',

@@ -115,10 +115,19 @@ const DesignComponentStep = (props) =>
     } 
 
     async function deleteComponent(id){
-      dispatch({
-        type: "DELETE_COMPONENT",
-        value: index
+      return await fetch(
+        'http://'+config.get('url')+'/api/learningComponent/'+ id,
+        {
+        method: "DELETE",
+        }
+      )
+      .then(res => res.json())
+      .then(response => {
+          //load the default learning outcomes by api request
+          // return response;
+          refreshCourse();
       })
+      .catch(error => console.log(error));
     }
 
     //#region data fetching related
