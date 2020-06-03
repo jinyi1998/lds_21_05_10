@@ -51,7 +51,7 @@ const LessonOutcomeAssessment = (props)=>{
     }
 
     const displayLessonAssessment = () => {
-        console.log(data.outcome);
+
         if( Object.keys(data.outcome).length > 0){
             return(
                 Object.keys(data.outcome).map( outcome_id => {

@@ -208,7 +208,7 @@ class CourseControllerTest extends Controller
                 'hint' => 'engineering design approach guides you...',
                 'description'=> "using engineering design practice to guide the learing task 
                 sequence design by adopting the self-directed learning approach",
-                'media'=> "https://cdn2.iconfinder.com/data/icons/conceptual-vectors-of-logos-and-symbols/66/204-512.png",
+                'media'=> "/asset/image/ED.png",
                 'name'=> "Engineering Design SDL",
             ],
             [
@@ -216,7 +216,7 @@ class CourseControllerTest extends Controller
                 'hint' => 'Scientific investigation practice design approach guides you...',
                 'description'=> "using scienitic investigation practice to guide the 
                 learing task sequence design by adopting the self-directed learning approach",
-                'media'=> "https://www.pinclipart.com/picdir/big/44-449704_nuclear-icon-nuclear-icon-png-clipart.png",
+                'media'=> "/asset/image/SI.png",
                 'name'=> "Scienitic Investigation SDL",
             ],
             // [

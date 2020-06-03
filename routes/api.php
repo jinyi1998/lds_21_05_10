@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 Route::resource('opts', 'API\LearningTaskOptsController');
 
 //Course Controller
-Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
+// Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
 // Route::resource('course', 'API\CourseController');
 
 

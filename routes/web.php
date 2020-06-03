@@ -61,7 +61,7 @@ Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
 
 
-
+Route::get('/api/course/getDesignTypeTemp', 'CourseControllerTest@getDesignTypeTemp');
 Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
 Route::get('/api/course/showUsergroup/{id}', 'CourseControllerTest@showUsergroup');
 Route::get('/api/course/getAvaUserGroup', 'CourseControllerTest@getAvaUserGroup');
