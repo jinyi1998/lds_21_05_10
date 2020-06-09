@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: 'url(https://www.indianstudentsgermany.org/wp-content/uploads/2016/12/students_can_make_studying_fun_and_efficient_by_using_memory_tools-678x381.jpg)',
+    backgroundImage: 'url(/asset/image/index_bg.jpg)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
@@ -82,7 +82,7 @@ export default function Welcome() {
             <Button variant="contained" color="primary" href="login" className={classes.btn}>
                 Log in
             </Button>
-            <Button variant="contained" color="primary" onClick={()=> window.open("https://ldshe.cite.hku.hk/users/about/guide.php", "_blank")} className={classes.btn}>
+            <Button variant="contained" color="primary" onClick={()=> window.open("https://drive.google.com/file/d/16FUJnWEORuR9a7rGuq9TItBCRKCPT06I/view", "_blank")} className={classes.btn}>
                 Watch a demo
             </Button>
         </Grid> 

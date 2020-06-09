@@ -327,7 +327,7 @@ const DesignInfo = (props) => {
             id="description" 
             name="description" 
             value = {courseData.description} 
-            label="Course Description" 
+            label="Curriculum Unit Description" 
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}

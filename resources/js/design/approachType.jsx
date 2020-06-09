@@ -153,7 +153,7 @@ const DesignType = (props) => {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Choose the combination of disciplinary practice and pedagogical approach
+        Choose the disciplinary practice for your STEM curriculum unit
       </Typography>
       <GridList className={classes.gridList} cols={4}>
           {designType.map((_data, i) => (
