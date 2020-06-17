@@ -310,7 +310,7 @@ const LearningTaskContainer = (props) => {
             </Button>
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
-                <DialogTitle id="form-dialog-title">Edit Learning Task</DialogTitle>
+                <DialogTitle id="form-dialog-title">{taskData.id == -1? "Add Learning Task" : "Edit Learning Task"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         You may add new learning task for this component...

@@ -24,6 +24,7 @@ import config from 'react-global-configuration';
 const LessonPlanTaskSelect = (props) => {
 
     const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     // const {lesson} = props;
     const [lesson, setLesson] = React.useState(props.lesson);
     const [stage, setStage] = React.useState(1);
@@ -152,8 +153,9 @@ const LessonPlanTaskSelect = (props) => {
                                     <Select
                                         labelId="component-select-label"
                                         id="component-select"
-                                        onChange={(event)=>{onChnageComponent(event.target.value)}}
+                                        onChange={(event)=>{onChnageComponent(event.target.value); tourNextStep();}}
                                         value = {selectedComponentID}
+                                        data-tour = "lesson_component_select"
                                     >
                                     <MenuItem value="-1" disabled>
                                         <em>Choose the major step(s)</em>
@@ -183,7 +185,7 @@ const LessonPlanTaskSelect = (props) => {
                 filter = [].concat.apply([], filter);
 
                 return (
-                    <Grid container>
+                    <Grid container data-tour = "lesson_task_select">
                          {  (
                             selectedComponentID > 0 && taskOpts.length > 0?
                             (
@@ -256,7 +258,7 @@ const LessonPlanTaskSelect = (props) => {
                     Subscribe
                 </Button> */}
                  {stage == 2?
-                    <Button variant="contained" color="primary" fullWidth onClick = {onSave}>
+                    <Button variant="contained" color="primary" fullWidth onClick = {onSave} data-tour = "lesson_task_add">
                         Save
                     </Button>
                     :

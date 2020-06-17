@@ -6,19 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DesignComponentSelPair from './componentSelPair';
 import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    dialog: {
-       
-    },
-    dialogContent: {
-        margin: 10
-    }
-});
   
 const ComponentSelDialog = (props) => {
     const {handleClose, open, addItems} = props;
-    const classes = useStyles();
     const [componentID, setComponentID] = React.useState("");
 
     const handleAdd = () => {
@@ -27,9 +17,9 @@ const ComponentSelDialog = (props) => {
     }
 
     return (
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true} onEntered = {props.onEnteredDialog}>
             <DialogTitle id="form-dialog-title">Add Design Step</DialogTitle>
-            <DialogContent className = {classes.dcomponentialogContent}>
+            <DialogContent>
                 <DesignComponentSelPair  setComponentID = {setComponentID}/>
             </DialogContent>
             <DialogActions>

@@ -447,7 +447,7 @@ class ComposerStaticInita25548d448b2a9a45f49d698e37bc0d3
         'App\\ComponentTaskRelation' => __DIR__ . '/../..' . '/app/ComponentTaskRelation.php',
         'App\\ComponentTemplate' => __DIR__ . '/../..' . '/app/ComponentTemplate.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
-        'App\\Course' => __DIR__ . '/../..' . '/app/Course.php',
+        'App\\Course' => __DIR__ . '/../..' . '/app/course.php',
         'App\\CourseComponentRelation' => __DIR__ . '/../..' . '/app/CourseComponentRelation.php',
         'App\\CourseOutcomeRelation' => __DIR__ . '/../..' . '/app/CourseOutcomeRelation.php',
         'App\\ElearningtoolOpts' => __DIR__ . '/../..' . '/app/ElearningtoolOpts.php',

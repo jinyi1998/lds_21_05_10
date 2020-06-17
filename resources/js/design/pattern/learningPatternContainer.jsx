@@ -152,11 +152,11 @@ const LearningPatternContainer = (props) => {
 
     return (
         <React.Fragment>
-             <Paper className={classes.paper}>
+             <Paper className={classes.paper} data-tour = "component_pattern_view">
                 {
                 patternTempOpts?.length > 1? 
                     <Grid item xs={4}>
-                        <Button variant="contained" color="primary" onClick={()=>onEditPattern()}>
+                        <Button variant="contained" color="primary" onClick={()=>onEditPattern()} data-tour = "component_pattern_change">
                             Reload Learning Patterns
                         </Button>
                     </Grid>
@@ -165,23 +165,25 @@ const LearningPatternContainer = (props) => {
                 }
                 
                 <Grid container spacing = {4}>
-                    <Grid item xs = {8}>
+                    <Grid item xs = {8} data-tour = "component_pattern_title">
                         {pattern.title}
                     </Grid>
 
                     <Grid item xs = {4}>
-                        <Button color="primary" variant="contained" onClick={()=> unLockPattern()}> <LockOpenIcon/>Unclock me</Button>
+                        <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock"> <LockOpenIcon/>Unclock me</Button>
                     </Grid>
                     
                     {pattern.tasks?.map((_task, index)=>
-                       <LearningTaskView 
-                            taskID = {_task.id} 
-                            taskData = {_task} 
-                            key = {_task.id}
-                            editBtn = {false}
-                            duplicateBtn = {false}
-                            deleteBtn = {false}
-                        />
+                       <div data-tour = "component_pattern_task" key = {index}>
+                        <LearningTaskView 
+                                taskID = {_task.id} 
+                                taskData = {_task} 
+                                key = {index}
+                                editBtn = {false}
+                                duplicateBtn = {false}
+                                deleteBtn = {false}
+                            />
+                        </div>
                     )}
                     
                 </Grid>

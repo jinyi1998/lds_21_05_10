@@ -55,7 +55,8 @@ const DesignTypeBox = (props) => {
     return (
         <Card className={classes.card}>
             <CardActionArea onClick={ (event)=>onClick(event, designBoxData.id)} 
-            value={designBoxData.id} 
+            value={designBoxData.id}
+            data-tour = {"designtype_action_" +  designBoxData.id}
             name="subject">
                 <CardMedia
                     className={classes.media}
@@ -63,6 +64,7 @@ const DesignTypeBox = (props) => {
                 />
                 <CardHeader
                     title={designBoxData.name}
+                    data-tour = {"designtype_title_" + designBoxData.id}
                 />
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">

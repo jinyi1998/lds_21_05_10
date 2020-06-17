@@ -157,6 +157,10 @@ class CourseController extends Controller
     public function destroy($id)
     {
         //
+        $course = Course::find($id);
+        $course->delete();
+
+        return response()->json("success");
     } 
 
     public static function save(Course $course, Request $request){

@@ -36,12 +36,17 @@ const DesignType = (props) => {
   const classes = useStyles();
   // const [designType, setDesignType] = React.useState([]); 
   const { course, options, dispatch } = React.useContext(ContextStore);
+  const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
   const designType = options.designType? options.designType : [];
   const {handleNext} = props;
   const [open, setOpen] = React.useState(false);
   const [warningType, setWarningType] =  React.useState('match');
   const [value, setValue] = React.useState(-1);
 
+  React.useEffect(()=> {
+    tourSetRun(false);
+    tourSetMode('design_type');
+  }, [])
 
   const displayWarningDialog = () => {
     return (
@@ -155,7 +160,7 @@ const DesignType = (props) => {
       <Typography variant="h6" gutterBottom>
         Choose the disciplinary practice for your STEM curriculum unit
       </Typography>
-      <GridList className={classes.gridList} cols={4}>
+      <GridList className={classes.gridList} cols={4} data-tour = "designtype_list">
           {designType.map((_data, i) => (
             <DesignTypeBox designBoxData={_data} key={i} onClick={onClick}>
             </DesignTypeBox>

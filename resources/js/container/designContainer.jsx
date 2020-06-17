@@ -6,6 +6,8 @@ import Design from './design';
 import config from 'react-global-configuration';
 // import Tour from 'reactour'
 
+import TourGuide from './tourGuide';
+
 const courseInitState = { 
     course: {
         unit_title: "",
@@ -119,32 +121,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DesignContainerNew = (props) => {
+const DesignContainer = (props) => {
     const classes = useStyles();
-    // const [tourOpen, setTourOpen] = React.useState(true);
-
-    // const steps = [
-    //     {
-    //       selector: '[data-tour="reactour_designtype"]',
-    //       content: ({ goTo, inDOM }) => (
-    //         <div>
-    //           <br />
-    //           {inDOM && '🎉 Look at your step!'}
-    //           Testing tesing
-    //         </div>
-    //       ),
-    //     },
-    //     {
-    //         selector: '[data-tour="reactour_designtype"]',
-    //         content: ({ goTo, inDOM }) => (
-    //           <div>
-    //             <br />
-    //             {inDOM && '🎉 Look at your step2!'}
-    //             Testing tesing Zzzzz 
-    //           </div>
-    //         ),
-    //     }
-    // ]
+    const [displayGuideTour, setDisplayGuideTour] = React.useState(false);
 
     React.useEffect(()=>{
         (async function anyNameFunction() {
@@ -153,6 +132,12 @@ const DesignContainerNew = (props) => {
             InitCourseData()
             setLoadingOpen(false)
           })();
+          var user = JSON.parse(props.user);
+          if(user['display_tourguide'] == 1){
+            setDisplayGuideTour(true);
+          }else{
+            setDisplayGuideTour(false);
+          }    
     },
     []);
 
@@ -336,6 +321,16 @@ const DesignContainerNew = (props) => {
     }
     //#endregion
 
+      //#region tour guide related
+      const [mode, setMode] = React.useState('');
+      const [run, setRun] = React.useState(false);
+      const [stepIndex, setStepIndex] = React.useState(0);
+  
+      const tourNextStep = () => {
+          setStepIndex(stepIndex + 1);
+      }
+      //#endregion
+      
 
     return (
       <ContextStore.Provider
@@ -347,9 +342,23 @@ const DesignContainerNew = (props) => {
           fetchCourseData: fetchCourseData,
           refreshCourse: refreshCourse,
           taskTypeColor: taskTypeColor,
+          tourSetMode: setMode,
+          tourSetRun: setRun,
+          tourNextStep: tourNextStep
         }}
       >
-        <Design courseID={props.courseID}/>
+        <TourGuide 
+            mode = {mode}
+            setMode = {setMode}
+            run = {run}
+            setRun = {setRun}
+            mainStop = {false}
+            stepIndex = {stepIndex}
+            setStepIndex = {setStepIndex}
+            displayGuideTour = {displayGuideTour}
+            setDisplayGuideTour = {setDisplayGuideTour}
+        />
+        <Design courseID={props.courseID} step = {props.step}/>
         {/* <Tour
             steps={steps}
             isOpen={tourOpen}
@@ -361,4 +370,4 @@ const DesignContainerNew = (props) => {
     );
 }
 
-export default DesignContainerNew;
+export default DesignContainer;

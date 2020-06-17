@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100vh',
+    overflow: 'hidden',
   },
   image: {
     backgroundImage: 'url(/asset/image/index_bg.jpg)',

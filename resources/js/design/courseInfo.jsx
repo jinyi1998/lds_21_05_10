@@ -3,9 +3,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import {ContextStore} from '../container/designContainer'
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import {ContextStore} from '../container/designContainer'
+
 import config from 'react-global-configuration';
 import validator from 'validator';
 
@@ -30,6 +31,12 @@ const DesignInfo = (props) => {
 
   const classes = useStyles();
   const { course, options, dispatch, setLoadingOpen } = React.useContext(ContextStore);
+  const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+  React.useEffect(()=> {
+    tourSetRun(false);
+    tourSetMode('course_info');
+  }  
+  , [])
 
   const [ courseData, setCourseData ] = React.useState(course);
   const [ lesson_time, setLessonTime ] = React.useState(0);
@@ -256,12 +263,13 @@ const DesignInfo = (props) => {
           Design type: STEM ({options.designType.find(x => x.id== course.design_type_id)?.name})
       </Typography>
 
-      <Grid container spacing={5}>
+      <Grid container spacing={5} data-tour = "course_info">
         <Grid item xs={12} md={12}>
           <TextField  
           id="unit_title" 
           name="unit_title" 
           label="Unit Title" 
+          data-tour = "unit_title"
           value = {courseData.unit_title}
           error = {! (error["unit_title"]=="")}
           helperText= {! (error["unit_title"]=="")? error["unit_title"]:  ""}
@@ -286,6 +294,7 @@ const DesignInfo = (props) => {
             id="level" 
             name="level" 
             label="Level" 
+            data-tour = "level"
             value = {courseData.level}
             error = {! (error["level"]=="")}
             helperText= {! (error["level"]=="")? error["level"]:  ""}
@@ -312,6 +321,7 @@ const DesignInfo = (props) => {
             id="no_of_lesson" 
             name="no_of_lesson" 
             label="No. Of Lesson" 
+            data-tour = "no_of_lesson"
             type="number"
             value = {courseData.no_of_lesson}
             error = {! (error["no_of_lesson"]=="")}
@@ -326,6 +336,7 @@ const DesignInfo = (props) => {
           <TextField 
             id="description" 
             name="description" 
+            data-tour = "description"
             value = {courseData.description} 
             label="Curriculum Unit Description" 
             multiline
@@ -351,6 +362,7 @@ const DesignInfo = (props) => {
             variant="contained"
             color="primary"
             onClick={() => onNext()}
+            data-tour = "course_info_save"
           >
             Next
           </Button>
@@ -359,6 +371,7 @@ const DesignInfo = (props) => {
             variant="contained"
             color="primary"
             onClick={() => onSave()}
+            data-tour = "course_info_save"
           >
             Save
           </Button>
@@ -378,7 +391,7 @@ const DesignInfo = (props) => {
                     <Button onClick={() => setLessonWarning(false)} >
                         Cancel
                     </Button>
-                    <Button variant="contained" color="primary" onClick={() => onConfirm()} >
+                    <Button variant="contained" color="primary" onClick={() => onConfirm()} data-tour ="course_info_save">
                         Save
                     </Button>
                 </DialogActions>

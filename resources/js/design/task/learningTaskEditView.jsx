@@ -313,14 +313,14 @@ const LearningTaskEditView = (props) => {
                           </MenuItem>
                         ))}
 
-                        <ListSubheader>
+                        {/* <ListSubheader>
                             Unit LO
                         </ListSubheader>
                         {component.outcomes.filter(_outcome => _outcome.isCourseLevel == true).map(_outcome => (
                             <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
                               {_outcome.description}
                           </MenuItem>
-                        ))}
+                        ))} */}
                     {/* {componentData.learningOutcomes.map((_learningOutcome, index) => (                             
                         <MenuItem key={_learningOutcome} value= {course.learningOutcomes.find(x=> x.id == _learningOutcome).id}>
                             {course.learningOutcomes.find(x=> x.id == _learningOutcome).description}

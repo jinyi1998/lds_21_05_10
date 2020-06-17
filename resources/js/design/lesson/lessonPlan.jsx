@@ -61,7 +61,8 @@ const useStyles = makeStyles(theme => ({
 const LessonPlan = (props) => {
 
     const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
-
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+  
     const classes = useStyles();
     const [selectedLessonID, setSelectedLessonID] = React.useState(-1);
     const [onDeletelLessonID, setOnDeleteLessonID] = React.useState(-1);
@@ -81,7 +82,7 @@ const LessonPlan = (props) => {
     });
 
     const onChangeLesson = (lessonID) => {
-
+        tourNextStep();
         setSelectedLessonID(lessonID);
         setLesson(course.lessons.find(x=> x.id == lessonID));
     }
@@ -178,26 +179,27 @@ const LessonPlan = (props) => {
         <Grid container >
             <Grid item xs={3}>
                 <Paper className={classes.paper}>
-                    <List>
+                    <List data-tour = "lesson_lesson_list">
                         {course.lessons.map((_lessons, index) => 
                             <ListItem 
                                 onClick = {() => onChangeLesson(_lessons.id)} 
                                 key={index}  
                                 selected={selectedLessonID == _lessons.id}
                                 button
+                                data-tour = {"lesson_lesson_" + index}
                                 >
                                 <ListItemIcon>
                                     <SchoolIcon />
                                 </ListItemIcon>
                                 <ListItemText primary= {_lessons.title} />
                                 <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)}>
+                                    <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)} data-tour = "lesson_lesson_delete">
                                         <DeleteIcon />
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             </ListItem>
                         )}
-                        <ListItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} >View All</ListItem>
+                        <ListItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} data-tour = "lesson_lesson_all">View All</ListItem>
                     </List>
                     <Button
                         variant="contained"
@@ -205,6 +207,7 @@ const LessonPlan = (props) => {
                         startIcon={<AddIcon />}
                         fullWidth
                         onClick = {onAddLessson}
+                        data-tour = "lesson_lesson_add"
                     >
                         Add Lesson
                     </Button>

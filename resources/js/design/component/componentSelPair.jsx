@@ -80,6 +80,7 @@ const DesignComponentSelPair = (props) => {
                 id="type-select"
                 onChange = {(event)=>onTypeChange(event)}
                 value = {selectType}
+                data-tour = "designtype_select"
             >
                 {dataSet.map((_data, index)=>( 
                     <MenuItem value={_data.id} key={index}>{_data.type}</MenuItem>
@@ -94,6 +95,7 @@ const DesignComponentSelPair = (props) => {
                 id="component-select"
                 onChange = {(event)=>onSelectComp(event)}
                 value = {selectComponent_id}
+                data-tour = "component_select"
             >
                 <MenuItem value = "" disabled>N/A </MenuItem>
                 {componentOpts.map((opts, index)=>

@@ -82,18 +82,19 @@ const Component = ()=>{
 
     return (
       <div className={classes.root}>
-        <ExpansionPanel>
+        <ExpansionPanel defaultExpanded = {index == 0}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
+            data-tour = "component_expand_panel"
           >
             <Grid container spacing = {3}>
-              <Grid item xs={12}>
+              <Grid item xs={12}  data-tour = "component_header">
                 <Typography className={classes.heading}>{index + 1} :  {component.title}</Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} data-tour = "component_time">
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
               </Grid>
             </Grid>

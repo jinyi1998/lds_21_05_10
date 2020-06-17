@@ -16,6 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
+import config from 'react-global-configuration';
 
 import CourseShareDialog from './courseShareDialog';
 
@@ -42,6 +43,19 @@ const DesignItem = (props) => {
         setDeleteDialogOpen(true)
     }
 
+    const deleteCourse = () => {
+        const res =  fetch(
+            'http://'+config.get('url')+'/api/course/' + courseData.id,
+            {
+                method: "DELETE",
+            }
+        )
+            .then(res => res.json())
+            .then(response => {
+                location.reload();
+            })
+        .catch(error => console.log(error));
+    }
 
 
     return (
@@ -94,14 +108,14 @@ const DesignItem = (props) => {
                 <DialogTitle id="alert-dialog-title">Delete Warning</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        You are going to delete this course. Once you delete this course, all the data cannot be recovered. Are you sure to do so???
+                        You are going to delete this course. Once you delete this course, all the data cannot be recovered. Are you sure to do so?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={()=>setDeleteDialogOpen(false)} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={()=>setDeleteDialogOpen(false)} color="primary" autoFocus>
+                    <Button onClick={()=>deleteCourse()} color="primary">
                         Confirm
                     </Button>
                 </DialogActions>

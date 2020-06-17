@@ -51,12 +51,19 @@ const getListStyle = isDraggingOver => ({
 const DesignComponentStep = (props) =>
 { 
     const { course, options, dispatch, refreshCourse } = React.useContext(ContextStore);
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    
+    React.useEffect(()=>{
+      tourSetRun(false);
+      tourSetMode('component_step');
+    }, [])
 
     // initalize if there is no preset component data 
 
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
+      tourSetRun(false);
       setOpen(true);
     };
   
@@ -197,6 +204,11 @@ const DesignComponentStep = (props) =>
       })
     }
     //#endregion
+
+    const onEnteredDialog = () => {
+      tourSetRun(true);
+      tourNextStep();
+    }
     
     return(
       <React.Fragment>
@@ -212,7 +224,7 @@ const DesignComponentStep = (props) =>
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <RootRef rootRef={provided.innerRef}>
-                      <List style={getListStyle(snapshot.isDraggingOver)}>
+                      <List style={getListStyle(snapshot.isDraggingOver)} data-tour = "component_step">
                         {course.components.map((component, index) => (
                           <Draggable key={index} draggableId={index.toString()} index={index}>
                             {(provided, snapshot) => (
@@ -231,10 +243,10 @@ const DesignComponentStep = (props) =>
                     </RootRef>
                   )}
                 </Droppable>
-                <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth>
+                <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth data-tour = "component_step_add">
                     Add COMPONENT
                 </Button>
-                <ComponentSelDialog open={open} handleClose={handleClose} addItems ={addComponentFromTemplate}/>
+                <ComponentSelDialog open={open} handleClose={handleClose} addItems ={addComponentFromTemplate} onEnteredDialog = {onEnteredDialog}/>
               </DragDropContext>
       </React.Fragment>
     );

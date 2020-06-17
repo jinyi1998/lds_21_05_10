@@ -19,6 +19,26 @@ class Course extends Model
         'design_type_id' => 1,
     ];
 
+    protected static function boot() 
+    {
+      parent::boot();
+ 
+      static::deleting(function($course) {
+         foreach ($course->components()->get() as $components) {
+            $components->delete();
+         }
+         foreach ($course->outcomes()->get() as $outcomes) {
+            $outcomes->delete();
+         }
+         foreach ($course->lessons()->get() as $lessons) {
+            $lessons->delete();
+         }
+         foreach ($course->usergroupid()->get() as $usergroupid) {
+            $usergroupid->delete();
+         }
+      });
+    }
+
     public function components(){
         return $this->hasManyThrough(
             'App\Component',

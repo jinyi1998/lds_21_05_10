@@ -96,7 +96,7 @@ const Design = (props) => {
 
   const {courseID} = props;
   const [activePage, setActionPage] = React.useState('basic');
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
   
   const { course, dispatch, options, setLoadingOpen } = React.useContext(ContextStore);
   
@@ -130,7 +130,6 @@ const Design = (props) => {
     ).then(res => res.json())
     .then(response => {
         response.map( (_outcome, index) => {
-          console.log(_outcome);
           var _outcome_temp = _outcome;
           _outcome_temp.course_id = course.id
           importOutcomeTemplateToCourse(_outcome_temp);
@@ -290,7 +289,10 @@ const Design = (props) => {
           setLoadingOpen(false)
         }else{
           setLoadingOpen(false)
-          setActiveStep(1);
+          if(props.step == 0){
+              setActiveStep(1);
+          }
+        
         }
       }
       
@@ -347,7 +349,6 @@ const Design = (props) => {
              <DesignInfo handleBack = {handleBack} handleNext = {handleNext} isStep = {true}/>
           </React.Fragment>
         )
-        return <DesignInfo />
       case 2:
         return (
           <React.Fragment>
@@ -364,6 +365,7 @@ const Design = (props) => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    data-tour = "next"
                   >
                     {activeStep === steps.length - 1 ? 'Save' : 'Next'}
                   </Button>
@@ -388,6 +390,7 @@ const Design = (props) => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    data-tour = "next"
                   >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
@@ -411,6 +414,7 @@ const Design = (props) => {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    data-tour = "next"
                   >
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
@@ -515,7 +519,3 @@ const Design = (props) => {
 }
 
 export default Design;
-
-if (document.getElementById('design')) {
-    ReactDOM.render(<Design />, document.getElementById('design'));
-}

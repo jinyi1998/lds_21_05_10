@@ -43,18 +43,19 @@ const DesignComponentItem = (props) => {
                     provided.draggableProps.style
                 )}
                 >
-                <ListItemIcon>
+                <ListItemIcon data-tour = "component_step_drag">
                     <DragHandleIcon />
                 </ListItemIcon>
                 <ListItemText
                     // primary={"Step" + (index+1)}
                     primary = {component.title}
+                    // data-tour = "component_step_drag"
                 />
                 <ListItemSecondaryAction>
-                    <IconButton onClick ={()=>duplicateComponent(component.id)}>
+                    <IconButton onClick ={()=>duplicateComponent(component.id)} data-tour = "component_step_duplicate">
                         <FileCopyIcon />
                     </IconButton>
-                    <IconButton onClick ={()=>setDelDialogOpen(true)}>
+                    <IconButton onClick ={()=>setDelDialogOpen(true)} data-tour = "component_step_delete">
                         <DeleteIcon/>
                     </IconButton>
                 </ListItemSecondaryAction>

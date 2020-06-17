@@ -68,14 +68,24 @@ const LearningOutcomeUnit = (props)=>{
                 <DragHandleIcon />
             </ListItemIcon>
             <ListItemText
-                primary={learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description + " - " + outcome.description}
+                primary={
+                    <React.Fragment>
+                          <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_type">
+                              { learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description}
+                            </Typography>
+                           - 
+                           <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                               {outcome.description}
+                            </Typography>
+                    </React.Fragment>
+                }
                 secondary={ 
                     <React.Fragment>
                         {
                             outcome.outcomeType == 3?
                             null
                             :
-                            <Typography component={'span'} display="inline" color = "textPrimary"> STEM TYPE: ( {
+                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
                                 outcome.STEMType == ""?
                                     "N/A"
                                     :
@@ -83,17 +93,17 @@ const LearningOutcomeUnit = (props)=>{
                             } )  </Typography>
                         }
                       
-                        <Typography component={'span'} display="inline" color = "textPrimary"> Bloom Taxonomy Level: {outcome.level}   </Typography>
+                        <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
                         {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
                     </React.Fragment>
                   
                 } 
             />
             <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)}>
+                <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
                     <EditIcon />
                 </IconButton>
-                <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)}>
+                <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
                     <DeleteIcon />
                 </IconButton>
             </ListItemSecondaryAction>

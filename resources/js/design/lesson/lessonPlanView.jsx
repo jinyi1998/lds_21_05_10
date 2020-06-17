@@ -258,25 +258,6 @@ const LessonPlanView = (props) => {
                 </Grid>
                 
                 <Grid item xs ={12}>
-                    {/* <Paper variant="outlined" style = {{padding: "16px", textAlign: "center", width: '100%'}}>
-                    {   
-                    lesson.tasks.length > 0 ?
-                        lesson.tasks.map(
-                            _task => 
-                            <LearningTaskLessonView 
-                                taskID = {_task.id} 
-                                taskData = {_task} 
-                                // onEditearningTask = {()=>{}
-                                onEditearningTask = {onEditearningTask}
-                                key = {_task.id}
-                            />
-                        )
-                        : 
-                        <Grid item xs ={12}>    
-                            No Learning Task In This Lesson
-                        </Grid> 
-                    }
-                    </Paper> */}
 
                     <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                         <Droppable droppableId="droppable">
@@ -316,7 +297,7 @@ const LessonPlanView = (props) => {
 
                 {canEdit == true? 
                     <Grid item xs ={12}>
-                        <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)}>
+                        <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)} data-tour = "lesson_lesson_select">
                             Edit
                         </Button>
                     </Grid> 

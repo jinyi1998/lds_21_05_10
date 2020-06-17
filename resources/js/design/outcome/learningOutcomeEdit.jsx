@@ -48,6 +48,7 @@ const LearningOutcomeEdit = (props) => {
     const classes = useStyles();
     const handleClose = props.onClose;
     const {handleOnSave, courseID, componentID, outcomeID} = props;
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     const { course, refreshCourse } = React.useContext(ContextStore);
     const [checked, setChecked] = React.useState(false);
 
@@ -180,12 +181,13 @@ const LearningOutcomeEdit = (props) => {
     const handleChange = () => {
         var stepCount = 0;
         if(learningOutcome.level != -1){
+            // tourNextStep();
             stepCount++;
         }
         if(learningOutcome.outcomeType != -1){
+            // tourNextStep();
             stepCount++;
         }
-
         setStep(stepCount);
     }
 
@@ -194,6 +196,7 @@ const LearningOutcomeEdit = (props) => {
     };
 
     const outcomeTypeOnchange = event => {
+        tourNextStep();
         setLearningOutcome({...learningOutcome, 
             outcomeType: event.target.value, 
             level: "", 
@@ -345,6 +348,7 @@ const LearningOutcomeEdit = (props) => {
                         <Select
                         labelId="demo-simple-select-required-label"
                         id="demo-simple-select-required"
+                        data-tour = "lo_edit_type"
                         className={classes.selectEmpty}
                         value = {learningOutcome.outcomeType}
                         onChange = {outcomeTypeOnchange}
@@ -378,6 +382,7 @@ const LearningOutcomeEdit = (props) => {
                             <Select
                             labelId="levels-label"
                             id="levels"
+                            data-tour = "lo_edit_level"
                             className={classes.selectEmpty}
                             value = {learningOutcome.level}
                             onChange = {outcomeLevelOnchange}
@@ -416,6 +421,7 @@ const LearningOutcomeEdit = (props) => {
                             <Select
                             labelId="unit-label"
                             id="unit"
+                            data-tour = "lo_edit_unit"
                             className={classes.selectEmpty}
                             value = {learningOutcome.unit_outcomeid}
                             onChange = {unitOutcomeChange}
@@ -464,7 +470,7 @@ const LearningOutcomeEdit = (props) => {
     const displaySTEMOpts = () => {
         if(step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2) ){
             return (
-                <Grid item xs={12}>
+                <Grid item xs={12} data-tour = "lo_edit_STEM">
                     <FormGroup row>
                         <FormControlLabel
                             control={
@@ -527,7 +533,7 @@ const LearningOutcomeEdit = (props) => {
         if(step > 1){
             var autoString = learningLevelTemp.find(x => x.description == learningOutcome.level)? learningLevelTemp.find(x => x.description == learningOutcome.level).value : [];
             return (
-                <Grid item xs={12}>
+                <Grid item xs={12} data-tour = "lo_edit_description">
                         <Autocomplete
                             freeSolo
                             disableClearable

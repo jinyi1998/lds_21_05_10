@@ -53,12 +53,14 @@ Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@ch
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 // Route::get('test', '\App\Http\Controllers\testcontroller@test');
 
-Route::get('/designstudio', '\App\Http\Controllers\RouteController@designstudio');
+Route::get('/designstudio', '\App\Http\Controllers\RouteController@newdesignstudio');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
+// Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
 Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');
 Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign');
 Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
+Route::put('/api/user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
 
 
 Route::get('/api/course/getDesignTypeTemp', 'CourseControllerTest@getDesignTypeTemp');

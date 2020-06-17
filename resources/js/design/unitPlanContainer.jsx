@@ -11,6 +11,7 @@ import Tab from '@material-ui/core/Tab';
 import UnitPlan from './unitPlan';
 import LessonPlan from './lesson/lessonPlan';
 import DashBoardContainer from './dashboard/dashboardContainer';
+import {ContextStore} from '../container/designContainer'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -71,11 +72,29 @@ const TabPanel = (props) => {
 const UnitPlanContainer = (props)=>{
     const classes = useStyles(); 
     const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+  
+    const handleChange = (event, mode) => {
+        if(mode == 0){
+          tourSetRun(false);
+          tourSetMode('unit_design_component');
+        }else if(mode == 1){
+          tourSetRun(false);
+          tourSetMode('unit_design_lesson');
+        }
+        setValue(mode);
     };
 
+    React.useEffect(
+     ()=>{
+      if(value == 0){
+        tourSetRun(false);
+        tourSetMode('unit_design_component');
+      }else if(value == 1){
+        tourSetRun(false);
+        tourSetMode('unit_design_lesson');
+      }
+     },[])
     return (
         <Grid container spacing = {3}>
             <Grid item xs = {12}>

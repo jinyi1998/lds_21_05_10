@@ -13,6 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 const LessonPlanContainer = (props) => {
 
     const { course, setLoadingOpen } = React.useContext(ContextStore);
+    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    
     const [editMode, setEditMode] =  React.useState(false);
     const [refresh, setRefresh] =  React.useState(false);
     const [lesson, setLesson] =  React.useState(props.lesson);
@@ -56,7 +58,7 @@ const LessonPlanContainer = (props) => {
     }
 
     return (
-        <Grid container>
+        <Grid container data-tour = "lesson_view">
             {/* {
                 editMode == false?
                     <LessonPlanView 
@@ -79,7 +81,7 @@ const LessonPlanContainer = (props) => {
                 refreshLesson = {refreshLesson}
             />
 
-             <Dialog open={editMode} onClose={() => {setEditMode(false)}} style = {{minWidth: "400px", minHeight: "300px"}}>
+             <Dialog open={editMode} onClose={() => {setEditMode(false)}} style = {{minWidth: "400px", minHeight: "300px"}} onEntered = {()=>{tourNextStep()}}>
                
                 <LessonPlanTaskSelect 
                         lesson = {lesson}

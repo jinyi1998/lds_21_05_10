@@ -16,14 +16,17 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import config from 'react-global-configuration';
 
 import LangDialog from './languageDialog';
 import AccDialog from './accDialog';
 
 const ToolMenu = (props) => {
      //user menu 
-     const {user} = props;
-
+    const {user} = props;
+    const [displayTourguide, setDisplayTourguide] = React.useState(props.user.display_tourguide == 1);
     const [anchorEl, setUserMenuOpen] = React.useState(null);
 
     const onClickUserIcon = event => {
@@ -46,6 +49,32 @@ const ToolMenu = (props) => {
         }
         setUserMenuOpen(null);
     };
+
+    const OnChnageTourGuide = () => {
+        var test = !displayTourguide;
+        setDisplayTourguide(test);
+        setUserDisplayTourGuide(test);
+    }
+
+    async function setUserDisplayTourGuide(enable) {
+        const res = await fetch(
+            'http://'+config.get('url')+'/api/user/tourguide',
+            {
+                method: "PUT",
+                body:  JSON.stringify({
+                    "display_tourguide": enable
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            }
+        )
+            .then(res => res.json())
+            .then(response => {
+                location.reload();
+            })
+        .catch(error => console.log(error));
+    }
 
     // lang dailog
     const [langDialogOpen, setLangOpen] = React.useState(false);
@@ -104,8 +133,15 @@ const ToolMenu = (props) => {
                         </Grid>
                     </Grid>
                 </Card>
+                <MenuItem >
+                    <FormControlLabel
+                        control={<Switch checked = {displayTourguide} onChange={()=>{OnChnageTourGuide()}}/>}
+                        label="Turn On Design Studio Tutourial"
+                    />
+                </MenuItem>
                 <MenuItem onClick={()=> OnCloseUserMenu('language')}>Language Setting</MenuItem>
                 <MenuItem onClick={()=>OnCloseUserMenu('logout')}>Logout</MenuItem>
+             
             </Menu>
 
             <AccDialog accDialogOpen = {accDialogOpen}  handleAccClose = {handleAccClose} user = {user}/>

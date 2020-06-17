@@ -259,7 +259,7 @@ const LearningTaskView = (props) => {
                 
                 <Grid container item xs={10}>
                     <Grid item xs={10} className={classes.contentGrid}>
-                        <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}}>
+                        <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
                             {task.title}
                         </Typography>
                     </Grid>
@@ -294,11 +294,11 @@ const LearningTaskView = (props) => {
                        
                     </Grid>
                    
-                    <Grid item xs={12} className={classes.contentGrid}>
+                    <Grid item xs={12} className={classes.contentGrid} data-tour="component_task_type">
                         {taskTypeOpts.find(x => x.id == task.type)?.description } 
                     </Grid>
                     
-                    <Grid item xs={12} className={classes.contentGrid}>
+                    <Grid item xs={12} className={classes.contentGrid} data-tour="component_task_lo">
                         <Tooltip title="Learning Outcome" aria-label="lo">
                             <AssessmentIcon />
                         </Tooltip>
@@ -309,7 +309,7 @@ const LearningTaskView = (props) => {
                        )}
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid}>
+                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_time">
                         <Tooltip title="Task Time" aria-label="time">
                             <AccessTimeIcon />
                         </Tooltip>
@@ -317,14 +317,14 @@ const LearningTaskView = (props) => {
                       
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid}>
+                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classtype">
                         <Tooltip title="Class Type" aria-label="classtype">
                             <RoomIcon /> 
                         </Tooltip>
                         {classTypeOtps.find(x => x.id == task.class_type)?.description}
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid}>
+                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classtarget">
                         <Tooltip title="Class Target" aria-label="classtarget">
                             <GpsNotFixedIcon /> 
                         </Tooltip>
@@ -332,28 +332,28 @@ const LearningTaskView = (props) => {
                      
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid}>
-                        <Tooltip title="Class Size" aria-label="classtarget">
+                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classsize">
+                        <Tooltip title="Class Size" aria-label="classsize">
                             <GroupIcon /> 
                         </Tooltip>
                         {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
                     </Grid>
 
-                    <Grid item xs={6} className={classes.contentGrid}>
+                    <Grid item xs={6} className={classes.contentGrid} data-tour="component_task_resource">
                         <Tooltip title="Resource" aria-label="classtarget">
                             <AssignmentIcon />
                         </Tooltip>  
                         {task.resourceid.length == 0? "N/A" : task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                     </Grid>
 
-                    <Grid item xs={6} className={classes.contentGrid}>
+                    <Grid item xs={6} className={classes.contentGrid} data-tour = "component_task_eresource">
                         <Tooltip title="E-Learning Tools" aria-label="classtarget">
                             <ImportantDevicesIcon /> 
                         </Tooltip>  
                         {task.toolid.length == 0? "N/A" : task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
                     </Grid>
                     
-                    <Grid item xs={12} className={classes.contentGrid}>
+                    <Grid item xs={12} className={classes.contentGrid} data-tour ="component_task_description">
                         <Typography color = "textSecondary" gutterBottom>
                             {task.description}
                         </Typography>

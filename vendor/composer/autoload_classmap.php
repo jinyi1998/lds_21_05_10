@@ -17,7 +17,7 @@ return array(
     'App\\ComponentTaskRelation' => $baseDir . '/app/ComponentTaskRelation.php',
     'App\\ComponentTemplate' => $baseDir . '/app/ComponentTemplate.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
-    'App\\Course' => $baseDir . '/app/Course.php',
+    'App\\Course' => $baseDir . '/app/course.php',
     'App\\CourseComponentRelation' => $baseDir . '/app/CourseComponentRelation.php',
     'App\\CourseOutcomeRelation' => $baseDir . '/app/CourseOutcomeRelation.php',
     'App\\ElearningtoolOpts' => $baseDir . '/app/ElearningtoolOpts.php',

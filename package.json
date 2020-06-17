@@ -32,6 +32,7 @@
         "react-beautiful-dnd": "^12.2.0",
         "react-chartjs-2": "^2.9.0",
         "react-global-configuration": "^1.4.0",
+        "react-joyride": "^2.2.1",
         "react-model": "^3.0.3",
         "reactour": "^1.17.0",
         "styled-components": "^5.1.1",
