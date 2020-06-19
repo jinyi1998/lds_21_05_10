@@ -7,7 +7,6 @@ import DesignContainer from './designContainer';
 
 
  const App = (props) => {
-  // console.log(props)
   return (
     <div>
       <DesignContainer courseID= {props.value} user = {props.user} step = {props.step}/>

@@ -359,10 +359,7 @@ const DesignContainer = (props) => {
             setDisplayGuideTour = {setDisplayGuideTour}
         />
         <Design courseID={props.courseID} step = {props.step}/>
-        {/* <Tour
-            steps={steps}
-            isOpen={tourOpen}
-            onRequestClose={()=>{setTourOpen(false)}} /> */}
+
         <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
             <CircularProgress color="inherit" />
         </Backdrop>

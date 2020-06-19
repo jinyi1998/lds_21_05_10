@@ -292,7 +292,6 @@ const Design = (props) => {
           if(props.step == 0){
               setActiveStep(1);
           }
-        
         }
       }
       
