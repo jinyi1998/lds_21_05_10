@@ -70,7 +70,7 @@ export default function Welcome() {
           <br/>
           <Typography component="h3">
             Learning Design Studio is a one-stop platform for you to prepare learing design for enhancing the lesson quality. 
-            Accessible from anywhere, you will find the strong support on pedagogies with customerized tempplates and useful tips. 
+            Accessible from anywhere, you will find the strong support on pedagogies with customerized templates and useful tips. 
           </Typography>
           <br/>
           <Button variant="contained" color="primary" href="register">

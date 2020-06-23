@@ -133,7 +133,6 @@ const Design = (props) => {
           var _outcome_temp = _outcome;
           _outcome_temp.course_id = course.id
           importOutcomeTemplateToCourse(_outcome_temp);
-
       })
     })
   }
