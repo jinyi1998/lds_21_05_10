@@ -13,7 +13,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-import {ContextStore} from '../container/designContainer'
+
+import QuestionHint from '../components/questionHint';
+import {ContextStore} from '../container/designContainer';
 
 const useStyles = makeStyles(theme => ({
 
@@ -159,7 +161,17 @@ const DesignType = (props) => {
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Choose the disciplinary practice for your STEM curriculum unit
+        <QuestionHint title = {<div>
+          "The aim of STEM education is to equip students with knowledge and skills in the four STEM disciplines, for example, scientific inquiry, application of technological knowledge, design thinking, logical thinking, and so on. 
+          <br/>
+          In order to strengthen students’ ability to integrate knowledge and experiences like the experts in the fields of STEM, the learning design needs to provide students with opportunities to experience an authentic practice format in STEM areas.
+          <br/>
+          There are two authentic practice formats in STEM, engineering design and scientific investigation. 
+          <br/>
+          “Engineering design” refers to STEM lessons that provide students with opportunities to construct some products, while “Scientific investigation” refers to lessons in which students design and conduct a scientific investigation to address a scientific problem. We refers to these two authentic practice formats in STEM as disciplinary practice." 
+        </div>}/>
       </Typography>
+    
       <GridList className={classes.gridList} cols={4} data-tour = "designtype_list">
           {designType.map((_data, i) => (
             <DesignTypeBox designBoxData={_data} key={i} onClick={onClick}>

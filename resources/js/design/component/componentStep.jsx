@@ -218,7 +218,11 @@ const DesignComponentStep = (props) =>
                     + options.designType.find(x=> x.id == course.design_type_id).description + " "
                     + "STEM to guide you to plan your unit and lesson"
                     }
-                    tips="Learning Components is the ... You can order, delete the components, duplicated in this part."
+                    tips= {
+                      <React.Fragment>
+                        A curriculum component consists of a clear specifiable learning outcome and a sequence of learning tasks to achieve those learning outcomes. 
+                      </React.Fragment>
+                    }
               />
               <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                 <Droppable droppableId="droppable">

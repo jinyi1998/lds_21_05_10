@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-           <div id="registerForm"></div>
+           <div id="registerForm" data-errors = "{{ session('errors') }}"></div>
         </div>
     </body>
 </html>

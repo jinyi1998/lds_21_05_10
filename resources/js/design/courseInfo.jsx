@@ -16,6 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import QuestionHint from '../components/questionHint';
 const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
@@ -293,13 +294,27 @@ const DesignInfo = (props) => {
           <TextField 
             id="level" 
             name="level" 
-            label="Level" 
+            label={
+              <React.Fragment>
+                Level
+                <QuestionHint title= {
+                  <React.Fragment>
+                    Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
+                    <br />
+                    Teachers may consider learners’ characteristics, like Grade 5 students, when filling this blank. 
+                    <br/>
+                    It is always important for teachers to think from a learner’s perspective when designing a unit.
+                  </React.Fragment>
+                }/>
+              </React.Fragment>
+            } 
             data-tour = "level"
             value = {courseData.level}
             error = {! (error["level"]=="")}
             helperText= {! (error["level"]=="")? error["level"]:  ""}
             fullWidth 
             onChange={onChange} />
+         
         </Grid>
 
         {/* <Grid item xs={12} md={6}>
@@ -320,7 +335,17 @@ const DesignInfo = (props) => {
           <TextField 
             id="no_of_lesson" 
             name="no_of_lesson" 
-            label="No. Of Lesson" 
+            label= { 
+              <React.Fragment>
+                Number of Lesson
+                <QuestionHint title = {
+                  <React.Fragment>
+                  Teachers should think about whether it is realistic to ask students to 
+                  complete the tasks and achieve the learning outcomes in the no. of lessons given.
+                  </React.Fragment>
+                }/>
+              </React.Fragment>
+            } 
             data-tour = "no_of_lesson"
             type="number"
             value = {courseData.no_of_lesson}
@@ -329,6 +354,7 @@ const DesignInfo = (props) => {
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
             onChange={onChange} />
+         
         </Grid>
 
         
@@ -338,13 +364,27 @@ const DesignInfo = (props) => {
             name="description" 
             data-tour = "description"
             value = {courseData.description} 
-            label="Curriculum Unit Description" 
+            label= {
+              <React.Fragment>
+                  Description
+                  <QuestionHint title = {
+                      <React.Fragment>
+                        Learning design is an iterative process. 
+                        <br/>
+                        As a starting point, we would advise teachers to put down some keywords there, which may be elaborated or modified later. These keywords can be related to the teaching content, learning experiences, pedagogical approach and so on. 
+                        <br/>
+                        Also if this were to be done by a collaborative team, then different members can contribute different keywords. 
+                      </React.Fragment>
+                  }/>
+              </React.Fragment>
+            } 
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}
             fullWidth 
             rows={5}
             onChange={onChange}/>
+          
         </Grid>
       </Grid>
       
