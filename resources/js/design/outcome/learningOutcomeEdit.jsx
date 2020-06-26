@@ -21,6 +21,8 @@ import {ContextStore} from '../../container/designContainer'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import validator from 'validator';
 
+
+import QuestionHint from '../../components/questionHint';
 // learningOutcomes: [
 //     {
 //       id: 0,
@@ -365,7 +367,22 @@ const LearningOutcomeEdit = (props) => {
                                 </MenuItem>)
                             )}
                         </Select>
-                                <FormHelperText>{error['outcomeType'] ==""? "Required": error['outcomeType']}</FormHelperText>
+                        <FormHelperText>
+                            <React.Fragment>
+                            {error['outcomeType'] ==""? "Required": error['outcomeType']}
+                            <QuestionHint title = {
+                                <React.Fragment>
+                                There are three types of learning outcomes: disciplinary knowledge, disciplinary skills and generic skills.
+                                <br/>
+                                Disciplinary knowledge generally refers to the facts, concepts, theories, and principles that are taught and learned in specific subjects/disciplines.
+                                <br/>
+                                Disciplinary skills are about the ability to perform a task, such as reading, writing, and calculating.
+                                <br/>
+                                Generic skills are often referred to as 21st century skills, includes communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.
+                                </React.Fragment>
+                            }/>
+                            </React.Fragment>
+                        </FormHelperText>
                     </FormControl>
             </Grid>
         )
@@ -378,7 +395,9 @@ const LearningOutcomeEdit = (props) => {
 
                     <Grid item xs={12}>
                         <FormControl required className={classes.formControl} fullWidth>
-                            <InputLabel id="levels-label">Bloom Taxonomy Level</InputLabel>
+                            <InputLabel id="levels-label">
+                                Bloom Taxonomy Level
+                            </InputLabel>
                             <Select
                             labelId="levels-label"
                             id="levels"
@@ -402,7 +421,19 @@ const LearningOutcomeEdit = (props) => {
                                     )
                                 }
                             </Select> 
-                            <FormHelperText>{error['level'] == "" ? "Required": error['level']}</FormHelperText>
+                           
+                            <FormHelperText>
+                                <React.Fragment>
+                                {error['level'] == "" ? "Required" : error['level']}
+                                <QuestionHint title = {
+                                    <React.Fragment>
+                                        It is also very important to make learning outcomes realistic and can be assessed. 
+                                        <br/>
+                                        Teachers need to consider the level of achievement to be reached. LDS uses the Bloom’s Taxonomy to help teachers specify the level of outcome targeted.
+                                    </React.Fragment>
+                                } />
+                                </React.Fragment>
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
                 </React.Fragment>
@@ -446,7 +477,17 @@ const LearningOutcomeEdit = (props) => {
                                         null
                                 }
                             </Select> 
-                            <FormHelperText>{error['unit_outcomeid']==""? "Required": error['unit_outcomeid']}</FormHelperText>
+                            <FormHelperText>
+                                <React.Fragment>
+                                    <QuestionHint title = {
+                                        <React.Fragment>
+                                            You need to associate this newly added learning outcomes to one of the unit level learning outcomes you set in the previous step.
+                                        </React.Fragment>} 
+                                    />
+                                    {error['unit_outcomeid']==""? "Required": error['unit_outcomeid']}
+                                </React.Fragment>
+                            
+                            </FormHelperText>
                         </FormControl>
                     </Grid>
 
@@ -459,7 +500,17 @@ const LearningOutcomeEdit = (props) => {
                                 color="primary"
                             />
                             }
-                            label="Same As Unit Level Outcome"
+                            label = 
+                            {
+                                <React.Fragment>
+                                    Same As Unit Level Outcome
+                                     <QuestionHint title = {
+                                        <React.Fragment>
+                                           You may wish check this box if the unit learning outcomes cannot be divided into several component learning outcomes.
+                                        </React.Fragment>} 
+                                    />
+                                </React.Fragment>
+                            }
                         />
                     </Grid>
                 </React.Fragment>

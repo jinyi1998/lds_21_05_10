@@ -26,11 +26,8 @@ import LearningOutcomeAddFromSelect from './learningOutcomeAddFromSelect';
 import LearningOutcomeUnit from './learningOutcomeUnit';
 import LearningOutcomeEdit from './learningOutcomeEdit';
 import InstructionBox from '../../components/instructionBox';
-import Tooltip from '@material-ui/core/Tooltip';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import InfoIcon from '@material-ui/icons/Info';
 
-
+import QuestionHint from '../../components/questionHint';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -49,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 const LearningOutcomeContainer = (props)=>{ 
     const {component} = props; 
-    // const [component, setComponent] = React.useState(props.component);
+
     var modeLevel = "course";
     if(typeof component !== 'undefined'){
         modeLevel = "component";
@@ -60,7 +57,7 @@ const LearningOutcomeContainer = (props)=>{
     const classes = useStyles();
 
     const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
-    const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    const { tourSetMode, tourSetRun, tourNextStep, tourStepIndex } = React.useContext(ContextStore);
     React.useEffect(()=> {
         if(modeLevel == "course"){
             tourSetRun(false);
@@ -98,8 +95,10 @@ const LearningOutcomeContainer = (props)=>{
     }
 
     const onEnterLearningOutcome = () => {
-        tourSetRun(true);
-        tourNextStep();
+        if(  modeLevel == "course" && tourStepIndex == 3){
+            tourSetRun(true);
+            tourNextStep();
+        }
     }
 
     const closeAddLearningOutcome = () => {
@@ -456,34 +455,12 @@ const LearningOutcomeContainer = (props)=>{
                     <div>{modeLevel == "course"? 
                         <Typography variant="subtitle1" gutterBottom>
                             Unit Level Learning Outcomes
-                            <Tooltip 
-                                title={
-                                    <React.Fragment>
-                                    <Typography  variant="subtitle1" color="inherit">Hints:</Typography>
-                                    <Typography variant="body2" color="inherit">Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)</Typography>
-                                    </React.Fragment>
-                                } 
-                                placement="bottom-end"
-                                aria-label="add"
-                                >
-                                <InfoIcon/>
-                            </Tooltip>   
+                            <QuestionHint title="Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"/> 
                         </Typography>
                         : 
                         <Typography variant="subtitle1" gutterBottom>
                             Component Level Learning Outcomes
-                            <Tooltip 
-                                title={
-                                    <React.Fragment>
-                                    <Typography  variant="subtitle1" color="inherit">Hints:</Typography>
-                                    <Typography variant="body2" color="inherit">Component level is the learning outcome for the selected component only</Typography>
-                                    </React.Fragment>
-                                } 
-                                placement="bottom-end"
-                                aria-label="add"
-                                >
-                                <InfoIcon/>
-                            </Tooltip>   
+                            <QuestionHint title="Specifiable learning outcomes that can be achieved and assessed in this curriculum component. "/> 
                         </Typography>}
                     </div>
                     
@@ -495,13 +472,11 @@ const LearningOutcomeContainer = (props)=>{
                             <InstructionBox 
                                 title="Unit Level Learning Outcomes" 
                                 content= "Please define the learning outcomes for your unit" 
-                                tips="Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"
                             />
                             :
                             <InstructionBox 
                                 title="Component Level Learning Outcomes" 
                                 content= "Please define the learning outcomes for your component" 
-                                tips="Component level is the learning outcome for the selected component only"
                             />
                         }
                         </Grid> 

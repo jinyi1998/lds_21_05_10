@@ -33,7 +33,8 @@ const useStyles = makeStyles(theme => ({
     },
   }));
   
-const RegisterForm = () => {
+const RegisterForm = (props) => {
+
     const classes = useStyles();
 
     const [data, setData] = React.useState({
@@ -63,10 +64,10 @@ const RegisterForm = () => {
 
   const [error, setError] = React.useState({
     "name": "",
-    "email": "",
+    "email": props.errors.email? props.errors.email : "",
     "school": "",
-    "password": "",
-    "passwordcomfirm": ""
+    "password": props.errors.password? props.errors.password : "",
+    "passwordcomfirm": props.errors.passwordcomfirm? props.errors.passwordcomfirm : "",
   });
   
   const validate = () => {
@@ -259,5 +260,12 @@ const RegisterForm = () => {
 export default RegisterForm;
 
 if (document.getElementById('registerForm')) {
-    ReactDOM.render(<RegisterForm />, document.getElementById('registerForm'));
+
+    var errors =  {};
+    try {
+       errors =  JSON.parse(document.getElementById('registerForm').dataset.errors);
+    } catch (e) {
+
+    }
+    ReactDOM.render(<RegisterForm errors = {errors}/>, document.getElementById('registerForm'));
 }

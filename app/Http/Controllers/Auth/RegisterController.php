@@ -53,7 +53,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
+            'passwordcomfirm' =>  ['required', 'string', 'min:8', 'same:password'],
         ]);
     }
 
@@ -76,14 +77,19 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        // $this->validator($request->all())->validate();
+        $validator = $this->validator($request->all());
 
-        $user = $this->create($request->all());
+        if ($validator->fails()) {
+            return redirect('register')
+                        ->withErrors($validator);
+        }else{
+            $user = $this->create($request->all());
 
-        $this->guard()->login($user);
+            $this->guard()->login($user);
 
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
+            return $this->registered($request, $user)?redirect('/login'): redirect($this->redirectPath());
+        }
+
     }
 
     public function showRegistrationForm(){

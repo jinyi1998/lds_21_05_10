@@ -344,7 +344,8 @@ const DesignContainer = (props) => {
           taskTypeColor: taskTypeColor,
           tourSetMode: setMode,
           tourSetRun: setRun,
-          tourNextStep: tourNextStep
+          tourNextStep: tourNextStep,
+          tourStepIndex: stepIndex
         }}
       >
         <TourGuide 
