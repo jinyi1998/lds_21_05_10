@@ -1319,7 +1319,9 @@ const TourGuide = (props) => {
                     <Typography variant="caption">
                     <b>Disciplinary knowledge</b> generally refers to the facts, concepts, theories, and principles that are taught and learned in specific subjects/disciplines.
                     <br/>
+                    <br/>
                     <b>Disciplinary skills</b> are about the ability to perform a task, such as reading, writing, and calculating.
+                    <br/>
                     <br/>
                     <b>Generic skills</b> are often referred to as 21st century skills, includes communication
                     , collaboration, critical thinking, creativity, problem solving, and self-directed learning.
@@ -1388,6 +1390,7 @@ const TourGuide = (props) => {
                     <Typography variant="caption">
                     After the learning outcomes are determined, the next step is to design what kinds of learning focus and experiences that students should go through 
                     to build up the necessary knowledge and skills as learning outcomes. 
+                    <br/>
                     <br/>
                     LDS has suggested a set of curriculum components based on teachers’ choice of the disciplinary practice and pedagogy.
                     </Typography>
@@ -1706,6 +1709,7 @@ const TourGuide = (props) => {
                         Obviously, the pre-loaded learning activities and tasks may not be implemented directly as it does not fit to the local context of the classroom. 
                         So the next step will lead us to design on more details that make the plan feasible for classroom implementations.
                         <br />
+                        <br/>
                         If you want to edit the tasks freely, please unlock the pattern.
                     </Typography>
                 </React.Fragment>
@@ -1726,6 +1730,7 @@ const TourGuide = (props) => {
                         In LDS, when you complete designing all the learning activities, 
                         you can move to “Lesson plan” to allocate the activities into different class period. 
                         <br />
+                        <br/>
                         In this list, it lists all the lessons you set up with the parameter "no of lessson" in the previous step.
                     </Typography>
                 </React.Fragment>
@@ -1846,6 +1851,7 @@ const TourGuide = (props) => {
                     <Typography variant="caption">
                         Click the button and save what activities the teachers select. 
                         <br />
+                        <br/>
                         Repeat this process, and the teachers can allocate all the activities into eact lesson.
                     </Typography>
                 </React.Fragment>

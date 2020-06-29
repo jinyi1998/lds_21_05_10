@@ -218,10 +218,10 @@ class CourseControllerTest extends Controller
             [
                 'id' => 2,
                 'hint' => 'Scientific investigation practice design approach guides you...',
-                'description'=> "using scienitic investigation practice to guide the 
+                'description'=> "using Scientific investigation practice to guide the 
                 learing task sequence design by adopting the self-directed learning approach",
                 'media'=> "/asset/image/SI.png",
-                'name'=> "Scienitic Investigation SDL",
+                'name'=> "Scientific Investigation SDL",
             ],
             // [
             //     'id' => 3,

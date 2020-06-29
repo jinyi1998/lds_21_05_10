@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const steps = ['SUBJECT', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENTS DESIGN'];
+const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
