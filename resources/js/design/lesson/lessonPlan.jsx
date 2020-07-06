@@ -39,6 +39,11 @@ import LessonPlanContainer from './lessonPlanContainer';
 
 import {ContextStore} from '../../container/designContainer'
 
+import {
+    apiCourseUpdate,
+    apiLessonCreate, apiLessonDelete
+} from '../../api.js';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -96,25 +101,14 @@ const LessonPlan = (props) => {
             "course_id": course.id,
         };
 
-        fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
-
-                  // update the course no of lessons
-                  updateCourseNoOfLesson(course.lessons.length + 1);
-          })
-          .catch(error => console.log(error));
-
+        apiLessonCreate(lessonjson)
+        .then(response => {
+            setLoadingOpen(false)
+            // update the course no of lessons
+            updateCourseNoOfLesson(course.lessons.length + 1);
+        })
+        .catch(error => console.log(error));
+        
     }
 
     const onDeleteDialog = (lesson_id) => {
@@ -128,44 +122,31 @@ const LessonPlan = (props) => {
         }
         //delete the lesson
         setLoadingOpen(true)
-         fetch(
-            'http://'+config.get('url')+'/api/lesson/'+onDeletelLessonID,
-            {
-              method: "DELETE",
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
 
-                  // update the course no of lessons
-                  updateCourseNoOfLesson(course.lessons.length - 1);
-          })
-          .catch(error => console.log(error));
+        apiLessonDelete(onDeletelLessonID)
+        .then(response => {
 
-
+                // update the course no of lessons
+                updateCourseNoOfLesson(course.lessons.length - 1);
+        })
+        .catch(error => console.log(error));
+    
     }
 
     const updateCourseNoOfLesson = (no_of_lesson) => {
         var json = {        
             "no_of_lesson": no_of_lesson,
         };
-       fetch(
-            'http://'+config.get('url')+'/api/course/'+ course.id,
-            {
-              method: "PUT",
-              body:  JSON.stringify(json),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                refreshCourse();
-                setLoadingOpen(false)
-                setDeleteDialog(false);
+
+        apiCourseUpdate({        
+            "no_of_lesson": no_of_lesson,
+            "course_id":  course.id
+        }).then(response => {
+            refreshCourse();
+            setLoadingOpen(false)
+            setDeleteDialog(false);
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error));    
     }
 
 

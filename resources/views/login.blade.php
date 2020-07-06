@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>LDS K-12 STEM Beta</title>
 
@@ -15,6 +16,7 @@
         <div class="flex-center position-ref full-height">
            <div id="loginForm"></div>
         </div>
+        @csrf
     </body>
 </html>
 <script type="text/javascript" src="js/app.js"> </script>

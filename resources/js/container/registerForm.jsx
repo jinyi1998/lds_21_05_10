@@ -111,24 +111,7 @@ const RegisterForm = (props) => {
     return validated;
   }
   async function register() {
-    // await fetch(
-    //   'http://'+config.get('url')+'/register',
-    //   {
-    //     method: "POST",
-    //     body:  JSON.stringify(data),
-    //     headers: {
-    //       "Content-type": "application/json; charset=UTF-8",
-    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    //   }
-    // )
-    //     .then(res => res.json())
-    //     .then(response => {
-
-    // })
-    // .catch(error => console.log(error));
     document.form.submit();
-
   }
     
   
@@ -252,6 +235,8 @@ const RegisterForm = (props) => {
                 </Link>
               </Grid>
             </Grid>
+
+            <input type="hidden" name = "_token" value = {$('meta[name="csrf-token"]').attr('content')} />
           </form>
         </div>
       </Container>

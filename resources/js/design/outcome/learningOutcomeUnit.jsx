@@ -24,23 +24,7 @@ const LearningOutcomeUnit = (props)=>{
     const learningTypeTemp = options.learningOutcomeType;
 
     const [outcome, setOutcome] = React.useState(props.learningOutcome);
-    async function fetchLearningOutcome() {
-        setLoadingOpen(true)
-        fetch(
-            'http://'+config.get('url')+'/api/learningOutcome/'+learningOutcomeID,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            setOutcome(response);
-            setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));   
-      }
-    
+
     const getItemStyle = (isDragging, draggableStyle) => ({
         // styles we need to apply on draggables
         ...draggableStyle,

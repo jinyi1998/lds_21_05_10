@@ -25,6 +25,12 @@ import config from 'react-global-configuration';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import {
+    apiLearningTaskPost, apiLearningTaskPut,
+    apiLessonTaskUpdate, 
+
+} from '../../api.js';
+
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightgrey' : '',
 });
@@ -113,17 +119,7 @@ const LessonPlanView = (props) => {
         var json = taskData;
         if(taskData.id == -1){
             //new learning task
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPost(taskData)
             .then(response => {
                 //load the default learning outcomes by api request
                 setLoadingOpen(false);
@@ -133,17 +129,7 @@ const LessonPlanView = (props) => {
             .catch(error => console.log(error));
         }else{
             //update existing task
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/'+ taskData.id,
-                {
-                    method: "PUT",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPut(taskData)
             .then(response => {
                 //load the default learning outcomes by api request
                 setLoadingOpen(false);
@@ -152,30 +138,18 @@ const LessonPlanView = (props) => {
             })
             .catch(error => console.log(error));
         }
-     
     }
 
     async function updateLearningTaskLessonRelation(task_relation) {
         setLoadingOpen(true);
-
-        return await fetch(
-            'http://'+config.get('url')+'/api/lessonTaskRelation/'+ task_relation.id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(task_relation),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        
+        return await apiLessonTaskUpdate(task_relation)
         .then(response => {
             //load the default learning outcomes by api request
             setLoadingOpen(false);
             refreshCourse();
         })
         .catch(error => console.log(error));
-     
     }
 
 

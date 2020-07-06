@@ -197,14 +197,6 @@ class CourseControllerTest extends Controller
         $course->lessons()->delete();
         return response()->json($course);
     }
-
-
-    public function getAvaUserGroup(){
-        $usergroups = User::with(['usergroup'])->find(Auth::user()->id)->usergroup;
-        // $usergroups = Auth::user()->with(['usergroupid'()';
-        return response()->json($usergroups);
-    }
-
     public function getDesignTypeTemp(){
         return response()->json([
             [

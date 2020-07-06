@@ -4,6 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta name="apitoken" content={{session('apitoken')}}>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+     
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>LDS K-12 STEM Beta</title>
 
         <!-- Fonts -->
@@ -20,6 +25,7 @@
         <div class="root">
             <div class="">
 
+        
                 <!-- <div class="row">
                     <div id="applayout"></div>
                 </div> -->

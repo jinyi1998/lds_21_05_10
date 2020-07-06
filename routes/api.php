@@ -131,3 +131,13 @@ Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 Route::resource('usergroup', 'API\UserGroupController');
 Route::resource('usergroupuser', 'API\UserGroupUserController');
 Route::resource('usergroupusertemp', 'API\UserGroupUserTempController');
+
+Route::resource('test', 'API\TestController');
+
+Route::delete('course/clearCourseComponent/{id}', 'API\CourseController@clearCourseComponent');
+Route::delete('course/clearCourseLesson/{id}', 'API\CourseController@clearCourseLesson');
+Route::resource('course', 'API\CourseController');
+Route::resource('designType', 'API\DesignTypeController');
+
+
+Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');

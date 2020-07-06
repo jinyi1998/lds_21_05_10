@@ -6,6 +6,9 @@ import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import config from 'react-global-configuration';
+import {
+    apiLearningCompGetLearningCompByDesignType
+} from '../../api.js';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -38,15 +41,9 @@ const DesignComponentSelPair = (props) => {
 
 
     async function fetcComponentOptsData() {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningComponent/getLearningComponentByDesignType/' + selectType,
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setComponentOpts(response);
+        await apiLearningCompGetLearningCompByDesignType(selectType)
+        .then( response=>{
+            setComponentOpts(response.data);
         })
         .catch(error => console.log(error));
     }

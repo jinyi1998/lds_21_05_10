@@ -66,10 +66,7 @@ Route::put('/api/user/tourguide', '\App\Http\Controllers\RouteController@display
 Route::get('/api/course/getDesignTypeTemp', 'CourseControllerTest@getDesignTypeTemp');
 Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
 Route::get('/api/course/showUsergroup/{id}', 'CourseControllerTest@showUsergroup');
-Route::get('/api/course/getAvaUserGroup', 'CourseControllerTest@getAvaUserGroup');
-Route::post('/api/course/clearCourseComponent', 'CourseControllerTest@clearCourseComponent');
-Route::post('/api/course/clearCourseLesson', 'CourseControllerTest@clearCourseLesson');
-Route::resource('/api/course', 'CourseControllerTest');
+// Route::resource('/api/course', 'CourseControllerTest');
 
 
 // Route::get('/design', function () {

@@ -17,6 +17,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import QuestionHint from '../components/questionHint';
+import {
+  apiLessonDelete, apiLessonCreate,
+  apiCourseUpdate, apiCourseClearLesson
+} 
+from '../api.js';
+
 const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
@@ -135,10 +141,8 @@ const DesignInfo = (props) => {
   }
 
   async function updateCourse() {
+
     setLoadingOpen(true)
-    var course_json = {
-      course_id: course.id,
-    }
 
     if(course.lessons.length > 0){
       // already init-ed the lesson
@@ -147,15 +151,8 @@ const DesignInfo = (props) => {
         for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
           
           var lessonid = course.lessons[i].id;
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson/' +lessonid,
-            {
-              method: "DELETE",
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          await apiLessonDelete(course.lessons[i].id).then(response => {
+            setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
@@ -164,25 +161,15 @@ const DesignInfo = (props) => {
         //add new lesson 
         for(var i = course.no_of_lesson; i < courseData.no_of_lesson; i++){
           let int_i = parseInt(i);
-          var lessonjson = {
+
+          await apiLessonCreate( {
             "time": lesson_time,
             "title": 'Lesson' + (int_i + 1),
             "sequence": int_i + 1,
             "course_id": course.id,
-          };
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          })
+          .then(response => {
+              setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
@@ -190,69 +177,37 @@ const DesignInfo = (props) => {
      
     }else{
         
-        await fetch(
-          'http://'+config.get('url')+'/api/course/clearCourseLesson',
-          {
-            method: "POST",
-            body:  JSON.stringify(course_json),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            }
-          }
-        )
+      await apiCourseClearLesson(course.id);
           
       // init the lesson with input no of lesson
         for(var i = 0; i<courseData.no_of_lesson; i++){
-          var lessonjson = {
+
+          await apiLessonCreate( {
             "time": lesson_time,
-            "title": 'Lesson' + (i+1),
+            "title": 'Lesson' + (i + 1),
             "sequence": i + 1,
             "course_id": course.id,
-          };
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          })
+          .then(response => {
+              setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
     }
-    
 
-    var json = {
-        "unit_title": courseData.unit_title,
-        "level": courseData.level,
-        "no_of_lesson": courseData.no_of_lesson,
-        "description": courseData.description,
-    };
-    const res = await fetch(
-        'http://'+config.get('url')+'/api/course/'+ course.id,
-        {
-          method: "PUT",
-          body:  JSON.stringify(json),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }
-    )
-        .then(res => res.json())
-        .then(response => {
-            dispatch({
-                type: "INIT_COURSE",
-                value: response
-            })
-            setLoadingOpen(false)
-    })
-    .catch(error => console.log(error));
+    await apiCourseUpdate( {
+      "course_id": course.id,
+      "unit_title": courseData.unit_title,
+      "level": courseData.level,
+      "no_of_lesson": courseData.no_of_lesson,
+      "description": courseData.description,
+    }).then(response => {
+      dispatch({
+        type: "INIT_COURSE",
+        value: response.data
+      })
+      setLoadingOpen(false)
+    }) .catch(error => console.log(error));
 }
 
   const {handleNext, handleBack, isStep} =  props;

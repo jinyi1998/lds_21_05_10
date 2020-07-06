@@ -26,27 +26,10 @@ const ComponentContainer = (props)=>{
 
     const [component, setComponent] = React.useState(props.component);
 
-    // React.useEffect(()=>{
-    //   fetchlearningComponentData(componentID)
-    // }, [componentID])
-
     React.useEffect(()=>{
       setComponent(props.component);
     }, [props.component])
 
-    async function fetchlearningComponentData(id) {
-      fetch(
-          'http://'+config.get('url')+'/api/learningComponent/'+id,
-          {
-          method: "GET",
-          }
-      )
-      .then(res => res.json())
-      .then(response => {
-        setComponent(response);
-      })
-      .catch(error => console.log(error));
-  }
 
     //#region init data 
 

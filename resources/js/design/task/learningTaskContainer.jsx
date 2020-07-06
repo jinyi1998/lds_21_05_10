@@ -16,7 +16,9 @@ import config from 'react-global-configuration';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from '@material-ui/core/List';
-
+import {
+    apiLearningTaskPost, apiLearningTaskPut, apiLearningTaskCompPut
+} from '../../api.js';
 
 //   tasks: [
 //     {
@@ -116,17 +118,8 @@ const LearningTaskContainer = (props) => {
             //new learning task
             json['sequence'] = tasksData.length;
             setOpenTaskEdit(false);
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+
+            return await apiLearningTaskPost(json)
             .then(response => {
                 //load the default learning outcomes by api request
                 // setOpenTaskEdit(false);
@@ -137,17 +130,7 @@ const LearningTaskContainer = (props) => {
         }else{
             //update existing task
             setOpenTaskEdit(false);
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/'+ taskData.id,
-                {
-                    method: "PUT",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPut(json)
             .then(response => {
                 //load the default learning outcomes by api request
                 // setOpenTaskEdit(false);
@@ -160,23 +143,13 @@ const LearningTaskContainer = (props) => {
     }
 
     async function updateComponentTaskLessonRelation(component_task_relation){
-        return await fetch(
-            'http://'+config.get('url')+'/api/componentTaskRelation/'+ component_task_relation.id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(component_task_relation),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        return await apiLearningTaskCompPut(component_task_relation)
         .then(response => {
-            //load the default learning outcomes by api request
+                 //load the default learning outcomes by api request
             // setOpenTaskEdit(false);
             setLoadingOpen(false);
             refreshCourse();
-        })
+        }).catch(error => console.log(error));
     }
     //#endregion
 

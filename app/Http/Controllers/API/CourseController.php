@@ -12,81 +12,10 @@ use Auth;
 
 class CourseController extends Controller
 {
-/** data template
-    * const course = {
-    *     courseInfo : {
-    *       id: 0,
-    *       unitTitle: "",
-    *       schoolName: "",
-    *       level: "",
-    *       noOfLessons: "",
-    *       courseDes: "",
-    *       createDate: "",
-    *       createBy: ""
-    *       modifyDate: "",
-    *       modifyBy: ""
-    *     },
-    *     designType: "",
-    *     components: [
-    *       {
-    *         id: 0,
-    *         title: "",
-    *         tasks: [
-    *           {
-    *             id: 0,
-    *             title: "",
-    *             assessment: [],
-    *             time: 0,
-    *             classType: "",
-    *             target: "",
-    *             resource: "",
-    *             STEMType: [],
-    *             description: "",
-    *           }
-    *         ],
-    *         learningOutcomes: [
-    *               id...,
-    *         ]
-    *       }
-    *     ],
-    *     *learning outcomes in course level
-    *     learningOutcomes: [
-    *       {
-    *         id: 0,
-    *         level: "",
-    *         outcomeType: "",
-    *         STEMType: [],
-    *         description: "",
-    *         status: false
-    *       }
-    *     ],
-    *     lesson: [
-    *       {
-    *         id: 0,
-    *         name: "",
-    *         tasks: []
-    *       }
-    *     ]
-    *   }
-*/
-    public function __construct()
-    {
-        $this->middleware('api');
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // pattern 
-        // id => courseJson
-
-        // $list = DB::table('demo')->select('id','data', 'updated_at')->get();
-        // return response()->json($list);
-        return response()->json(  \Auth::user());
-        return response()->json(Course::all());
+        $course = Course::with(['createdby','usergroupid'])->where('created_by', Auth::user()->id)->get();
+        return response()->json($course);
     }
 
     /**
@@ -97,18 +26,9 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        // $input = $request->all();
-        // $id = DB::table('demo')->insertGetId([
-        //     'data' => json_encode($input)
-        //     , 'created_by' => 1
-        //     , 'updated_by' => 1
-        //     , 'is_deleted' => false
-        //     , 'created_at' => now()
-        //     , 'updated_at' => now()
-        // ]);
-        // return response()->json($id);
 
         $course = new Course();
+        $request['created_by'] =  Auth::user()->id;
         $course = CourseController::save($course, $request);
 
         return CourseController::show($course->id);
@@ -180,14 +100,27 @@ class CourseController extends Controller
         if($request->has('design_type_id')){
             $course->design_type_id = $request->design_type_id;
         }
+        if($request->has('created_by')){
+            $course->created_by =  $request->created_by;
+        }
 
-        // if($request->has('componentid')){
-        //     foreach($request->componentid as $_component){
-        //         $course->componentid = $request->design_type_id;
-        //     }   
-        // }
-        $course->created_by = 1;
-        $course->updated_by = 1;
+        if($request->has('coursetype')){
+            $course->coursetype =  $request->coursetype;
+        }
+
+        if($request->has('usergroupid')){
+            $course->usergroupid()->delete();
+            foreach((array) $request->usergroupid as $_usergroup){
+                $course->usergroupid()->create([
+                    'course_id' => $_usergroup['course_id'],
+                    'usergroup_id' => $_usergroup['usergroup_id'],
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }
+        }
+        $course->updated_by =  Auth::user()->id;
         $course->is_deleted = 0;
         $course->updated_at = now();
         $course->save();
@@ -196,6 +129,41 @@ class CourseController extends Controller
     }
 
 
+    public function showAll()
+    {
+        $course = Course::with(['createdby', 'usergroupid'])->where("coursetype", '=', 3)->get();
+        return response()->json($course);
+    }
+
+    public function showUsergroup($id)
+    {
+        // $courses = Course::has('usergroupid', '=', $id)->with(['createdby'])->get();
+        $data = Course::with(['createdby', 'usergroupid'])->get();
+        $courses = array();
+
+        foreach($data as $key => $course){
+      
+            $x = $course->usergroupid()->where('usergroup_id', $id)->get();
+            if ($x->count()){
+                array_push($courses, $course);
+            }
+        }
+        return response()->json($courses);
+    }
+
+    public function clearCourseComponent($id){
+        $course = Course::find($id);
+        $course->outcomes()->delete();
+        $course->components()->delete();
+        return response()->json($course);
+    }
+
+    public function clearCourseLesson($id){
+        $course = Course::find($id);
+        $course->lessons()->delete();
+        return response()->json($course);
+    }
+
     public function getDesignTypeTemp(){
         return response()->json([
             [
@@ -203,33 +171,17 @@ class CourseController extends Controller
                 'hint' => 'engineering design approach guides you...',
                 'description'=> "using engineering design practice to guide the learing task 
                 sequence design by adopting the self-directed learning approach",
-                'media'=> "https://cdn2.iconfinder.com/data/icons/conceptual-vectors-of-logos-and-symbols/66/204-512.png",
+                'media'=> "/asset/image/ED.png",
                 'name'=> "Engineering Design SDL",
             ],
             [
                 'id' => 2,
                 'hint' => 'Scientific investigation practice design approach guides you...',
-                'description'=> "using scienitic investigation practice to guide the 
+                'description'=> "using Scientific investigation practice to guide the 
                 learing task sequence design by adopting the self-directed learning approach",
-                'media'=> "https://www.pinclipart.com/picdir/big/44-449704_nuclear-icon-nuclear-icon-png-clipart.png",
-                'name'=> "Scienitic Investigation SDL",
+                'media'=> "/asset/image/SI.png",
+                'name'=> "Scientific Investigation SDL",
             ],
-            // [
-            //     'id' => 3,
-            //     'hint' => 'engineering design approach guides you...',
-            //     'description'=> "using engineering design practice to guide the learing task 
-            //     sequence design by adopting the guided learning approach",
-            //     'media'=> "https://www.pinclipart.com/picdir/big/1-17456_engineer-clipart-ship-engineer-symbol-of-marine-engineering.png",
-            //     'name'=> "Engineering Design Guided",
-            // ],
-            // [
-            //     'id' => 4,
-            //     'hint' => 'engineering design approach guides you...',
-            //     'description'=> "using scienitic investigation practice to guide the learing task sequence 
-            //     design by adopting the guided learning approach",
-            //     'media'=> "https://www.pinclipart.com/picdir/big/179-1791472_engineering-solutions-engineering-tools-logo-clipart.png",
-            //     'name'=> "Scienitic Investigation Guided",
-            // ]
         ]);
     }
 }

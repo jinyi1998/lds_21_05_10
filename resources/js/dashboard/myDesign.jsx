@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import config from 'react-global-configuration';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
+import {apiUserAvaGroup, apiCourseList} from '../api.js';
+
 const MyDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
@@ -33,36 +35,19 @@ const MyDesign = (props)=>{
     //call api to get the data
     async function fetchData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
+        await apiCourseList()
             .then(response => {
-                setCourseList(response);
-                // console.log(response);
+                setCourseList(response.data);
         })
         .catch(error => console.log(error));
 
     }
     
     async function fetchUsergroupData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setUsergroup(response);
-                // console.log(response);
+        await apiUserAvaGroup().then(response => {
+            setUsergroup(response.data);
         })
         .catch(error => console.log(error));
-
     }
 
     React.useEffect(() => {

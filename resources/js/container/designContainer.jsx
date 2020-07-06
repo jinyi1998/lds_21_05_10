@@ -4,7 +4,16 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
 import config from 'react-global-configuration';
-// import Tour from 'reactour'
+
+import {
+    apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
+    apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
+    apiLearningOutcomeTempGet,
+    apiDesignTypeList, apiDesignTypeGet,
+    apiOptionsList,
+    apiLearningTaskGetPatternOpts,
+  } 
+  from '../api.js';
 
 import TourGuide from './tourGuide';
 
@@ -192,120 +201,73 @@ const DesignContainer = (props) => {
     
     async function fetchNewCourseData() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/',
-            {
-                method: "POST",
+        await apiCourseCreate().then(
+            response => {
+                window.location.href = 'designstudio/'+response.data.id;
             }
-        )
-            .then(res => res.json())
-            .then(response => {
-                // Dispatch({
-                //     type: "INIT_COURSE",
-                //     value: response
-                // })
-           window.location.href = 'designstudio/'+response.id;
-        })
-        .catch(error => console.log(error));
+        );
     }
 
     async function fetchCourseData(id) {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/'+ id,
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                Dispatch({
-                    type: "INIT_COURSE",
-                    value: response
-                })
+        await apiCourseGet(id).then(response => {
+            Dispatch({
+                type: "INIT_COURSE",
+                value: response.data
+            })
             setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));
+        }).catch(error => console.log(error));
     }
     //#region Init Options Data
 
     async function fetchDesignTypeData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getDesignTypeTemp',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "designType": response
-                })
-            );
+        await apiDesignTypeList().then(response => {
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "designType": response.data
+            }))
         })
-        .catch(error => console.log(error));
-    
     }
     
     async function fetchlearningTypeTempData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningOutcome/getOutcomeType/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "learningOutcomeType": response
-            }));
-        })
-        .catch(error => console.log(error));
+        apiLearningOutcomeGetOutcomeType()
+        .then(response => {
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "learningOutcomeType": response.data,
+                "learningTypeTemp": response.data
+            }))
+        }).catch(error => console.log(error));
+
     }
 
     async function fetchlearningPatternOptsData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningTask/getLearningPatternOpts/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
+        await apiLearningTaskGetPatternOpts().then(
+            response => {
                 setOptions(optionsInit=> ({
                     ...optionsInit,
-                    "learningPatternOpts": response
-            }));
-        })
-        .catch(error => console.log(error));
+                    "learningPatternOpts": response.data
+                }));
+            }
+        )
     }
 
     async function fetchlearningOptsData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/opts',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "taskType": response.learningTasktypeOpts,
-                    "taskClassType": response.classTypeOpts,
-                    "taskSize": response.classSizeOpts,
-                    "taskTarget": response.classTargetOpts,
-                    "taskResource": response.resourceOpts,
-                    "taskElearingResource": response.elearningtoolOpts,
-                })
-            );
-            setTaskTypeColorValue(response.learningTasktypeOpts)
+        await apiOptionsList().then(response=>{
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "taskType": response.data.learningTasktypeOpts,
+                "taskClassType": response.data.classTypeOpts,
+                "taskSize": response.data.classSizeOpts,
+                "taskTarget": response.data.classTargetOpts,
+                "taskResource": response.data.resourceOpts,
+                "taskElearingResource": response.data.elearningtoolOpts,
+            }))
+            setTaskTypeColorValue(response.data.learningTasktypeOpts)
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }

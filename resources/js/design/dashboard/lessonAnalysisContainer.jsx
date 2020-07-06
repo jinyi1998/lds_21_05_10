@@ -8,7 +8,9 @@ import Tab from '@material-ui/core/Tab';
 import LessonAnalysisContent from './lessonAnalysisContent';
 import {ContextStore} from '../../container/designContainer'
 import config from 'react-global-configuration';
-
+import {
+    apiLessonAnalysisList
+} from '../../api.js'
 
 
 const generateColor = (num) => {
@@ -52,16 +54,10 @@ const LessonAnalysisContainer = ()=>{
 
 
     async function fetchlessonanalysis(id) {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/lessonanalysis/'+id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+        await apiLessonAnalysisList(id)
         .then(response => {
 
-            if( response["tasks_time_by_task"].length == 0){
+            if( response.data["tasks_time_by_task"].length == 0){
                 setData({
                     // title: "lesson # " + lesson,
                     title: course.lessons.find(_x => _x.id == lesson).title,
@@ -74,7 +70,7 @@ const LessonAnalysisContainer = ()=>{
                 });
 
             }else{
-                handleAnalysisData(response)
+                handleAnalysisData(response.data)
             }
            
         })

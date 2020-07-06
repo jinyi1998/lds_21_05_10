@@ -23,39 +23,10 @@ const LessonPlanContainer = (props) => {
     const refreshLesson = () => {
         setRefresh(true);
     }
-
-    // React.useEffect(()=>{
-    //     // fetchLesson(lessonID)
-    // },[lessonID])
     
     React.useEffect(()=>{
         setLesson(props.lesson)
     }, [props])
-
-    // React.useEffect(()=>{
-    //     if(refresh== true){
-    //         fetchLesson(lesson.id);
-    //         setRefresh(false);
-    //     }
-       
-    // },[refresh])
-
-    async function fetchLesson(id) {
-        setLoadingOpen(true);
-        return await fetch(
-            'http://'+config.get('url')+'/api/lesson/'+ id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            setLesson(response);
-            setLoadingOpen(false);
-        })
-        .catch(error => console.log(error));
-    }
 
     return (
         <Grid container data-tour = "lesson_view">
@@ -90,14 +61,6 @@ const LessonPlanContainer = (props) => {
                     />
             </Dialog>
            
-           
-
-            {/* <LessonPlanEditTask 
-                openLessonTaskEdit = {openLessonTaskEdit}
-                setOpenLessonTaskEdit = {setOpenLessonTaskEdit}
-                onEditComponentID = {onEditComponentID}
-                onEditTasktID = {onEditTasktID}
-            /> */}
         </Grid>
     )
 

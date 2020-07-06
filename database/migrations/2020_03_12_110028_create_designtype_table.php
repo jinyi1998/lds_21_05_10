@@ -29,10 +29,9 @@ class CreateDesigntypeTable extends Migration
         $initData = [
             [
                 'name' => 'Engineering Design SDL',
-                'description' => 'Using engineering design practice to guide the learing task 
-                sequence design by adopting the self-directed learning approach',
-                'hint' => 'Engineering Design approach guides you...',
-                'media' => 'https://cdn2.iconfinder.com/data/icons/conceptual-vectors-of-logos-and-symbols/66/204-512.png',
+                'description' => 'Using engineering design practice to guide the learing task sequence design by adopting the self-directed learning approach',
+                'hint' => 'Engineering design approach guides you...',
+                'media' => '/asset/image/ED.png',
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => false,
@@ -40,11 +39,10 @@ class CreateDesigntypeTable extends Migration
                 'updated_at' => now()
             ],
             [
-                'name' => 'Scienitic Investigation SDL',
-                'description' => 'Using scienitic investigation practice to guide the 
-                learing task sequence design by adopting the self-directed learning approach',
+                'name' => 'Scientific Investigation SDL',
+                'description' => 'Using Scientific investigation practice to guide the learing task sequence design by adopting the self-directed learning approach',
                 'hint' => 'Scientific investigation practice design approach guides you...',
-                'media' => 'https://www.pinclipart.com/picdir/big/44-449704_nuclear-icon-nuclear-icon-png-clipart.png',
+                'media' => '/asset/image/SI.png',
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => false,

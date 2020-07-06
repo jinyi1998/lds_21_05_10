@@ -31,6 +31,12 @@ import QuestionHint from '../../components/questionHint';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import {
+    apiLearningOutcomeDelete, apiLearningOutcomeDeletComponentRelation,
+    apiLearningOutcomeComponentPut,
+    apiLearningOutcomeCoursePut,
+} from "../../api.js"
+
 const useStyles = makeStyles(theme => ({
     list: {
       width: '100%',
@@ -156,7 +162,6 @@ const LearningOutcomeContainer = (props)=>{
               sequence: tempOutcomes[i].courseid.sequence - 1
             }
             updateOutcomeSequence(tempOutcome);
-            // fetchUpdateLearningComponent(tempComponent);
          }
         }else{
 
@@ -199,7 +204,6 @@ const LearningOutcomeContainer = (props)=>{
             }
             // console.log(tempOutcome);
             updateOutcomeSequence(tempOutcome);
-            // fetchUpdateLearningComponent(tempComponent);
          }
         }else{
 
@@ -222,29 +226,20 @@ const LearningOutcomeContainer = (props)=>{
         setLoadingOpen(true)
         if(modeLevel == "component" && learningOutcome.isCourseLevel == true){
             //just remove the component relation
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome/destroyComponentRelation/'+learningOutcome.id+'/'+component.id,
-                {
-                method: "DELETE",
+            apiLearningOutcomeDeletComponentRelation({
+                "outcome_id": learningOutcome.id,
+                "component_id": component.id
+            }).then(
+                ()=>{
+                    refreshCourse()
+                    setLoadingOpen(false)
                 }
             )
-            .then(res => res.json())
-            .then(response => {
-                //load the default learning outcomes by api request
-                refreshCourse()
-                setLoadingOpen(false)
-            })
             .catch(error => console.log(error));   
 
         }else{
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome/'+learningOutcome.id,
-                {
-                method: "DELETE",
-                }
-            )
-            .then(res => res.json())
-            .then(response => {
+            apiLearningOutcomeDelete(learningOutcome.id)
+            .then(()=>{
                 //load the default learning outcomes by api request
                 refreshCourse()
                 setLoadingOpen(false)
@@ -257,35 +252,13 @@ const LearningOutcomeContainer = (props)=>{
       async function updateOutcomeSequence(outcome_relation) {
         setLoadingOpen(true)
         if(modeLevel == "component"){
-            return await fetch(
-                'http://'+config.get('url')+'/api/componentOutcomeRelation/'+ outcome_relation.id,
-                {
-                  method: "PUT",
-                  body:  JSON.stringify(outcome_relation),
-                  headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                  }
-                }
-              ).then(res => res.json())
-              .then(response => {
-                  refreshCourse()
-              })
-        
-
+            await apiLearningOutcomeComponentPut(outcome_relation).then(
+                refreshCourse()
+            ).catch(error => console.log(error));   
         }else{
-            return await fetch(
-                'http://'+config.get('url')+'/api/courseOutcomeRelation/'+ outcome_relation.id,
-                {
-                  method: "PUT",
-                  body:  JSON.stringify(outcome_relation),
-                  headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                  }
-                }
-              ).then(res => res.json())
-              .then(response => {
-                  refreshCourse()
-              })
+            await apiLearningOutcomeCoursePut(outcome_relation).then(
+                refreshCourse()
+            ).catch(error => console.log(error));   
         }
        
       }

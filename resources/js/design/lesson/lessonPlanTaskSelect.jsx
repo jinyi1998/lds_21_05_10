@@ -17,9 +17,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import config from 'react-global-configuration';
+import {
+    apiLearningCompGet,
+    apiLessonUpdate
+} from '../../api.js'
 
-//   tasks : [ { componetID, taskIndex }]
 
 const LessonPlanTaskSelect = (props) => {
 
@@ -65,10 +67,11 @@ const LessonPlanTaskSelect = (props) => {
         })
 
         var json = {
-            tasks_id: task_arr
+            tasks_id: task_arr,
+            lesson_id: lesson.id
         }
 
-        updateLesson(lesson.id, json);
+        updateLesson(json);
     }
 
     const onCheckCheckbox = name => event => {
@@ -83,16 +86,11 @@ const LessonPlanTaskSelect = (props) => {
 
     async function fetchlearningComponentData(id) {
         setLoadingOpen(true)
-        fetch(
-            'http://'+config.get('url')+'/api/learningComponent/'+id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+
+        apiLearningCompGet(id)
         .then(response => {
-            var task = response.tasks;
-            response.patterns.map( 
+            var task = response.data.tasks;
+            response.data.patterns.map( 
                 pattern => { task = task.concat(pattern.tasks) }
             );
             var checkBoxStateTmp = {};
@@ -116,26 +114,15 @@ const LessonPlanTaskSelect = (props) => {
         .catch(error => console.log(error));
     }
 
-    async function updateLesson(id, data) {
+    async function updateLesson(data) {
         setLoadingOpen(true);
-        await fetch(
-            'http://'+config.get('url')+'/api/lesson/'+id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(data),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        await apiLessonUpdate(data)
         .then(response => {
             refreshCourse();
             setEditMode(false);
             setLoadingOpen(false);
         })
         .catch(error => console.log(error));
-
     }
 
     const displayEditContent = () => {
@@ -203,9 +190,6 @@ const LessonPlanTaskSelect = (props) => {
                                                         value = {checkBoxState[_task.id]}
                                                         key = {_task.id}
                                                         checked = {false || checkBoxState[_task.id]}
-                                                        // checked = {courseData.lesson[lessonID].tasks.find(_task => 
-                                                        //     (_task.componentID != selectComponent && _task.taskIndex != index)
-                                                        // )== 'undefined'}
                                                 />
                                             </Grid>
                                             <Grid item xs = {11}>
@@ -229,11 +213,6 @@ const LessonPlanTaskSelect = (props) => {
                             null
                             )
                          }
-                        {/* <Grid item xs = {12}>
-                            <Button variant="contained" color="primary" fullWidth onClick = {onSave}>
-                                Save
-                            </Button>
-                        </Grid> */}
                     </Grid>
                    
                 )
@@ -251,12 +230,7 @@ const LessonPlanTaskSelect = (props) => {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                {/* <Button onClick={handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={handleClose} color="primary">
-                    Subscribe
-                </Button> */}
+ 
                  {stage == 2?
                     <Button variant="contained" color="primary" fullWidth onClick = {onSave} data-tour = "lesson_task_add">
                         Save

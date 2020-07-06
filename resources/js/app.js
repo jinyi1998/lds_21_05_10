@@ -22,3 +22,9 @@ require('./usergroup/container/usergroupContainer');
 
 window.$ = window.jQuery = require('jquery');
 // require('bootstrap-sass');
+
+$.ajaxSetup({
+    headers: {
+      Authorization: 'Bearer:' + $('meta[name="api-token"]').attr("content")
+    }
+}); 

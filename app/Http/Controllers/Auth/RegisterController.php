@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class RegisterController extends Controller
 {
@@ -83,11 +85,26 @@ class RegisterController extends Controller
             return redirect('register')
                         ->withErrors($validator);
         }else{
+            
             $user = $this->create($request->all());
 
-            $this->guard()->login($user);
+            $attempt = Auth::attempt([
+                'email' => $user->email,
+                'password' => $request->password
+            ]);
+    
+            if ($attempt) {
+                $user = User::find(Auth::user()->id);
+                $token = $user->createToken('apitoken')->accessToken;
+                session(['apitoken' => $token]);
+                redirect($this->redirectPath());
+            }
+    
+            return Redirect::to('login');
 
-            return $this->registered($request, $user)?redirect('/login'): redirect($this->redirectPath());
+            // $this->guard()->login($user);
+
+            // return $this->registered($request, $user)?redirect('/login'): redirect($this->redirectPath());
         }
 
     }

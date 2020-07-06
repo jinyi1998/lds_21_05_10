@@ -35,10 +35,11 @@ import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import Tooltip from '@material-ui/core/Tooltip';
-
-
-
 import config from 'react-global-configuration';
+
+import {
+    apiLearningTaskPost, apiLearningTaskDelete
+} from '../../api.js'
 //   tasks: [
 //     {
 //       id: 0,
@@ -137,25 +138,6 @@ const LearningTaskView = (props) => {
             );
         }
     }
-    
-
-    async function fetchlearningTask(id) {
-        setLoadingOpen(true);
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningTask/'+ id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            setLoadingOpen(false);
-            setTask(response);
-          
-        })
-        .catch(error => console.log(error));
-    }
 
     async function duplicateLearningTask() {
         setLoadingOpen(true);
@@ -163,37 +145,21 @@ const LearningTaskView = (props) => {
             var json = task;
             json['component_id'] = duplicateTo;
             json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
-
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            
+            return await apiLearningTaskPost(json)
             .then(response => {
                 //load the default learning outcomes by api request
                 refreshCourse();
                 setLoadingOpen(false);  
                 setDuplicateDialogOpen(false);  
             })
-            .catch(error => console.log(error));
+            .catch(error => console.log(error))
         }
     }
 
     async function deleteLearningTask() {
         setLoadingOpen(true);
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningTask/'+ task.id,
-            {
-            method: "DELETE",
-            }
-        )
-        .then(res => res.json())
+        return await apiLearningTaskDelete(task.id)
         .then(response => {
             //load the default learning outcomes by api request
             refreshCourse();
@@ -203,7 +169,6 @@ const LearningTaskView = (props) => {
     }
 
     React.useEffect( ()=>{  
-        // fetchlearningTask(taskID)
         setTask(taskData);
     }
     , [props])

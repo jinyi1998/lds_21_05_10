@@ -172,11 +172,9 @@ const LoginForm = () => {
                         </Link>
                         </Grid>
                     </Grid>
+                    <input type="hidden" name = "_token" value = {$('meta[name="csrf-token"]').attr('content')} />
                 </form>
             </div>
-            {/* <Box mt={5}>
-                <Copyright />
-            </Box> */}
         </Container>
     );
 }
