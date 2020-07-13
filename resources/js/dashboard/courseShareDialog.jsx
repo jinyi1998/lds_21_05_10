@@ -22,7 +22,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
-
+import {apiCourseUpdate} from '../api.js';
 
 
 const CourseShareDialog = (props) => {
@@ -68,6 +68,7 @@ const CourseShareDialog = (props) => {
         var json = {
           coursetype:  courseType,
         };
+        json['course_id'] = courseData.id;
         
         json["usergroupid"] = [];
         if(usergroupCheck.length > 0){
@@ -77,26 +78,12 @@ const CourseShareDialog = (props) => {
             }))
 
         }
-        fetch(
-            'http://'+config.get('url')+'/api/course/'+ courseData.id,
-            {
-              method: "PUT",
-              body:  JSON.stringify(json),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                // dispatch({
-                //     type: "INIT_COURSE",
-                //     value: response
-                // })
-                // setLoadingOpen(false)
-                onClose();
+
+        apiCourseUpdate(json)
+        .then(response => {
+            onClose();
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error))
     }
 
     const displayUsergroupList = () => {

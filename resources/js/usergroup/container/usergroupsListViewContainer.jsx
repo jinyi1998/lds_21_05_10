@@ -20,6 +20,11 @@ import config from 'react-global-configuration';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import {
+    apiUserUsergroupList, apiUserUsergroupCreate,
+    apiUserUsergroupUserCreate
+  } from '../../api.js';
+
 export const ContextStore = React.createContext({
     setLoadingOpen: ()=> {},
     user: {}
@@ -55,15 +60,10 @@ const UsergroupsListViewContainer = (props) => {
     //#region API Data
     async function fetchusergroups() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroup/',
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+
+        await apiUserUsergroupList()
         .then(response => {
-            setUsergroups(response)
+            setUsergroups(response.data)
             setLoadingOpen(false)
         })
         .catch(error => console.log(error));
@@ -77,19 +77,8 @@ const UsergroupsListViewContainer = (props) => {
                 "user_id": user.id
             }]
         }
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroup/',
-            {
-                method: "POST",
-                body:  JSON.stringify(json),
-                headers: {
-                "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        await apiUserUsergroupCreate(json)
         .then(response => {
-            // setUsergroups(response)
             fetchusergroups()
             setLoadingOpen(false)
         })
@@ -102,19 +91,8 @@ const UsergroupsListViewContainer = (props) => {
             'user_id': user.id,
             'usergroup_id': usergroup_id
         }
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroupuser',
-            {
-                method: "POST",
-                body:  JSON.stringify(json),
-                headers: {
-                "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        await apiUserUsergroupUserCreate(json)
         .then(response => {
-            // setUsergroups(response)
             fetchusergroups()
             setLoadingOpen(false)
         })
@@ -262,7 +240,3 @@ const UsergroupsListViewContainer = (props) => {
     );
 }
 export default UsergroupsListViewContainer;
-
-if (document.getElementById('usergroups')) {
-    ReactDOM.render(<UsergroupsListViewContainer user = {document.getElementById('topmenu').dataset.user}/>, document.getElementById('usergroups'));
-}

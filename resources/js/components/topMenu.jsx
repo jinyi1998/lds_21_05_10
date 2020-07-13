@@ -4,23 +4,16 @@ import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ToolMenu from './toolMenu';
 
+import {ContextStore} from '../container/app';
 
 const drawerWidth = 240;
 
@@ -67,37 +60,25 @@ const useStyles = makeStyles(theme => ({
  const TopMenu = (props) => {
 
   const classes = useStyles();
-  const user = JSON.parse(props.value);
+  const user = JSON.parse(props.user);
 
-  // general menu
-  const [open, setOpen] = React.useState(false);
- 
-
-  const [selectedIndex, setSelectedIndex] = React.useState('myDesign');
-  React.useEffect(()=>{
-      setSelectedIndex('design');
-  }, []
-  )
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
+  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(ContextStore);
 
   return (
       <React.Fragment>
         <CssBaseline />
         
-        <AppBar className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <AppBar className={clsx(classes.appBar, sideMenuOpen && classes.appBarShift)}>
             <Toolbar className={classes.toolbar}>
-            {/* <IconButton
+            <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="open drawer"
-                onClick={()=> {setOpen(!open)}}
-                className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                onClick={()=> {setSideMenuOpen(!sideMenuOpen)}}
+                className={clsx(classes.menuButton, sideMenuOpen && classes.menuButtonHidden)}
             >
                 <MenuIcon />
-            </IconButton> */}
+            </IconButton>
               <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                   Learning Design Studio
               </Typography>

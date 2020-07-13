@@ -3,6 +3,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
+import ActionTool from '../design/actionTool';
 import config from 'react-global-configuration';
 
 import {
@@ -135,18 +136,16 @@ const DesignContainer = (props) => {
     const [displayGuideTour, setDisplayGuideTour] = React.useState(false);
 
     React.useEffect(()=>{
-        (async function anyNameFunction() {
-            setLoadingOpen(true)
-            await InitDesignOption();
-            InitCourseData()
-            setLoadingOpen(false)
-          })();
-          var user = JSON.parse(props.user);
-          if(user['display_tourguide'] == 1){
+        setLoadingOpen(true)
+        InitDesignOption();
+        InitCourseData()
+
+        let user = JSON.parse(props.user);
+        if(user['display_tourguide'] == 1){
             setDisplayGuideTour(true);
-          }else{
+        }else{
             setDisplayGuideTour(false);
-          }    
+        }          
     },
     []);
 
@@ -292,7 +291,15 @@ const DesignContainer = (props) => {
           setStepIndex(stepIndex + 1);
       }
       //#endregion
-      
+    
+    const displayDesignStudio = () => {
+        if(props.courseID == -1){
+            // setLoadingOpen(true);
+            return null;
+        }else{
+            return <Design courseID={props.courseID} step = {props.step}/>
+        }
+    }
 
     return (
       <ContextStore.Provider
@@ -321,8 +328,11 @@ const DesignContainer = (props) => {
             displayGuideTour = {displayGuideTour}
             setDisplayGuideTour = {setDisplayGuideTour}
         />
-        <Design courseID={props.courseID} step = {props.step}/>
+        
+        {displayDesignStudio()}
 
+        <ActionTool />
+        
         <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
             <CircularProgress color="inherit" />
         </Backdrop>

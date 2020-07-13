@@ -7,6 +7,7 @@ require('./components/welcome');
 require('./container/registerForm');
 require('./container/loginForm');
 
+require('./container/appContainer');
 require('./container/design');
 require('./container/designContainer');
 // require('./container/appContainer');

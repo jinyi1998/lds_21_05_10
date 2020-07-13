@@ -26,6 +26,7 @@ Route::resource('opts', 'API\LearningTaskOptsController');
 
 //File System
 Route::post('file/json', 'API\FileSystemController@json');
+Route::get('file/exportCourseJson/{id}', 'API\FileSystemController@exportCourseJson');
 Route::get('file', 'API\FileSystemController@index');
 
 //Learning Outcome
@@ -136,8 +137,17 @@ Route::resource('test', 'API\TestController');
 
 Route::delete('course/clearCourseComponent/{id}', 'API\CourseController@clearCourseComponent');
 Route::delete('course/clearCourseLesson/{id}', 'API\CourseController@clearCourseLesson');
+Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
+Route::get('course/showAll', 'API\CourseController@showAll');
+Route::get('course/showUsergroup/{id}', 'API\CourseController@showUsergroup');
+Route::post('file/courseImport', 'API\CourseController@importCourse');
 Route::resource('course', 'API\CourseController');
 Route::resource('designType', 'API\DesignTypeController');
 
 
 Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');
+
+
+Route::middleware('admin_auth')->get('/admin', function(){
+    return response()->json('admin test');
+});

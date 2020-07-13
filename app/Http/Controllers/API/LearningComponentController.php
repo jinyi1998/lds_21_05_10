@@ -198,7 +198,7 @@ class LearningComponentController extends Controller
         }
 
         // pattern
-        if($request->has('patterns')){
+        if($request->has('patterns') && isset($request->patterns[0])){
             $_pattern =  $request->patterns[0];
             $_pattern['component_id'] = $component->id;
             foreach(  $_pattern['tasks'] as $key => $_task){
@@ -254,6 +254,11 @@ class LearningComponentController extends Controller
             ]);
         }
         $component->save();
+
+        $component = Component::with([
+            'tasks', 
+            'patterns'
+        ])->find($component->id);
         return $component;
     }
 

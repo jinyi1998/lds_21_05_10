@@ -10,10 +10,55 @@ import config from 'react-global-configuration';
     },
   });
   export const apiUserAvaGroup = data => userRequest.get('/getAvaUserGroup');
+  export const apiUserGuidedTourUpdate = data => userRequest.put('/tourguide', JSON.stringify(data));
+  //#endregion
+  
+  //#region user group api
+  const usergroupRequest = axios.create({
+    baseURL:  'http://'+config.get('url')+'/api/usergroup',
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
+    },
+  });
+  export const apiUserUsergroupList = data => usergroupRequest.get('/');
+  export const apiUserUsergroupGet = data => usergroupRequest.get(`/${data}`);
+  export const apiUserUsergroupCreate = data => usergroupRequest.post('/', JSON.stringify(data));
+  export const apiUserUsergroupUpdate = data => usergroupRequest.put(`/${data.id}`,  JSON.stringify(data));
+  export const apiUserUsergroupDelete = data => usergroupRequest.delete(`/${data}`);
   //#endregion
 
+  //#region user group user api
+  const usergroupUserRequest = axios.create({
+    baseURL:  'http://'+config.get('url')+'/api/usergroupuser',
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
+    },
+  });
+  export const apiUserUsergroupUserList = data => usergroupUserRequest.get('/');
+  export const apiUserUsergroupUserGet = data => usergroupUserRequest.get(`/${data}`);
+  export const apiUserUsergroupUserCreate = data => usergroupUserRequest.post('/', JSON.stringify(data));
+  export const apiUserUsergroupUserUpdate = data => usergroupUserRequest.put(`/${data.id}`,  JSON.stringify(data));
+  export const apiUserUsergroupUserDelete = data => usergroupUserRequest.delete(`/${data}`);
+  //#endregion
 
-    //#region course api
+  //#region user group user temp api
+  const usergroupUseTempRequest = axios.create({
+    baseURL:  'http://'+config.get('url')+'/api/usergroupuserTemp',
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
+    },
+  });
+  export const apiUserUsergroupUserTempList = data => usergroupUseTempRequest.get('/');
+  export const apiUserUsergroupUserTempGet = data => usergroupUseTempRequest.get(`/${data}`);
+  export const apiUserUsergroupUserTempCreate = data => usergroupUseTempRequest.post('/', JSON.stringify(data));
+  export const apiUserUsergroupUserTempUpdate = data => usergroupUseTempRequest.put(`/${data.id}`,  JSON.stringify(data));
+  export const apiUserUsergroupUserTempDelete = data => usergroupUseTempRequest.delete(`/${data}`);
+  //#endregion
+
+  //#region course api
   const courseRequest = axios.create({
     baseURL:  'http://'+config.get('url')+'/api/course',
     headers: {
@@ -26,6 +71,8 @@ import config from 'react-global-configuration';
   export const apiCourseDelete = data => courseRequest.delete(`/${data}`);
   export const apiCourseCreate = data => courseRequest.post('/', JSON.stringify(data));
   export const apiCourseUpdate = data => courseRequest.put(`/${data.course_id}`, JSON.stringify(data));
+  export const apiCourseShowAll =  data => courseRequest.get(`/showAll`);
+  export const apiCourseShowUsergroup =  data => courseRequest.get(`/showUsergroup/${data}`);
   export const apiCourseClearComponent = data => courseRequest.delete(`/clearCourseComponent/${data}`);
   export const apiCourseClearLesson = data => courseRequest.delete(`/clearCourseLesson/${data}`);
   //#endregion
@@ -272,3 +319,15 @@ import config from 'react-global-configuration';
     });
     export const apiLessonAnalysisList = data => lessonAnalysisRequest.get(`/${data}`);
     //#endregion
+
+    //#region fileExport api
+    const fileRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/file',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    })
+    export const apiFileCourseImport = data => fileRequest.post(`courseImport`, JSON.stringify(data));
+    export const apiFileCourseExport = data => fileRequest.get(`exportCourseJson/${data}`);
+    export const apiFileCourseDownload = data => fileRequest.get(`downloadCourseJson/${data}`);

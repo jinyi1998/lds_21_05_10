@@ -247,7 +247,6 @@ const Design = (props) => {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {/* {activeStep === steps.length - 1 ? 'Save' : 'Next'} */}
                     Next
                   </Button>
               )}
@@ -411,11 +410,6 @@ const Design = (props) => {
       <main className={classes.layout}>
         <Paper className={classes.paper} style ={{padding: "16px"}}>
           <Grid container spacing = {4}>
-            {/* <Grid item xs = {12}>
-              <Typography component="h1" variant="h4" align="center">
-                {displayTitle()}
-              </Typography>
-            </Grid> */}
             <Grid item xs = {12}>
               {getActivePage()}
             </Grid>

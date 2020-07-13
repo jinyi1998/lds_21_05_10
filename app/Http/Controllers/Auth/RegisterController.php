@@ -32,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/designstudio';
+    // protected $redirectTo = '/designstudio';
 
     /**
      * Create a new controller instance.
@@ -97,7 +97,7 @@ class RegisterController extends Controller
                 $user = User::find(Auth::user()->id);
                 $token = $user->createToken('apitoken')->accessToken;
                 session(['apitoken' => $token]);
-                redirect($this->redirectPath());
+                return redirect('/designstudio');
             }
     
             return Redirect::to('login');

@@ -20,6 +20,8 @@ import config from 'react-global-configuration';
 
 import CourseShareDialog from './courseShareDialog';
 
+import {apiCourseDelete} from '../api.js';
+
 const DesignItem = (props) => {
     const {courseData, usergroup} = props;
     const updated_at = courseData.updated_at;
@@ -44,16 +46,11 @@ const DesignItem = (props) => {
     }
 
     const deleteCourse = () => {
-        const res =  fetch(
-            'http://'+config.get('url')+'/api/course/' + courseData.id,
-            {
-                method: "DELETE",
+        apiCourseDelete(courseData.id).then(
+            response => {
+                location.reload();
             }
         )
-            .then(res => res.json())
-            .then(response => {
-                location.reload();
-            })
         .catch(error => console.log(error));
     }
 
@@ -85,8 +82,6 @@ const DesignItem = (props) => {
                         : 
                         null
                     }
-                   
-
                 </ListItemSecondaryAction>
             </ListItem>
 

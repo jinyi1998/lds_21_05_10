@@ -10,6 +10,7 @@ import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
 import config from 'react-global-configuration';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import {apiCourseShowAll, apiCourseShowUsergroup} from '../api.js';
 
 const PublicDesign = (props)=>{
 
@@ -32,42 +33,23 @@ const PublicDesign = (props)=>{
 
     //call api to get the data
     async function fetchData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/showAll',
-            {
-            method: "GET",
+        await apiCourseShowAll().then(
+            response => {
+                setCourseList(response.data)
             }
         )
-            .then(res => res.json())
-            .then(response => {
-                setCourseList(response);
-                // console.log(response);
-        })
         .catch(error => console.log(error));
-
     }
+
     async function fetchUsergroupData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setUsergroup(response);
-                // console.log(response);
+        await apiUserAvaGroup().then(response => {
+            setUsergroup(response.data);
         })
         .catch(error => console.log(error));
-
     }
     
     React.useEffect(() => {
-        // if(config.get('enableDB')){
-        //     fetchData();
-        // }
         fetchData();
         fetchUsergroupData();
     }, []);
@@ -82,8 +64,7 @@ const PublicDesign = (props)=>{
                 </Grid>
                  
                  
-                <Grid item xs = {4}>
-                    
+                <Grid item xs = {4}>        
                     <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
                         Add new design
                     </Button>

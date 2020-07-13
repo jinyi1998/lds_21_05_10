@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import config from 'react-global-configuration';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
-import {apiUserAvaGroup, apiCourseList} from '../api.js';
+import {apiUserAvaGroup, apiCourseList, apiFileCourseImport} from '../api.js';
 
 const MyDesign = (props)=>{
 
@@ -21,16 +21,18 @@ const MyDesign = (props)=>{
     // const {setImportJson} = props;
     // const {handleListItemClick, setCourseID} = props;
 
-    // let fileReader = new FileReader();
-    // fileReader.onload = event => {
-    //     setImportJson(JSON.parse(event.target.result));
-    //     setCourseID(1);
-    //     handleListItemClick(event, 'design');
-    // };
+    let fileReader = new FileReader();
+    fileReader.onload = event => {
+        apiFileCourseImport(JSON.parse(event.target.result))
+        .then(response => {
+            // console.log(response);
+            window.location.reload(false); 
+        });
+    };
 
-    // const handleFile = (event) => {
-    //     fileReader.readAsText(event.target.files[0])
-    // }
+    const handleFile = (event) => {
+        fileReader.readAsText(event.target.files[0])
+    }
 
     //call api to get the data
     async function fetchData() {
@@ -57,18 +59,26 @@ const MyDesign = (props)=>{
 
     return (
         <React.Fragment>
-            <Grid container spacing={4} justify="space-between">
+            <Grid container justify="space-between" spacing = {3}>
                 <Grid item xs = {4}>
                     <Typography component="h1" variant="h6" color="inherit" noWrap>
                         My Design Area
                     </Typography>
                 </Grid>
                  
-                 
-                <Grid item xs = {4}>
-                    
+                <Grid item xs = {4} >
                     <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
                         Add new design
+                    </Button>
+                    <Button variant="contained"component="label" color='secondary'>
+                        <CloudUploadIcon />
+                        Upload File
+                        <input
+                            type="file"
+                            accept=".json"
+                            onChange = {handleFile}
+                            hidden
+                        />
                     </Button>
                 </Grid>
 

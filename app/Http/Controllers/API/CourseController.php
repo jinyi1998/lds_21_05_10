@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Course;
+use App\Component;
+use App\LearningOutcome;
+use App\Lesson;
 use Auth;
 
 
@@ -183,5 +186,68 @@ class CourseController extends Controller
                 'name'=> "Scientific Investigation SDL",
             ],
         ]);
+    }
+
+    public function importCourse( Request $request){
+        //save course
+        $course = new Course();
+        $request['created_by'] =  Auth::user()->id;
+        $course = CourseController::save($course, $request);
+
+ 
+        //outcome
+        $outcomeMapping = [];
+        foreach($request->outcomes as $_outcome){
+            $_outcome_obj = new LearningOutcome();
+            $_outcome['course_id'] = $course->id;
+            $_outcome_request = new \Illuminate\Http\Request($_outcome);
+            $new_outcome = LearningOutcomesController::save( $_outcome_obj, $_outcome_request);
+
+            //mapping array for the unit outcome from the old json course to new unit outcome
+            $outcomeMapping[$_outcome['id']] = $new_outcome->id;
+        }
+
+        //component
+        $taskMapping = [];
+        foreach($request->components as $_component){
+            // $_component
+            $_component_obj = new Component();
+            $_component['course_id'] = $course->id;
+            foreach($_component['outcomes'] as $index => $_outcome){
+                $_component['outcomes'][$index]['unit_outcomeid']['unit_outcomeid'] = $outcomeMapping[ $_component['outcomes'][$index]['unit_outcomeid']['unit_outcomeid']];
+            }
+            $_component_request = new \Illuminate\Http\Request($_component);
+            $new_component = LearningComponentController::save( $_component_obj, $_component_request);
+            //generate task mapping array for lesson-task mapping
+            foreach($_component['tasks'] as $index => $_task){
+                $taskMapping[$_task['id']] = $new_component['tasks'][$index]['id'];
+            }
+            foreach($_component['patterns'] as $index_pattern => $_pattern){
+                foreach($_pattern['tasks'] as $index_tasks => $_task){
+                    $taskMapping[$_task['id']] = $new_component['patterns'][$index_pattern]['tasks'][$index_tasks]['id'];
+                }
+            }
+            // return response()->json($new_component);
+        }
+
+        //lesson
+        foreach($request->lessons as $_lesson){
+            $_lesson_obj = new Lesson();
+            $_lesson['course_id'] = $course->id;
+            foreach($_lesson['tasksid'] as $index => $_task){
+                if(isset($taskMapping[$_task['task_id']])){
+                    $_lesson['tasks_id'][$index]['task_id'] = $taskMapping[$_task['task_id']];
+                    $_lesson['tasks_id'][$index]['sequence'] = $index + 1;
+                }
+            }
+            // return response()->json($_lesson);
+            $_lesson_request = new \Illuminate\Http\Request($_lesson);
+            LessonController::save( $_lesson_obj, $_lesson_request);
+        }
+
+        // $course = Course::find($course->id);
+        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid'])->find($course->id);
+
+        return response()->json($course);
     }
 }
