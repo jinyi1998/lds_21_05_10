@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DesigmItem from '../../dashboard/designItem';
 import Typography from '@material-ui/core/Typography';
 import {ContextStore} from '../container/usergroupContainer';
+import {AppContextStore} from '../../container/app';
 
 import {
     apiCourseShowUsergroup,
@@ -19,7 +20,8 @@ const UsergroupDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
-    const { user, setLoadingOpen } = React.useContext(ContextStore);
+    const { user } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     //call api to get the data
     async function fetchData() {

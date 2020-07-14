@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ContextStore = React.createContext({
-  setLoadingOpen: ()=>{},
   user: {}
   
 });
@@ -74,7 +73,6 @@ const UsergroupContainer = (props) => {
   const [usergroup, setUsergroup] = React.useState({
     users: [],
   });
-  const [loadingOpen, setLoadingOpen] = React.useState(false)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -127,15 +125,10 @@ React.useEffect(()=>{
   return (
     <ContextStore.Provider
       value = {{
-        setLoadingOpen: setLoadingOpen,
         user: props.user
       }}
     >
        <React.Fragment>
-        <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-              <CircularProgress color="inherit" />
-          </Backdrop>
-
           <AppBar position="static">
             <Tabs value={value} onChange={handleChange} centered>
               <Tab label="Design Garden" {...a11yProps(0)} />

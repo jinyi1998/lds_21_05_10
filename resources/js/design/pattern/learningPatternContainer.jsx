@@ -17,7 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {ComponentContext} from '../component/componentContainer';
 import {ContextStore} from '../../container/designContainer'
-import config from 'react-global-configuration';
+import {AppContextStore} from '../../container/app';
 
 import {
     apiLearningCompGetPatternOpts,
@@ -48,7 +48,8 @@ const useStyles = makeStyles(theme => ({
 
 
 const LearningPatternContainer = (props) => {
-    const { setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const { component } = React.useContext(ComponentContext);
 
     const classes = useStyles();

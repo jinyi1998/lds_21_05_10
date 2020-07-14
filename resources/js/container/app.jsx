@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 
@@ -13,10 +15,10 @@ import PublicDesign from '../dashboard/publicDesign';
 import UsergroupContainer from '../usergroup/container/usergroupContainer';
 import UsergroupsListViewContainer from '../usergroup/container/usergroupsListViewContainer';
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
-import UsersmanagementContainer from '../admin/usersmanagement/container/usersmanagementContainer';
+import UserMgmtContainer from '../admin/usersmanagement/container/usersMgmtContainer';
 import TemplateBuilderContainer from '../admin/template_builder/container/templateBuilderContainer';
 
-export const ContextStore = React.createContext({
+export const AppContextStore = React.createContext({
 
 });
 const drawerWidth = 240;
@@ -30,11 +32,16 @@ const  useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
 
 const App = (props) => {
   const [currentModule, setCurrentModule] = React.useState(props.module);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
+  const [loadingOpen, setLoadingOpen] = React.useState(false);
 
   const classes = useStyles();
 
@@ -58,17 +65,18 @@ const App = (props) => {
       case 'admin_template_builder':
         return <TemplateBuilderContainer/>
       case 'admin_usersmanagement':
-        return <UsersmanagementContainer/>
+        return <UserMgmtContainer/>
     }
   }
 
   return (
-    <ContextStore.Provider
+    <AppContextStore.Provider
       value={{
         currentModule: currentModule,
         setCurrentModule: setCurrentModule,
         sideMenuOpen: sideMenuOpen,
-        setSideMenuOpen: setSideMenuOpen
+        setSideMenuOpen: setSideMenuOpen,
+        setLoadingOpen: setLoadingOpen
       }}
     >
       <Grid container>
@@ -86,7 +94,11 @@ const App = (props) => {
             </Grid>
       </Grid>
 
-    </ContextStore.Provider>
+      <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
+            <CircularProgress color="inherit" />
+      </Backdrop>
+
+    </AppContextStore.Provider>
   );
 }
 export default App;

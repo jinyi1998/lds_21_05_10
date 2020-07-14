@@ -111,9 +111,9 @@ const UnitPlanContainer = (props)=>{
               <TabPanel value={value} index={1}>
                   <LessonPlan />
               </TabPanel>
-              <TabPanel value={value} index={2}>
+              {/* <TabPanel value={value} index={2}>
                   <DashBoardContainer />
-              </TabPanel>
+              </TabPanel> */}
             </Grid>
         </Grid>
        

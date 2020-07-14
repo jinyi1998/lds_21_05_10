@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../../container/designContainer'
+import {ContextStore} from '../../container/designContainer';
+import {AppContextStore} from '../../container/app';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,7 +12,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LearningTaskView from './learningTaskView';
 import LearningTaskEditView from './learningTaskEditView';
 import validator from 'validator';
-import config from 'react-global-configuration';
 
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -42,7 +42,8 @@ const getListStyle = isDraggingOver => ({
 const LearningTaskContainer = (props) => {
 
     const {tasksData, componentID} = props;
-    const { setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ taskData, setTaskData] = React.useState({});

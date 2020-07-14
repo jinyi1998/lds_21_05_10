@@ -79,7 +79,7 @@ const LearningTaskLessonView = (props) => {
     const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
     const {error} = props;
-    const {course, options, setLoadingOpen, taskTypeColor } = React.useContext(ContextStore);
+    const {course, options,  taskTypeColor } = React.useContext(ContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const mode = props.mode;  
 

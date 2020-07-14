@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ToolMenu from './toolMenu';
 
-import {ContextStore} from '../container/app';
+import {AppContextStore} from '../container/app';
 
 const drawerWidth = 240;
 
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   const classes = useStyles();
   const user = JSON.parse(props.user);
 
-  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(ContextStore);
+  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(AppContextStore);
 
   return (
       <React.Fragment>

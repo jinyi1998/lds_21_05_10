@@ -9,6 +9,8 @@ import config from 'react-global-configuration';
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
     },
   });
+  export const apiUserList = data => userRequest.get('/');
+  export const apiUserMgmtDashboard = data => userRequest.get('/getUserMgmtDashboard');
   export const apiUserAvaGroup = data => userRequest.get('/getAvaUserGroup');
   export const apiUserGuidedTourUpdate = data => userRequest.put('/tourguide', JSON.stringify(data));
   //#endregion

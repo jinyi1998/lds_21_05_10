@@ -13,6 +13,7 @@ import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/component/componentStep';
 import BasicReview from '../design/basicReview';
 import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
 
 import Menu from '@material-ui/core/Menu';
@@ -21,6 +22,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
+import {AppContextStore} from '../container/app';
 import config from 'react-global-configuration';
 
 import {
@@ -105,10 +107,11 @@ const Design = (props) => {
   const classes = useStyles();
 
   const {courseID} = props;
-  const [activePage, setActionPage] = React.useState('basic');
-  const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
+  // const [activePage, setActionPage] = React.useState('basic');
+  // const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
   
-  const { course, dispatch, options, setLoadingOpen } = React.useContext(ContextStore);
+  const { course, dispatch, options, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
+  const { setLoadingOpen } = React.useContext(AppContextStore);
   
   //#region data init
   //preload learningOutcome (Unit Level)
@@ -385,6 +388,12 @@ const Design = (props) => {
             <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
           </React.Fragment>
         )
+        case 'dashboard':
+          return(
+            <React.Fragment>
+              <DashBoardContainer />
+            </React.Fragment>
+          )      
     }
   }
 

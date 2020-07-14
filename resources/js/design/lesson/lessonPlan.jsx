@@ -38,6 +38,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LessonPlanContainer from './lessonPlanContainer';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 
 import {
     apiCourseUpdate,
@@ -65,8 +66,9 @@ const useStyles = makeStyles(theme => ({
 
 const LessonPlan = (props) => {
 
-    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
   
     const classes = useStyles();
     const [selectedLessonID, setSelectedLessonID] = React.useState(-1);

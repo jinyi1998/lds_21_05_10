@@ -2,10 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import UserMgmtDashboardContainer from './userMgmtDashboardContainer'
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        height: 240,
+        minHeight: 360,
         padding: 20,
         marginRight: 40
     }
@@ -19,22 +21,16 @@ const DashboardContainer = (props) => {
         <Grid container spacing = {2}>
             <Grid item xs = {12}>
                 <Paper className = {classes.paper}>
-                    User
+                    User Modules
+                    <UserMgmtDashboardContainer />
                 </Paper>
             </Grid>
 
-            <Grid item xs = {8}>
+            <Grid item xs = {12}>
                 <Paper className = {classes.paper}>
-                    Template
+                    Template Management
                 </Paper>
             </Grid>
-
-            <Grid item xs = {4}>
-                <Paper className = {classes.paper}>
-                    Template
-                </Paper>
-            </Grid>
-
         </Grid>
     );
 }

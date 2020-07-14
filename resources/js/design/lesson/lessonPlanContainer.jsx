@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Checkbox } from '@material-ui/core';
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 import LessonPlanView from './lessonPlanView';
 import LessonPlanTaskSelect from './lessonPlanTaskSelect';
 import config from 'react-global-configuration';
@@ -12,7 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 
 const LessonPlanContainer = (props) => {
 
-    const { course, setLoadingOpen } = React.useContext(ContextStore);
+    const { course } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     
     const [editMode, setEditMode] =  React.useState(false);

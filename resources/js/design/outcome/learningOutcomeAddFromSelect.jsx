@@ -13,11 +13,13 @@ import Paper from '@material-ui/core/Paper';
 import { Grid } from '@material-ui/core';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app'
 
 
 const LearningOutcomeAddFromSelect = (props) => {
     const {onClose, componentID} = props;
-    const {setLoadingOpen, course, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const [learningOutcome, setLearningOutcome] = React.useState({
         id: -1,
         level: "",

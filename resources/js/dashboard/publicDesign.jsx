@@ -8,14 +8,16 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
-import config from 'react-global-configuration';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
+import {AppContextStore} from '../container/app';
 import {apiCourseShowAll, apiCourseShowUsergroup} from '../api.js';
 
 const PublicDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
 
     // const {setImportJson} = props;
     // const {handleListItemClick, setCourseID} = props;
@@ -36,6 +38,7 @@ const PublicDesign = (props)=>{
         await apiCourseShowAll().then(
             response => {
                 setCourseList(response.data)
+                setLoadingOpen(false)
             }
         )
         .catch(error => console.log(error));
@@ -45,11 +48,13 @@ const PublicDesign = (props)=>{
 
         await apiUserAvaGroup().then(response => {
             setUsergroup(response.data);
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
     
     React.useEffect(() => {
+        setLoadingOpen(true)
         fetchData();
         fetchUsergroupData();
     }, []);

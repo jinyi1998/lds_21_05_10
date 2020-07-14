@@ -23,7 +23,7 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import BuildIcon from '@material-ui/icons/Build';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
-import {ContextStore} from '../container/app';
+import {AppContextStore} from '../container/app';
 import { parseJSON } from 'jquery';
 
 const drawerWidth = 240;
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 
 
   const user = parseJSON(props.user);
-  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(ContextStore);
+  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(AppContextStore);
 
   const classes = useStyles();
 

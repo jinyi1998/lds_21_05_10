@@ -15,10 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import UsergroupInfoEditView from '../component/usergroupInfoEditView';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
-import config from 'react-global-configuration';
 
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {AppContextStore} from '../../container/app';
 
 import {
     apiUserUsergroupList, apiUserUsergroupCreate,
@@ -26,20 +24,12 @@ import {
   } from '../../api.js';
 
 export const ContextStore = React.createContext({
-    setLoadingOpen: ()=> {},
     user: {}
 });
-
-const useStyles = makeStyles((theme) => ({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-}));
-
   
 const UsergroupsListViewContainer = (props) => {
-    const classes = useStyles();
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+
     const [usergroups, setUsergroups] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState({
         "name": "",
@@ -50,7 +40,6 @@ const UsergroupsListViewContainer = (props) => {
 
     const [createGroupViewOpen, setCreateGroupViewOpen] = React.useState(false);
     const [joinGroupWarningOpen, setJoinGroupWarningOpen] = React.useState(false);
-    const [loadingOpen, setLoadingOpen] = React.useState(false)
 
     React.useEffect(()=>{
         fetchusergroups()
@@ -178,14 +167,10 @@ const UsergroupsListViewContainer = (props) => {
     return (
         <ContextStore.Provider
         value = {{
-            setLoadingOpen: setLoadingOpen,
             user: user
         }}
         >
             <React.Fragment>
-                <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
                 <Grid container spacing = {2}>
                     <Grid item xs={12}>
                         <Button variant="contained" color="primary" onClick={onClickCreateGroup}  startIcon={<AddIcon />} >

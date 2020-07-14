@@ -63,6 +63,8 @@ const Component = ()=>{
     const classes = useStyles();
     const {  component,
       componentID,
+      selectComIndex,
+      setSelectComIndex,
       index} = React.useContext(ComponentContext);
 
     //#region init data 
@@ -77,12 +79,14 @@ const Component = ()=>{
     //#endregion
 
     //#region action button
-
+    const handleChange = (panel) => (event, isExpanded) => {
+      setSelectComIndex(isExpanded ? index : -1)
+    };
     //#endregion
 
     return (
       <div className={classes.root}>
-        <ExpansionPanel defaultExpanded = {index == 0}>
+        <ExpansionPanel expanded = {index == selectComIndex} onChange = {handleChange()}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"

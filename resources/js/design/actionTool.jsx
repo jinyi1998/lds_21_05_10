@@ -9,13 +9,17 @@ import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
+import BuildIcon from '@material-ui/icons/Build';
+import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import PollIcon from '@material-ui/icons/Poll';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import {ContextStore} from '../container/designContainer';
 import {apiFileCourseExport, apiFileCourseDownload} from '../api.js';
+// import {}
 
 const useStyles = makeStyles((theme) => ({
   speedDial: {
-    position: 'absolute',
+    position: 'fixed',
     '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
       bottom: theme.spacing(2),
       right: theme.spacing(2),
@@ -29,8 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 const actions = [
 //   { icon: <FileCopyIcon />, name: 'Copy' },
+  { icon: <LaptopMacIcon />, name: "DesignStudio", action: "designstudio"},
   { icon: <ImportExportIcon />, name: 'Export Json', action: 'export'},
   { icon: <PrintIcon />, name: 'Print', action: 'print' },
+  { icon: <PollIcon/>, name: 'Dashboard', action: 'dashboard'}
 //   { icon: <ShareIcon />, name: 'Share', action: 'share' },
 //   { icon: <FavoriteIcon />, name: 'Like' },
 ];
@@ -38,7 +44,7 @@ const actions = [
 export default function ActionTool() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { course } = React.useContext(ContextStore);
+  const { course, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
 
   const handleClose = () => {
     setOpen(false);
@@ -63,6 +69,12 @@ export default function ActionTool() {
             break;
         case 'share':
             break;
+        case 'designstudio':
+            setActionPage('basic');
+            break;
+        case 'dashboard':
+            setActionPage('dashboard');
+            break;
     }
   }
 
@@ -70,20 +82,53 @@ export default function ActionTool() {
     <SpeedDial
         ariaLabel="action tool"
         className={classes.speedDial}
-        icon={<SpeedDialIcon />}
+        icon={<BuildIcon />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
         direction= "up"
     >
-        {actions.map((action) => (
-        <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={() => handleOnClickAction(action.action)}
-        />
-        ))}
+        {actions.map((action) => {
+
+          switch(action.action){
+            default:
+              return(
+                <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => handleOnClickAction(action.action)}
+                />
+              )
+            case 'designstudio':
+              if(activePage == "basic"){
+                return null;
+              }else{
+                return(
+                  <SpeedDialAction
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={() => handleOnClickAction(action.action)}
+                  />
+                )
+              }
+            case 'dashboard':
+              if(activePage == "dashboard"){
+                return null;
+              }else{
+                return(
+                  <SpeedDialAction
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={() => handleOnClickAction(action.action)}
+                  />
+                )
+              }
+          }
+        
+        })}
     </SpeedDial>
   );
 }

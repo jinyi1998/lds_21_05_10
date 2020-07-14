@@ -144,8 +144,9 @@ Route::post('file/courseImport', 'API\CourseController@importCourse');
 Route::resource('course', 'API\CourseController');
 Route::resource('designType', 'API\DesignTypeController');
 
-
+Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');
 Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');
+Route::resource('user', 'API\UserController');
 
 
 Route::middleware('admin_auth')->get('/admin', function(){

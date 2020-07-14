@@ -10,13 +10,13 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
-import config from 'react-global-configuration';
 
-
+import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer'
 
 const LearningOutcomeUnit = (props)=>{
-    const {options, setLoadingOpen } = React.useContext(ContextStore);
+    const {options } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const {learningOutcomeID} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;
     const {provided, snapshot} = props;

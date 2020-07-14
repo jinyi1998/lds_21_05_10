@@ -20,7 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {ContextStore} from '../../container/designContainer'
-import config from 'react-global-configuration';
+import {AppContextStore} from '../../container/app';
 
 import LearningOutcomeAddFromSelect from './learningOutcomeAddFromSelect';
 import LearningOutcomeUnit from './learningOutcomeUnit';
@@ -62,8 +62,10 @@ const LearningOutcomeContainer = (props)=>{
 
     const classes = useStyles();
 
-    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep, tourStepIndex } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+
     React.useEffect(()=> {
         if(modeLevel == "course"){
             tourSetRun(false);

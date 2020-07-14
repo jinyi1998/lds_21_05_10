@@ -3,11 +3,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../container/designContainer'
+import {ContextStore} from '../container/designContainer';
+import {AppContextStore} from '../container/app';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import config from 'react-global-configuration';
 import validator from 'validator';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -37,7 +37,8 @@ const useStyles = makeStyles(theme => ({
 const DesignInfo = (props) => {
 
   const classes = useStyles();
-  const { course, options, dispatch, setLoadingOpen } = React.useContext(ContextStore);
+  const { course, options, dispatch } = React.useContext(ContextStore);
+  const { setLoadingOpen } = React.useContext(AppContextStore);
   const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
   React.useEffect(()=> {
     tourSetRun(false);

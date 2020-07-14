@@ -4,10 +4,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+
+import Tooltip from '@material-ui/core/Tooltip';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShareIcon from '@material-ui/icons/Share';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,16 +20,19 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
-import config from 'react-global-configuration';
 
 import CourseShareDialog from './courseShareDialog';
 
-import {apiCourseDelete} from '../api.js';
+import {
+    apiCourseGet, apiCourseDelete,
+    apiFileCourseImport 
+} from '../api.js';
 
 const DesignItem = (props) => {
     const {courseData, usergroup} = props;
     const updated_at = courseData.updated_at;
     const creator = courseData.createdby;
+    const enableDuplicate = true;
     const enableShare = props.enableShare? props.enableShare : false;
     const enableDelete = props.enableDelete? props.enableDelete : false;
 
@@ -35,6 +42,20 @@ const DesignItem = (props) => {
 
     const onClick = () => {
         window.location.href = "/designstudio/"+ courseData.id;
+    }
+
+    const onClickDuplicate = () => {
+        apiCourseGet(courseData.id)
+        .then(response => {
+            response.data['unit_title'] = response.data['unit_title'] + "_COPY";
+            apiFileCourseImport(response.data)
+            .then(
+                response => {
+                    window.location.reload();
+                }
+            )
+        })
+        .catch(error => console.log(error));
     }
 
     const onClickShare = () => {
@@ -66,19 +87,34 @@ const DesignItem = (props) => {
                     secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school} />
                 <ListItemSecondaryAction>
                     {
+                        enableDuplicate?
+                        <Tooltip title = "duplicate">
+                            <IconButton aria-label="duplicate" onClick = {()=>{onClickDuplicate()}}>
+                            <FileCopyIcon />
+                            </IconButton>
+                        </Tooltip>
+                        
+                        :
+                        null
+                    }
+                    {
                         enableShare?
-                        <IconButton aria-label="share" onClick = {onClickShare}>
-                            <ShareIcon />
-                        </IconButton>
+                        <Tooltip title = "share">
+                            <IconButton aria-label="share" onClick = {onClickShare}>
+                                <ShareIcon />
+                            </IconButton>
+                        </Tooltip>
                         :
                         null
                     }
                   
                     {
                         enableDelete? 
-                        <IconButton aria-label="delete" onClick = {onClickDelete}>
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title = "delete">
+                            <IconButton aria-label="delete" onClick = {onClickDelete}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
                         : 
                         null
                     }

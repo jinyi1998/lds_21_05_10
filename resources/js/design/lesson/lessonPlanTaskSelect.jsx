@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 
 import LearningTaskLessonView from '../task/learningTaskLessonView';
 import LearningTaskView from '../task/learningTaskView';
@@ -25,7 +26,8 @@ import {
 
 const LessonPlanTaskSelect = (props) => {
 
-    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     // const {lesson} = props;
     const [lesson, setLesson] = React.useState(props.lesson);

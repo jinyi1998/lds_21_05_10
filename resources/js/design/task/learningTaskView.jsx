@@ -16,6 +16,7 @@ import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -35,7 +36,6 @@ import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import Tooltip from '@material-ui/core/Tooltip';
-import config from 'react-global-configuration';
 
 import {
     apiLearningTaskPost, apiLearningTaskDelete
@@ -94,7 +94,8 @@ const LearningTaskView = (props) => {
 
     const {taskID, taskData, onEditearningTask} = props;
     // const {onEditTasks} = props;
-    const {course, options, setLoadingOpen, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
+    const {course, options, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
     const [duplicateTo, setDuplicateTo] = React.useState( -1);

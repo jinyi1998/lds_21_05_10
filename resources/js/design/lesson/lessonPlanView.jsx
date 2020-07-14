@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app'
 import List from '@material-ui/core/List';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -41,7 +42,8 @@ const LessonPlanView = (props) => {
     const canEdit = props.canEdit;
 
     const [lesson, setLesson] = React.useState(props.lesson);
-    const {setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const {refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore); 
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
 

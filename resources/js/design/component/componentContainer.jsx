@@ -1,6 +1,6 @@
 import React from 'react';
 import Component from './component';
-
+import ComponentFloatDashboard from './componentFloatDashboard';
 
 import config from 'react-global-configuration';
 
@@ -12,8 +12,6 @@ const ComponentContainer = (props)=>{
   const { componentID, index} = props;
     
     //edit learning task props
-
-   
     // const [component, setComponent] = React.useState({
     //   "id": -1,
     //   "component_template_id": -1,
@@ -39,9 +37,12 @@ const ComponentContainer = (props)=>{
         <ComponentContext.Provider value = {{
             component: component,
             componentID: componentID,
-            index: index
+            index: index,
+            selectComIndex: props.selectComIndex,
+            setSelectComIndex: props.setSelectComIndex
         }}>
              <Component />
+             <ComponentFloatDashboard />
         </ComponentContext.Provider>
     );
   }

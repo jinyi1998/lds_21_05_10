@@ -1,10 +1,7 @@
 import React from "react";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
 import ActionTool from '../design/actionTool';
-import config from 'react-global-configuration';
+
 
 import {
     apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
@@ -17,6 +14,7 @@ import {
   from '../api.js';
 
 import TourGuide from './tourGuide';
+import {AppContextStore} from './app';
 
 const courseInitState = { 
     course: {
@@ -124,16 +122,12 @@ export function courseReducer(state, action) {
 }
 
 
-const useStyles = makeStyles(theme => ({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-}));
-
 const DesignContainer = (props) => {
-    const classes = useStyles();
     const [displayGuideTour, setDisplayGuideTour] = React.useState(false);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
+    const [activePage, setActionPage] = React.useState('basic');
+    const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
 
     React.useEffect(()=>{
         setLoadingOpen(true)
@@ -178,7 +172,6 @@ const DesignContainer = (props) => {
         taskElearingResource: [],
     });
 
-    const [loadingOpen, setLoadingOpen] = React.useState(false);
     const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
     const taskTypeColor = (task_type)=>{
@@ -307,14 +300,17 @@ const DesignContainer = (props) => {
           course: State.course,
           options: optionsInit,
           dispatch: combineDispatchs([Dispatch]),
-          setLoadingOpen: setLoadingOpen,
           fetchCourseData: fetchCourseData,
           refreshCourse: refreshCourse,
           taskTypeColor: taskTypeColor,
           tourSetMode: setMode,
           tourSetRun: setRun,
           tourNextStep: tourNextStep,
-          tourStepIndex: stepIndex
+          tourStepIndex: stepIndex,
+          activeStep: activeStep,
+          setActiveStep: setActiveStep,
+          activePage: activePage,
+          setActionPage: setActionPage
         }}
       >
         <TourGuide 
@@ -333,9 +329,6 @@ const DesignContainer = (props) => {
 
         <ActionTool />
         
-        <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-            <CircularProgress color="inherit" />
-        </Backdrop>
       </ContextStore.Provider>
     );
 }
