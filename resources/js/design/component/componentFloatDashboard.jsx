@@ -4,20 +4,27 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import {Pie} from 'react-chartjs-2';
 
+import Typography from '@material-ui/core/Typography';
+
 import {ComponentContext} from './componentContainer';
 import {ContextStore} from '../../container/designContainer';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {apiComponentAnalysisList} from '../../api';
 
 
 
 const useStyles = makeStyles((theme) => ({
-    speedDial: {
+    floatingBox: {
       zIndex: 500,
-      minHeight: '18vh',
-      minWidth: '36vw',
+      width: '20vw',
       position: 'fixed',
-      bottom: theme.spacing(30),
+      top: theme.spacing(40),
       right: theme.spacing(2),
       opacity: 0.6,
     },
@@ -31,6 +38,18 @@ const generateHoverColor = (num) => {
     return temp;
 }
 
+const colorConfig = [
+    {
+        id: 1,
+        color: '#FF0000',
+    },
+    {
+        id: 2,
+        color: '#00FF00',
+    },
+];
+
+
 
 const ComoonentFloatDashboard = (props) => {
     const classes = useStyles();
@@ -41,6 +60,7 @@ const ComoonentFloatDashboard = (props) => {
     const { course, options, taskTypeColor } = React.useContext(ContextStore);
 
     const [tasks_time_by_task, set_tasks_time_by_task] = React.useState({});
+    const [tasks_num_by_classtype, set_tasks_num_by_classtype] = React.useState({});
 
     async function fetchcomponentanalysis(id) {
         await apiComponentAnalysisList(id)
@@ -65,6 +85,22 @@ const ComoonentFloatDashboard = (props) => {
         temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         set_tasks_time_by_task(temp_tasks_time_by_type);
+
+        console.log(options);
+        let temp_tasks_num_by_classtarget = {
+            labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [],
+                    hoverBackgroundColor: []
+            }]
+        }
+        temp_tasks_num_by_classtarget["labels"] = Object.keys(data['tasks_num_by_classtarget']).map( _id => options.taskTarget.find(x=> x.id == _id)?.description)
+        temp_tasks_num_by_classtarget["datasets"][0]["data"] = Object.values(data['tasks_num_by_classtarget'])
+        temp_tasks_num_by_classtarget["datasets"][0]["backgroundColor"] = Object.keys(data['tasks_num_by_classtarget']).map( _id => colorConfig.find(x=> x.id == _id)?.color)
+        temp_tasks_num_by_classtarget["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_num_by_classtarget']).length)
+        console.log(temp_tasks_num_by_classtarget);
+        set_tasks_num_by_classtype(temp_tasks_num_by_classtarget);
     }
     
 
@@ -73,22 +109,50 @@ const ComoonentFloatDashboard = (props) => {
         fetchcomponentanalysis(componentID)
     }, [component])
 
+
+    const displayDashboard = () => {
+        return (
+            <ExpansionPanel className = {classes.floatingBox}>
+                <ExpansionPanelSummary
+                expandIcon={<ExpandMoreIcon />}
+                >
+                    <Typography>Component Live Analysis</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <Grid container>
+                        <Grid item xs = {12}>
+                            <Typography variant = "caption">Task type time distribution</Typography>
+                            <Pie 
+                                data={tasks_time_by_task}
+                                options = {{
+                                    legend: {
+                                        display: false,
+                                    },
+                              } 
+                             }
+                            />
+                        </Grid>
+        
+                        <Grid item xs = {12}>
+                            <Typography variant = "caption">Social Distancing</Typography>
+                            <Pie 
+                                data={tasks_num_by_classtype}
+                                options = {{
+                                    legend: {
+                                        display: false,
+                                    },
+                                }} 
+                            />
+                        </Grid>
+                    </Grid>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+        )
+    }
+
     return (
         index == selectComIndex?
-        <Paper className ={classes.speedDial}>
-            <Grid container>
-                <Grid item xs = {12} className ={classes.speedDial}>
-                    <div style={{
-                        position: 'relative',
-                        margin: 'auto',
-                        height: '15vh',
-                        width: '30vw'
-                        }}>
-                       <Pie data={tasks_time_by_task}/>
-                    </div>
-                </Grid>
-            </Grid>
-        </Paper>
+        displayDashboard()
         :
         null
     )

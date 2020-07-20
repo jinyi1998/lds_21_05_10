@@ -97,10 +97,17 @@ class RouteController extends Controller
     }
 
     public function displayTourGuide(Request $request){
-        $user =  Auth::user();
-        $user['display_tourguide'] =  $request->display_tourguide;
-        $user->save();
 
-        return response()->json($user);
+        // return \response('test');
+        try{
+            $user =  Auth::user();
+            $user['display_tourguide'] =  $request->display_tourguide;
+            $user->save();
+    
+            return response()->json($user);
+        }catch(Exception $e){
+            return response()->json($e);
+        }
+       
     }   
 }

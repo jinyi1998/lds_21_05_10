@@ -30,7 +30,6 @@ Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');
 Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign');
 Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
-Route::put('/api/user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
 
 Route::get('file/downloadCourseJson/{file_name}', 'API\FileSystemController@apiFileCourseDownload');
 

@@ -146,6 +146,7 @@ Route::resource('designType', 'API\DesignTypeController');
 
 Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');
 Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');
+Route::put('user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
 Route::resource('user', 'API\UserController');
 
 
