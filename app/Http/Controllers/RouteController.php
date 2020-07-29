@@ -57,6 +57,11 @@ class RouteController extends Controller
         return view('app',  ["courseid" => -1, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'publicdesign']);
     }
 
+    public function printpdf($id){
+        // return view('publicdesign', ['user'=> $user_temp]);
+        return view('printablepdf', ["courseid" => $id]);
+    }
+
     public function usergroups(){
         // return view('usergroups', ['user'=> $user_temp]);
         return view('app',  ["courseid" => -1, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'usergroups']);
@@ -108,6 +113,5 @@ class RouteController extends Controller
         }catch(Exception $e){
             return response()->json($e);
         }
-       
     }   
 }

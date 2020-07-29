@@ -66,6 +66,7 @@ export default function ActionTool() {
             });
             break;
         case 'print':
+            window.open('../printpdf/'+course.id, '_blank');         
             break;
         case 'share':
             break;

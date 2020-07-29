@@ -46,7 +46,7 @@ class CourseController extends Controller
     public static function show($id)
     {
         //
-        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid'])->find($id);
+        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid', 'createdby'])->find($id);
         return response()->json($course);
     }
 

@@ -12,6 +12,7 @@ require('./container/design');
 require('./container/designContainer');
 // require('./container/appContainer');
 // require('./components/appLayout');
+require('./design/printable/printableContainer');
 require('./components/sideMenu');
 require('./components/topMenu');
 require('./container/app');

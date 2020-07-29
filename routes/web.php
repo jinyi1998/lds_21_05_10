@@ -26,11 +26,11 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/designstudio', '\App\Http\Controllers\RouteController@newdesignstudio');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
 // Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
+Route::get('/printpdf/{id}', '\App\Http\Controllers\RouteController@printpdf');
 Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');
 Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign');
 Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
-
 Route::get('file/downloadCourseJson/{file_name}', 'API\FileSystemController@apiFileCourseDownload');
 
 //admin related
