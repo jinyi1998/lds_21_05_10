@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
         // 'api' => \App\Http\Middleware\ApiAuth::class,
         'admin_auth' => \App\Http\Middleware\AdminAuthMiddleWare::class,
         'api_admin' => \App\Http\Middleware\AdminAuthMiddleWare::class,
+        'design_permission' => \App\Http\Middleware\DesignPermissionMiddleWare::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

@@ -30,6 +30,7 @@ const DesignComponentItem = (props) => {
 
     const {provided, snapshot, component, index, duplicateComponent, deleteComponent} = props;
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
+    const {enableEdit, enableDelete} = props;
 
     return(
         <React.Fragment>
@@ -52,12 +53,23 @@ const DesignComponentItem = (props) => {
                     // data-tour = "component_step_drag"
                 />
                 <ListItemSecondaryAction>
-                    <IconButton onClick ={()=>duplicateComponent(component.id)} data-tour = "component_step_duplicate">
-                        <FileCopyIcon />
-                    </IconButton>
-                    <IconButton onClick ={()=>setDelDialogOpen(true)} data-tour = "component_step_delete">
-                        <DeleteIcon/>
-                    </IconButton>
+                    {
+                        enableEdit?
+                        <IconButton onClick ={()=>duplicateComponent(component.id)} data-tour = "component_step_duplicate">
+                            <FileCopyIcon />
+                        </IconButton>
+                        :
+                        null
+                    }
+                    {
+                        enableDelete?
+                        <IconButton onClick ={()=>setDelDialogOpen(true)} data-tour = "component_step_delete">
+                            <DeleteIcon/>
+                        </IconButton>
+                        :
+                        null
+                    }
+                   
                 </ListItemSecondaryAction>
             </ListItem>
         
@@ -70,6 +82,7 @@ const DesignComponentItem = (props) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
+                    
                     <Button onClick={()=>{setDelDialogOpen(false)}} color="primary">
                         Cancel
                     </Button>

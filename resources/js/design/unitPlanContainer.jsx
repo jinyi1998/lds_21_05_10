@@ -102,7 +102,7 @@ const UnitPlanContainer = (props)=>{
                   <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                       <Tab label="Component Plan" {...a11yProps(0)} />
                       <Tab label="Lesson Plan" {...a11yProps(1)} />
-                      <Tab label="Dashboard" {...a11yProps(2)} />
+                      {/* <Tab label="Dashboard" {...a11yProps(2)} /> */}
                   </Tabs>
               </AppBar>
               <TabPanel value={value} index={0}>

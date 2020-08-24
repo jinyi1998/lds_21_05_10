@@ -42,8 +42,15 @@ const getListStyle = isDraggingOver => ({
 const LearningTaskContainer = (props) => {
 
     const {tasksData, componentID} = props;
-    const { refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
+
+    const enableAdd = course.permission > 2;
+    const enableDrag = course.permission > 2;
+    const enableEdit = course.permission > 2;
+    const enableDelete = course.permission > 2;
+    const enableDuplicate = course.permission > 2;
+
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ taskData, setTaskData] = React.useState({});
@@ -242,7 +249,7 @@ const LearningTaskContainer = (props) => {
                             {   
                                 tasksData.map( 
                                     (_task, index) => 
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
                                     {(provided, snapshot) => (
                                           <LearningTaskView 
                                             provided = {provided} 
@@ -251,9 +258,9 @@ const LearningTaskContainer = (props) => {
                                             taskData = {_task} 
                                             onEditearningTask = {onEditearningTask}
                                             key = {_task.id}
-                                            editBtn = {true}
-                                            duplicateBtn = {true}
-                                            deleteBtn = {true}
+                                            editBtn = {enableEdit}
+                                            duplicateBtn = {enableDuplicate}
+                                            deleteBtn = {enableDelete}
                                             lastestindex = {tasksData.length + 1}
                                         />
                                     )}
@@ -279,9 +286,15 @@ const LearningTaskContainer = (props) => {
                     />
                 )} */}
 
-            <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
-                Add Learning Task
-            </Button>
+            {
+                enableAdd?
+                <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
+                    Add Learning Task
+                </Button>
+                :
+                null
+            }
+           
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
                 <DialogTitle id="form-dialog-title">{taskData.id == -1? "Add Learning Task" : "Edit Learning Task"}</DialogTitle>

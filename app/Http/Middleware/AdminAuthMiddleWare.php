@@ -20,6 +20,6 @@ class AdminAuthMiddleWare
             return $next($request);
         }
     
-          return response()->json(Auth::user());
+        return response()->json(Auth::user());
     }
 }

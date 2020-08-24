@@ -18,6 +18,7 @@ const LearningOutcomeUnit = (props)=>{
     const {options } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
     const {learningOutcomeID} = props;
+    const {enableEdit, enableDelete} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;
     const {provided, snapshot} = props;
 
@@ -84,12 +85,24 @@ const LearningOutcomeUnit = (props)=>{
                 } 
             />
             <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
-                    <EditIcon />
-                </IconButton>
-                <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
-                    <DeleteIcon />
-                </IconButton>
+                {
+                    enableEdit?
+                    <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
+                        <EditIcon />
+                    </IconButton>
+                    :
+                    null
+                }
+                
+                {
+                    enableDelete?
+                    <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
+                        <DeleteIcon />
+                    </IconButton>
+                    :
+                    null
+                }
+               
             </ListItemSecondaryAction>
         </ListItem>
     );

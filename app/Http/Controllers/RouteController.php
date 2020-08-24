@@ -5,7 +5,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Auth;
-use App\Http\Controllers\CourseControllerTest;
+use App\Http\Controllers\API\CourseController;
 
 
 class RouteController extends Controller
@@ -39,12 +39,14 @@ class RouteController extends Controller
     }
 
     public function newdesignstudio($id = -1){
-        $courseController = new CourseControllerTest();
+        $courseController = new CourseController();
 
         $request_course = new \Illuminate\Http\Request();
         $course = $courseController->store($request_course)->getData();
+
+        // return response()->json($course);
         // return redirect('designstudio/'.$course->id);
-        return view('app', ["courseid" => -1, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'designstudio']);
+        return view('app', ["courseid" => $course->id, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'designstudio']);
     }
    
     public function mydesign(){

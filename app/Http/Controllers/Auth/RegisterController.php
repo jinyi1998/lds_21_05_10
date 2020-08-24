@@ -97,10 +97,19 @@ class RegisterController extends Controller
                 $user = User::find(Auth::user()->id);
                 $token = $user->createToken('apitoken')->accessToken;
                 session(['apitoken' => $token]);
-                return redirect('/designstudio');
-            }
-    
-            return Redirect::to('login');
+
+
+
+                $this->guard()->login($user);
+
+                return $this->registered($request, $user)
+                    ?: redirect()->intended($this->redirectPath('/designstudio'));
+                // $this->guard()->login($user);
+                // return redirect()->intended('/designstudio');
+                // return Redirect::to('/designstudio' );
+            }else{
+                 return Redirect::to('login');
+            }       
 
             // $this->guard()->login($user);
 

@@ -46,7 +46,7 @@ const PublicDesign = (props)=>{
 
     async function fetchUsergroupData() {
 
-        await apiUserAvaGroup().then(response => {
+        await apiCourseShowUsergroup().then(response => {
             setUsergroup(response.data);
             setLoadingOpen(false)
         })
@@ -89,8 +89,9 @@ const PublicDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
-                                        enableShare = {false}
-                                        enableDelete = {false}
+                                        enableDuplicate =  {_course.permission > 1}
+                                        enableShare = {_course.permission > 99}
+                                        enableDelete = {_course.permission > 3}
                                     />
                                 )
                            }

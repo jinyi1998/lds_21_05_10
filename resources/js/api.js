@@ -10,6 +10,7 @@ import config from 'react-global-configuration';
     },
   });
   export const apiUserList = data => userRequest.get('/');
+  export const apiUserSearch = data => userRequest.get(`/search/${data}` );
   export const apiUserMgmtDashboard = data => userRequest.get('/getUserMgmtDashboard');
   export const apiUserAvaGroup = data => userRequest.get('/getAvaUserGroup');
   export const apiUserGuidedTourUpdate = data => userRequest.put('/tourguide', JSON.stringify(data));
@@ -77,6 +78,8 @@ import config from 'react-global-configuration';
   export const apiCourseShowUsergroup =  data => courseRequest.get(`/showUsergroup/${data}`);
   export const apiCourseClearComponent = data => courseRequest.delete(`/clearCourseComponent/${data}`);
   export const apiCourseClearLesson = data => courseRequest.delete(`/clearCourseLesson/${data}`);
+  export const apiCourseGetPermission = data => courseRequest.get(`/getPermission/${data}`);
+  export const apiCourseUpdatePermission = data => courseRequest.post('/updatePermission', JSON.stringify(data));
   //#endregion
 
     //#region lesson api
@@ -333,3 +336,14 @@ import config from 'react-global-configuration';
     export const apiFileCourseImport = data => fileRequest.post(`courseImport`, JSON.stringify(data));
     export const apiFileCourseExport = data => fileRequest.get(`exportCourseJson/${data}`);
     export const apiFileCourseDownload = data => fileRequest.get(`downloadCourseJson/${data}`);
+
+    //#region template api
+    // const templateRequest = axios.create({
+    //     baseURL: 'http://'+config.get('url')+'/api/template',
+    //     headers: {
+    //         "Content-type": "application/json; charset=UTF-8",
+    //         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+    //     },
+    // })
+    // export const apiTemplateDashboard = data => templateRequest.get(`/`);
+    //#endregion

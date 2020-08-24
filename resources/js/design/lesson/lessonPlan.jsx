@@ -69,7 +69,11 @@ const LessonPlan = (props) => {
     const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
-  
+    
+    const enableAdd = course.permission > 2;
+    const enableDelete = course.permission > 2;
+    const enableDrag = course.permission > 2;
+
     const classes = useStyles();
     const [selectedLessonID, setSelectedLessonID] = React.useState(-1);
     const [onDeletelLessonID, setOnDeleteLessonID] = React.useState(-1);
@@ -176,26 +180,38 @@ const LessonPlan = (props) => {
                                 </ListItemIcon>
                                 <ListItemText primary= {_lessons.title} />
                                 <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)} data-tour = "lesson_lesson_delete">
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    {
+                                        enableDelete? 
+                                        <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)} data-tour = "lesson_lesson_delete">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        :
+                                        null
+                                    }
                                 </ListItemSecondaryAction>
                             </ListItem>
                         )}
                         <ListItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} data-tour = "lesson_lesson_all">View All</ListItem>
                     </List>
-                    <Button
+                    {
+                        enableAdd?
+                        <Button
                         variant="contained"
                         color="secondary"
                         startIcon={<AddIcon />}
                         fullWidth
                         onClick = {onAddLessson}
                         data-tour = "lesson_lesson_add"
-                    >
-                        Add Lesson
-                    </Button>
+                        >
+                            Add Lesson
+                        </Button>
+                        :
+                        null
+                    }
+                 
                 </Paper>
             </Grid>
+
             <Grid item xs={9}>
                 {
                     selectedLessonID == -1 ? 

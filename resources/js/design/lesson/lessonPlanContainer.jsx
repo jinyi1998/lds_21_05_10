@@ -25,6 +25,9 @@ const LessonPlanContainer = (props) => {
     const refreshLesson = () => {
         setRefresh(true);
     }
+
+    const enableDrag = course.permission > 2;
+    const enableEdit = course.permission > 2;
     
     React.useEffect(()=>{
         setLesson(props.lesson)
@@ -52,6 +55,8 @@ const LessonPlanContainer = (props) => {
                 canEdit = {canEdit}
                 setEditMode = {setEditMode}
                 refreshLesson = {refreshLesson}
+                enableDrag = {enableDrag}
+                enableEdit = {enableEdit}
             />
 
              <Dialog open={editMode} onClose={() => {setEditMode(false)}} style = {{minWidth: "400px", minHeight: "300px"}} onEntered = {()=>{tourNextStep()}}>

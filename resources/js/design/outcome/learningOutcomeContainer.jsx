@@ -86,6 +86,10 @@ const LearningOutcomeContainer = (props)=>{
         isCourseLevel: true
     });
 
+    const enableAdd = course.permission > 2; 
+    const enableEdit = course.permission > 2; 
+    const enableDrag = course.permission > 2; 
+    const enableDelete = course.permission > 2; 
   
 
 
@@ -318,7 +322,7 @@ const LearningOutcomeContainer = (props)=>{
                             {course.outcomes.map(
                                 (_outcome, index )=>
                                 (
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
                                       {(provided, snapshot) => (
                                           <LearningOutcomeUnit 
                                           learningOutcome = {_outcome}
@@ -328,6 +332,8 @@ const LearningOutcomeContainer = (props)=>{
                                           component = {component} 
                                           onOpenDelDialog = {onOpenDelDialog} 
                                           onOpenEditDialog = {editLearningOutcome}
+                                          enableEdit = {enableEdit}
+                                          enableDelete = {enableDelete}
                                           index = {index}/> 
                                       )}
                                     </Draggable>
@@ -338,7 +344,13 @@ const LearningOutcomeContainer = (props)=>{
                     </RootRef>
                   )}
                 </Droppable>
-                <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                {
+                    enableAdd? 
+                    <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                    :
+                    null
+                }
+                
                 </DragDropContext>
             )
         }else{
@@ -358,7 +370,7 @@ const LearningOutcomeContainer = (props)=>{
                                                 {component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).map(
                                                     (_outcome, index )=>
                                                     (
-                                                        <Draggable key={index} draggableId={index.toString()} index={index}>
+                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
                                                         {(provided, snapshot) => (
                                                             <LearningOutcomeUnit 
                                                             learningOutcome = {_outcome}
@@ -368,6 +380,8 @@ const LearningOutcomeContainer = (props)=>{
                                                             component = {component} 
                                                             onOpenDelDialog = {onOpenDelDialog} 
                                                             onOpenEditDialog = {editLearningOutcome}
+                                                            enableEdit = {enableEdit}
+                                                            enableDelete = {enableDelete}
                                                             index = {index}/> 
                                                         )}
                                                         </Draggable>
@@ -383,7 +397,13 @@ const LearningOutcomeContainer = (props)=>{
                             null
                         )
                     )}
-                    <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
+                    {
+                        enableAdd?
+                        <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
+                        :
+                        null
+                    }
+                 
                     {/* <Button onClick={()=> setLearningOutcomeSelectOpen(true)} variant="contained" color="secondary">Select Learning Outcome From Unit Level</Button> */}
                 </React.Fragment>
             )

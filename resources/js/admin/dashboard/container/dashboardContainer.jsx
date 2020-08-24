@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import UserMgmtDashboardContainer from './userMgmtDashboardContainer'
+import TemplateMgmtDashboardContainer from './templateMgmtDashboardContainer'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,6 +30,7 @@ const DashboardContainer = (props) => {
             <Grid item xs = {12}>
                 <Paper className = {classes.paper}>
                     Template Management
+                    {/* <TemplateMgmtDashboardContainer /> */}
                 </Paper>
             </Grid>
         </Grid>

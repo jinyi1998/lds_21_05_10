@@ -32,7 +32,7 @@ const DesignItem = (props) => {
     const {courseData, usergroup} = props;
     const updated_at = courseData.updated_at;
     const creator = courseData.createdby;
-    const enableDuplicate = true;
+    const enableDuplicate = props.enableDuplicate? props.enableDuplicate : false;;
     const enableShare = props.enableShare? props.enableShare : false;
     const enableDelete = props.enableDelete? props.enableDelete : false;
 

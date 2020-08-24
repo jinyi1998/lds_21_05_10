@@ -49,6 +49,8 @@ const LessonPlanView = (props) => {
 
     const [ taskData, setTaskData] = React.useState({});
 
+    const {enableDrag, enableEdit} = props;
+
     const [ error, setError] = React.useState({
         "type": "",
         "title": "",
@@ -244,14 +246,16 @@ const LessonPlanView = (props) => {
                                     lesson.tasks.length > 0 ?
                                         lesson.tasks.map(
                                             (_task, index) => 
-                                            <Draggable key={index} draggableId={index.toString()} index={index}>
+                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
                                                 {(provided, snapshot) => (
                                                     <LearningTaskLessonView 
                                                     provided = {provided} 
                                                     snapshot = {snapshot} 
                                                     taskID = {_task.id} 
                                                     taskData = {_task} 
+                                                    editBtn = {enableEdit}
                                                     // onEditearningTask = {()=>{}
+
                                                     onEditearningTask = {onEditearningTask}
                                                     key = {_task.id}
                                                     />
@@ -271,7 +275,7 @@ const LessonPlanView = (props) => {
                     </DragDropContext>
                  </Grid>
 
-                {canEdit == true? 
+                {canEdit == true && enableEdit ? 
                     <Grid item xs ={12}>
                         <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)} data-tour = "lesson_lesson_select">
                             Edit

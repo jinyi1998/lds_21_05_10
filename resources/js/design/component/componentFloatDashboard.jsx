@@ -86,7 +86,7 @@ const ComoonentFloatDashboard = (props) => {
 
         set_tasks_time_by_task(temp_tasks_time_by_type);
 
-        console.log(options);
+        // console.log(options);
         let temp_tasks_num_by_classtarget = {
             labels: [],
                 datasets: [{
@@ -99,7 +99,7 @@ const ComoonentFloatDashboard = (props) => {
         temp_tasks_num_by_classtarget["datasets"][0]["data"] = Object.values(data['tasks_num_by_classtarget'])
         temp_tasks_num_by_classtarget["datasets"][0]["backgroundColor"] = Object.keys(data['tasks_num_by_classtarget']).map( _id => colorConfig.find(x=> x.id == _id)?.color)
         temp_tasks_num_by_classtarget["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_num_by_classtarget']).length)
-        console.log(temp_tasks_num_by_classtarget);
+        // console.log(temp_tasks_num_by_classtarget);
         set_tasks_num_by_classtype(temp_tasks_num_by_classtarget);
     }
     
@@ -134,7 +134,7 @@ const ComoonentFloatDashboard = (props) => {
                         </Grid>
         
                         <Grid item xs = {12}>
-                            <Typography variant = "caption">Social Distancing</Typography>
+                            <Typography variant = "caption">Social Type</Typography>
                             <Pie 
                                 data={tasks_num_by_classtype}
                                 options = {{

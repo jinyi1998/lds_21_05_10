@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const LearningPatternContainer = (props) => {
-    const { refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
     const { component } = React.useContext(ComponentContext);
 
@@ -59,6 +59,8 @@ const LearningPatternContainer = (props) => {
     const [patternTempID, setPatternTempID] = React.useState(-1);
 
     const [editPatternOpen, setEditPatternOpen] = React.useState(false);
+
+    const enableUnlock = course.permission > 2;
 
     async function fetchlearningPattern(id) {
         setLoadingOpen(true)
@@ -141,7 +143,12 @@ const LearningPatternContainer = (props) => {
                     </Grid>
 
                     <Grid item xs = {4}>
-                        <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock"> <LockOpenIcon/>Unclock me</Button>
+                        {
+                            enableUnlock?
+                            <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock" > <LockOpenIcon/>Unclock me</Button>
+                            :
+                            null
+                        }
                     </Grid>
                     
                     {pattern.tasks?.map((_task, index)=>

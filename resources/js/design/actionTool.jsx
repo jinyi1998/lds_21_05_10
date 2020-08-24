@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 
 const actions = [
 //   { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <LaptopMacIcon />, name: "DesignStudio", action: "designstudio"},
   { icon: <ImportExportIcon />, name: 'Export Json', action: 'export'},
   { icon: <PrintIcon />, name: 'Print', action: 'print' },
+  { icon: <LaptopMacIcon />, name: "DesignStudio", action: "designstudio"},
   { icon: <PollIcon/>, name: 'Dashboard', action: 'dashboard'}
 //   { icon: <ShareIcon />, name: 'Share', action: 'share' },
 //   { icon: <FavoriteIcon />, name: 'Like' },
@@ -101,6 +101,20 @@ export default function ActionTool() {
                 onClick={() => handleOnClickAction(action.action)}
                 />
               )
+            case 'export':
+            case 'print':
+              if(course.permission > 1){
+                return(
+                  <SpeedDialAction
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={() => handleOnClickAction(action.action)}
+                  />
+                )
+              }else{
+                return null;
+              }
             case 'designstudio':
               if(activePage == "basic"){
                 return null;

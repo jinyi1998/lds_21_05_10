@@ -101,8 +101,9 @@ const MyDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
-                                        enableShare = {true}
-                                        enableDelete = {true}
+                                        enableDuplicate = {_course.permission > 1}
+                                        enableShare = {_course.permission > 99}
+                                        enableDelete = {_course.permission > 3}
                                     />
                                 )
                            }

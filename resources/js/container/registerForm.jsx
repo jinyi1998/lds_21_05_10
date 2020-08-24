@@ -57,7 +57,7 @@ const RegisterForm = (props) => {
       // window.location.href = "/designstudio";
       if(validate()){
         // console.log(JSON.stringify(data));
-        register();
+        // register();
       }
   };
 
@@ -83,6 +83,9 @@ const RegisterForm = (props) => {
     if(validator.isEmpty(data.name.toString())){
       tempError["name"] = "Please enter the user name";
       validated = false;
+    }else if( /\s/g.test(data.name)){
+      tempError["name"] = "Please enter the user name without any whitespace inside";
+      validated = false;
     }
 
 
@@ -93,6 +96,9 @@ const RegisterForm = (props) => {
 
     if(validator.isEmpty(data.school.toString())){
       tempError["school"] = "Please enter the school";
+      validated = false;
+    }else if( /\s/g.test(data.school)){
+      tempError["school"] = "Please enter the school name without any whitespace inside";
       validated = false;
     }
 

@@ -59,7 +59,7 @@ Route::get('learningComponent/getPatternOpts/{id}',
 Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
 'API\LearningComponentController@getDefaultLearningComponentByDesignType');
 
-Route::resource('learningComponent', 'API\LearningComponentController');
+Route::middleware('design_permission')->resource('learningComponent', 'API\LearningComponentController');
 
 //Learning Component Task Relation Controller
 Route::resource('componentTaskRelation', 'API\ComponentTaskController');
@@ -72,7 +72,7 @@ Route::resource('lessonTaskRelation', 'API\LessonTaskRelationController');
 //Learning Pattern Controller
 Route::put('learningPattern/unlockPattern/{id}', 
 'API\LearningPatternController@unlockPattern');
-Route::resource('learningPattern', 
+Route::middleware('design_permission')->resource('learningPattern', 
 'API\LearningPatternController');
 
 
@@ -113,7 +113,7 @@ Route::get('learningTask/getTaskELeraningResourceTypeOption',
 Route::get('learningTask/getLearningPatternOpts', 
 'API\LearningTaskController@getLearningPatternOpts');
 
-Route::resource('learningTask', 'API\LearningTaskController');
+Route::middleware('design_permission')->resource('learningTask', 'API\LearningTaskController');
 
 //Learning Lesson
 Route::resource('lesson', 'API\LessonController');
@@ -141,9 +141,12 @@ Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp')
 Route::get('course/showAll', 'API\CourseController@showAll');
 Route::get('course/showUsergroup/{id}', 'API\CourseController@showUsergroup');
 Route::post('file/courseImport', 'API\CourseController@importCourse');
-Route::resource('course', 'API\CourseController');
+Route::get('course/getPermission/{id}', 'API\CourseController@getCoursePermission');
+Route::post('course/updatePermission', 'API\CourseController@updateCoursePermission');
+Route::middleware('design_permission')->resource('course', 'API\CourseController');
 Route::resource('designType', 'API\DesignTypeController');
 
+Route::get('user/search/{id}', 'API\UserController@searchUser');
 Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');
 Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');
 Route::put('user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');

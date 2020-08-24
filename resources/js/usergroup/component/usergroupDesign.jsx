@@ -73,6 +73,7 @@ const UsergroupDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
+                                        enableDuplicate =  {_course.permission > 1}
                                         enableShare = {false}
                                         enableDelete = {false}
                                     />

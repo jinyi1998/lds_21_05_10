@@ -67,6 +67,12 @@ class UserController extends Controller
         //
     }
 
+    public function searchUser($search){
+
+        $users = User::where('name', 'like', '%' . $search . '%')->orWhere('email', 'like', '%' . $search . '%')->get();
+        return \response()->json($users);
+    }
+
     public function getAvaUserGroup(){
         $usergroups = User::with(['usergroup'])->find(Auth::user()->id)->usergroup;
         return response()->json($usergroups);
@@ -82,6 +88,7 @@ class UserController extends Controller
         $today_users = DB::table('users')
         ->select(DB::raw('email, school, name, created_at, CURDATE()'))
         ->whereRaw('CAST(created_at AS DATE) = CURDATE()')
+        ->orderBy('created_at', 'desc')
         ->get();
 
 

@@ -17,8 +17,17 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $course = Course::with(['createdby','usergroupid'])->where('created_by', Auth::user()->id)->get();
-        return response()->json($course);
+        // $courses = Course::with(['createdby','usergroupid'])->where('created_by', Auth::user()->id)->get();
+        $course_arr = [];
+        $courses = Course::with(['createdby','usergroupid'])->get();
+        foreach($courses as $index => $_course){
+            $_course['permission'] = $this->getCurrentUserCoursePermission($_course->id);
+            if( $_course['permission'] > 0){
+                array_push($course_arr, $_course);
+            }
+        }
+
+        return response()->json($course_arr);
     }
 
     /**
@@ -33,6 +42,16 @@ class CourseController extends Controller
         $course = new Course();
         $request['created_by'] =  Auth::user()->id;
         $course = CourseController::save($course, $request);
+        DB::table('design_user_permission')->insert([  
+            [
+                'course_id' => $course->id,
+                'user_id' => Auth::user()->id,
+                'permission' => 100,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+                'is_deleted' => 0
+            ]
+        ]);
 
         return CourseController::show($course->id);
     }
@@ -43,10 +62,11 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public static function show($id)
+    public function show($id)
     {
         //
         $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid', 'createdby'])->find($id);
+        $course['permission'] = $this->getCurrentUserCoursePermission($course->id);
         return response()->json($course);
     }
 
@@ -102,7 +122,7 @@ class CourseController extends Controller
             $course->design_type_id = $request->design_type_id;
         }
         if($request->has('created_by')){
-            $course->created_by =  $request->created_by;
+            $course->created_by =  Auth::user()->id;
         }
 
         if($request->has('coursetype')){
@@ -132,24 +152,202 @@ class CourseController extends Controller
 
     public function showAll()
     {
-        $course = Course::with(['createdby', 'usergroupid'])->where("coursetype", '=', 3)->get();
-        return response()->json($course);
+        $course_arr = [];
+        $courses = Course::with(['createdby','usergroupid'])->get();
+        foreach($courses as $index => $_course){
+            $_course['permission_arr'] = $this->getCoursePermission($_course->id);
+            if( count($_course['permission_arr']['public_permission']) > 0){
+                if($_course['permission_arr']['public_permission'][0]->permission > 0){
+                    $_course['permission'] = $this->getCurrentUserCoursePermission($_course->id);
+                    array_push($course_arr, $_course);
+                }
+            }
+        }
+        return response()->json($course_arr);
     }
 
     public function showUsergroup($id)
     {
         // $courses = Course::has('usergroupid', '=', $id)->with(['createdby'])->get();
-        $data = Course::with(['createdby', 'usergroupid'])->get();
-        $courses = array();
+        $course_arr = [];
+        $courses = Course::with(['createdby','usergroupid'])->get();
 
-        foreach($data as $key => $course){
-      
-            $x = $course->usergroupid()->where('usergroup_id', $id)->get();
-            if ($x->count()){
-                array_push($courses, $course);
+        foreach($courses as $index => $_course){
+
+            $_course['permission_arr'] = $this->getCoursePermission($_course->id);
+            if( count($_course['permission_arr']['usergroup_permission']) > 0){
+                foreach($_course['permission_arr']['usergroup_permission'] as $_usergroup_permission)
+                if($_usergroup_permission->permission > 0 && $_usergroup_permission->usergroup_id == $id){
+                    $_course['permission'] = $this->getCurrentUserCoursePermission($_course->id);
+                    array_push($course_arr, $_course);
+                }
             }
         }
-        return response()->json($courses);
+
+        return response()->json($course_arr);
+    }
+
+    public function getCurrentUserCoursePermission($id){
+        $user_permission = DB::table('design_user_permission')
+        ->where('course_id', $id)
+        ->where('design_user_permission.user_id', Auth::user()->id)
+        ->join('users', 'users.id', 'design_user_permission.user_id')
+        ->select('course_id', 'user_id', 'permission', 'users.name')
+        ->get();
+       
+
+        $usergroup_permission = DB::table('design_usergroup_permission')
+        ->where('course_id', $id)
+        ->where('users.id', Auth::user()->id)
+        ->join('usergroup_user_relation', 'usergroup_user_relation.usergroup_id', 'design_usergroup_permission.usergroup_id')
+        ->join('users', 'users.id', 'usergroup_user_relation.user_id')
+        ->select('course_id', 'design_usergroup_permission.permission')
+        ->get();
+
+        $public_permission = DB::table('design_public_permission')
+        ->where('course_id', $id)
+        ->select('course_id', 'permission')
+        ->get();
+        // $permission = {};
+
+        $permission = -1;
+
+        foreach ($user_permission as $_user_permission){
+            $permission = $_user_permission->permission;
+        }
+
+        foreach ($usergroup_permission as $_usergroup_permission){
+            if($_usergroup_permission->permission > $permission){
+                $permission = $_usergroup_permission->permission;
+            }
+        }
+
+        foreach ($public_permission as $_public_permission){
+            if($_public_permission->permission > $permission){
+                $permission = $_public_permission->permission;
+            }
+        }
+
+        return $permission;
+    }
+
+
+    public function getCoursePermission($id){
+
+        $user_permission = DB::table('design_user_permission')
+        ->where('course_id', $id)
+        // ->where('user_id', Auth::user()->id)
+        ->join('users', 'users.id', 'design_user_permission.user_id')
+        ->select('course_id', 'user_id', 'permission', 'users.name')
+        ->get();
+       
+
+        $usergroup_permission = DB::table('design_usergroup_permission')
+        ->where('course_id', $id)
+        ->select('course_id', 'usergroup_id', 'permission')
+        ->get();
+
+        $public_permission = DB::table('design_public_permission')
+        ->where('course_id', $id)
+        ->select('course_id', 'permission')
+        ->get();
+        // $permission = {};
+        $permission['public_permission'] = [];
+        $permission['user_permission'] = [];
+        $permission['usergroup_permission'] = [];
+
+        $permission['public_permission'] = $public_permission;
+        $permission['user_permission'] = $user_permission;
+        $permission['usergroup_permission'] = count($usergroup_permission) > 0 ? $usergroup_permission : [];
+
+        // $course['permission'] = $permission;
+
+        return $permission;
+    } 
+
+    public function updateCoursePermission(Request $request){
+
+        $course = Course::find($request->course_id);
+        // clear the exisiting record
+        DB::table('design_user_permission')
+        ->where('course_id', $course->id)
+        ->where('user_id', '!=' ,$course->created_by) //pass if user = create course owner
+        ->delete();
+
+        DB::table('design_usergroup_permission')
+        ->where('course_id', $course->id)
+        ->delete();
+
+        DB::table('design_public_permission')
+        ->where('course_id', $course->id)
+        ->delete();
+
+
+
+        $permission['public_permission'] = $request->permission['public_permission'];
+        $permission['user_permission'] = $request->permission['user_permission'];
+        $permission['usergroup_permission'] = $request->permission['usergroup_permission'];
+      
+        // user
+        foreach($permission['user_permission'] as $_user_permission){
+            if($_user_permission['user_id'] == $course->created_by  || $_user_permission['permission'] == -1){
+                // pass if user = create course owner
+                continue;
+            }
+            DB::table('design_user_permission')->insert([
+                [
+                    'course_id' => $course->id,
+                    'user_id' => $_user_permission['user_id'],
+                    'permission' => $_user_permission['permission'], 
+                    'is_deleted' => 0,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id
+                ],
+            ]);
+
+        }
+
+        // user group
+        foreach($permission['usergroup_permission'] as $_usergroup_permission){
+
+            if($_usergroup_permission['permission'] == -1){
+                continue;
+            }
+
+            DB::table('design_usergroup_permission')->insert([
+                ['course_id' => $course->id, 
+                'usergroup_id' => $_usergroup_permission['usergroup_id'], 
+                'permission' => $_usergroup_permission['permission'], 
+                'is_deleted' => 0,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id
+                ],
+            ]);
+
+        }
+
+        // public
+        foreach($permission['public_permission'] as $_public_permission){
+
+            if($_public_permission['permission'] == -1){
+                continue;
+            }
+
+            DB::table('design_public_permission')->insert([
+                [
+                    'course_id' => $course->id, 
+                    'permission' => $_public_permission['permission'], 
+                    'is_deleted' => 0,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id
+                ],
+            ]);
+
+        }
+
+        return response()->json($request->permission);
+
+
     }
 
     public function clearCourseComponent($id){
@@ -192,7 +390,19 @@ class CourseController extends Controller
         $request['created_by'] =  Auth::user()->id;
         $course = CourseController::save($course, $request);
 
- 
+        DB::table('design_user_permission')->insert([  
+            [
+                'course_id' => $course->id,
+                'user_id' => Auth::user()->id,
+                'permission' => 100,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+                'is_deleted' => 0
+            ]
+        ]);
+
+
+        
         //outcome
         $outcomeMapping = [];
         foreach($request->outcomes as $_outcome){
@@ -248,4 +458,5 @@ class CourseController extends Controller
 
         return response()->json($course);
     }
-}
+
+}   

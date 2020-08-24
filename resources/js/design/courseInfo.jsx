@@ -119,17 +119,23 @@ const DesignInfo = (props) => {
 
   const onNext = () => {
     if(validate()){
-      updateCourse();
+      if(courseData.permission > 2){
+        updateCourse();
+      }
+      
       handleNext();
     }
   }
 
   const onSave = () => {
+    
     if(course.no_of_lesson > courseData.no_of_lesson){
       setLessonWarning(true);
     }else{
       if(validate()){
-        updateCourse();
+        if(courseData.permission > 2){
+          updateCourse();
+        }
       }
     }
   }
@@ -231,6 +237,7 @@ const DesignInfo = (props) => {
           error = {! (error["unit_title"]=="")}
           helperText= {! (error["unit_title"]=="")? error["unit_title"]:  ""}
           fullWidth 
+          disabled = {!(courseData.permission > 2)}
           onChange={onChange}/>
         </Grid>
 
@@ -268,6 +275,7 @@ const DesignInfo = (props) => {
             value = {courseData.level}
             error = {! (error["level"]=="")}
             helperText= {! (error["level"]=="")? error["level"]:  ""}
+            disabled = {!(courseData.permission > 2)}
             fullWidth 
             onChange={onChange} />
          
@@ -309,6 +317,7 @@ const DesignInfo = (props) => {
             helperText= {! (error["no_of_lesson"]=="")? error["no_of_lesson"]:  ""}
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
+            disabled = {!(courseData.permission > 2)}
             onChange={onChange} />
          
         </Grid>
@@ -337,6 +346,7 @@ const DesignInfo = (props) => {
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}
+            disabled = {!(courseData.permission > 2)}
             fullWidth 
             rows={5}
             onChange={onChange}/>
