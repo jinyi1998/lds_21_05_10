@@ -66,4 +66,15 @@ class DesignTypeController extends Controller
     {
         //
     }
+
+    public function getLearningComponentByDesignType($id){
+
+        $designType = DesignType::with(['components'])->find($id);
+
+        return response()->json(
+            $designType['components']
+        );
+
+    }
+
 }

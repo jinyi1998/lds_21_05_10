@@ -193,7 +193,6 @@ import config from 'react-global-configuration';
     export const apiLearningCompPut = data => learningComponentRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningCompDelete = data => learningComponentRequest.delete(`/${data}`);
 
-    export const apiLearningCompGetLearningCompByDesignType = data => learningComponentRequest.get(`/getLearningComponentByDesignType/${data}`);
     export const apiLearningCompGetPatternOpts = data => learningComponentRequest.get(`/getPatternOpts/${data}`);
     //#endregion
 
@@ -222,6 +221,7 @@ import config from 'react-global-configuration';
     });
     export const apiDesignTypeList = data => designTypeRequest.get(`/`);
     export const apiDesignTypeGet = data => designTypeRequest.get(`/${data}`);
+    export const apiLearningCompGetLearningCompByDesignType = data => designTypeRequest.get(`/getLearningComponentByDesignType/${data}`);
     //#endregion design type
 
     //#region learning task api

@@ -7,6 +7,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import config from 'react-global-configuration';
 import {
+    apiDesignTypeList,
     apiLearningCompGetLearningCompByDesignType
 } from '../../api.js';
 
@@ -20,25 +21,23 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-const data = [
-    {
-        id: 1,
-        type: "Engineering Design + Self Directed Learning",
-    },
-    {
-        id: 2,
-        type: "Scientific Investigation + Self Directed Learning",
-    },
-
-];
-
 const DesignComponentSelPair = (props) => {
-    const dataSet = data; 
+    const [designTypeOtps, setDesignTypeOtps] = React.useState([
+
+    ])
     const [selectType, setType] = React.useState("1"); 
 
     const [componentOpts, setComponentOpts] =  React.useState([]); 
     const [selectComponent_id, setSelectComponent_id] = React.useState(""); 
 
+
+    React.useEffect(()=>{
+        apiDesignTypeList()
+        .then(response => {
+            console.log(response);
+            setDesignTypeOtps(response.data)
+        }) 
+    }, [])
 
     async function fetcComponentOptsData() {
         await apiLearningCompGetLearningCompByDesignType(selectType)
@@ -79,8 +78,8 @@ const DesignComponentSelPair = (props) => {
                 value = {selectType}
                 data-tour = "designtype_select"
             >
-                {dataSet.map((_data, index)=>( 
-                    <MenuItem value={_data.id} key={index}>{_data.type}</MenuItem>
+                {designTypeOtps.map((_data, index)=>( 
+                    <MenuItem value={_data.id} key={_data.id}>{_data.name}</MenuItem>
                 ))}
             </Select>
         </FormControl>

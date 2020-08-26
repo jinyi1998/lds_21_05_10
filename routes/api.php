@@ -49,10 +49,6 @@ Route::resource('componentOutcomeRelation', 'API\ComponentOutcomeRelationControl
 Route::get('learningComponent/getDefaultLearningComponentByDesignType2/{id}', 
 'API\LearningComponentController@getDefaultLearningComponentByDesignType2');
 
-
-Route::get('learningComponent/getLearningComponentByDesignType/{id}', 
-'API\LearningComponentController@getLearningComponentByDesignType');
-
 Route::get('learningComponent/getPatternOpts/{id}', 
 'API\LearningComponentController@getPatternOpts');
 
@@ -144,6 +140,10 @@ Route::post('file/courseImport', 'API\CourseController@importCourse');
 Route::get('course/getPermission/{id}', 'API\CourseController@getCoursePermission');
 Route::post('course/updatePermission', 'API\CourseController@updateCoursePermission');
 Route::middleware('design_permission')->resource('course', 'API\CourseController');
+
+
+Route::get('designType/getLearningComponentByDesignType/{id}', 
+'API\DesignTypeController@getLearningComponentByDesignType');
 Route::resource('designType', 'API\DesignTypeController');
 
 Route::get('user/search/{id}', 'API\UserController@searchUser');

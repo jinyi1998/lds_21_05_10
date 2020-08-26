@@ -33,4 +33,19 @@ class DesignType extends Model
             'outcome_id' //LearningPatternTemplate pattern id
         )->select(['learningoutcome_template.*','learningoutcome_template.id as template_id']);
     }
+
+    public function components(){
+        // return $this->hasMany(
+        //     'App\DesigntypeOutcomeTempRelation',
+        //     'designtype_id'
+        // )->select(['designtype_id', 'outcome_id']);
+        return $this->hasManyThrough(
+            'App\ComponentTemplate',
+            'App\DesignTypeComponentTemplateRelation',
+            'designtype_id', //ComponentPatternTemplateRelation compoent id
+            'id', // LearningPatternTemplate id
+            'id', // component_template id
+            'component_id' //LearningPatternTemplate pattern id
+        )->select(['component_template.*','component_template.id as template_id']);
+    }
 }
