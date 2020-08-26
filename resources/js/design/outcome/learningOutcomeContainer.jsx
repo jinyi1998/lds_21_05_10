@@ -20,7 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import {ContextStore} from '../../container/designContainer'
-import config from 'react-global-configuration';
+import {AppContextStore} from '../../container/app';
 
 import LearningOutcomeAddFromSelect from './learningOutcomeAddFromSelect';
 import LearningOutcomeUnit from './learningOutcomeUnit';
@@ -30,6 +30,12 @@ import InstructionBox from '../../components/instructionBox';
 import QuestionHint from '../../components/questionHint';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+import {
+    apiLearningOutcomeDelete, apiLearningOutcomeDeletComponentRelation,
+    apiLearningOutcomeComponentPut,
+    apiLearningOutcomeCoursePut,
+} from "../../api.js"
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -56,8 +62,10 @@ const LearningOutcomeContainer = (props)=>{
 
     const classes = useStyles();
 
-    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep, tourStepIndex } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+
     React.useEffect(()=> {
         if(modeLevel == "course"){
             tourSetRun(false);
@@ -78,6 +86,10 @@ const LearningOutcomeContainer = (props)=>{
         isCourseLevel: true
     });
 
+    const enableAdd = course.permission > 2; 
+    const enableEdit = course.permission > 2; 
+    const enableDrag = course.permission > 2; 
+    const enableDelete = course.permission > 2; 
   
 
 
@@ -156,7 +168,6 @@ const LearningOutcomeContainer = (props)=>{
               sequence: tempOutcomes[i].courseid.sequence - 1
             }
             updateOutcomeSequence(tempOutcome);
-            // fetchUpdateLearningComponent(tempComponent);
          }
         }else{
 
@@ -199,7 +210,6 @@ const LearningOutcomeContainer = (props)=>{
             }
             // console.log(tempOutcome);
             updateOutcomeSequence(tempOutcome);
-            // fetchUpdateLearningComponent(tempComponent);
          }
         }else{
 
@@ -222,29 +232,20 @@ const LearningOutcomeContainer = (props)=>{
         setLoadingOpen(true)
         if(modeLevel == "component" && learningOutcome.isCourseLevel == true){
             //just remove the component relation
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome/destroyComponentRelation/'+learningOutcome.id+'/'+component.id,
-                {
-                method: "DELETE",
+            apiLearningOutcomeDeletComponentRelation({
+                "outcome_id": learningOutcome.id,
+                "component_id": component.id
+            }).then(
+                ()=>{
+                    refreshCourse()
+                    setLoadingOpen(false)
                 }
             )
-            .then(res => res.json())
-            .then(response => {
-                //load the default learning outcomes by api request
-                refreshCourse()
-                setLoadingOpen(false)
-            })
             .catch(error => console.log(error));   
 
         }else{
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome/'+learningOutcome.id,
-                {
-                method: "DELETE",
-                }
-            )
-            .then(res => res.json())
-            .then(response => {
+            apiLearningOutcomeDelete(learningOutcome.id)
+            .then(()=>{
                 //load the default learning outcomes by api request
                 refreshCourse()
                 setLoadingOpen(false)
@@ -257,35 +258,13 @@ const LearningOutcomeContainer = (props)=>{
       async function updateOutcomeSequence(outcome_relation) {
         setLoadingOpen(true)
         if(modeLevel == "component"){
-            return await fetch(
-                'http://'+config.get('url')+'/api/componentOutcomeRelation/'+ outcome_relation.id,
-                {
-                  method: "PUT",
-                  body:  JSON.stringify(outcome_relation),
-                  headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                  }
-                }
-              ).then(res => res.json())
-              .then(response => {
-                  refreshCourse()
-              })
-        
-
+            await apiLearningOutcomeComponentPut(outcome_relation).then(
+                refreshCourse()
+            ).catch(error => console.log(error));   
         }else{
-            return await fetch(
-                'http://'+config.get('url')+'/api/courseOutcomeRelation/'+ outcome_relation.id,
-                {
-                  method: "PUT",
-                  body:  JSON.stringify(outcome_relation),
-                  headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                  }
-                }
-              ).then(res => res.json())
-              .then(response => {
-                  refreshCourse()
-              })
+            await apiLearningOutcomeCoursePut(outcome_relation).then(
+                refreshCourse()
+            ).catch(error => console.log(error));   
         }
        
       }
@@ -343,7 +322,7 @@ const LearningOutcomeContainer = (props)=>{
                             {course.outcomes.map(
                                 (_outcome, index )=>
                                 (
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
                                       {(provided, snapshot) => (
                                           <LearningOutcomeUnit 
                                           learningOutcome = {_outcome}
@@ -353,6 +332,8 @@ const LearningOutcomeContainer = (props)=>{
                                           component = {component} 
                                           onOpenDelDialog = {onOpenDelDialog} 
                                           onOpenEditDialog = {editLearningOutcome}
+                                          enableEdit = {enableEdit}
+                                          enableDelete = {enableDelete}
                                           index = {index}/> 
                                       )}
                                     </Draggable>
@@ -363,7 +344,13 @@ const LearningOutcomeContainer = (props)=>{
                     </RootRef>
                   )}
                 </Droppable>
-                <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                {
+                    enableAdd? 
+                    <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                    :
+                    null
+                }
+                
                 </DragDropContext>
             )
         }else{
@@ -383,7 +370,7 @@ const LearningOutcomeContainer = (props)=>{
                                                 {component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).map(
                                                     (_outcome, index )=>
                                                     (
-                                                        <Draggable key={index} draggableId={index.toString()} index={index}>
+                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
                                                         {(provided, snapshot) => (
                                                             <LearningOutcomeUnit 
                                                             learningOutcome = {_outcome}
@@ -393,6 +380,8 @@ const LearningOutcomeContainer = (props)=>{
                                                             component = {component} 
                                                             onOpenDelDialog = {onOpenDelDialog} 
                                                             onOpenEditDialog = {editLearningOutcome}
+                                                            enableEdit = {enableEdit}
+                                                            enableDelete = {enableDelete}
                                                             index = {index}/> 
                                                         )}
                                                         </Draggable>
@@ -408,7 +397,13 @@ const LearningOutcomeContainer = (props)=>{
                             null
                         )
                     )}
-                    <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
+                    {
+                        enableAdd?
+                        <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
+                        :
+                        null
+                    }
+                 
                     {/* <Button onClick={()=> setLearningOutcomeSelectOpen(true)} variant="contained" color="secondary">Select Learning Outcome From Unit Level</Button> */}
                 </React.Fragment>
             )

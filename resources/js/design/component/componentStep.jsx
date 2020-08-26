@@ -12,7 +12,10 @@ import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../../container/designContainer'
 import InstructionBox from '../../components/instructionBox';
 import config from 'react-global-configuration';
-
+import {
+  apiLearningCompGet, apiLearningCompPost, apiLearningCompPut, apiLearningCompDelete,
+  apiLearningCompTempGet,
+} from '../../api.js';
 
 // component data template
 // components: [
@@ -52,6 +55,10 @@ const DesignComponentStep = (props) =>
 { 
     const { course, options, dispatch, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    const enableAdd = course.permission > 2;
+    const enableEdit = course.permission > 2;
+    const enableDelete = course.permission > 2;
+    const enableDrag = course.permission > 2;
     
     React.useEffect(()=>{
       tourSetRun(false);
@@ -122,17 +129,11 @@ const DesignComponentStep = (props) =>
     } 
 
     async function deleteComponent(id){
-      return await fetch(
-        'http://'+config.get('url')+'/api/learningComponent/'+ id,
-        {
-        method: "DELETE",
-        }
-      )
-      .then(res => res.json())
+      await apiLearningCompDelete(id)
       .then(response => {
-          //load the default learning outcomes by api request
-          // return response;
-          refreshCourse();
+        //load the default learning outcomes by api request
+        // return response;
+        refreshCourse();
       })
       .catch(error => console.log(error));
     }
@@ -140,68 +141,33 @@ const DesignComponentStep = (props) =>
     //#region data fetching related
 
     async function fetchlearningComponentTemplate(id) {
-      return await fetch(
-          'http://'+config.get('url')+'/api/learningComponentTemplate/'+ id,
-          {
-          method: "GET",
-          }
-      )
-      .then(res => res.json())
+      return await apiLearningCompTempGet(id)
       .then(response => {
-          //load the default learning outcomes by api request
-          return response;
+        return response.data 
       })
       .catch(error => console.log(error));
     }
 
     async function fetchlearningComponent(id) {
-      return await fetch(
-          'http://'+config.get('url')+'/api/learningComponent/'+ id,
-          {
-          method: "GET",
-          }
-      )
-      .then(res => res.json())
+      return await apiLearningCompGet(id)
       .then(response => {
-          //load the default learning outcomes by api request
-          return response;
+        return response.data 
       })
       .catch(error => console.log(error));
     }
   
     
-    async function fetchAddLearningComponent(component ) {
+    async function fetchAddLearningComponent(component) {
       component.sequence = course.components.length + 1;
-
-      return await fetch(
-        'http://'+config.get('url')+'/api/learningComponent',
-        {
-          method: "POST",
-          body:  JSON.stringify(component),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }
-      ).then(res => res.json())
-      .then(response => {
-        refreshCourse();
-      })
+      return await apiLearningCompPost(component)
+      .then( () => {refreshCourse()})
+      .catch(error => console.log(error));
     }
 
-    async function fetchUpdateLearningComponent(component ) {
-      return await fetch(
-        'http://'+config.get('url')+'/api/learningComponent/'+ component.id,
-        {
-          method: "PUT",
-          body:  JSON.stringify(component),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }
-      ).then(res => res.json())
-      .then(response => {
-          refreshCourse()
-      })
+    async function fetchUpdateLearningComponent(component) {
+      return await apiLearningCompPut(component)
+      .then( () => {refreshCourse()})
+      .catch(error => console.log(error));
     }
     //#endregion
 
@@ -230,7 +196,7 @@ const DesignComponentStep = (props) =>
                     <RootRef rootRef={provided.innerRef}>
                       <List style={getListStyle(snapshot.isDraggingOver)} data-tour = "component_step">
                         {course.components.map((component, index) => (
-                          <Draggable key={index} draggableId={index.toString()} index={index}>
+                          <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
                             {(provided, snapshot) => (
                                 <DesignComponentItem 
                                   provided = {provided} 
@@ -238,7 +204,10 @@ const DesignComponentStep = (props) =>
                                   component = {component} 
                                   index = {index} 
                                   duplicateComponent = {duplicateComponent}
-                                  deleteComponent = {deleteComponent}/>
+                                  deleteComponent = {deleteComponent}
+                                  enableEdit = {enableEdit}
+                                  enableDelete = {enableDelete}
+                                  />
                             )}
                           </Draggable>
                         ))}
@@ -247,9 +216,15 @@ const DesignComponentStep = (props) =>
                     </RootRef>
                   )}
                 </Droppable>
-                <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth data-tour = "component_step_add">
-                    Add COMPONENT
-                </Button>
+                {
+                  enableAdd? 
+                  <Button variant="outlined" color="primary" onClick={handleClickOpen} fullWidth data-tour = "component_step_add">
+                      Add COMPONENT
+                  </Button>
+                  :
+                  null
+                }
+                
                 <ComponentSelDialog open={open} handleClose={handleClose} addItems ={addComponentFromTemplate} onEnteredDialog = {onEnteredDialog}/>
               </DragDropContext>
       </React.Fragment>

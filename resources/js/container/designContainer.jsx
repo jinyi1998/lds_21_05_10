@@ -1,12 +1,20 @@
 import React from "react";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 import Design from './design';
-import config from 'react-global-configuration';
-// import Tour from 'reactour'
+import ActionTool from '../design/actionTool';
+
+
+import {
+    apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
+    apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
+    apiLearningOutcomeTempGet,
+    apiDesignTypeList, apiDesignTypeGet,
+    apiOptionsList,
+    apiLearningTaskGetPatternOpts,
+  } 
+  from '../api.js';
 
 import TourGuide from './tourGuide';
+import {AppContextStore} from './app';
 
 const courseInitState = { 
     course: {
@@ -114,30 +122,24 @@ export function courseReducer(state, action) {
 }
 
 
-const useStyles = makeStyles(theme => ({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-}));
-
 const DesignContainer = (props) => {
-    const classes = useStyles();
     const [displayGuideTour, setDisplayGuideTour] = React.useState(false);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
+    const [activePage, setActionPage] = React.useState('basic');
+    const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
 
     React.useEffect(()=>{
-        (async function anyNameFunction() {
-            setLoadingOpen(true)
-            await InitDesignOption();
-            InitCourseData()
-            setLoadingOpen(false)
-          })();
-          var user = JSON.parse(props.user);
-          if(user['display_tourguide'] == 1){
+        setLoadingOpen(true)
+        InitDesignOption();
+        InitCourseData()
+
+        let user = JSON.parse(props.user);
+        if(user['display_tourguide'] == 1){
             setDisplayGuideTour(true);
-          }else{
+        }else{
             setDisplayGuideTour(false);
-          }    
+        }          
     },
     []);
 
@@ -170,7 +172,6 @@ const DesignContainer = (props) => {
         taskElearingResource: [],
     });
 
-    const [loadingOpen, setLoadingOpen] = React.useState(false);
     const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
     const taskTypeColor = (task_type)=>{
@@ -192,120 +193,73 @@ const DesignContainer = (props) => {
     
     async function fetchNewCourseData() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/',
-            {
-                method: "POST",
+        await apiCourseCreate().then(
+            response => {
+                window.location.href = 'designstudio/'+response.data.id;
             }
-        )
-            .then(res => res.json())
-            .then(response => {
-                // Dispatch({
-                //     type: "INIT_COURSE",
-                //     value: response
-                // })
-           window.location.href = 'designstudio/'+response.id;
-        })
-        .catch(error => console.log(error));
+        );
     }
 
     async function fetchCourseData(id) {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/'+ id,
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                Dispatch({
-                    type: "INIT_COURSE",
-                    value: response
-                })
+        await apiCourseGet(id).then(response => {
+            Dispatch({
+                type: "INIT_COURSE",
+                value: response.data
+            })
             setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));
+        }).catch(error => console.log(error));
     }
     //#region Init Options Data
 
     async function fetchDesignTypeData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getDesignTypeTemp',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "designType": response
-                })
-            );
+        await apiDesignTypeList().then(response => {
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "designType": response.data
+            }))
         })
-        .catch(error => console.log(error));
-    
     }
     
     async function fetchlearningTypeTempData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningOutcome/getOutcomeType/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "learningOutcomeType": response
-            }));
-        })
-        .catch(error => console.log(error));
+        apiLearningOutcomeGetOutcomeType()
+        .then(response => {
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "learningOutcomeType": response.data,
+                "learningTypeTemp": response.data
+            }))
+        }).catch(error => console.log(error));
+
     }
 
     async function fetchlearningPatternOptsData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningTask/getLearningPatternOpts/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
+        await apiLearningTaskGetPatternOpts().then(
+            response => {
                 setOptions(optionsInit=> ({
                     ...optionsInit,
-                    "learningPatternOpts": response
-            }));
-        })
-        .catch(error => console.log(error));
+                    "learningPatternOpts": response.data
+                }));
+            }
+        )
     }
 
     async function fetchlearningOptsData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/opts',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "taskType": response.learningTasktypeOpts,
-                    "taskClassType": response.classTypeOpts,
-                    "taskSize": response.classSizeOpts,
-                    "taskTarget": response.classTargetOpts,
-                    "taskResource": response.resourceOpts,
-                    "taskElearingResource": response.elearningtoolOpts,
-                })
-            );
-            setTaskTypeColorValue(response.learningTasktypeOpts)
+        await apiOptionsList().then(response=>{
+            setOptions(optionsInit=> ({
+                ...optionsInit,
+                "taskType": response.data.learningTasktypeOpts,
+                "taskClassType": response.data.classTypeOpts,
+                "taskSize": response.data.classSizeOpts,
+                "taskTarget": response.data.classTargetOpts,
+                "taskResource": response.data.resourceOpts,
+                "taskElearingResource": response.data.elearningtoolOpts,
+            }))
+            setTaskTypeColorValue(response.data.learningTasktypeOpts)
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
@@ -330,7 +284,15 @@ const DesignContainer = (props) => {
           setStepIndex(stepIndex + 1);
       }
       //#endregion
-      
+    
+    const displayDesignStudio = () => {
+        if(props.courseID == -1){
+            // setLoadingOpen(true);
+            return null;
+        }else{
+            return <Design courseID={props.courseID} step = {props.step}/>
+        }
+    }
 
     return (
       <ContextStore.Provider
@@ -338,14 +300,17 @@ const DesignContainer = (props) => {
           course: State.course,
           options: optionsInit,
           dispatch: combineDispatchs([Dispatch]),
-          setLoadingOpen: setLoadingOpen,
           fetchCourseData: fetchCourseData,
           refreshCourse: refreshCourse,
           taskTypeColor: taskTypeColor,
           tourSetMode: setMode,
           tourSetRun: setRun,
           tourNextStep: tourNextStep,
-          tourStepIndex: stepIndex
+          tourStepIndex: stepIndex,
+          activeStep: activeStep,
+          setActiveStep: setActiveStep,
+          activePage: activePage,
+          setActionPage: setActionPage
         }}
       >
         <TourGuide 
@@ -359,11 +324,11 @@ const DesignContainer = (props) => {
             displayGuideTour = {displayGuideTour}
             setDisplayGuideTour = {setDisplayGuideTour}
         />
-        <Design courseID={props.courseID} step = {props.step}/>
+        
+        {displayDesignStudio()}
 
-        <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-            <CircularProgress color="inherit" />
-        </Backdrop>
+        <ActionTool />
+        
       </ContextStore.Provider>
     );
 }

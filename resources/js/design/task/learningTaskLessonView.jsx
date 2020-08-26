@@ -78,8 +78,8 @@ const LearningTaskLessonView = (props) => {
     const {taskID, taskData, onEditearningTask} = props;
     const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
-    const {error} = props;
-    const {course, options, setLoadingOpen, taskTypeColor } = React.useContext(ContextStore);
+    const {error, editBtn} = props;
+    const {course, options,  taskTypeColor } = React.useContext(ContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const mode = props.mode;  
 
@@ -244,9 +244,15 @@ const LearningTaskLessonView = (props) => {
                                 </Grid>
 
                                 <Grid item xs={1} className={classes.contentGrid}>
-                                        <IconButton onClick={()=>onClickEdit()}>
-                                            <EditIcon />
-                                        </IconButton>
+                                        {
+                                            editBtn? 
+                                            <IconButton onClick={()=>onClickEdit()}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            :
+                                            null
+                                        }
+                                       
                                 </Grid>
                             </Grid>
                         </ExpansionPanelDetails>

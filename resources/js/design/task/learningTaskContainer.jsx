@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../../container/designContainer'
+import {ContextStore} from '../../container/designContainer';
+import {AppContextStore} from '../../container/app';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,12 +12,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LearningTaskView from './learningTaskView';
 import LearningTaskEditView from './learningTaskEditView';
 import validator from 'validator';
-import config from 'react-global-configuration';
 
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import List from '@material-ui/core/List';
-
+import {
+    apiLearningTaskPost, apiLearningTaskPut, apiLearningTaskCompPut
+} from '../../api.js';
 
 //   tasks: [
 //     {
@@ -40,7 +42,15 @@ const getListStyle = isDraggingOver => ({
 const LearningTaskContainer = (props) => {
 
     const {tasksData, componentID} = props;
-    const { setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+
+    const enableAdd = course.permission > 2;
+    const enableDrag = course.permission > 2;
+    const enableEdit = course.permission > 2;
+    const enableDelete = course.permission > 2;
+    const enableDuplicate = course.permission > 2;
+
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ taskData, setTaskData] = React.useState({});
@@ -116,17 +126,8 @@ const LearningTaskContainer = (props) => {
             //new learning task
             json['sequence'] = tasksData.length;
             setOpenTaskEdit(false);
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+
+            return await apiLearningTaskPost(json)
             .then(response => {
                 //load the default learning outcomes by api request
                 // setOpenTaskEdit(false);
@@ -137,17 +138,7 @@ const LearningTaskContainer = (props) => {
         }else{
             //update existing task
             setOpenTaskEdit(false);
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/'+ taskData.id,
-                {
-                    method: "PUT",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPut(json)
             .then(response => {
                 //load the default learning outcomes by api request
                 // setOpenTaskEdit(false);
@@ -160,23 +151,13 @@ const LearningTaskContainer = (props) => {
     }
 
     async function updateComponentTaskLessonRelation(component_task_relation){
-        return await fetch(
-            'http://'+config.get('url')+'/api/componentTaskRelation/'+ component_task_relation.id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(component_task_relation),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        return await apiLearningTaskCompPut(component_task_relation)
         .then(response => {
-            //load the default learning outcomes by api request
+                 //load the default learning outcomes by api request
             // setOpenTaskEdit(false);
             setLoadingOpen(false);
             refreshCourse();
-        })
+        }).catch(error => console.log(error));
     }
     //#endregion
 
@@ -268,7 +249,7 @@ const LearningTaskContainer = (props) => {
                             {   
                                 tasksData.map( 
                                     (_task, index) => 
-                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
                                     {(provided, snapshot) => (
                                           <LearningTaskView 
                                             provided = {provided} 
@@ -277,9 +258,9 @@ const LearningTaskContainer = (props) => {
                                             taskData = {_task} 
                                             onEditearningTask = {onEditearningTask}
                                             key = {_task.id}
-                                            editBtn = {true}
-                                            duplicateBtn = {true}
-                                            deleteBtn = {true}
+                                            editBtn = {enableEdit}
+                                            duplicateBtn = {enableDuplicate}
+                                            deleteBtn = {enableDelete}
                                             lastestindex = {tasksData.length + 1}
                                         />
                                     )}
@@ -305,9 +286,15 @@ const LearningTaskContainer = (props) => {
                     />
                 )} */}
 
-            <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
-                Add Learning Task
-            </Button>
+            {
+                enableAdd?
+                <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
+                    Add Learning Task
+                </Button>
+                :
+                null
+            }
+           
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
                 <DialogTitle id="form-dialog-title">{taskData.id == -1? "Add Learning Task" : "Edit Learning Task"}</DialogTitle>

@@ -8,12 +8,13 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DoneIcon from '@material-ui/icons/Done';
 import {ContextStore} from '../container/usergroupsListViewContainer';
+import {AppContextStore} from '../../container/app';
 
 const UsergroupListViewCard = (props) => {
     const [usergroup, setUsergroup] = React.useState(props.usergroup);
     const [joinStatus, setJoinStatus] = React.useState(3);
     const {userJoinUsergroup, setJoinGroupWarningOpen} = props;
-    const { setLoadingOpen } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     React.useEffect(()=>{
         setLoadingOpen(true)

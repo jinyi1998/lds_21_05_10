@@ -63,7 +63,7 @@ const LearningTaskEditView = (props) => {
 
     const {taskID, taskData, syncTask, showAssessment} = props;
     const {error} = props;
-    const {course, options, setLoadingOpen, taskTypeColor } = React.useContext(ContextStore);
+    const {course, options,  taskTypeColor } = React.useContext(ContextStore);
     const { component } = React.useContext(ComponentContext);
 
     const [task, setTask] = React.useState({

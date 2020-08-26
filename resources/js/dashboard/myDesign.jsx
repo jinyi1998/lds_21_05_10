@@ -8,82 +8,82 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
-import config from 'react-global-configuration';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import {AppContextStore} from '../container/app';
+
+
+import {apiUserAvaGroup, apiCourseList, apiFileCourseImport} from '../api.js';
 
 const MyDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     // const {setImportJson} = props;
     // const {handleListItemClick, setCourseID} = props;
 
-    // let fileReader = new FileReader();
-    // fileReader.onload = event => {
-    //     setImportJson(JSON.parse(event.target.result));
-    //     setCourseID(1);
-    //     handleListItemClick(event, 'design');
-    // };
+    let fileReader = new FileReader();
+    fileReader.onload = event => {
+        setLoadingOpen(true)
+        apiFileCourseImport(JSON.parse(event.target.result))
+        .then(response => {
+            window.location.reload(false); 
+        });
+    };
 
-    // const handleFile = (event) => {
-    //     fileReader.readAsText(event.target.files[0])
-    // }
+    const handleFile = (event) => {
+        fileReader.readAsText(event.target.files[0])
+    }
 
     //call api to get the data
     async function fetchData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
+        await apiCourseList()
             .then(response => {
-                setCourseList(response);
-                // console.log(response);
+                setCourseList(response.data);
+                setLoadingOpen(false);
         })
         .catch(error => console.log(error));
 
     }
     
     async function fetchUsergroupData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setUsergroup(response);
-                // console.log(response);
+        await apiUserAvaGroup().then(response => {
+            setUsergroup(response.data);
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
-
     }
 
     React.useEffect(() => {
+        setLoadingOpen(true)
         fetchData();
         fetchUsergroupData();
     }, []);
 
     return (
         <React.Fragment>
-            <Grid container spacing={4} justify="space-between">
+            <Grid container justify="space-between" spacing = {3}>
                 <Grid item xs = {4}>
                     <Typography component="h1" variant="h6" color="inherit" noWrap>
                         My Design Area
                     </Typography>
                 </Grid>
                  
-                 
-                <Grid item xs = {4}>
-                    
+                <Grid item xs = {4} >
                     <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
                         Add new design
+                    </Button>
+                    <Button variant="contained"component="label" color='secondary'>
+                        <CloudUploadIcon />
+                        Upload File
+                        <input
+                            type="file"
+                            accept=".json"
+                            onChange = {handleFile}
+                            hidden
+                        />
                     </Button>
                 </Grid>
 
@@ -101,8 +101,9 @@ const MyDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
-                                        enableShare = {true}
-                                        enableDelete = {true}
+                                        enableDuplicate = {_course.permission > 1}
+                                        enableShare = {_course.permission > 99}
+                                        enableDelete = {_course.permission > 3}
                                     />
                                 )
                            }

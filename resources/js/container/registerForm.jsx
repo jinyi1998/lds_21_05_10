@@ -57,7 +57,7 @@ const RegisterForm = (props) => {
       // window.location.href = "/designstudio";
       if(validate()){
         // console.log(JSON.stringify(data));
-        register();
+        // register();
       }
   };
 
@@ -83,6 +83,9 @@ const RegisterForm = (props) => {
     if(validator.isEmpty(data.name.toString())){
       tempError["name"] = "Please enter the user name";
       validated = false;
+    }else if( /\s/g.test(data.name)){
+      tempError["name"] = "Please enter the user name without any whitespace inside";
+      validated = false;
     }
 
 
@@ -93,6 +96,9 @@ const RegisterForm = (props) => {
 
     if(validator.isEmpty(data.school.toString())){
       tempError["school"] = "Please enter the school";
+      validated = false;
+    }else if( /\s/g.test(data.school)){
+      tempError["school"] = "Please enter the school name without any whitespace inside";
       validated = false;
     }
 
@@ -111,24 +117,7 @@ const RegisterForm = (props) => {
     return validated;
   }
   async function register() {
-    // await fetch(
-    //   'http://'+config.get('url')+'/register',
-    //   {
-    //     method: "POST",
-    //     body:  JSON.stringify(data),
-    //     headers: {
-    //       "Content-type": "application/json; charset=UTF-8",
-    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }
-    //   }
-    // )
-    //     .then(res => res.json())
-    //     .then(response => {
-
-    // })
-    // .catch(error => console.log(error));
     document.form.submit();
-
   }
     
   
@@ -252,6 +241,8 @@ const RegisterForm = (props) => {
                 </Link>
               </Grid>
             </Grid>
+
+            <input type="hidden" name = "_token" value = {$('meta[name="csrf-token"]').attr('content')} />
           </form>
         </div>
       </Container>

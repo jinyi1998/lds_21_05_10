@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use Auth;
+use App\User;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -38,6 +42,39 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+
+    public function login(Request $request){
+        $input = $request->all();
+
+        $rules = ['email'=>'required|email',
+                  'password'=>'required'
+                  ];
+    
+        $validator = Validator::make($input, $rules);
+    
+        if ($validator->passes()) {
+            $attempt = Auth::attempt([
+                'email' => $input['email'],
+                'password' => $input['password']
+            ]);
+    
+            if ($attempt) {
+                $user = User::find(Auth::user()->id);
+                $token = $user->createToken('apitoken')->accessToken;
+                session(['apitoken' => $token]);
+                return redirect('mydesign');
+            }
+    
+            return Redirect::to('login')
+                    ->withErrors(['fail'=>'Email or password is wrong!']);
+        }
+    
+        //fails
+        return Redirect::to('login')
+                    ->withErrors($validator)
+                    ->withInput($request->except('password'));
     }
 
     public function showLoginForm(){

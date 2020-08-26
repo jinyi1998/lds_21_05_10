@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 import LearningTaskView from '../task/learningTaskView';
@@ -25,7 +17,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {ComponentContext} from '../component/componentContainer';
 import {ContextStore} from '../../container/designContainer'
-import config from 'react-global-configuration';
+import {AppContextStore} from '../../container/app';
+
+import {
+    apiLearningCompGetPatternOpts,
+    apiLearningPatternGet, apiLearningPatternPut, apiLearningPatternUnlock
+} from '../../api.js';
+
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -50,7 +48,8 @@ const useStyles = makeStyles(theme => ({
 
 
 const LearningPatternContainer = (props) => {
-    const { setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const { component } = React.useContext(ComponentContext);
 
     const classes = useStyles();
@@ -61,35 +60,23 @@ const LearningPatternContainer = (props) => {
 
     const [editPatternOpen, setEditPatternOpen] = React.useState(false);
 
+    const enableUnlock = course.permission > 2;
+
     async function fetchlearningPattern(id) {
         setLoadingOpen(true)
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningPattern/'+ id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
+        return await apiLearningPatternGet(id).then(response => {
             //load the default learning outcomes by api request
-            setPattern(response);
+            setPattern(response.data);
             setLoadingOpen(false)
         })
         .catch(error => console.log(error));
     }
     
     async function fetchLearningPatternTemplate(id) {
-        patternTempOpts
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningComponent/getPatternOpts/'+ id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+        return await apiLearningCompGetPatternOpts(id)
         .then(response => {
             //load the default learning outcomes by api request
-            setPatternTempOpts(response);
+            setPatternTempOpts(response.data);
             return response;
         })
         .catch(error => console.log(error));
@@ -104,13 +91,7 @@ const LearningPatternContainer = (props) => {
   
     async function unlockLearningPattern() {
         setLoadingOpen(true)
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningPattern/unlockPattern/'+ pattern.id,
-            {
-            method: "PUT",
-            }
-        )
-        .then(res => res.json())
+        return await apiLearningPatternUnlock(pattern)
         .then(response => {
             //load the default learning outcomes by api request
             setLoadingOpen(false)
@@ -121,23 +102,15 @@ const LearningPatternContainer = (props) => {
 
     async function saveLearningPattern() {
         var json = patternTempOpts.find(x => x.id == patternTempID);
-        return await fetch(
-            'http://'+config.get('url')+'/api/learningPattern/' + pattern.id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(json),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        json[pattern_id] = pattern.id;
+
+        return await apiLearningPatternPut(json)
         .then(response => {
-            //load the default learning outcomes by api request
-            setLoadingOpen(false);
-            setEditPatternOpen(false);
-            fetchlearningPattern(pattern.id);
-            refreshCourse();
+              //load the default learning outcomes by api request
+              setLoadingOpen(false);
+              setEditPatternOpen(false);
+              fetchlearningPattern(pattern.id);
+              refreshCourse();
         })
         .catch(error => console.log(error));
     }
@@ -170,7 +143,12 @@ const LearningPatternContainer = (props) => {
                     </Grid>
 
                     <Grid item xs = {4}>
-                        <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock"> <LockOpenIcon/>Unclock me</Button>
+                        {
+                            enableUnlock?
+                            <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock" > <LockOpenIcon/>Unclock me</Button>
+                            :
+                            null
+                        }
                     </Grid>
                     
                     {pattern.tasks?.map((_task, index)=>

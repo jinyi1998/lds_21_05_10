@@ -50,6 +50,7 @@ class LearningComponentAnalysisController extends Controller
             ->select('learningtask.title as task_title', 
             'learningtask.time as task_time', 
             'learningtask.type as task_type', 
+            'learningtask.target as target',
             'learningtask.id as task_id', 
             'lesson.title as lesson_title', 
             'lesson.id as lesson_id', 
@@ -63,6 +64,7 @@ class LearningComponentAnalysisController extends Controller
         ->select('learningtask.title as task_title', 
         'learningtask.time as task_time', 
         'learningtask.type as task_type', 
+        'learningtask.target as target',
         'learningtask.id as task_id', 
         'lesson.title as lesson_title', 
         'lesson.id as lesson_id', 
@@ -111,6 +113,8 @@ class LearningComponentAnalysisController extends Controller
 
         $tasks_time_by_task = [];
 
+        $tasks_num_by_classtarget = [];
+
         if(isset($component['patterns'][0]['tasks'])){
             foreach($component['patterns'][0]['tasks'] as $task){
                 if(!isset( $tasks_time_by_type[$task->type])){
@@ -123,10 +127,16 @@ class LearningComponentAnalysisController extends Controller
                     $tasks_time_by_task[$task->title] = 0;
                 }
 
+                if(!isset( $tasks_num_by_classtarget[$task->target])){
+                    $tasks_num_by_classtarget[$task->target] = 0;
+                }
+
                 $tasks_time_by_type[$task->type] +=  $task->time;
                 $tasks_num_by_type[$task->type] +=  1;
 
                 $tasks_time_by_task[$task->title] += $task->time;
+
+                $tasks_num_by_classtarget[$task->target] += 1;
                 
             }
         }
@@ -141,11 +151,17 @@ class LearningComponentAnalysisController extends Controller
                 if(!isset( $tasks_time_by_task[$task->title])){
                     $tasks_time_by_task[$task->title] = 0;
                 }
+                if(!isset( $tasks_num_by_classtarget[$task->target])){
+                    $tasks_num_by_classtarget[$task->target] = 0;
+                }
+
 
                 $tasks_time_by_type[$task->type] +=  $task->time;
                 $tasks_num_by_type[$task->type] +=  1;
 
                 $tasks_time_by_task[$task->title] += $task->time;
+
+                $tasks_num_by_classtarget[$task->class_type] += 1;
             }
         }
 
@@ -153,8 +169,10 @@ class LearningComponentAnalysisController extends Controller
         $result['tasks_time_by_type'] = $tasks_time_by_type;
         $result['tasks_num_by_type'] = $tasks_num_by_type;
         $result['tasks_time_by_task'] = $tasks_time_by_task;
+        $result['tasks_num_by_classtarget'] = $tasks_num_by_classtarget;
 
         $result['tasks_by_lesson'] = $tasks_by_lesson;
+
 
         return response()->json($result);
     }

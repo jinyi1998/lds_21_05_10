@@ -10,37 +10,22 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
-import config from 'react-global-configuration';
 
-
+import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer'
 
 const LearningOutcomeUnit = (props)=>{
-    const {options, setLoadingOpen } = React.useContext(ContextStore);
+    const {options } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const {learningOutcomeID} = props;
+    const {enableEdit, enableDelete} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;
     const {provided, snapshot} = props;
 
     const learningTypeTemp = options.learningOutcomeType;
 
     const [outcome, setOutcome] = React.useState(props.learningOutcome);
-    async function fetchLearningOutcome() {
-        setLoadingOpen(true)
-        fetch(
-            'http://'+config.get('url')+'/api/learningOutcome/'+learningOutcomeID,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            setOutcome(response);
-            setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));   
-      }
-    
+
     const getItemStyle = (isDragging, draggableStyle) => ({
         // styles we need to apply on draggables
         ...draggableStyle,
@@ -100,12 +85,24 @@ const LearningOutcomeUnit = (props)=>{
                 } 
             />
             <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
-                    <EditIcon />
-                </IconButton>
-                <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
-                    <DeleteIcon />
-                </IconButton>
+                {
+                    enableEdit?
+                    <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
+                        <EditIcon />
+                    </IconButton>
+                    :
+                    null
+                }
+                
+                {
+                    enableDelete?
+                    <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
+                        <DeleteIcon />
+                    </IconButton>
+                    :
+                    null
+                }
+               
             </ListItemSecondaryAction>
         </ListItem>
     );

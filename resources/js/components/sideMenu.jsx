@@ -5,8 +5,6 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,21 +12,24 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Divider from '@material-ui/core/Divider';
 
 import GroupIcon from '@material-ui/icons/Group';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ToolMenu from './toolMenu';
+import LineStyleIcon from '@material-ui/icons/LineStyle';
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import BuildIcon from '@material-ui/icons/Build';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
+import {AppContextStore} from '../container/app';
+import { parseJSON } from 'jquery';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
+
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
@@ -38,30 +39,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
   },
   drawerPaper: {
     position: 'relative',
@@ -87,18 +64,58 @@ const useStyles = makeStyles(theme => ({
 
  const SideMenu = (props) => {
 
+
+  const user = parseJSON(props.user);
+  const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(AppContextStore);
+
   const classes = useStyles();
 
-  // general menu
-  const [open, setOpen] = React.useState(false);
- 
-
-  const [selectedIndex, setSelectedIndex] = React.useState('mydesign');
-
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
     window.location.href = "/"+index;
   };
+
+  const displayAdminMenu = () => {
+    if(user.is_admin){
+      return (
+        <React.Fragment>
+           <Divider variant="middle" />
+          <ListSubheader color = "primary"> 
+            <Typography variant="caption" display="block" noWrap = {false}><b>Admin</b></Typography>
+          </ListSubheader>
+            <ListItem button  
+              onClick={event => handleListItemClick(event, 'admin/dashboard')} 
+              selected={currentModule == 'admin_dashboard'} 
+            >
+                <ListItemIcon>
+                    <LineStyleIcon />
+                </ListItemIcon>
+                <ListItemText primary= "Dashboard" />
+            </ListItem>
+            <ListItem button  
+              onClick={event => handleListItemClick(event, 'admin/usersmanagement')} 
+              selected={currentModule == 'admin_usersmanagement'} 
+            >
+              <ListItemIcon>
+                  <PermContactCalendarIcon />
+              </ListItemIcon>
+              <ListItemText primary="User Management" />
+            </ListItem>
+            <ListItem button  
+              onClick={event => handleListItemClick(event, 'admin/template_builder')} 
+              selected={currentModule == 'admin_template_builder'} 
+            >
+              <ListItemIcon>
+                  <BuildIcon />
+              </ListItemIcon>
+              <ListItemText primary="Template Builder" />
+            </ListItem>
+
+        </React.Fragment>
+      );
+    }else{
+      return null;
+    }
+  }
 
   return (
       <React.Fragment>
@@ -106,12 +123,12 @@ const useStyles = makeStyles(theme => ({
         <Drawer
             variant="permanent"
             classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+              paper: clsx(classes.drawerPaper, !sideMenuOpen && classes.drawerPaperClose),
             }}
-            open={open}
+            open={sideMenuOpen}
          >
             <div className={classes.toolbarIcon}>
-                <IconButton onClick={() => {setOpen(!open)}}>
+                <IconButton onClick={() => {setSideMenuOpen(!sideMenuOpen)}}>
                     <ChevronLeftIcon />
                 </IconButton>
             </div>
@@ -122,7 +139,7 @@ const useStyles = makeStyles(theme => ({
                 <div>
                     <ListItem button  
                             onClick={event => handleListItemClick(event, 'mydesign')} 
-                            // selected={selectedIndex == 'mydesign'} 
+                            selected={currentModule == 'mydesign'} 
                             >
                         <ListItemIcon>
                             <DashboardIcon />
@@ -131,7 +148,7 @@ const useStyles = makeStyles(theme => ({
                     </ListItem>
                     <ListItem button
                             onClick={event => handleListItemClick(event, 'publicdesign')} 
-                            // selected={selectedIndex == 'publicdesign'}
+                            selected={currentModule == 'publicdesign'}
                             >
                         <ListItemIcon>
                             <ShoppingCartIcon />
@@ -141,6 +158,7 @@ const useStyles = makeStyles(theme => ({
 
                     <ListItem button
                             onClick={event => handleListItemClick(event, 'usergroups')} 
+                            selected={currentModule == 'usergroups'}
                             >
                         <ListItemIcon>
                             <GroupIcon />
@@ -148,6 +166,8 @@ const useStyles = makeStyles(theme => ({
                         <ListItemText primary="User Groups" />
                     </ListItem>
                 </div>
+
+                {displayAdminMenu()}
             </List>
 
             <Divider />

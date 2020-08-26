@@ -6,11 +6,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -20,7 +15,9 @@ import config from 'react-global-configuration';
 import {ContextStore} from '../../container/designContainer'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import validator from 'validator';
-
+import {
+    apiLearningOutcomeGetOutcomeLevel, apiLearningOutcomePost, apiLearningOutcomePut
+} from '../../api.js';
 
 import QuestionHint from '../../components/questionHint';
 // learningOutcomes: [
@@ -87,15 +84,9 @@ const LearningOutcomeEdit = (props) => {
     const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
     
     async function fetchlearningLevelTempData(selectLearningType) {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/learningOutcome/getOutcomeLevel/'+selectLearningType,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            setLearningLevelTemp(response);
+        await apiLearningOutcomeGetOutcomeLevel(selectLearningType)
+        .then(response =>  {
+            setLearningLevelTemp(response.data);
         })
         .catch(error => console.log(error));
     }
@@ -245,6 +236,7 @@ const LearningOutcomeEdit = (props) => {
 
         var json = learningOutcome;
         json["STEMType"] = tmpSTEMType.join(" ,");
+        json["outcome_id"] = outcomeID;
         if(componentID != -1 && typeof componentID != "undefined"){
             json["component_id"] = componentID;
             json["isCourseLevel"] = false;
@@ -252,41 +244,16 @@ const LearningOutcomeEdit = (props) => {
             json["isCourseLevel"] = true;
             json["course_id"] = courseID;
         }
+
+
         if(outcomeID == -1){
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
-            .then(response => {
-                //load the default learning outcomes by api request
-                
-                refreshCourse();
-            })
+            apiLearningOutcomePost(json)
+            .then(  refreshCourse() )
             .catch(error => console.log(error));
+    
         }else{
-            fetch(
-                'http://'+config.get('url')+'/api/learningOutcome/'+ outcomeID,
-                {
-                    method: "PUT",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
-            .then(response => {
-                //load the default learning outcomes by api request
-                
-                refreshCourse();
-            })
+            apiLearningOutcomePut(json)
+            .then(  refreshCourse() )
             .catch(error => console.log(error));
         }
        

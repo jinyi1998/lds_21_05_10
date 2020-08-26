@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 const UnitPlan = (props)  => {
   const classes = useStyles();
   const { course, dispatch } = React.useContext(ContextStore);
+  const [ selectComIndex, setSelectComIndex] = React.useState(0);
   
   return (
     <div className={classes.root}>
@@ -41,7 +42,14 @@ const UnitPlan = (props)  => {
 
             {course.components.map((_component, index)=>(
                 <Grid item xs={12} key = {index}>
-                    <ComponentContainer component = {_component} componentID = {_component.id} key= {index} index = {index}/>
+                    <ComponentContainer 
+                      component = {_component}
+                      componentID = {_component.id}
+                      key= {index}
+                      index = {index}
+                      selectComIndex= {selectComIndex}
+                      setSelectComIndex = {setSelectComIndex}
+                    />
                 </Grid>
             ))}
         </Grid>

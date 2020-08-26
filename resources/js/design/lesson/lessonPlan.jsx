@@ -38,6 +38,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import LessonPlanContainer from './lessonPlanContainer';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
+
+import {
+    apiCourseUpdate,
+    apiLessonCreate, apiLessonDelete
+} from '../../api.js';
 
 
 const useStyles = makeStyles(theme => ({
@@ -60,9 +66,14 @@ const useStyles = makeStyles(theme => ({
 
 const LessonPlan = (props) => {
 
-    const { course, setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
-  
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
+    const enableAdd = course.permission > 2;
+    const enableDelete = course.permission > 2;
+    const enableDrag = course.permission > 2;
+
     const classes = useStyles();
     const [selectedLessonID, setSelectedLessonID] = React.useState(-1);
     const [onDeletelLessonID, setOnDeleteLessonID] = React.useState(-1);
@@ -96,25 +107,14 @@ const LessonPlan = (props) => {
             "course_id": course.id,
         };
 
-        fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
-
-                  // update the course no of lessons
-                  updateCourseNoOfLesson(course.lessons.length + 1);
-          })
-          .catch(error => console.log(error));
-
+        apiLessonCreate(lessonjson)
+        .then(response => {
+            setLoadingOpen(false)
+            // update the course no of lessons
+            updateCourseNoOfLesson(course.lessons.length + 1);
+        })
+        .catch(error => console.log(error));
+        
     }
 
     const onDeleteDialog = (lesson_id) => {
@@ -128,44 +128,31 @@ const LessonPlan = (props) => {
         }
         //delete the lesson
         setLoadingOpen(true)
-         fetch(
-            'http://'+config.get('url')+'/api/lesson/'+onDeletelLessonID,
-            {
-              method: "DELETE",
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
 
-                  // update the course no of lessons
-                  updateCourseNoOfLesson(course.lessons.length - 1);
-          })
-          .catch(error => console.log(error));
+        apiLessonDelete(onDeletelLessonID)
+        .then(response => {
 
-
+                // update the course no of lessons
+                updateCourseNoOfLesson(course.lessons.length - 1);
+        })
+        .catch(error => console.log(error));
+    
     }
 
     const updateCourseNoOfLesson = (no_of_lesson) => {
         var json = {        
             "no_of_lesson": no_of_lesson,
         };
-       fetch(
-            'http://'+config.get('url')+'/api/course/'+ course.id,
-            {
-              method: "PUT",
-              body:  JSON.stringify(json),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                refreshCourse();
-                setLoadingOpen(false)
-                setDeleteDialog(false);
+
+        apiCourseUpdate({        
+            "no_of_lesson": no_of_lesson,
+            "course_id":  course.id
+        }).then(response => {
+            refreshCourse();
+            setLoadingOpen(false)
+            setDeleteDialog(false);
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error));    
     }
 
 
@@ -193,26 +180,38 @@ const LessonPlan = (props) => {
                                 </ListItemIcon>
                                 <ListItemText primary= {_lessons.title} />
                                 <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)} data-tour = "lesson_lesson_delete">
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    {
+                                        enableDelete? 
+                                        <IconButton edge="end" aria-label="delete" onClick={()=> onDeleteDialog(_lessons.id)} data-tour = "lesson_lesson_delete">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        :
+                                        null
+                                    }
                                 </ListItemSecondaryAction>
                             </ListItem>
                         )}
                         <ListItem onClick = {() => onChangeLesson(-1)} selected={selectedLessonID == -1} data-tour = "lesson_lesson_all">View All</ListItem>
                     </List>
-                    <Button
+                    {
+                        enableAdd?
+                        <Button
                         variant="contained"
                         color="secondary"
                         startIcon={<AddIcon />}
                         fullWidth
                         onClick = {onAddLessson}
                         data-tour = "lesson_lesson_add"
-                    >
-                        Add Lesson
-                    </Button>
+                        >
+                            Add Lesson
+                        </Button>
+                        :
+                        null
+                    }
+                 
                 </Paper>
             </Grid>
+
             <Grid item xs={9}>
                 {
                     selectedLessonID == -1 ? 

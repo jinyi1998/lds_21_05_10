@@ -3,11 +3,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../container/designContainer'
+import {ContextStore} from '../container/designContainer';
+import {AppContextStore} from '../container/app';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-import config from 'react-global-configuration';
 import validator from 'validator';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -17,6 +17,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import QuestionHint from '../components/questionHint';
+import {
+  apiLessonDelete, apiLessonCreate,
+  apiCourseUpdate, apiCourseClearLesson
+} 
+from '../api.js';
+
 const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
@@ -31,7 +37,8 @@ const useStyles = makeStyles(theme => ({
 const DesignInfo = (props) => {
 
   const classes = useStyles();
-  const { course, options, dispatch, setLoadingOpen } = React.useContext(ContextStore);
+  const { course, options, dispatch } = React.useContext(ContextStore);
+  const { setLoadingOpen } = React.useContext(AppContextStore);
   const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
   React.useEffect(()=> {
     tourSetRun(false);
@@ -112,17 +119,23 @@ const DesignInfo = (props) => {
 
   const onNext = () => {
     if(validate()){
-      updateCourse();
+      if(courseData.permission > 2){
+        updateCourse();
+      }
+      
       handleNext();
     }
   }
 
   const onSave = () => {
+    
     if(course.no_of_lesson > courseData.no_of_lesson){
       setLessonWarning(true);
     }else{
       if(validate()){
-        updateCourse();
+        if(courseData.permission > 2){
+          updateCourse();
+        }
       }
     }
   }
@@ -135,10 +148,8 @@ const DesignInfo = (props) => {
   }
 
   async function updateCourse() {
+
     setLoadingOpen(true)
-    var course_json = {
-      course_id: course.id,
-    }
 
     if(course.lessons.length > 0){
       // already init-ed the lesson
@@ -147,15 +158,8 @@ const DesignInfo = (props) => {
         for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
           
           var lessonid = course.lessons[i].id;
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson/' +lessonid,
-            {
-              method: "DELETE",
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          await apiLessonDelete(course.lessons[i].id).then(response => {
+            setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
@@ -164,25 +168,15 @@ const DesignInfo = (props) => {
         //add new lesson 
         for(var i = course.no_of_lesson; i < courseData.no_of_lesson; i++){
           let int_i = parseInt(i);
-          var lessonjson = {
+
+          await apiLessonCreate( {
             "time": lesson_time,
             "title": 'Lesson' + (int_i + 1),
             "sequence": int_i + 1,
             "course_id": course.id,
-          };
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          })
+          .then(response => {
+              setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
@@ -190,69 +184,37 @@ const DesignInfo = (props) => {
      
     }else{
         
-        await fetch(
-          'http://'+config.get('url')+'/api/course/clearCourseLesson',
-          {
-            method: "POST",
-            body:  JSON.stringify(course_json),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            }
-          }
-        )
+      await apiCourseClearLesson(course.id);
           
       // init the lesson with input no of lesson
         for(var i = 0; i<courseData.no_of_lesson; i++){
-          var lessonjson = {
+
+          await apiLessonCreate( {
             "time": lesson_time,
-            "title": 'Lesson' + (i+1),
+            "title": 'Lesson' + (i + 1),
             "sequence": i + 1,
             "course_id": course.id,
-          };
-          await fetch(
-            'http://'+config.get('url')+'/api/lesson',
-            {
-              method: "POST",
-              body:  JSON.stringify(lessonjson),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-          )
-              .then(res => res.json())
-              .then(response => {
-                  setLoadingOpen(false)
+          })
+          .then(response => {
+              setLoadingOpen(false)
           })
           .catch(error => console.log(error));
         }
     }
-    
 
-    var json = {
-        "unit_title": courseData.unit_title,
-        "level": courseData.level,
-        "no_of_lesson": courseData.no_of_lesson,
-        "description": courseData.description,
-    };
-    const res = await fetch(
-        'http://'+config.get('url')+'/api/course/'+ course.id,
-        {
-          method: "PUT",
-          body:  JSON.stringify(json),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }
-    )
-        .then(res => res.json())
-        .then(response => {
-            dispatch({
-                type: "INIT_COURSE",
-                value: response
-            })
-            setLoadingOpen(false)
-    })
-    .catch(error => console.log(error));
+    await apiCourseUpdate( {
+      "course_id": course.id,
+      "unit_title": courseData.unit_title,
+      "level": courseData.level,
+      "no_of_lesson": courseData.no_of_lesson,
+      "description": courseData.description,
+    }).then(response => {
+      dispatch({
+        type: "INIT_COURSE",
+        value: response.data
+      })
+      setLoadingOpen(false)
+    }) .catch(error => console.log(error));
 }
 
   const {handleNext, handleBack, isStep} =  props;
@@ -275,6 +237,7 @@ const DesignInfo = (props) => {
           error = {! (error["unit_title"]=="")}
           helperText= {! (error["unit_title"]=="")? error["unit_title"]:  ""}
           fullWidth 
+          disabled = {!(courseData.permission > 2)}
           onChange={onChange}/>
         </Grid>
 
@@ -312,6 +275,7 @@ const DesignInfo = (props) => {
             value = {courseData.level}
             error = {! (error["level"]=="")}
             helperText= {! (error["level"]=="")? error["level"]:  ""}
+            disabled = {!(courseData.permission > 2)}
             fullWidth 
             onChange={onChange} />
          
@@ -353,6 +317,7 @@ const DesignInfo = (props) => {
             helperText= {! (error["no_of_lesson"]=="")? error["no_of_lesson"]:  ""}
             fullWidth 
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
+            disabled = {!(courseData.permission > 2)}
             onChange={onChange} />
          
         </Grid>
@@ -381,6 +346,7 @@ const DesignInfo = (props) => {
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}
+            disabled = {!(courseData.permission > 2)}
             fullWidth 
             rows={5}
             onChange={onChange}/>

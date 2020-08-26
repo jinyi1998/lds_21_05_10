@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app'
 import List from '@material-ui/core/List';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,6 +26,12 @@ import config from 'react-global-configuration';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import {
+    apiLearningTaskPost, apiLearningTaskPut,
+    apiLessonTaskUpdate, 
+
+} from '../../api.js';
+
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightgrey' : '',
 });
@@ -35,11 +42,14 @@ const LessonPlanView = (props) => {
     const canEdit = props.canEdit;
 
     const [lesson, setLesson] = React.useState(props.lesson);
-    const {setLoadingOpen, refreshCourse } = React.useContext(ContextStore);
+    const {refreshCourse } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore); 
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
 
     const [ taskData, setTaskData] = React.useState({});
+
+    const {enableDrag, enableEdit} = props;
 
     const [ error, setError] = React.useState({
         "type": "",
@@ -113,17 +123,7 @@ const LessonPlanView = (props) => {
         var json = taskData;
         if(taskData.id == -1){
             //new learning task
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/',
-                {
-                    method: "POST",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPost(taskData)
             .then(response => {
                 //load the default learning outcomes by api request
                 setLoadingOpen(false);
@@ -133,17 +133,7 @@ const LessonPlanView = (props) => {
             .catch(error => console.log(error));
         }else{
             //update existing task
-            return await fetch(
-                'http://'+config.get('url')+'/api/learningTask/'+ taskData.id,
-                {
-                    method: "PUT",
-                    body:  JSON.stringify(json),
-                    headers: {
-                      "Content-type": "application/json; charset=UTF-8"
-                    }
-                }
-            )
-            .then(res => res.json())
+            return await apiLearningTaskPut(taskData)
             .then(response => {
                 //load the default learning outcomes by api request
                 setLoadingOpen(false);
@@ -152,30 +142,18 @@ const LessonPlanView = (props) => {
             })
             .catch(error => console.log(error));
         }
-     
     }
 
     async function updateLearningTaskLessonRelation(task_relation) {
         setLoadingOpen(true);
-
-        return await fetch(
-            'http://'+config.get('url')+'/api/lessonTaskRelation/'+ task_relation.id,
-            {
-                method: "PUT",
-                body:  JSON.stringify(task_relation),
-                headers: {
-                  "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        
+        return await apiLessonTaskUpdate(task_relation)
         .then(response => {
             //load the default learning outcomes by api request
             setLoadingOpen(false);
             refreshCourse();
         })
         .catch(error => console.log(error));
-     
     }
 
 
@@ -268,14 +246,16 @@ const LessonPlanView = (props) => {
                                     lesson.tasks.length > 0 ?
                                         lesson.tasks.map(
                                             (_task, index) => 
-                                            <Draggable key={index} draggableId={index.toString()} index={index}>
+                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
                                                 {(provided, snapshot) => (
                                                     <LearningTaskLessonView 
                                                     provided = {provided} 
                                                     snapshot = {snapshot} 
                                                     taskID = {_task.id} 
                                                     taskData = {_task} 
+                                                    editBtn = {enableEdit}
                                                     // onEditearningTask = {()=>{}
+
                                                     onEditearningTask = {onEditearningTask}
                                                     key = {_task.id}
                                                     />
@@ -295,7 +275,7 @@ const LessonPlanView = (props) => {
                     </DragDropContext>
                  </Grid>
 
-                {canEdit == true? 
+                {canEdit == true && enableEdit ? 
                     <Grid item xs ={12}>
                         <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)} data-tour = "lesson_lesson_select">
                             Edit

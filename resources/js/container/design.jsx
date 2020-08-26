@@ -13,6 +13,7 @@ import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/component/componentStep';
 import BasicReview from '../design/basicReview';
 import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
 
 import Menu from '@material-ui/core/Menu';
@@ -21,7 +22,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
+import {AppContextStore} from '../container/app';
 import config from 'react-global-configuration';
+
+import {
+  apiCourseUpdate, apiCourseClearComponent,
+  apiLearningCompTempGet, apiLearningCompTempPost,
+  apiLearningCompPost,
+  apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
+  apiLearningOutcomeTempGet,
+  apiDesignTypeGet,
+} 
+from '../api.js';
 
 const useStyles = makeStyles(theme => ({
   gridList: {
@@ -95,165 +107,80 @@ const Design = (props) => {
   const classes = useStyles();
 
   const {courseID} = props;
-  const [activePage, setActionPage] = React.useState('basic');
-  const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
+  // const [activePage, setActionPage] = React.useState('basic');
+  // const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
   
-  const { course, dispatch, options, setLoadingOpen } = React.useContext(ContextStore);
+  const { course, dispatch, options, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
+  const { setLoadingOpen } = React.useContext(AppContextStore);
   
   //#region data init
   //preload learningOutcome (Unit Level)
-  // async function fetchlearningTypeTempData() {
-  //   const res = await fetch(
-  //       'http://'+config.get('url')+'/api/learningOutcome/getDefaultOutcomeByLearningType/'+course.designType,
-  //       {
-  //       method: "GET",
-  //       }
-  //   )
-  //   .then(res => res.json())
-  //   .then(response => {
-  //       //load the default learning outcomes by api request
-  //       dispatch({
-  //         type: "SET_LEARNINGOUTCOME",
-  //         value: response
-  //       })
-  //   })
-  //   .catch(error => console.log(error));
-  // }
-
-  //preload learningOutcome (Unit Level)
-  async function fetchlearningOutcomeTempData() {
-    const res = await fetch(
-      'http://'+config.get('url')+'/api/learningOutcomeTemplate/getOutcomeTempByDesignType/'+ course.designType,
-      {
-      method: "GET",
-      }
-    ).then(res => res.json())
-    .then(response => {
-        response.map( (_outcome, index) => {
-          var _outcome_temp = _outcome;
-          _outcome_temp.course_id = course.id
-          importOutcomeTemplateToCourse(_outcome_temp);
-      })
-    })
-  }
-
-
   async function importOutcomeTemplateToCourse(outcome) {
-    return await fetch(
-      'http://'+config.get('url')+'/api/learningOutcome',
-      {
-        method: "POST",
-        body:  JSON.stringify(outcome),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      }
-    ).then(res => res.json())
-    .then(response => {
-      return response;
-    })
+
+    await apiLearningOutcomePost(outcome)
+    .then(response=> {return response.data})
   }
 
   //preload learningComponent
-  async function fetchlearningComponentTempData() {
+  async function fetchInitDataWithDesignType() {
     updateCourse();
-    const res = await fetch(
-      'http://'+config.get('url')+'/api/learningComponent/getDefaultLearningComponentByDesignType2/'+ course.designType,
-      {
-      method: "GET",
+    apiDesignTypeGet( course.designType).then(
+      response => {
+        //component
+        response.data.componentsid.map((data, index) => {
+          getComponentTemplateData(data.component_id).then(component => {
+            component.component_template_id = component.id
+            component.course_id = course.id
+            component.sequence = index + 1
+            importComponentTemplateToComponent(component)
+          });
+        })
+
+        //outcome
+        response.data.outcomes.map((_outcome) => {
+          var _outcome_temp = _outcome;
+          _outcome_temp.course_id = course.id
+          importOutcomeTemplateToCourse(_outcome_temp);
+        })
       }
-    ).then(res => res.json())
-    .then(response => {
-        response.map( (templateID, index) => {
-        // learning componet
-        getComponentTemplateData(templateID).then(component => {
-          component.component_template_id = component.id
-          component.course_id = course.id
-          component.sequence = index + 1
-          importComponentTemplateToComponent(component)
-        });
-      })
-    })
+    )
   }
 
   async function getComponentTemplateData(id) {
 
-    return await fetch(
-      'http://'+config.get('url')+'/api/learningComponentTemplate/'+ id,
-      {
-      method: "GET",
-      }
-    ).then(res => res.json())
+    return await apiLearningCompTempGet(id)
+    .then(respsonse => {return respsonse.data})
   }
 
   async function clearCourseComponent() {
-    var json = {
-      course_id: course.id
-    };
-    return await fetch(
-      'http://'+config.get('url')+'/api/course/clearCourseComponent',
-      {
-        method: "POST",
-        body:  JSON.stringify(json),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      }
-    ).then(res => res.json())
-    .then(response => {
-      return response;
-    })
+    await apiCourseClearComponent(course.id).then(
+      response => {return response}
+    )
   }
 
   async function importComponentTemplateToComponent(componentTemplate) {
-    return await fetch(
-      'http://'+config.get('url')+'/api/learningComponent',
-      {
-        method: "POST",
-        body:  JSON.stringify(componentTemplate),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      }
-    ).then(res => res.json())
+    apiLearningCompPost(componentTemplate)
     .then(response => {
-      return response;
+      return response.data;
     })
   }
 
   async function updateCourse() {
     setLoadingOpen(true)  
-
-    var json = {
-        "design_type_id": course.designType,
-    };
-    const res = await fetch(
-        'http://'+config.get('url')+'/api/course/'+ course.id,
-        {
-          method: "PUT",
-          body:  JSON.stringify(json),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        }
-    )
-        .then(res => res.json())
-        .then(response => {
-            dispatch({
-                type: "INIT_COURSE",
-                value: response
-            })
-            setLoadingOpen(false)
+    await apiCourseUpdate({
+      "course_id": course.id,
+      "design_type_id": course.designType,
+    })
+    .then(
+      response => {
+        dispatch({
+            type: "INIT_COURSE",
+            value: response.data
+        })
+        setLoadingOpen(false)
     })
     .catch(error => console.log(error));
 }
-
-  //preload learningTask
-  async function saveCourse(){
-    window.location.href = "/mydesign";
-  }
-
-  //#endregion
 
   // init the data once design type is changed
   React.useEffect(() => {
@@ -261,8 +188,7 @@ const Design = (props) => {
       if(course.designType != "" && course.designType != null){
         // fetchlearningTypeTempData();
         clearCourseComponent();
-        fetchlearningComponentTempData();
-        fetchlearningOutcomeTempData();
+        fetchInitDataWithDesignType();
         handleNext();
       }
     
@@ -273,16 +199,6 @@ const Design = (props) => {
     if(courseID != -1){
 
       if(course.isinited){
-
-        // if(course.components.length == 0){
-        //   setLoadingOpen(false)
-        // }else if(course.unit_title == "" || course.description == "" || course.level == ""  ){
-        //   setLoadingOpen(false)
-        //   setActiveStep(1);
-        // }else{
-        //   setLoadingOpen(false)
-        //   return setActionPage('unitPlan');
-        // }
 
         if(course.components.length == 0){
           setLoadingOpen(false)
@@ -334,7 +250,6 @@ const Design = (props) => {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {/* {activeStep === steps.length - 1 ? 'Save' : 'Next'} */}
                     Next
                   </Button>
               )}
@@ -473,6 +388,12 @@ const Design = (props) => {
             <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
           </React.Fragment>
         )
+        case 'dashboard':
+          return(
+            <React.Fragment>
+              <DashBoardContainer />
+            </React.Fragment>
+          )      
     }
   }
 
@@ -498,17 +419,9 @@ const Design = (props) => {
       <main className={classes.layout}>
         <Paper className={classes.paper} style ={{padding: "16px"}}>
           <Grid container spacing = {4}>
-            {/* <Grid item xs = {12}>
-              <Typography component="h1" variant="h4" align="center">
-                {displayTitle()}
-              </Typography>
-            </Grid> */}
             <Grid item xs = {12}>
               {getActivePage()}
             </Grid>
-            {/* <Grid item xs = {12}>
-              <Button color="primary" variant="contained" onClick={() => {saveCourse()} } fullWidth > Close</Button>
-            </Grid> */}
           </Grid>
         </Paper>
       </main>

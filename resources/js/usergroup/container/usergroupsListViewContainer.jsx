@@ -15,26 +15,21 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import UsergroupInfoEditView from '../component/usergroupInfoEditView';
 import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid';
-import config from 'react-global-configuration';
 
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {AppContextStore} from '../../container/app';
+
+import {
+    apiUserUsergroupList, apiUserUsergroupCreate,
+    apiUserUsergroupUserCreate
+  } from '../../api.js';
 
 export const ContextStore = React.createContext({
-    setLoadingOpen: ()=> {},
     user: {}
 });
-
-const useStyles = makeStyles((theme) => ({
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: '#fff',
-    },
-}));
-
   
 const UsergroupsListViewContainer = (props) => {
-    const classes = useStyles();
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+
     const [usergroups, setUsergroups] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState({
         "name": "",
@@ -45,7 +40,6 @@ const UsergroupsListViewContainer = (props) => {
 
     const [createGroupViewOpen, setCreateGroupViewOpen] = React.useState(false);
     const [joinGroupWarningOpen, setJoinGroupWarningOpen] = React.useState(false);
-    const [loadingOpen, setLoadingOpen] = React.useState(false)
 
     React.useEffect(()=>{
         fetchusergroups()
@@ -55,15 +49,10 @@ const UsergroupsListViewContainer = (props) => {
     //#region API Data
     async function fetchusergroups() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroup/',
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+
+        await apiUserUsergroupList()
         .then(response => {
-            setUsergroups(response)
+            setUsergroups(response.data)
             setLoadingOpen(false)
         })
         .catch(error => console.log(error));
@@ -77,19 +66,8 @@ const UsergroupsListViewContainer = (props) => {
                 "user_id": user.id
             }]
         }
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroup/',
-            {
-                method: "POST",
-                body:  JSON.stringify(json),
-                headers: {
-                "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        await apiUserUsergroupCreate(json)
         .then(response => {
-            // setUsergroups(response)
             fetchusergroups()
             setLoadingOpen(false)
         })
@@ -102,19 +80,8 @@ const UsergroupsListViewContainer = (props) => {
             'user_id': user.id,
             'usergroup_id': usergroup_id
         }
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/usergroupuser',
-            {
-                method: "POST",
-                body:  JSON.stringify(json),
-                headers: {
-                "Content-type": "application/json; charset=UTF-8"
-                }
-            }
-        )
-        .then(res => res.json())
+        await apiUserUsergroupUserCreate(json)
         .then(response => {
-            // setUsergroups(response)
             fetchusergroups()
             setLoadingOpen(false)
         })
@@ -200,14 +167,10 @@ const UsergroupsListViewContainer = (props) => {
     return (
         <ContextStore.Provider
         value = {{
-            setLoadingOpen: setLoadingOpen,
             user: user
         }}
         >
             <React.Fragment>
-                <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
                 <Grid container spacing = {2}>
                     <Grid item xs={12}>
                         <Button variant="contained" color="primary" onClick={onClickCreateGroup}  startIcon={<AddIcon />} >
@@ -262,7 +225,3 @@ const UsergroupsListViewContainer = (props) => {
     );
 }
 export default UsergroupsListViewContainer;
-
-if (document.getElementById('usergroups')) {
-    ReactDOM.render(<UsergroupsListViewContainer user = {document.getElementById('topmenu').dataset.user}/>, document.getElementById('usergroups'));
-}

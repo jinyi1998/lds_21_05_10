@@ -15,63 +15,29 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/login', function () {
-//     return view('login');
-// });
- 
-// Route::get('/register', function () {
-//     return view('register');
-// });
-
-Route::get('/app', function () {
-    return view('app');
+Route::get('/401', function () {
+    return response()->json('401 error');
 });
-
-Route::get('/app2', function () {
-    return view('app2');
-}); 
-
-// Route::get('/designstudio', function () {
-//     return view('designstudio', ["courseid" => -1]);
-// })->middleware('auth');
-
-// Route::get('/designstudio/{id}', function ($id) {
-//     return view('designstudio', ["courseid" => $id]);
-// })->middleware('auth');
-
-// Route::get('/mydesign', function () {
-//     return view('mydesign');
-// })->middleware('auth');
-
-// Route::get('/publicdesign', function () {
-//     return view('mydesign');
-// })->middleware('auth');
 
 
 Auth::routes();
 Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@changePassword');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-// Route::get('test', '\App\Http\Controllers\testcontroller@test');
-
 Route::get('/designstudio', '\App\Http\Controllers\RouteController@newdesignstudio');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
 // Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
+Route::get('/printpdf/{id}', '\App\Http\Controllers\RouteController@printpdf');
 Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');
 Route::get('/publicdesign', '\App\Http\Controllers\RouteController@publicdesign');
 Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
-Route::put('/api/user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
+Route::get('file/downloadCourseJson/{file_name}', 'API\FileSystemController@apiFileCourseDownload');
 
+//admin related
+Route::middleware('admin_auth')->prefix('admin')->group(function(){
+    // Route::get('/', '\App\Http\Controllers\RouteController@admin_dashboard');
+    Route::get('usersmanagement', '\App\Http\Controllers\RouteController@admin_usersmanagement');
+    Route::get('template_builder', '\App\Http\Controllers\RouteController@admin_templatebuilder');
+    Route::get('dashboard', '\App\Http\Controllers\RouteController@admin_dashboard');
 
-Route::get('/api/course/getDesignTypeTemp', 'CourseControllerTest@getDesignTypeTemp');
-Route::get('/api/course/showAll', 'CourseControllerTest@showAll');
-Route::get('/api/course/showUsergroup/{id}', 'CourseControllerTest@showUsergroup');
-Route::get('/api/course/getAvaUserGroup', 'CourseControllerTest@getAvaUserGroup');
-Route::post('/api/course/clearCourseComponent', 'CourseControllerTest@clearCourseComponent');
-Route::post('/api/course/clearCourseLesson', 'CourseControllerTest@clearCourseLesson');
-Route::resource('/api/course', 'CourseControllerTest');
-
-
-// Route::get('/design', function () {
-//     return view('design');
-// });
+});

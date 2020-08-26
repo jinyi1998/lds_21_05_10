@@ -66,11 +66,5 @@ class LearningOutcomeTemplateController extends Controller
         //
     }
 
-    public function getOutcomeTempByDesignType($id){
-        $data = DB::table('designtype_outcome_template_relation') 
-        ->join('learningoutcome_template', 'learningoutcome_template.id', '=', 'designtype_outcome_template_relation.outcome_id')
-        ->where('designtype_outcome_template_relation.designtype_id', '=', $id)
-        ->select('learningoutcome_template.*', 'learningoutcome_template.id as template_id')->get();
-        return response()->json($data);
-    }
+
 }

@@ -26,6 +26,7 @@ Route::resource('opts', 'API\LearningTaskOptsController');
 
 //File System
 Route::post('file/json', 'API\FileSystemController@json');
+Route::get('file/exportCourseJson/{id}', 'API\FileSystemController@exportCourseJson');
 Route::get('file', 'API\FileSystemController@index');
 
 //Learning Outcome
@@ -48,17 +49,13 @@ Route::resource('componentOutcomeRelation', 'API\ComponentOutcomeRelationControl
 Route::get('learningComponent/getDefaultLearningComponentByDesignType2/{id}', 
 'API\LearningComponentController@getDefaultLearningComponentByDesignType2');
 
-
-Route::get('learningComponent/getLearningComponentByDesignType/{id}', 
-'API\LearningComponentController@getLearningComponentByDesignType');
-
 Route::get('learningComponent/getPatternOpts/{id}', 
 'API\LearningComponentController@getPatternOpts');
 
 Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
 'API\LearningComponentController@getDefaultLearningComponentByDesignType');
 
-Route::resource('learningComponent', 'API\LearningComponentController');
+Route::middleware('design_permission')->resource('learningComponent', 'API\LearningComponentController');
 
 //Learning Component Task Relation Controller
 Route::resource('componentTaskRelation', 'API\ComponentTaskController');
@@ -71,7 +68,7 @@ Route::resource('lessonTaskRelation', 'API\LessonTaskRelationController');
 //Learning Pattern Controller
 Route::put('learningPattern/unlockPattern/{id}', 
 'API\LearningPatternController@unlockPattern');
-Route::resource('learningPattern', 
+Route::middleware('design_permission')->resource('learningPattern', 
 'API\LearningPatternController');
 
 
@@ -112,7 +109,7 @@ Route::get('learningTask/getTaskELeraningResourceTypeOption',
 Route::get('learningTask/getLearningPatternOpts', 
 'API\LearningTaskController@getLearningPatternOpts');
 
-Route::resource('learningTask', 'API\LearningTaskController');
+Route::middleware('design_permission')->resource('learningTask', 'API\LearningTaskController');
 
 //Learning Lesson
 Route::resource('lesson', 'API\LessonController');
@@ -131,3 +128,31 @@ Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 Route::resource('usergroup', 'API\UserGroupController');
 Route::resource('usergroupuser', 'API\UserGroupUserController');
 Route::resource('usergroupusertemp', 'API\UserGroupUserTempController');
+
+Route::resource('test', 'API\TestController');
+
+Route::delete('course/clearCourseComponent/{id}', 'API\CourseController@clearCourseComponent');
+Route::delete('course/clearCourseLesson/{id}', 'API\CourseController@clearCourseLesson');
+Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
+Route::get('course/showAll', 'API\CourseController@showAll');
+Route::get('course/showUsergroup/{id}', 'API\CourseController@showUsergroup');
+Route::post('file/courseImport', 'API\CourseController@importCourse');
+Route::get('course/getPermission/{id}', 'API\CourseController@getCoursePermission');
+Route::post('course/updatePermission', 'API\CourseController@updateCoursePermission');
+Route::middleware('design_permission')->resource('course', 'API\CourseController');
+
+
+Route::get('designType/getLearningComponentByDesignType/{id}', 
+'API\DesignTypeController@getLearningComponentByDesignType');
+Route::resource('designType', 'API\DesignTypeController');
+
+Route::get('user/search/{id}', 'API\UserController@searchUser');
+Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');
+Route::get('user/getAvaUserGroup', 'API\UserController@getAvaUserGroup');
+Route::put('user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
+Route::resource('user', 'API\UserController');
+
+
+Route::middleware('admin_auth')->get('/admin', function(){
+    return response()->json('admin test');
+});

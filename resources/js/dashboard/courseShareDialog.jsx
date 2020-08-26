@@ -4,133 +4,99 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-
-import config from 'react-global-configuration';
 import Button from '@material-ui/core/Button';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
+import CourseSharePublic from './courseSharePublic'
+import CourseShareUsergroup from './courseShareUsergroup';
+import CourseShareUser from './courseShareUser';
+
+import {apiCourseGetPermission, apiCourseUpdatePermission} from '../api.js';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
+
+import PropTypes from 'prop-types';
 
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            {children}
+        
+           </Box>
+        )}
+      </div>
+    );
+  }
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+
+  
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      'aria-controls': `vertical-tabpanel-${index}`
+    };
+  }
+  
+  
 
 const CourseShareDialog = (props) => {
-    const {open, onClose, courseData, usergroup} = props;
+    const {open, onClose, courseData} = props;
+
+   
+    const [permissionArr, setPermissionArr] = React.useState({
+        "public_permission": [],
+        "user_permission": [],
+        "usergroup_permission": []
+    });
+
+    // const [permissionArr, setPermissionArr] = React.useState(props.courseData.permission);
+
     const [courseType, setCourseType] = React.useState(courseData.coursetype);
-    const [usergroupCheck, setUsergroupCheck] = React.useState([]);
-
-
-    // const initUsergroupCheck = () => {
-    //     const newChecked = [...usergroupCheck];
-    //     usergroup.map( _usergroup => newChecked.push(_usergroup.id))
-    //     return newChecked;
-    // }
+    const [usergroup, setUsergroup] = React.useState(props.usergroup);
 
     React.useEffect(()=>{
-        var temp = [];
-        usergroup.map( _usergroup => {
-            if(courseData.usergroupid.filter(x => x.usergroup_id == _usergroup.id).length > 0){
-                temp.push(_usergroup.id);
-            }
+        apiCourseGetPermission(courseData.id)
+        .then(response => {
+            response.data['user_permission'] = response.data['user_permission'].filter(_x => _x.user_id != courseData.created_by)
+            console.log( response.data);
+            setPermissionArr(response.data)
         })
-        setUsergroupCheck(temp);
-    }, [props.usergroup])
+    }, [])
 
-    const handleToggle = (value) => () => {
-        const currentIndex = usergroupCheck.indexOf(value);
-        const newChecked = [...usergroupCheck];
-    
-        if (currentIndex === -1) {
-          newChecked.push(value);
-        } else {
-          newChecked.splice(currentIndex, 1);
-        }
-    
-        setUsergroupCheck(newChecked);
-    };
+    React.useEffect(()=>{
+        setUsergroup(props.usergroup);
+    }, [props])
 
-    const handleChangeCoursetype = (event) => {
-        setCourseType(event.target.value)
+    const handleChangeCoursetype = (event, value) => {
+        setCourseType(value)
     }
-
-    const updateCourse = () => {
-        var json = {
-          coursetype:  courseType,
-        };
-        
-        json["usergroupid"] = [];
-        if(usergroupCheck.length > 0){
-            usergroupCheck.map(_usergroup_id => json["usergroupid"].push({
-                usergroup_id: _usergroup_id,
-                course_id: courseData.id
-            }))
-
-        }
-        fetch(
-            'http://'+config.get('url')+'/api/course/'+ courseData.id,
-            {
-              method: "PUT",
-              body:  JSON.stringify(json),
-              headers: {
-                "Content-type": "application/json; charset=UTF-8"
-              }
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                // dispatch({
-                //     type: "INIT_COURSE",
-                //     value: response
-                // })
-                // setLoadingOpen(false)
-                onClose();
-        })
-        .catch(error => console.log(error));
-    }
-
-    const displayUsergroupList = () => {
-        if(courseType == 2){
-            return (
-                <React.Fragment>
-                        <List>
-                            {
-                                usergroup.length > 0?
-                                    usergroup.map(_usergroup=>
-                                        <ListItem key={_usergroup.id} role={undefined} dense button onClick={handleToggle(_usergroup.id)}>
-                                            <ListItemIcon>
-                                            <Checkbox
-                                                edge="start"
-                                                checked={usergroupCheck.indexOf(_usergroup.id) !== -1}
-                                                tabIndex={-1}
-                                                disableRipple
-                                            />
-                                            </ListItemIcon>
-                                            <ListItemText id={_usergroup.id} primary={_usergroup.name} />
-                                        </ListItem>
-                                    )
-                                :
-                                <ListItem dense button>
-                                    No Available User Group
-                                </ListItem>
-                            }
-                        </List>
-                </React.Fragment>
-            )
-
-        }else{
-            return null;
-        }
+    
+    const updatePermission = () => {
+        let request = {
+            'course_id': courseData.id,
+            'permission': permissionArr
+        }; 
+        apiCourseUpdatePermission(request)
+        .then((response) => {
+            onClose();
+        });
     }
 
     return (
@@ -141,39 +107,50 @@ const CourseShareDialog = (props) => {
                 onClose={onClose}      
             >
                 <DialogTitle id="alert-dialog-title">Share Setting</DialogTitle>
-                <DialogContent  style = {{minWidth: 500, minHeight: 100}}        >
-                    
-                    <FormControl fullWidth>
-                        <InputLabel id="course-type-select-label">Course Type</InputLabel>
-                        <Select
-                        labelId="course-type-select-label"
-                        id="course-type-select"
-                        value={courseType}
-                        onChange={handleChangeCoursetype}
+                <DialogContent  style = {{minWidth: 500, minHeight: 100}}>
+                    <div >
+                        <Tabs
+                            // orientation="vertical"
+                            variant="scrollable"
+                            value={courseType}
+                            onChange={handleChangeCoursetype}
+                            aria-label="Vertical tabs example"
                         >
-                            <MenuItem value={-1} disabled>Please select course share type</MenuItem>
-                            <MenuItem value={1}>Private</MenuItem>
-                            <MenuItem value={2}>Group</MenuItem>
-                            <MenuItem value={3}>Public</MenuItem>
-                        </Select>
-                    </FormControl>
+                            <Tab label="Users"  value = {1} {...a11yProps(1)} />
+                            <Tab label="Groups" value = {2} {...a11yProps(2)} />
+                            <Tab label="Public" value = {3} {...a11yProps(3)} />
+                        </Tabs>
 
-                    {displayUsergroupList()}
+                        <TabPanel value={courseType} index={1}>
+                            <React.Fragment>
+                                <CourseShareUser courseid= {courseData.id} permissionArr = {permissionArr} setPermissionArr = {setPermissionArr}/>
+                            </React.Fragment>
+                        </TabPanel>
+
+                        <TabPanel value={courseType} index={2}>
+                            <CourseShareUsergroup courseid= {courseData.id} usergroup = {usergroup} permissionArr = {permissionArr} setPermissionArr = {setPermissionArr}/>
+                        </TabPanel>
+
+                        <TabPanel value={courseType} index={3}>
+                            <React.Fragment>
+                                <CourseSharePublic courseid= {courseData.id} permissionArr = {permissionArr} setPermissionArr = {setPermissionArr} />
+                            </React.Fragment>
+                        </TabPanel>
+                    </div>
+                   
                 
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={()=>onClose()} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={()=>updateCourse()} color="primary" autoFocus>
+                    <Button onClick={()=>updatePermission()} color="primary" autoFocus>
                         Confirm
                     </Button>
                 </DialogActions>
             </Dialog>
 
         </React.Fragment>
-
-
     );
 }
 

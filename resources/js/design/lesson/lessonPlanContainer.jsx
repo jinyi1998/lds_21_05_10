@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Checkbox } from '@material-ui/core';
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 import LessonPlanView from './lessonPlanView';
 import LessonPlanTaskSelect from './lessonPlanTaskSelect';
 import config from 'react-global-configuration';
@@ -12,7 +13,8 @@ import Dialog from '@material-ui/core/Dialog';
 
 const LessonPlanContainer = (props) => {
 
-    const { course, setLoadingOpen } = React.useContext(ContextStore);
+    const { course } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     
     const [editMode, setEditMode] =  React.useState(false);
@@ -24,38 +26,12 @@ const LessonPlanContainer = (props) => {
         setRefresh(true);
     }
 
-    // React.useEffect(()=>{
-    //     // fetchLesson(lessonID)
-    // },[lessonID])
+    const enableDrag = course.permission > 2;
+    const enableEdit = course.permission > 2;
     
     React.useEffect(()=>{
         setLesson(props.lesson)
     }, [props])
-
-    // React.useEffect(()=>{
-    //     if(refresh== true){
-    //         fetchLesson(lesson.id);
-    //         setRefresh(false);
-    //     }
-       
-    // },[refresh])
-
-    async function fetchLesson(id) {
-        setLoadingOpen(true);
-        return await fetch(
-            'http://'+config.get('url')+'/api/lesson/'+ id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
-        .then(response => {
-            //load the default learning outcomes by api request
-            setLesson(response);
-            setLoadingOpen(false);
-        })
-        .catch(error => console.log(error));
-    }
 
     return (
         <Grid container data-tour = "lesson_view">
@@ -79,6 +55,8 @@ const LessonPlanContainer = (props) => {
                 canEdit = {canEdit}
                 setEditMode = {setEditMode}
                 refreshLesson = {refreshLesson}
+                enableDrag = {enableDrag}
+                enableEdit = {enableEdit}
             />
 
              <Dialog open={editMode} onClose={() => {setEditMode(false)}} style = {{minWidth: "400px", minHeight: "300px"}} onEntered = {()=>{tourNextStep()}}>
@@ -90,14 +68,6 @@ const LessonPlanContainer = (props) => {
                     />
             </Dialog>
            
-           
-
-            {/* <LessonPlanEditTask 
-                openLessonTaskEdit = {openLessonTaskEdit}
-                setOpenLessonTaskEdit = {setOpenLessonTaskEdit}
-                onEditComponentID = {onEditComponentID}
-                onEditTasktID = {onEditTasktID}
-            /> */}
         </Grid>
     )
 

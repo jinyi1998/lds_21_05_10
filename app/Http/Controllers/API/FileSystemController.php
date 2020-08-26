@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Course;
 
 class FileSystemController extends Controller
 {
@@ -74,4 +75,15 @@ class FileSystemController extends Controller
         // return response()->download(storage_path('app/public/course_temp.json'))->deleteFileAfterSend();
     }
 
+    public function apiFileCourseDownload($file_name){
+        return response()->download(storage_path('app/public/'.$file_name))->deleteFileAfterSend();
+    }
+
+    public function exportCourseJson($id){
+        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid'])->find($id);
+        $file_name = 'course_temp'.$id.'.json';
+        Storage::disk('public')->put($file_name, json_encode($course));
+        return response($file_name);
+        //return response()->download(storage_path('app/public/'.$file_name.'json'))->deleteFileAfterSend();
+    }
 }

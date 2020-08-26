@@ -9,7 +9,9 @@ import CourseAnalysisContent from './courseAnalysisContent';
 import { makeStyles } from '@material-ui/core/styles';
 import {ContextStore} from '../../container/designContainer'
 import config from 'react-global-configuration';
-
+import {
+    apiCourseAnalysisList
+} from '../../api.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,23 +61,17 @@ const CourseAnalysisContainer = ()=>{
     }, []);
 
     async function fetchcourseanalysis() {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/courseanalysis/'+course.id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+        await apiCourseAnalysisList(course.id)
         .then(response => {
 
-            if( response["tasks_num_by_type"] == undefined){
+            if( response.data["tasks_num_by_type"] == undefined){
                 setData({
                     tasks_num_by_type:  {},
                     tasks_time_by_type: {},
                 });
 
             }else{
-                handleAnalysisData(response)
+                handleAnalysisData(response.data)
             }
            
         })

@@ -15,13 +15,11 @@ import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
-import {ContextStore} from '../container/usergroupContainer';
 
 
 const UsergroupMemberList = (props) => {
     const {approveUserJoinGroup, declineUserJoinGroup, removeUser} = props;
     const [usergroup, setUsergroup] = React.useState(props.usergroup);
-    const { setLoadingOpen } = React.useContext(ContextStore);
 
 
     React.useEffect(()=>{

@@ -101,27 +101,6 @@ const DesignType = (props) => {
     )
   }
 
-
-  // async function fetchDesignTypeData() {
-
-  //   const res = await fetch(
-  //       'http://'+config.get('url')+'/api/course/getDesignTypeTemp',
-  //       {
-  //       method: "GET",
-  //       }
-  //   )
-  //       .then(res => res.json())
-  //       .then(response => {
-  //         setDesignType(response);
-  //   })
-  //   .catch(error => console.log(error));
-
-  // }
-
-  // React.useEffect(() => {
-  //   fetchDesignTypeData();
-  // }, []);
-
   const onClick = (event, design_type) => {
       // event.preventDefault();
 

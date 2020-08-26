@@ -8,6 +8,7 @@ import ComponentAnalysisContent from './componentAnalysisContent';
 import {ContextStore} from '../../container/designContainer'
 import config from 'react-global-configuration';
 
+import {apiComponentAnalysisList} from '../../api.js';
 const generateColor = (num) => {
     var temp = []
     for(var i = 0; i< num; i++){
@@ -59,22 +60,16 @@ const ComponentAnalysisContainer = ()=>{
 
 
     async function fetchcomponentanalysis(id) {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/componentanalysis/'+id,
-            {
-            method: "GET",
-            }
-        )
-        .then(res => res.json())
+        await apiComponentAnalysisList(id)
         .then(response => {
 
-            if( response["task_assessment"] == undefined){
+            if( response.data["task_assessment"] == undefined){
                 setData({
                     task_assessment:  [],
                 });
 
             }else{
-                handleAnalysisData(response)
+                handleAnalysisData(response.data)
             }
            
         })

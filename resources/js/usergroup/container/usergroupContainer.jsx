@@ -10,7 +10,12 @@ import UsergroupDesign from '../component/usergroupDesign';
 import UsergroupMemberList from '../component/usergroupMemberList';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import config from 'react-global-configuration';
+
+import {
+  apiUserUsergroupGet,
+  apiUserUsergroupUserTempUpdate, apiUserUsergroupUserTempDelete,
+  apiUserUsergroupUserDelete
+} from '../../api.js';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ContextStore = React.createContext({
-  setLoadingOpen: ()=>{},
   user: {}
   
 });
@@ -69,7 +73,6 @@ const UsergroupContainer = (props) => {
   const [usergroup, setUsergroup] = React.useState({
     users: [],
   });
-  const [loadingOpen, setLoadingOpen] = React.useState(false)
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,64 +80,36 @@ const UsergroupContainer = (props) => {
 
   //#region request related
   async function fetchUsergroupData() {
-
-    const res = await fetch(
-        'http://'+config.get('url')+'/api/usergroup/'+props.usergroupid,
-        {
-        method: "GET",
-        }
-    )
-        .then(res => res.json())
-        .then(response => {
-            setUsergroup(response);
-            // console.log(response);
+    await apiUserUsergroupGet(props.usergroupid)
+    .then(response => {
+      setUsergroup(response.data);
     })
     .catch(error => console.log(error));
-
 }
 
 async function approveUserJoinGroup(id) {
 
-  const res = await fetch(
-      'http://'+config.get('url')+'/api/usergroupusertemp/'+id,
-      {
-      method: "PUT",
-      }
-  )
-      .then(res => res.json())
-      .then(response => {
-          setUsergroup(response);
+  await apiUserUsergroupUserTempUpdate({id: id})
+  .then(response => {
+    setUsergroup(response.data);
   })
   .catch(error => console.log(error));
-
 }
 
 async function declineUserJoinGroup(id) {
-  const res = await fetch(
-      'http://'+config.get('url')+'/api/usergroupusertemp/'+ id,
-      {
-      method: "DELETE",
-      }
-  )
-      .then(res => res.json())
-      .then(response => {
-          setUsergroup(response);
+
+  await apiUserUsergroupUserTempDelete(id)
+  .then(response => {
+    setUsergroup(response.data);
   })
   .catch(error => console.log(error));
-
 }
 
 
 async function removeUser(id) {
-  const res = await fetch(
-      'http://'+config.get('url')+'/api/usergroupuser/'+ id,
-      {
-      method: "DELETE",
-      }
-  )
-      .then(res => res.json())
-      .then(response => {
-          setUsergroup(response);
+  await apiUserUsergroupUserDelete(id)
+  .then(response => {
+    setUsergroup(response.data);
   })
   .catch(error => console.log(error));
 
@@ -150,15 +125,10 @@ React.useEffect(()=>{
   return (
     <ContextStore.Provider
       value = {{
-        setLoadingOpen: setLoadingOpen,
         user: props.user
       }}
     >
        <React.Fragment>
-        <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
-              <CircularProgress color="inherit" />
-          </Backdrop>
-
           <AppBar position="static">
             <Tabs value={value} onChange={handleChange} centered>
               <Tab label="Design Garden" {...a11yProps(0)} />

@@ -8,50 +8,40 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DesigmItem from '../../dashboard/designItem';
 import Typography from '@material-ui/core/Typography';
-import config from 'react-global-configuration';
 import {ContextStore} from '../container/usergroupContainer';
+import {AppContextStore} from '../../container/app';
+
+import {
+    apiCourseShowUsergroup,
+    apiUserAvaGroup
+} from '../../api.js';
 
 const UsergroupDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
-    const { user, setLoadingOpen } = React.useContext(ContextStore);
+    const { user } = React.useContext(ContextStore);
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     //call api to get the data
     async function fetchData() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/showUsergroup/'+props.usergroupid,
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setCourseList(response);
-                setLoadingOpen(false)
-                // console.log(response);
+        await apiCourseShowUsergroup(props.usergroupid)
+        .then(response => {
+            setCourseList(response.data);
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
-
     }
     
     async function fetchUsergroupData() {
         setLoadingOpen(true)
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setUsergroup(response);
-                setLoadingOpen(false)
-                // console.log(response);
+        await apiUserAvaGroup()
+        .then(response => {
+            setUsergroup(response.data);
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
-
     }
 
     React.useEffect(() => {
@@ -83,6 +73,7 @@ const UsergroupDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
+                                        enableDuplicate =  {_course.permission > 1}
                                         enableShare = {false}
                                         enableDelete = {false}
                                     />

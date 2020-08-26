@@ -1,15 +1,9 @@
 import React from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
+import SettingsIcon from '@material-ui/icons/Settings';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -18,10 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import config from 'react-global-configuration';
 
 import LangDialog from './languageDialog';
 import AccDialog from './accDialog';
+
+import {apiUserGuidedTourUpdate} from '../api.js';
 
 const ToolMenu = (props) => {
      //user menu 
@@ -57,22 +52,14 @@ const ToolMenu = (props) => {
     }
 
     async function setUserDisplayTourGuide(enable) {
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/user/tourguide',
-            {
-                method: "PUT",
-                body:  JSON.stringify({
-                    "display_tourguide": enable
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
+        await apiUserGuidedTourUpdate({
+            "display_tourguide": enable
+        }).then(
+            response=>{
+                // location.reload();
+                console.log(response);
             }
         )
-            .then(res => res.json())
-            .then(response => {
-                location.reload();
-            })
         .catch(error => console.log(error));
     }
 
@@ -98,11 +85,10 @@ const ToolMenu = (props) => {
         setAccOpen(false);
    };
 
-
     return (
         <div>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={onClickUserIcon}>
-                <NotificationsIcon />
+                <SettingsIcon />
             </Button>
 
             <Menu

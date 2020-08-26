@@ -8,13 +8,16 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
-import config from 'react-global-configuration';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+
+import {AppContextStore} from '../container/app';
+import {apiCourseShowAll, apiCourseShowUsergroup} from '../api.js';
 
 const PublicDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
+    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
 
     // const {setImportJson} = props;
     // const {handleListItemClick, setCourseID} = props;
@@ -32,42 +35,26 @@ const PublicDesign = (props)=>{
 
     //call api to get the data
     async function fetchData() {
-
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/showAll',
-            {
-            method: "GET",
+        await apiCourseShowAll().then(
+            response => {
+                setCourseList(response.data)
+                setLoadingOpen(false)
             }
         )
-            .then(res => res.json())
-            .then(response => {
-                setCourseList(response);
-                // console.log(response);
-        })
         .catch(error => console.log(error));
-
     }
+
     async function fetchUsergroupData() {
 
-        const res = await fetch(
-            'http://'+config.get('url')+'/api/course/getAvaUserGroup/',
-            {
-            method: "GET",
-            }
-        )
-            .then(res => res.json())
-            .then(response => {
-                setUsergroup(response);
-                // console.log(response);
+        await apiCourseShowUsergroup().then(response => {
+            setUsergroup(response.data);
+            setLoadingOpen(false)
         })
         .catch(error => console.log(error));
-
     }
     
     React.useEffect(() => {
-        // if(config.get('enableDB')){
-        //     fetchData();
-        // }
+        setLoadingOpen(true)
         fetchData();
         fetchUsergroupData();
     }, []);
@@ -82,8 +69,7 @@ const PublicDesign = (props)=>{
                 </Grid>
                  
                  
-                <Grid item xs = {4}>
-                    
+                <Grid item xs = {4}>        
                     <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
                         Add new design
                     </Button>
@@ -103,8 +89,9 @@ const PublicDesign = (props)=>{
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
-                                        enableShare = {false}
-                                        enableDelete = {false}
+                                        enableDuplicate =  {_course.permission > 1}
+                                        enableShare = {_course.permission > 99}
+                                        enableDelete = {_course.permission > 3}
                                     />
                                 )
                            }

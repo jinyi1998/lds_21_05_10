@@ -999,7 +999,7 @@ class CreateLearningtaskTemplate extends Migration
             ],
             [
                 'learningtask_id' => 36,
-                'learningoutcome_id' => 27,
+                'learningoutcome_id' => 20,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => 0,
