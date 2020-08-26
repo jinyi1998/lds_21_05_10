@@ -57,7 +57,7 @@ const RegisterForm = (props) => {
       // window.location.href = "/designstudio";
       if(validate()){
         // console.log(JSON.stringify(data));
-        // register();
+        register();
       }
   };
 
