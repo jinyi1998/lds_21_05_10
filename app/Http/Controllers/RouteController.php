@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Auth;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Auth;
+use Illuminate\Support\Facades\Redirect;
+
 use App\Http\Controllers\API\CourseController;
 
 
@@ -45,8 +47,8 @@ class RouteController extends Controller
         $course = $courseController->store($request_course)->getData();
 
         // return response()->json($course);
-        // return redirect('designstudio/'.$course->id);
-        return view('app', ["courseid" => $course->id, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'designstudio']);
+        return redirect('designstudio/'.$course->id);
+        // return view('app', ["courseid" => $course->id, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'designstudio']);
     }
    
     public function mydesign(){
