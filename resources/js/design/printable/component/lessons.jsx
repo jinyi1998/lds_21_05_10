@@ -40,7 +40,7 @@ const Task = (props) => {
                         {task.component == null? 
                         task.pattern.component.sequence + " - " + task.pattern.component.title 
                         : 
-                        task.pattern.component.sequence + " - " + task.component.title}
+                        task.component.sequence + " - " + task.component.title}
                         </Typography>
                     
                     </Grid>
