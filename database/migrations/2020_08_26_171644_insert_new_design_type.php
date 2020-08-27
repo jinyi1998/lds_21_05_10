@@ -17,11 +17,11 @@ class InsertNewDesignType extends Migration
 
         DB::table('design_type')->insert([
             [
-                'id' => 999,
+                'id' => 3,
                 'name' => 'Start From Scratch',
                 'description' => 'Start From Scratch',
                 'hint' => 'You can freely design your learning design without any preloadings...',
-                'media' => '/asset/image/SI.png',
+                'media' => '/asset/image/start_from_scratch.png',
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => false,
@@ -33,7 +33,7 @@ class InsertNewDesignType extends Migration
 
         DB::table('component_template')->insert([
             [
-                'id' => 999,
+                'id' => 11,
                 'title' => 'New Empty Component',
                 'created_by' => 1,
                 'updated_by' => 1,
@@ -43,8 +43,8 @@ class InsertNewDesignType extends Migration
             ],
         ]);
 
-        DB::table('designtype_component_temp_relation')->insert([
-            ['designtype_id' => 999, 'component_id' => 999, 'created_by' => 1,'updated_by' => 1, 'is_deleted' => false] 
+        DB::table('designtype_component_template_relation')->insert([
+            ['designtype_id' => 3, 'component_id' => 11, 'created_by' => 1,'updated_by' => 1, 'is_deleted' => false] 
         ]);
 
        
@@ -58,8 +58,8 @@ class InsertNewDesignType extends Migration
     public function down()
     {
         //
-        DB::table('designtype_component_temp_relation')->where('designtype_id', '=', 999)->delete();
-        DB::table('component_template')->where('id', '=', 999)->delete();
-        DB::table('design_type')->where('id', '=', 999)->delete();
+        DB::table('designtype_component_template_relation')->where('designtype_id', '=', 3)->delete();
+        DB::table('component_template')->where('id', '=', 11)->delete();
+        DB::table('design_type')->where('id', '=', 3)->delete();
     }
 }
