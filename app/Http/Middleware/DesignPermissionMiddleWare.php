@@ -151,8 +151,8 @@ class DesignPermissionMiddleWare
            
         }
         elseif(count($permission['public_permission']) > 0){
-            if($permission_value < $permission['user_permission'][0]->permission){
-                $permission_value =  $permission['user_permission'][0]->permission;
+            if($permission_value < $permission['public_permission'][0]->permission){
+                $permission_value =  $permission['public_permission'][0]->permission;
             }
         }
 
