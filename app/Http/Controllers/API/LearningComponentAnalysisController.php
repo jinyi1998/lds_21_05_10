@@ -161,7 +161,7 @@ class LearningComponentAnalysisController extends Controller
 
                 $tasks_time_by_task[$task->title] += $task->time;
 
-                $tasks_num_by_classtarget[$task->class_type] += 1;
+                $tasks_num_by_classtarget[$task->target] += 1;
             }
         }
 

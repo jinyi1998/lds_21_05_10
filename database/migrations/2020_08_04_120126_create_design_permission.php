@@ -34,7 +34,7 @@ class CreateDesignPermission extends Migration
                 [
                     'course_id' => $course->id,
                     'user_id' => $course->created_by,
-                    'permission' => 4,
+                    'permission' => 100,
                     'created_by' => $course->created_by,
                     'updated_by' => $course->created_by,
                     'is_deleted' => 0
