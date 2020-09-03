@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShareIcon from '@material-ui/icons/Share';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import LocalPlayIcon from '@material-ui/icons/LocalPlay';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -32,6 +33,7 @@ const DesignItem = (props) => {
     const {courseData, usergroup} = props;
     const updated_at = courseData.updated_at;
     const creator = courseData.createdby;
+
     const enableDuplicate = props.enableDuplicate? props.enableDuplicate : false;;
     const enableShare = props.enableShare? props.enableShare : false;
     const enableDelete = props.enableDelete? props.enableDelete : false;
@@ -41,7 +43,12 @@ const DesignItem = (props) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
     const onClick = () => {
-        window.location.href = "/designstudio/"+ courseData.id;
+        if(courseData.is_finish){
+            window.location.href = "/designstudio/"+ courseData.id + "/6";
+       }else{
+            window.location.href = "/designstudio/"+ courseData.id;
+       }
+       
     }
 
     const onClickDuplicate = () => {
@@ -75,16 +82,23 @@ const DesignItem = (props) => {
         .catch(error => console.log(error));
     }
 
+    const displayProgress = () => {
+       if(courseData.is_finish){
+            return "Finished";
+       }else{
+            return "In progress";
+       }
+    }
 
     return (
         <React.Fragment>
             <ListItem button onClick={()=>onClick()}>
                 <ListItemIcon>
-                    <DashboardIcon />
+                    {courseData.is_pin? <LocalPlayIcon /> : <DashboardIcon /> }
                 </ListItemIcon>
                 <ListItemText 
                     primary={courseData.unit_title+" - "+courseData.description}  
-                    secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school} />
+                    secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school + " || " + "Progress: " + displayProgress() } />
                 <ListItemSecondaryAction>
                     {
                         enableDuplicate?

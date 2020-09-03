@@ -17,9 +17,8 @@ class CourseController extends Controller
 {
     public function index()
     {
-        // $courses = Course::with(['createdby','usergroupid'])->where('created_by', Auth::user()->id)->get();
         $course_arr = [];
-        $courses = Course::with(['createdby','usergroupid'])->get();
+        $courses = Course::with(['createdby','usergroupid'])->orderBy('is_pin', 'desc')->get();
         foreach($courses as $index => $_course){
             $_course['permission'] = $this->getCurrentUserCoursePermission($_course->id);
             if( $_course['permission'] > 0){
@@ -125,6 +124,10 @@ class CourseController extends Controller
             $course->created_by =  Auth::user()->id;
         }
 
+        if($request->has('is_finish')){
+            $course->is_finish =  $request->is_finish;
+        }
+        
         if($request->has('coursetype')){
             $course->coursetype =  $request->coursetype;
         }
@@ -153,7 +156,7 @@ class CourseController extends Controller
     public function showAll()
     {
         $course_arr = [];
-        $courses = Course::with(['createdby','usergroupid'])->get();
+        $courses = Course::with(['createdby','usergroupid'])->orderBy('is_pin', 'desc')->get();
         foreach($courses as $index => $_course){
             $_course['permission_arr'] = $this->getCoursePermission($_course->id);
             if( count($_course['permission_arr']['public_permission']) > 0){

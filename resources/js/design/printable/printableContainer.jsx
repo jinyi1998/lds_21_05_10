@@ -13,7 +13,22 @@ import PrintableContent from './printableContent';
 export const PrintableStore = React.createContext({
 });
 
-const PrintableContainer = () => {
+const PrintableContainer = (props) => {
+    const isPrint = typeof props.isPrint !== 'undefined'? props.isPrint: true;
+    const courseid = initCourseID();
+
+    function initCourseID(){
+        if(props.courseid){
+            return props.courseid;
+        }else{
+            if (document.getElementById('printablecontainer')) {
+                return document.getElementById('printablecontainer').dataset.courseid;
+            }else{
+                return -1;
+            }
+        }
+    }
+
     const [course, setCourse] = React.useState({
         unit_title: "",
         level: "",
@@ -121,14 +136,17 @@ const PrintableContainer = () => {
     }
 
     React.useEffect(()=>{
-        apiCourseGet(document.getElementById('printablecontainer').dataset.courseid)
-        .then((repsonse)=> {
-            setCourse(repsonse.data)
-            InitDesignOption();
-            // printDocument();
-            setTimeout(()=> {window.print()}, 3000)  
-        })
-        
+        apiCourseGet(courseid)
+                .then((repsonse)=> {
+                    setCourse(repsonse.data)
+                    InitDesignOption();
+                    // printDocument();
+                    if(isPrint){
+                        setTimeout(()=> {window.print()}, 3000)  
+                    } 
+                })
+       
+       
     }, [])
 
     const printDocument = () => {  

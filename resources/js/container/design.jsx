@@ -13,6 +13,7 @@ import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/component/componentStep';
 import BasicReview from '../design/basicReview';
 import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
 
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN'];
+const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -107,9 +108,6 @@ const Design = (props) => {
   const classes = useStyles();
 
   const {courseID} = props;
-  // const [activePage, setActionPage] = React.useState('basic');
-  // const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
-  
   const { course, dispatch, options, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
   const { setLoadingOpen } = React.useContext(AppContextStore);
   
@@ -165,11 +163,12 @@ const Design = (props) => {
     })
   }
 
-  async function updateCourse() {
+  async function updateCourse(is_finish = false) {
     setLoadingOpen(true)  
     await apiCourseUpdate({
       "course_id": course.id,
       "design_type_id": course.designType,
+      "is_finish": is_finish
     })
     .then(
       response => {
@@ -197,7 +196,6 @@ const Design = (props) => {
   React.useEffect(() => {
     setLoadingOpen(true)
     if(courseID != -1){
-
       if(course.isinited){
 
         if(course.components.length == 0){
@@ -209,7 +207,6 @@ const Design = (props) => {
           }
         }
       }
-      
     }else{
       setLoadingOpen(false)
     }
@@ -221,7 +218,11 @@ const Design = (props) => {
     if(activeStep + 1 == steps.length){
       //final step
       // setActionPage('unitPlan');
-      window.location.href = "/mydesign";
+      updateCourse(true).then(
+        (response) => {
+          window.location.href = "/mydesign";
+        }
+      )
     }else{
       setActiveStep(activeStep + 1);
     }
@@ -333,6 +334,24 @@ const Design = (props) => {
                   </Button>
               )}
             </div>
+          </React.Fragment>
+        )
+      
+      case 5:
+        return (
+          <React.Fragment>
+             <PrintableContainer isPrint = {false} courseid = {courseID}/>
+             {activeStep !== 0 &&(
+                    <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                    data-tour = "next"
+                  >
+                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                  </Button>
+              )}
           </React.Fragment>
         )
         // return <DesignComponentStep />;

@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {PrintableStore} from '../printableContainer';
 
+import Box from '@material-ui/core/Box';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import RoomIcon from '@material-ui/icons/Room';
@@ -23,7 +24,7 @@ const Task = (props) => {
     const taskTypeOpts = options.taskType;
 
     return (
-        <React.Fragment style = {{pageBreakInside: "avoid"}}>
+        <React.Fragment>
              <Grid item container  xs={12} spacing={4}  style = {{pageBreakInside: "avoid"}}>
                 <Grid item xs={1} height="100%">
                     <div style={taskTypeColor(task.type)}>
@@ -93,23 +94,27 @@ const Task = (props) => {
 const Lesson = (props) => {
     const lesson = props.lesson;
     return (
-        <React.Fragment style = {{pageBreakInside: "avoid"}}>
-            <Grid container style = {{margin: 16, pageBreakInside: "avoid"}}>
-                <Grid item xs = {12} >
-                    <Typography variant = "subtitle1" color = "textPrimary" gutterBottom>   {lesson.title} - {lesson.time} mins </Typography>  
-                </Grid>
+        <React.Fragment>
+            <Box border={1} borderRadius={16} style = {{padding: 16, pageBreakInside: "avoid", margin: 16}}>
+                <Grid container>
+                    <Grid item xs = {12} >
+                        <Typography variant = "subtitle1" color = "textPrimary" gutterBottom>   {lesson.title} - {lesson.time} mins </Typography>  
+                    </Grid>
 
-                {
-                    lesson.tasks.length > 0?
-                    lesson.tasks.map(task => {
-                        return (
-                            <Task task = {task} key = {task.id}/>
-                        )
-                    })
-                    :
-                    "No task in this lesson"   
-                }
-            </Grid>
+                    {
+                        lesson.tasks.length > 0?
+                        lesson.tasks.map(task => {
+                            return (
+                                <Task task = {task} key = {task.id}/>
+                            )
+                        })
+                        :
+                        <Grid item xs = {12} >
+                            <Typography variant = "subtitle1" color = "textPrimary" gutterBottom> No task in this lesson </Typography>  
+                        </Grid>
+                    }
+                </Grid>
+            </Box>
         </React.Fragment>
     )
 }
@@ -123,11 +128,12 @@ const Lessons = () => {
                 {
                     course.lessons.map(lesson => {
                         return(
-                            <Lesson lesson = {lesson} key = {lesson.id}/>
+                            <Grid item xs={12}>
+                               <Lesson lesson = {lesson} key = {lesson.id}/>
+                            </Grid>
                         )
                     })
                 }
-                
             </Grid>
         </React.Fragment>
     );

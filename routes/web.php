@@ -25,6 +25,7 @@ Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@ch
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/designstudio', '\App\Http\Controllers\RouteController@newdesignstudio');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
+Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
 // Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
 Route::get('/printpdf/{id}', '\App\Http\Controllers\RouteController@printpdf');
 Route::get('/mydesign', '\App\Http\Controllers\RouteController@mydesign');

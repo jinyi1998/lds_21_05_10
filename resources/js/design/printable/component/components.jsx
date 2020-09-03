@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -71,7 +72,7 @@ const ComponentTask = (props) => {
     const taskTypeOpts = options.taskType;
     return (
         <React.Fragment>
-             <Grid item container spacing={2} xs={12}>
+             <Grid item container spacing={2} xs={12} style = {{pageBreakInside: "avoid"}}>
                 <Grid container item xs={1} height="100%">
                     <div style={taskTypeColor(task.type)}/>
                 </Grid>
@@ -162,25 +163,27 @@ const Component = (props) => {
     const component = props.component;
 
     return (
-        <Grid container spacing={2} style = {{pageBreakInside: "avoid"}}>
-            <Grid item xs={12}>
-                <Typography variant = "subtitle1" color = "textPrimary" gutterBottom> Component #{component.sequence} - {component.title} </Typography>
-            </Grid>
+        <Box border={1} borderRadius={16} style = {{padding: 16, margin: 16}}>
+            <Grid container spacing={2} style = {{pageBreakInside: "avoid"}}>
+                <Grid item xs={12}>
+                    <Typography variant = "subtitle1" color = "textPrimary" gutterBottom> Component #{component.sequence} - {component.title} </Typography>
+                </Grid>
 
-            <Grid item xs={12}>
-                <ComponentOutcome outcomes = {component.outcomes} />
-            </Grid>
+                <Grid item xs={12}>
+                    <ComponentOutcome outcomes = {component.outcomes} />
+                </Grid>
 
-            <Grid item xs={12}>
-                {/* {props.component.patterns.length > 0? <Typography color = "textSecondary" gutterBottom>  Patterns </Typography> : null} */}
-                {component.patterns.map(pattern => <ComponentPattern pattern = {pattern} key={pattern.id}/>)}
-            </Grid>
+                <Grid item xs={12}>
+                    {/* {props.component.patterns.length > 0? <Typography color = "textSecondary" gutterBottom>  Patterns </Typography> : null} */}
+                    {component.patterns.map(pattern => <ComponentPattern pattern = {pattern} key={pattern.id}/>)}
+                </Grid>
 
-            <Grid item xs={12}>
-                {component.tasks.length > 0? <Typography variant = "subtitle1" color = "textSecondary" gutterBottom>  Tasks </Typography> : null}
-                {component.tasks.map(task => <ComponentTask task = {task} key = {task.id}/>)}
+                <Grid item xs={12}>
+                    {component.tasks.length > 0? <Typography variant = "subtitle1" color = "textSecondary" gutterBottom>  Tasks </Typography> : null}
+                    {component.tasks.map(task => <ComponentTask task = {task} key = {task.id}/>)}
+                </Grid>
             </Grid>
-        </Grid>
+        </Box>
     )
 }
 
@@ -188,7 +191,7 @@ const Components = () => {
     const {course, options} = React.useContext(PrintableStore);
 
     return (
-        <Grid container spacing={2}>
+        <Grid container>
             <Grid item xs={12}>
                 {course.components.map(component => <Component component = {component} key = {component.id}/>)}
             </Grid>
