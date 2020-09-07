@@ -37,7 +37,13 @@ class RouteController extends Controller
     public function designstudio($id = -1, $step = 0){
 
         // return view('designstudio', ["courseid" => $id, 'user'=> $user_temp, 'step' => $step]);
-        return view('app', ["courseid" => $id, 'user'=> $this->getUserJson(), 'step' => $step - 1, 'module' => 'designstudio']);
+        if($step == 0){
+
+        }else{
+            $step = $step - 1;
+        }
+
+        return view('app', ["courseid" => $id, 'user'=> $this->getUserJson(), 'step' => $step, 'module' => 'designstudio']);
     }
 
     public function newdesignstudio($id = -1){
