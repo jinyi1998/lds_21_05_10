@@ -102,7 +102,7 @@ const LearningPatternContainer = (props) => {
 
     async function saveLearningPattern() {
         var json = patternTempOpts.find(x => x.id == patternTempID);
-        json[pattern_id] = pattern.id;
+        json["pattern_id"] = pattern.id;
 
         return await apiLearningPatternPut(json)
         .then(response => {
@@ -145,14 +145,14 @@ const LearningPatternContainer = (props) => {
                     <Grid item xs = {4}>
                         {
                             enableUnlock?
-                            <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock" > <LockOpenIcon/>Unclock me</Button>
+                            <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock" > <LockOpenIcon/>Unlock me</Button>
                             :
                             null
                         }
                     </Grid>
                     
                     {pattern.tasks?.map((_task, index)=>
-                       <div data-tour = "component_pattern_task" key = {index}>
+                       <div data-tour = "component_pattern_task" key = {index} style = {{"width": "100%"}}>
                         <LearningTaskView 
                                 taskID = {_task.id} 
                                 taskData = {_task} 

@@ -21,7 +21,7 @@ class InsertNewDesignType extends Migration
                 'name' => 'Start From Scratch',
                 'description' => 'Start From Scratch',
                 'hint' => 'You can freely design your learning design without any preloadings...',
-                'media' => '/asset/image/start_from_scratch.png',
+                'media' => '/asset/image/design_type_logo/Scratch.png',
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => false,
@@ -59,6 +59,7 @@ class InsertNewDesignType extends Migration
     {
         //
         DB::table('designtype_component_template_relation')->where('designtype_id', '=', 3)->delete();
+        DB::table('component')->where('component_template_id', '=', 11)->delete();
         DB::table('component_template')->where('id', '=', 11)->delete();
         DB::table('design_type')->where('id', '=', 3)->delete();
     }

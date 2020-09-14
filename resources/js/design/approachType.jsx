@@ -1,11 +1,10 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
-import { red } from '@material-ui/core/colors';
 import DesignTypeBox from './approachTypeBox';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,23 +12,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
+import DesignTypeInstruction from './designTypeInstruction';
 
 import QuestionHint from '../components/questionHint';
 import {ContextStore} from '../container/designContainer';
 
 const useStyles = makeStyles(theme => ({
 
-    gridList: {
-      display: 'flex',
-      justifyContent: 'center',
-      // overflow: 'scroll',
-      flexWrap: 'nowrap',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
+  gridList: {
+    minHeight: 450,
+    margin: 10,
+    flexWrap: 'nowrap',
+  }
 }));
 
 
@@ -42,6 +36,8 @@ const DesignType = (props) => {
   const designType = options.designType? options.designType : [];
   const {handleNext} = props;
   const [open, setOpen] = React.useState(false);
+  const [instructionID, setInstructionID] = React.useState(1);
+  const [instructionOpen, setInstructionOpen] = React.useState(false);
   const [warningType, setWarningType] =  React.useState('match');
   const [value, setValue] = React.useState(-1);
 
@@ -49,6 +45,31 @@ const DesignType = (props) => {
     tourSetRun(false);
     tourSetMode('design_type');
   }, [])
+
+  const onClickMore = (id) => {
+    setInstructionID(id);
+    setInstructionOpen(true);
+  }
+
+  const displayInstructionDialog = () => {
+    return (
+      <Dialog
+        open={instructionOpen}
+        onClose={()=>setInstructionOpen(false)}
+        fullWidth={false}
+        maxWidth = "xl"
+        BackdropProps={{
+          backgroundColor: "transparent"
+         }
+        }
+        PaperProps ={{
+          backgroundColor: "transparent"
+        }}
+      >
+        <DesignTypeInstruction design_type_id = {instructionID} />
+      </Dialog>
+    )
+  }
 
   const displayWarningDialog = () => {
     return (
@@ -120,10 +141,6 @@ const DesignType = (props) => {
           setOpen(true);
         }
       }
-      // dispatch({
-      //   type: "DESIGN_TYPE",
-      //   value: value
-      // });
   };
 
   const onDispatch = () => {
@@ -134,31 +151,44 @@ const DesignType = (props) => {
   }
 
 
-
-
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Choose the disciplinary practice for your STEM curriculum unit
-        <QuestionHint title = {<div>
-          "The aim of STEM education is to equip students with knowledge and skills in the four STEM disciplines, for example, scientific inquiry, application of technological knowledge, design thinking, logical thinking, and so on. 
-          <br/>
-          In order to strengthen students’ ability to integrate knowledge and experiences like the experts in the fields of STEM, the learning design needs to provide students with opportunities to experience an authentic practice format in STEM areas.
-          <br/>
-          There are two authentic practice formats in STEM, engineering design and scientific investigation. 
-          <br/>
-          “Engineering design” refers to STEM lessons that provide students with opportunities to construct some products, while “Scientific investigation” refers to lessons in which students design and conduct a scientific investigation to address a scientific problem. We refers to these two authentic practice formats in STEM as disciplinary practice." 
-        </div>}/>
-      </Typography>
+      <Grid container>
+        <Grid item xs = {12}>
+          <Typography variant="h6" gutterBottom>
+            Choose the disciplinary practice for your STEM curriculum unit
+            <QuestionHint title = {<div>
+              "The aim of STEM education is to equip students with knowledge and skills in the four STEM disciplines, for example, scientific inquiry, application of technological knowledge, design thinking, logical thinking, and so on. 
+              <br/>
+              In order to strengthen students’ ability to integrate knowledge and experiences like the experts in the fields of STEM, the learning design needs to provide students with opportunities to experience an authentic practice format in STEM areas.
+              <br/>
+              There are two authentic practice formats in STEM, engineering design and scientific investigation. 
+              <br/>
+              “Engineering design” refers to STEM lessons that provide students with opportunities to construct some products, while “Scientific investigation” refers to lessons in which students design and conduct a scientific investigation to address a scientific problem. We refers to these two authentic practice formats in STEM as disciplinary practice." 
+            </div>}/>
+          </Typography>
+        </Grid>
+        <Grid item xs = {12}>
+          <GridList className={classes.gridList}>
+            {designType.map((_data, i) => (
+                <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} onClickMore = {onClickMore}>
+                </DesignTypeBox>
+            ))}
+          </GridList>
+        </Grid>
+        {displayInstructionDialog()}
+        {displayWarningDialog()}
+      </Grid>
+     
     
-      <GridList className={classes.gridList} cols={4} data-tour = "designtype_list">
+      {/* <GridList className={classes.gridList} cols={4} data-tour = "designtype_list">
           {designType.map((_data, i) => (
-            <DesignTypeBox designBoxData={_data} key={i} onClick={onClick}>
+            <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} onClickMore = {onClickMore}>
             </DesignTypeBox>
           ))}
-      </GridList>
-
-      {displayWarningDialog()}
+      </GridList> */}
+     
+  
     </React.Fragment>
   );
 }

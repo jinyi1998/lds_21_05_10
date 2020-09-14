@@ -8,22 +8,25 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Grid } from '@material-ui/core';
 
 import LearningOutcomeContainer from '../outcome/learningOutcomeContainer';
-import AddLearningPatternContainner from '../pattern/addLearningPattern';
-import LearningPatternEdit from '../pattern/learningPatternEditView';
 import LearningTaskContainer from '../task/learningTaskContainer';
 import LearningPatternContainer from '../pattern/learningPatternContainer';
-import {apiLearningCompPut} from '../../api';
-import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 import {ContextStore} from '../../container/designContainer'
 import {AppContextStore} from '../../container/app';
 import {ComponentContext} from './componentContainer';
+
+import {
+  apiLearningCompGet, apiLearningCompPost, apiLearningCompPut, apiLearningCompDelete,
+  apiLearningCompTempGet,
+} from '../../api.js';
 
 
 const useStyles = makeStyles(theme => ({
@@ -68,11 +71,20 @@ const Component = ()=>{
       index} = React.useContext(ComponentContext);
     const {course, refreshCourse } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
-
+    
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const [editComponent, setEditComponent] = React.useState(false);
     const [componentTitle, setComponentTitlte] = React.useState(component.title);
+    const [componentTitleColor, setComponentTitleColor] = React.useState('#FFFFFF');
+    
 
     //#region init data 
+    React.useEffect(()=>{
+      // window.removeEventListener('scroll', handleScroll);
+      // handleScroll();
+      // window.addEventListener("scroll", handleScroll);
+    }, [selectComIndex]);
+
     const learningTime = () => {
       var time = 0;
       component.tasks.map(_task => time += parseInt(_task.time));
@@ -85,7 +97,13 @@ const Component = ()=>{
 
     //#region action button
     const handleChange = (panel) => (event, isExpanded) => {
-      setSelectComIndex(selectComIndex != index ? index : -1)
+      event.stopPropagation();
+      if(isExpanded){
+        setSelectComIndex(selectComIndex != index ? index : -1)
+      }else{
+        setSelectComIndex(-1)
+      }
+    
     };
 
     const onComfirmChange = () => {
@@ -99,21 +117,73 @@ const Component = ()=>{
         setLoadingOpen(false);
       })  
       setEditComponent(false);
+      setAnchorEl(null);
+    }
+
+    const handleScroll = () => {
+      if (window.pageYOffset > 250) {
+          if(index == selectComIndex && componentTitleColor != 'yellow'){
+            setComponentTitleColor('yellow');   
+          }else if(index != selectComIndex){
+            setComponentTitleColor('#FFFFFF');   
+          }
+      }else{
+        setComponentTitleColor('#FFFFFF');   
+      }
+    }
+
+    async function duplicateComponent(id){
+      var tempcomponent = await fetchlearningComponent(id);
+      tempcomponent.course_id = course.id;
+      fetchAddLearningComponent(tempcomponent);
+      setAnchorEl(null);
+    } 
+
+    async function deleteComponent(id){
+      await apiLearningCompDelete(id)
+      .then(response => {
+        //load the default learning outcomes by api request
+        // return response;
+        refreshCourse();
+      })
+      .catch(error => console.log(error));
+      setAnchorEl(null);
+    }
+
+    async function fetchlearningComponent(id) {
+      return await apiLearningCompGet(id)
+      .then(response => {
+        return response.data 
+      })
+      .catch(error => console.log(error));
+    }
+
+    async function fetchAddLearningComponent(component) {
+      component.sequence = course.components.length + 1;
+      return await apiLearningCompPost(component)
+      .then( () => {refreshCourse()})
+      .catch(error => console.log(error));
     }
     //#endregion
 
     return (
       <div className={classes.root}>
-        <ExpansionPanel expanded = {index == selectComIndex} >
+        <ExpansionPanel expanded = {index == selectComIndex} onChange = {handleChange()}>
           <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon onClick = {handleChange()}/>}
+            expandIcon={<ExpandMoreIcon/>}
             aria-controls="panel1a-content"
             id="panel1a-header"
             data-tour = "component_expand_panel"
+            style = {{ 
+              "position": "sticky" ,
+              "zIndex": 499,
+              "backgroundColor": componentTitleColor,
+              "top": 60
+            }} 
           >
             <Grid container spacing = {3}>
              
-              <Grid item xs={8}  data-tour = "component_header">
+              <Grid item xs={11}  data-tour = "component_header">
                 {
                     editComponent?
                     <TextField value = {componentTitle} onChange = {(event => setComponentTitlte(event.target.value))} fullWidth></TextField>
@@ -127,12 +197,33 @@ const Component = ()=>{
               {
                 course.permission > 2?
                   
-                  <Grid item xs={4} >
+                  <Grid item xs={1} >
                     {
                       editComponent?
-                      <Button onClick = {()=>{onComfirmChange()}} >Comfirm</Button>
+                      <Button onClick = {(event)=>{ event.stopPropagation(); onComfirmChange()}} >Comfirm</Button>
                       :
-                      <IconButton  onClick = {()=>{setEditComponent(true)}} ><EditIcon /></IconButton>
+                      <React.Fragment>
+                        <IconButton
+                          aria-label="more"
+                          aria-controls="long-menu"
+                          aria-haspopup="true"
+                          onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          id="componenet-edit-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
+                        >
+                          <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>Rename</MenuItem>
+                          <MenuItem onClick={()=> {event.stopPropagation(); duplicateComponent(component.id)}}>Duplicate</MenuItem>
+                          <MenuItem onClick={()=> {event.stopPropagation(); deleteComponent(component.id)}}>Delete</MenuItem>
+                        </Menu>
+                      </React.Fragment>
+                     
                     }
                    
                   </Grid>
@@ -145,16 +236,11 @@ const Component = ()=>{
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
               </Grid>
             </Grid>
-          
-          
-            
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails style = {{ 
+              "position": "flex" ,
+            }}  >
               <Grid container spacing={2}>
-              
-                {/* <Grid item xs={8}>
-                  <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
-                </Grid> */}
 
                 <Grid item xs={12}> 
                   <LearningOutcomeContainer component ={component}/>

@@ -329,7 +329,7 @@ class LearningOutcomesController extends Controller
             ],
             '4' => [
                 'id' => 3,
-                'description' => 'Mathamatics',
+                'description' => 'Mathametics',
                 'value' => 'M'
             ],
            

@@ -53,7 +53,7 @@ const getListStyle = isDraggingOver => ({
 
 const DesignComponentStep = (props) =>
 { 
-    const { course, options, dispatch, refreshCourse } = React.useContext(ContextStore);
+    const { course, options, dispatch, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     const enableAdd = course.permission > 2;
     const enableEdit = course.permission > 2;
@@ -114,12 +114,21 @@ const DesignComponentStep = (props) =>
     
     }
 
-    async function addComponentFromTemplate(id){
-        //sync the data to root state
-        var tempcomponent = await fetchlearningComponentTemplate(id);
-        tempcomponent.component_template_id = id;
-        tempcomponent.course_id = course.id;
-        fetchAddLearningComponent(tempcomponent);
+    async function addComponentFromTemplate(components){
+      components.map((_component) => {
+           //sync the data to root state
+           fetchlearningComponentTemplate(_component.id).then(
+            tempcomponent => {
+              tempcomponent.component_template_id = _component.id;
+              tempcomponent.course_id = course.id;
+              fetchAddLearningComponent(tempcomponent);
+            }
+           );
+      })
+    }
+
+    async function renameComponent(component){
+      await fetchUpdateLearningComponent(component);
     }
 
     async function duplicateComponent(id){
@@ -137,7 +146,6 @@ const DesignComponentStep = (props) =>
       })
       .catch(error => console.log(error));
     }
-
     //#region data fetching related
 
     async function fetchlearningComponentTemplate(id) {
@@ -181,7 +189,7 @@ const DesignComponentStep = (props) =>
             <InstructionBox 
                     title="Learning Components" 
                     content= { "These are the pre-defined design components for the template:" 
-                    + options.designType.find(x=> x.id == course.design_type_id).description + " "
+                    + options.designType.find(x=> x.id == course.design_type_id)?.description + " "
                     + "STEM to guide you to plan your unit and lesson"
                     }
                     tips= {
@@ -203,8 +211,11 @@ const DesignComponentStep = (props) =>
                                   snapshot = {snapshot} 
                                   component = {component} 
                                   index = {index} 
+                                  key = {index}
+                                  renameComponent = {renameComponent}
                                   duplicateComponent = {duplicateComponent}
                                   deleteComponent = {deleteComponent}
+                                  taskTypeColor = {taskTypeColor}
                                   enableEdit = {enableEdit}
                                   enableDelete = {enableDelete}
                                   />

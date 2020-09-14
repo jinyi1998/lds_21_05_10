@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\LearningTask;
+use App\ComponentTaskRelation;
 use App\TaskAssessmentRelation;
 use App\TaskResourceRelation;
 use App\TaskToolRelation;
@@ -33,7 +34,9 @@ class LearningTaskController extends Controller
     {
         $task = new LearningTask;
         $task = LearningTaskController::save($task, $request);
-
+        if($request->has('component_id')){
+            $request['sequence'] = ComponentTaskRelation::where('component_id', '=', $request->has('component_id'))->count() + 1;
+        }     
         return response()->json($task);
     }
 
@@ -54,7 +57,8 @@ class LearningTaskController extends Controller
             'componentid',
             'lessonid'
         ])->find($id);
-        return response()->json($task);
+       
+        return response()->json([$task, $test]);
     }
 
     /**
@@ -68,6 +72,7 @@ class LearningTaskController extends Controller
     {
         //
         $task = LearningTask::find($id);
+        // if the learning task is related to the   
         $task = LearningTaskController::save($task, $request);
         
         return response()->json($task);
@@ -1566,20 +1571,12 @@ class LearningTaskController extends Controller
         $task->save();
         //assessment
         if($request->has('component_id')){
-            $task->componentid()->delete();
             if($request->has('sequence')){
+                $task->componentid()->delete();
                 $task->componentid()->create([
                     'task_id' => $task->id,
                     'component_id' => $request->component_id,
                     'sequence' => $request->sequence,
-                    'created_by' => 1,
-                    'updated_by' => 1,
-                    'is_deleted' => 0
-                ]);
-            }else{
-                $task->componentid()->create([
-                    'task_id' => $task->id,
-                    'component_id' => $request->component_id,
                     'created_by' => 1,
                     'updated_by' => 1,
                     'is_deleted' => 0

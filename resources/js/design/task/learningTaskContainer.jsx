@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {ContextStore} from '../../container/designContainer';
 import {AppContextStore} from '../../container/app';
 
+import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -121,8 +122,9 @@ const LearningTaskContainer = (props) => {
         setLoadingOpen(true);
 
         var json = taskData;
-        json['component_id'] = componentID;
+        console.log(json);
         if(taskData.id == -1){
+            json['component_id'] = componentID;
             //new learning task
             json['sequence'] = tasksData.length;
             setOpenTaskEdit(false);
@@ -136,6 +138,8 @@ const LearningTaskContainer = (props) => {
             })
             .catch(error => console.log(error));
         }else{
+            // json['component_id'] = taskData['componentid']['component_id'];
+            // json['sequence'] =  taskData['componentid']['sequence'];
             //update existing task
             setOpenTaskEdit(false);
             return await apiLearningTaskPut(json)
@@ -241,38 +245,39 @@ const LearningTaskContainer = (props) => {
 
     return (
         <React.Fragment>
-               <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                    <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <RootRef rootRef={provided.innerRef}>
-                            <List style={getListStyle(snapshot.isDraggingOver)}>
-                            {   
-                                tasksData.map( 
-                                    (_task, index) => 
-                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
-                                    {(provided, snapshot) => (
-                                          <LearningTaskView 
-                                            provided = {provided} 
-                                            snapshot = {snapshot} 
-                                            taskID = {_task.id} 
-                                            taskData = {_task} 
-                                            onEditearningTask = {onEditearningTask}
-                                            key = {_task.id}
-                                            editBtn = {enableEdit}
-                                            duplicateBtn = {enableDuplicate}
-                                            deleteBtn = {enableDelete}
-                                            lastestindex = {tasksData.length + 1}
-                                        />
-                                    )}
-                                    </Draggable>
-                                )
-                            }
-                            {provided.placeholder}
-                            </List>
-                        </RootRef>
-                    )}
-                    </Droppable>
-                </DragDropContext>
+            <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                        <Droppable droppableId="droppable">
+                        {(provided, snapshot) => (
+                            <RootRef rootRef={provided.innerRef}>
+                                <List style={getListStyle(snapshot.isDraggingOver)}>
+                                {   
+                                    tasksData.map( 
+                                        (_task, index) => 
+                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                        {(provided, snapshot) => (
+                                            <LearningTaskView 
+                                                provided = {provided} 
+                                                snapshot = {snapshot} 
+                                                taskID = {_task.id} 
+                                                taskData = {_task} 
+                                                onEditearningTask = {onEditearningTask}
+                                                key = {_task.id}
+                                                editBtn = {enableEdit}
+                                                duplicateBtn = {enableDuplicate}
+                                                deleteBtn = {enableDelete}
+                                                lastestindex = {tasksData.length + 1}
+                                            />
+                                        )}
+                                        </Draggable>
+                                    )
+                                }
+                                {provided.placeholder}
+                                </List>
+                            </RootRef>
+                        )}
+                        </Droppable>
+                    </DragDropContext>
                 {/* {tasksData.map( _task => 
                     <LearningTaskView 
                         taskID = {_task.id} 
@@ -286,15 +291,15 @@ const LearningTaskContainer = (props) => {
                     />
                 )} */}
 
-            {
-                enableAdd?
-                <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
-                    Add Learning Task
-                </Button>
-                :
-                null
-            }
-           
+                {
+                    enableAdd?
+                    <Button variant="contained" color="primary" onClick={()=>onAddLearningTask()}>
+                        Add Learning Task
+                    </Button>
+                    :
+                    null
+                }
+            </Grid>
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
                 <DialogTitle id="form-dialog-title">{taskData.id == -1? "Add Learning Task" : "Edit Learning Task"}</DialogTitle>

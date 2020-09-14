@@ -539,7 +539,7 @@ const LearningOutcomeEdit = (props) => {
                                 disabled = {checked}
                             />
                             }
-                            label="Mathamatics"
+                            label="Mathametics"
                         />
                     </FormGroup>
             </Grid>

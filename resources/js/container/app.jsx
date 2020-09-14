@@ -26,7 +26,7 @@ const drawerWidth = 240;
 const  useStyles = makeStyles(theme => ({
   appBarShift: {
     marginLeft: drawerWidth,
-    maxWidth: `calc(83% - ${drawerWidth}px)`,
+    maxWidth: `calc(91% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -88,7 +88,7 @@ const App = (props) => {
                 <SideMenu user = {props.user}/>
             </Grid>
             
-            <Grid item xs ={10} className={clsx(sideMenuOpen && classes.appBarShift)}>
+            <Grid xs = {11} item className={clsx(sideMenuOpen && classes.appBarShift)}>
                 {displayModule()}
                 {/* test */}
             </Grid>

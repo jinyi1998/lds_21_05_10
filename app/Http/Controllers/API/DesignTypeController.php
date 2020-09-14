@@ -40,7 +40,7 @@ class DesignTypeController extends Controller
     public function show($id)
     {
         //
-        $designType = DesignType::with(['componentsid', 'outcomes'])->find($id);
+        $designType = DesignType::with(['components','componentsid', 'outcomes'])->find($id);
         return response()->json($designType);
     }
 

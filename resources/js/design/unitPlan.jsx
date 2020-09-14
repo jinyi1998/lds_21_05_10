@@ -39,6 +39,7 @@ const UnitPlan = (props)  => {
                     <ComponentContainer componentID = {_component.component_id} key= {index} index = {index}/>
                 </Grid>
             ))} */}
+            
 
             {course.components.map((_component, index)=>(
                 <Grid item xs={12} key = {index}>

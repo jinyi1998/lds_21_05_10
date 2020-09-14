@@ -118,5 +118,6 @@ class CreateComponentTemplate extends Migration
     public function down()
     {
         Schema::dropIfExists('component_template');
+        Schema::dropIfExists('component_template');
     }
 }

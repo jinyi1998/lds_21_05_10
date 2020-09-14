@@ -36,6 +36,7 @@
         "react-global-configuration": "^1.4.0",
         "react-joyride": "^2.2.1",
         "react-model": "^3.0.3",
+        "react-responsive-carousel": "^3.2.9",
         "reactour": "^1.17.0",
         "styled-components": "^5.1.1",
         "validator": "^12.2.0"

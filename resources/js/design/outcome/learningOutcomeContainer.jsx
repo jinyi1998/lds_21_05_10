@@ -310,99 +310,103 @@ const LearningOutcomeContainer = (props)=>{
         
     }
 
-    const displayLearningOutcomesNew = () => {
+    const displayLearningOutcomes = () => {
         if(modeLevel == "course"){
             return (
-                <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                <Droppable droppableId="droppable">
-                  {(provided, snapshot) => (
-                    <RootRef rootRef={provided.innerRef}>
-                      <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view">
+                <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                    <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <RootRef rootRef={provided.innerRef}>
+                        <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view" style = {{width: "100%"}}>
 
-                            {course.outcomes.map(
-                                (_outcome, index )=>
-                                (
-                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
-                                      {(provided, snapshot) => (
-                                          <LearningOutcomeUnit 
-                                          learningOutcome = {_outcome}
-                                          key={index} 
-                                          provided = {provided} 
-                                          snapshot = {snapshot} 
-                                          component = {component} 
-                                          onOpenDelDialog = {onOpenDelDialog} 
-                                          onOpenEditDialog = {editLearningOutcome}
-                                          enableEdit = {enableEdit}
-                                          enableDelete = {enableDelete}
-                                          index = {index}/> 
-                                      )}
-                                    </Draggable>
-                                )
-                            )}
-                        {provided.placeholder}
-                      </List>
-                    </RootRef>
-                  )}
-                </Droppable>
-                {
-                    enableAdd? 
-                    <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
-                    :
-                    null
-                }
-                
-                </DragDropContext>
+                                {course.outcomes.map(
+                                    (_outcome, index )=>
+                                    (
+                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                        {(provided, snapshot) => (
+                                            <LearningOutcomeUnit 
+                                            learningOutcome = {_outcome}
+                                            key={index} 
+                                            provided = {provided} 
+                                            snapshot = {snapshot} 
+                                            component = {component} 
+                                            onOpenDelDialog = {onOpenDelDialog} 
+                                            onOpenEditDialog = {editLearningOutcome}
+                                            enableEdit = {enableEdit}
+                                            enableDelete = {enableDelete}
+                                            index = {index}/> 
+                                        )}
+                                        </Draggable>
+                                    )
+                                )}
+                            {provided.placeholder}
+                        </List>
+                        </RootRef>
+                    )}
+                    </Droppable>
+                    {
+                        enableAdd? 
+                        <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                        :
+                        null
+                    }
+                    
+                    </DragDropContext>
+                </Grid>
             )
         }else{
             //component learning outcome
             return (
                 <React.Fragment>
-                    {course.outcomes.map(
-                        (_ulo, index )=>
-                        (
-                            component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).length > 0 ? 
-                                <DragDropContext onDragEnd={(result) => onDragEnd(result)} key = {index}>
-                                        <Droppable droppableId="droppable">
-                                        {(provided, snapshot) => (
-                                            <RootRef rootRef={provided.innerRef}>
-                                            <List style={getListStyle(snapshot.isDraggingOver)} data-tour = "clo_display_view">
-                                                <ListSubheader color ="primary" data-tour = "clo_ulo_header">Unit Level Learning Outcome: {_ulo.description}</ListSubheader>
-                                                {component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).map(
-                                                    (_outcome, index )=>
-                                                    (
-                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
-                                                        {(provided, snapshot) => (
-                                                            <LearningOutcomeUnit 
-                                                            learningOutcome = {_outcome}
-                                                            key={index} 
-                                                            provided = {provided} 
-                                                            snapshot = {snapshot} 
-                                                            component = {component} 
-                                                            onOpenDelDialog = {onOpenDelDialog} 
-                                                            onOpenEditDialog = {editLearningOutcome}
-                                                            enableEdit = {enableEdit}
-                                                            enableDelete = {enableDelete}
-                                                            index = {index}/> 
-                                                        )}
-                                                        </Draggable>
-                                                    )
-                                                )}
-                                                {provided.placeholder}
-                                            </List>
-                                            </RootRef>
-                                )}
-                                    </Droppable>
-                                </DragDropContext>
+                    <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                        {course.outcomes.map(
+                            (_ulo, index )=>
+                            (
+                                component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).length > 0 ? 
+                                    <DragDropContext onDragEnd={(result) => onDragEnd(result)} key = {index}>
+                                            <Droppable droppableId="droppable">
+                                            {(provided, snapshot) => (
+                                                <RootRef rootRef={provided.innerRef}>
+                                                <List style={getListStyle(snapshot.isDraggingOver)} data-tour = "clo_display_view" style = {{width: "100%"}}>
+                                                    <ListSubheader color ="primary" data-tour = "clo_ulo_header">Unit Level Learning Outcome: {_ulo.description}</ListSubheader>
+                                                    {component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).map(
+                                                        (_outcome, index )=>
+                                                        (
+                                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                                            {(provided, snapshot) => (
+                                                                <LearningOutcomeUnit 
+                                                                learningOutcome = {_outcome}
+                                                                key={index} 
+                                                                provided = {provided} 
+                                                                snapshot = {snapshot} 
+                                                                component = {component} 
+                                                                onOpenDelDialog = {onOpenDelDialog} 
+                                                                onOpenEditDialog = {editLearningOutcome}
+                                                                enableEdit = {enableEdit}
+                                                                enableDelete = {enableDelete}
+                                                                index = {index}/> 
+                                                            )}
+                                                            </Draggable>
+                                                        )
+                                                    )}
+                                                    {provided.placeholder}
+                                                </List>
+                                                </RootRef>
+                                    )}
+                                        </Droppable>
+                                    </DragDropContext>
+                                :
+                                null
+                            )
+                        )}
+                        {
+                            enableAdd?
+                            <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
                             :
                             null
-                        )
-                    )}
-                    {
-                        enableAdd?
-                        <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
-                        :
-                        null
-                    }
+                        }
+                    </Grid>
                  
                     {/* <Button onClick={()=> setLearningOutcomeSelectOpen(true)} variant="contained" color="secondary">Select Learning Outcome From Unit Level</Button> */}
                 </React.Fragment>
@@ -476,7 +480,7 @@ const LearningOutcomeContainer = (props)=>{
                         }
                         </Grid> 
                         <Grid item xs={12}>
-                            {displayLearningOutcomesNew()}
+                            {displayLearningOutcomes()}
 
                         </Grid>
                     </Grid>

@@ -2,103 +2,85 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+
 import { red } from '@material-ui/core/colors';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 
 const useStyles = makeStyles(theme => ({
-    card: {
-        padding: 10,
-        maxWidth: 400,
-        minWidth: 300,
-        overflow: 'scroll'
-      },
-      media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-        backgroundSize: 'contain'
-      },
-      expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.shortest,
-        }),
-      },
-      expandOpen: {
-        transform: 'rotate(180deg)',
-      },
-      avatar: {
-        backgroundColor: red[500],
-      },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '100%',
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  gridList: {
+      minHeight: 450,
+      margin: 10,
+      flexWrap: 'nowrap',
+      transform: 'translateZ(0)',
+  },
+  media: {
+      height: 250,
+      width: '100%',
+      backgroundSize: 'contain'
+  },
+  root: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+    },
 }));
 
 const DesignTypeBox = (props) => {
 
     const classes = useStyles();
-    const {designBoxData, onClick} = props;
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-      setExpanded(!expanded);
+    const {designBoxData, onClick, onClickMore} = props;
+    
+    const handleExpandClick = (event) => {
+      event.stopPropagation();
+      onClickMore(designBoxData.id);
     };
 
-    return (
-        <Card className={classes.card}>
-            <CardActionArea onClick={ (event)=>onClick(event, designBoxData.id)} 
-            value={designBoxData.id}
-            data-tour = {"designtype_action_" +  designBoxData.id}
-            name="subject">
-                <Box style ={{height: 300}} >
-                  <CardMedia
-                      className={classes.media}
-                      image={designBoxData.media}
-                  />
-                </Box>
-              
-                <CardHeader
-                    title={designBoxData.name}
-                    data-tour = {"designtype_title_" + designBoxData.id}
-                />
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                    {designBoxData.description}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-          
-            <CardActions disableSpacing>
-                    <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    >
-                    <ExpandMoreIcon />
-                    </IconButton>
-            </CardActions>
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                <Typography paragraph>Hint:</Typography>
-                <Typography paragraph>
-                    {designBoxData.hint}
-                </Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
+    return (
+      <Grid item xs = {4}>
+
+        <Button 
+          variant="outlined" 
+          style= {{maxWidth: 400, margin: "5%"}}  
+          onClick={ (event)=>onClick(event, designBoxData.id)}  
+          data-tour = {"designtype_action_" +  designBoxData.id}
+        >
+          <Grid container>
+              <Grid item xs ={12}>
+                  <img src = {designBoxData.media} className ={classes.media} />
+              </Grid>
+              <Grid item xs = {12}>
+                  <Typography variant="subtitle2" color="primary"  data-tour = {"designtype_title_" + designBoxData.id} style = {{textTransform: "initial"}}>
+                      {designBoxData.name}
+                  </Typography>
+              </Grid>
+              <Grid  item xs = {12}>
+                  <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                    {designBoxData.description}
+                  </Typography>
+              </Grid>
+
+              <Grid item xs = {12}>
+                <Button 
+                  variant="contained" color="primary"
+                  onClick={(event) => handleExpandClick(event)}
+                  aria-label="show more"
+                >
+                    Know More
+                </Button>
+              </Grid>
+          </Grid>
+        </Button>
+       
+      </Grid>
+  
       );
 }
 export default DesignTypeBox;

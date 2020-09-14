@@ -72,7 +72,6 @@ const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
-        width: '100%',
         margin: 16
     },
     contentGrid: {
@@ -204,7 +203,7 @@ const LearningTaskView = (props) => {
 
     const displayView = () => {
         return (
-            <Grid item container spacing={2} xs={12}  
+            <Grid item container spacing={2} xs={12} style = {{"width": "100%"}} 
                {...getDraggable(provided, snapshot)}
             >
                 <Grid container item xs={1} height="100%">
@@ -336,6 +335,7 @@ const LearningTaskView = (props) => {
         spacing={2} 
         direction="row"
         justify="center"
+
         >   
             {
                 displayView()

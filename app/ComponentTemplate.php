@@ -32,4 +32,15 @@ class ComponentTemplate extends Model
             'outcome_id' //middle relation table target id
         )->with(['unit_outcomeid_temp']);
     }
+
+    public function instructions(){
+        return $this->hasManyThrough(
+            'App\ComponentInstruction',
+            'App\ComponentComponentInstructionRelation',
+            'component_id', //middle retioan table local id
+            'id', // target table target id
+            'id', // local table local id
+            'component_instruction_id' //middle relation table target id
+        );
+    }
 }

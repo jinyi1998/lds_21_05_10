@@ -843,7 +843,7 @@ class CreateLearningtaskTemplate extends Migration
             $table->timestamp('updated_at')->useCurrent();
             
             $table->foreign('learningtask_id')->references('id')->on('learningtask_template');
-            $table->foreign('learningoutcome_id')->references('id')->on('learningtask_template');
+            $table->foreign('learningoutcome_id')->references('id')->on('learningoutcome_template');
         });
 
         DB::table('learningtask_template_assessment')->insert([
@@ -962,7 +962,7 @@ class CreateLearningtaskTemplate extends Migration
             ],
             [
                 'learningtask_id' => 27,
-                'learningoutcome_id' => 26,
+                'learningoutcome_id' => 25,
                 'created_by' => 1,
                 'updated_by' => 1,
                 'is_deleted' => 0,

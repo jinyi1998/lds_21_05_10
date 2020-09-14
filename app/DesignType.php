@@ -46,6 +46,6 @@ class DesignType extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'component_id' //LearningPatternTemplate pattern id
-        )->select(['component_template.*','component_template.id as template_id']);
+        )->select(['component_template.*','component_template.id as template_id'])->with(['instructions']);
     }
 }
