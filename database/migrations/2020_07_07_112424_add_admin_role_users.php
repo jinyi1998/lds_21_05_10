@@ -14,8 +14,12 @@ class AddAdminRoleUsers extends Migration
     public function up()
     {
         Schema::table('users', function($table) {
-            $table->integer('is_admin')->default(0);
+            $table->boolean('is_admin')->default(0);
         });
+
+        DB::table('users')
+        ->where('id', 1)
+        ->update(['is_admin' => 1]);
     }
 
     /**

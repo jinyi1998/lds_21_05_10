@@ -23,6 +23,16 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert([
+            [
+                'id' => 1,
+                'name' => 'system_admin',
+                'school' => 'system',
+                'email' => 'villa@ilap-sdls.cite.hku.hk',
+                'password' => Hash::make('cite-2020')
+            ]
+        ]);
     }
 
     /**

@@ -31,12 +31,12 @@ const DesignTypeInstruction = (props) => {
     }
 
     return(
-        <Carousel showThumbs={false} width="700px">
+        <Carousel showThumbs={false} width="700px" style = {{backgroundColor: "#FFFFFF"}}>
             {
                 instructions.length > 0?
                 instructions.map((_instruction, index) => {
                 return (
-                    <div key = {index}>
+                    <div key = {index} style = {{backgroundColor: "#FFFFFF"}}>
                         <img alt="" src={_instruction.media} />
                         <div className="legend">
                         <h5>{_instruction.title}</h5>

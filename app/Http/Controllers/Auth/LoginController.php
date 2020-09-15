@@ -68,7 +68,7 @@ class LoginController extends Controller
             }
     
             return Redirect::to('login')
-                    ->withErrors(['fail'=>'Email or password is wrong!']);
+                    ->withError('Email or password is wrong. Please try again. =)');
         }
     
         //fails

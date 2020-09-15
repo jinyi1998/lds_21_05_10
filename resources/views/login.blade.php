@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-           <div id="loginForm"></div>
+           <div id="loginForm" data-error= "{{session('error')}}"></div>
         </div>
         @csrf
     </body>

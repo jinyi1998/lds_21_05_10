@@ -12,24 +12,11 @@ import {
   Typography,
   Container
 } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import config from 'react-global-configuration';
 import validator from 'validator';
 
-function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <Link color="inherit" href="https://material-ui.com/">
-          VillayalliV
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-  
 const useStyles = makeStyles(theme => ({
     paper: {
       marginTop: theme.spacing(8),
@@ -49,8 +36,13 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(3, 0, 2),
     },
   }));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
   
-const LoginForm = () => {
+  
+const LoginForm = (props) => {
     const classes = useStyles();
     const [data, setData] = React.useState({
       "email": "",
@@ -108,6 +100,7 @@ const LoginForm = () => {
       return validated;
     }
 
+    console.log(props.error);
 
     return (
         <Container component="main" maxWidth="xs">
@@ -121,7 +114,7 @@ const LoginForm = () => {
                 </Typography>
                 <form id="form" name="form" className={classes.form} method="POST" action="login">
                     <Grid container spacing={2}>
-                    
+                        {props.error?  <Grid item xs = {12}><Alert severity="error">{props.error}</Alert> </Grid> : null}
                         <Grid item xs={12}>
                           <FormLabel name="lbl_email">E-Mail Address:</FormLabel>
                           <TextField 
@@ -181,5 +174,5 @@ const LoginForm = () => {
 export default LoginForm;
 
 if (document.getElementById('loginForm')) {
-    ReactDOM.render(<LoginForm />, document.getElementById('loginForm'));
+    ReactDOM.render(<LoginForm error = {document.getElementById('loginForm').dataset.error}/>, document.getElementById('loginForm'));
 }
