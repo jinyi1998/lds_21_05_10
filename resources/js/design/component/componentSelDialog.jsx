@@ -43,6 +43,7 @@ const ComponentSelDialog = (props) => {
     React.useEffect(()=>{
         setComponentShoppingCart([]);
     }, [open])
+    
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true} onEntered = {props.onEnteredDialog}>
             <DialogTitle id="form-dialog-title"> Add Curruculum Component</DialogTitle>

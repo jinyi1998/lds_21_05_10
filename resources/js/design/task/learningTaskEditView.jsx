@@ -16,6 +16,8 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import {ContextStore} from '../../container/designContainer'
 import {ComponentContext} from '../component/componentContainer';
+import {AppContextStore} from '../../container/app';
+
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import config from 'react-global-configuration';
@@ -63,7 +65,8 @@ const LearningTaskEditView = (props) => {
 
     const {taskID, taskData, syncTask, showAssessment} = props;
     const {error} = props;
-    const {course, options,  taskTypeColor } = React.useContext(ContextStore);
+    const { course } = React.useContext(ContextStore);
+    const { options, taskTypeColor } = React.useContext(AppContextStore);
     const { component } = React.useContext(ComponentContext);
 
     const [task, setTask] = React.useState({

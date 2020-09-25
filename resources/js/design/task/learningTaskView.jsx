@@ -93,7 +93,8 @@ const LearningTaskView = (props) => {
 
     const {taskID, taskData, onEditearningTask} = props;
     // const {onEditTasks} = props;
-    const {course, options, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
+    const {course, refreshCourse } = React.useContext(ContextStore);
+    const { options, taskTypeColor } = React.useContext(AppContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
@@ -172,8 +173,8 @@ const LearningTaskView = (props) => {
         setTask(taskData);
     }
     , [props])
-    //#region init opts data
 
+    //#region init opts data
     const classTypeOtps = options.taskClassType;
     const taskClassSizeOpts = options.taskSize;
     const taskTargetOpts = options.taskTarget;

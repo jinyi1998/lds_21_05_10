@@ -226,17 +226,17 @@ class LearningComponentController extends Controller
        
         //tasks
         if($request->has('tasks')){
-            foreach($request->tasks as $_task){
+            foreach($request->tasks as $key => $_task){
                 $_task['component_id'] =  $component->id;
-    
+                $_task['sequence'] = $key + 1;
 
-                foreach($outcome_asso as $_outcome_asso){
-                    foreach($_task['assessmentid'] as $assessment_key => $_assessment){
-                        if($_assessment['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
-                            $_task['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
-                        }
-                    }
-                }
+                // foreach($outcome_asso as $_outcome_asso){
+                //     foreach($_task['assessmentid'] as $assessment_key => $_assessment){
+                //         if($_assessment['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
+                //             $_task['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
+                //         }
+                //     }
+                // }
                 
                 $request_task = new \Illuminate\Http\Request($_task);
                 LearningTaskController::store($request_task);

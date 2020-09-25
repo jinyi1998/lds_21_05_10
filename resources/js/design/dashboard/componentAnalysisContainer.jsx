@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import ComponentAnalysisContent from './componentAnalysisContent';
 
+import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer'
 import config from 'react-global-configuration';
 
@@ -29,7 +30,8 @@ const generateHoverColor = (num) => {
 
 
 const ComponentAnalysisContainer = ()=>{
-    const { course, options, taskTypeColor } = React.useContext(ContextStore);
+    const { course } = React.useContext(ContextStore);
+    const { options, taskTypeColor } = React.useContext (AppContextStore);
     const [component, setComponent] = React.useState(course.components[0].id);
     
     const [data, setData] = React.useState({

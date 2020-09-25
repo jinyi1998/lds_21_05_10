@@ -8,6 +8,7 @@ import CourseAnalysisContent from './courseAnalysisContent';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 import config from 'react-global-configuration';
 import {
     apiCourseAnalysisList
@@ -49,7 +50,7 @@ const CourseAnalysisContainer = ()=>{
 
     const classes = useStyles();
 
-    const { course, options } = React.useContext(ContextStore);
+    const { course, options } = React.useContext(AppContextStore);
 
     const [data, setData] = React.useState({
         tasks_num_by_type:  {},

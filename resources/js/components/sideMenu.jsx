@@ -91,6 +91,7 @@ const useStyles = makeStyles(theme => ({
                 </ListItemIcon>
                 <ListItemText primary= "Dashboard" />
             </ListItem>
+
             <ListItem button  
               onClick={event => handleListItemClick(event, 'admin/usersmanagement')} 
               selected={currentModule == 'admin_usersmanagement'} 
@@ -100,6 +101,7 @@ const useStyles = makeStyles(theme => ({
               </ListItemIcon>
               <ListItemText primary="User Management" />
             </ListItem>
+
             <ListItem button  
               onClick={event => handleListItemClick(event, 'admin/template_builder')} 
               selected={currentModule == 'admin_template_builder'} 
@@ -109,6 +111,7 @@ const useStyles = makeStyles(theme => ({
               </ListItemIcon>
               <ListItemText primary="Template Builder" />
             </ListItem>
+
 
         </React.Fragment>
       );

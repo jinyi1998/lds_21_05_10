@@ -121,6 +121,10 @@ Route::resource('lessonanalysis', 'API\LessonAnalysisController');
 //template related
 Route::get('learningOutcomeTemplate/getOutcomeTempByDesignType/{id}', 'API\LearningOutcomeTemplateController@getOutcomeTempByDesignType');
 Route::resource('learningComponentTemplate', 'API\LearningComponentTemplateController');
+Route::get('learningComponentTemplate/getPatternOpts/{id}', 
+'API\LearningComponentTemplateController@getPatternOpts');
+Route::post('learningComponentTemplate/addPatternRelation/{id}', 
+'API\LearningComponentTemplateController@addPatternRelation');
 Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 

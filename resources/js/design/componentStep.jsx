@@ -10,6 +10,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import  DesignComponentItem  from './component/componentItem';
 import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../container/designContainer'
+import {AppContextStore} from '../container/appContainer';
 import InstructionBox from '../components/instructionBox';
 import config from 'react-global-configuration';
 
@@ -57,8 +58,8 @@ const getListStyle = isDraggingOver => ({
 
 const DesignComponentStep = (props) =>
 { 
-    const { course, options, dispatch } = React.useContext(ContextStore);
-
+    const { course, dispatch } = React.useContext(ContextStore);
+    const {options} = React.useContext(AppContextStore);
     // initalize if there is no preset component data 
 
     const [open, setOpen] = React.useState(false);

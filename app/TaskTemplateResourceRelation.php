@@ -9,6 +9,6 @@ class TaskTemplateResourceRelation extends Model
     //
     protected $table = 'learningtask_template_resource';
     protected $primaryKey = 'id';
-    protected $fillable = ['learningoutcome_id'];
+    protected $fillable = ['resource_id', 'created_by', 'updated_by', 'is_deleted'];
     public $timestamps = true;
 }

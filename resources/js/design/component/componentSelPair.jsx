@@ -18,8 +18,6 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -28,7 +26,8 @@ import ListIcon from '@material-ui/icons/List';
 
 import {
     apiDesignTypeList,
-    apiLearningCompGetLearningCompByDesignType
+    apiLearningCompGetLearningCompByDesignType,
+    apiLearningCompTempGetPatternOpts
 } from '../../api.js';
 
 const useStyles = makeStyles(theme => ({
@@ -65,9 +64,9 @@ const DesignComponentSelPair = (props) => {
     
     const [view, setView] = React.useState('list');
     const [step, setStep] = React.useState(0);
-    const [selectType, setType] = React.useState(0); 
     const [componentOpts, setComponentOpts] =  React.useState([]); 
-
+    const [patternOpts, setPatternOpts] = React.useState([]); 
+    const [selectComponent, setSelectComponent] = React.useState({}); 
 
     React.useEffect(()=>{
         apiDesignTypeList()
@@ -76,27 +75,38 @@ const DesignComponentSelPair = (props) => {
         }) 
     }, [])
 
-    async function fetcComponentOptsData() {
-        await apiLearningCompGetLearningCompByDesignType(selectType)
+    async function fetcComponentOptsData(id) {
+        await apiLearningCompGetLearningCompByDesignType(id)
         .then( response=>{
             setComponentOpts(response.data);
         })
         .catch(error => console.log(error));
     }
 
-    React.useEffect(()=>{
-        if(selectType > 0){
-            fetcComponentOptsData()
-        }
-    },[selectType])
+    async function fetcComponentPatternOptsData(id) {
+        await apiLearningCompTempGetPatternOpts(id)
+        .then( response=>{
+            setPatternOpts(response.data);
+        })
+        .catch(error => console.log(error));
+    }
+
 
     const onSelectDesignType = (id) => {
-        setType(id);
+        fetcComponentOptsData(id);
         setStep(1);
     }
 
     const onClickComponent = (component) => {
-        handleAddShoppingCart(component)
+        fetcComponentPatternOptsData(component.id)
+        setSelectComponent(component);
+        setStep(2);
+    }
+
+    const onClickPattern = (pattern_id) => {
+        var temp = JSON.parse( JSON.stringify(selectComponent)); //new obj instead of pon
+        temp.pattern_id = parseInt(pattern_id);
+        handleAddShoppingCart(temp);
     }
 
     const handleAlignment = (event, newAlignment) => {
@@ -211,6 +221,44 @@ const DesignComponentSelPair = (props) => {
         }
     }
 
+    const displayStep3 = () => {
+        return (
+            <React.Fragment>
+                 <GridList className={classes.gridList}>
+                                 {patternOpts.map((_data, index)=>( 
+                                    <Grid index xs = {4} key = {index}>
+                                        <Button style= {{width: 300, margin: "5%"}} onClick = {() =>onClickPattern(_data.id)} variant="outlined">
+                                            <Grid container>
+                                                <Grid item xs ={12}>
+                                                    <img src = {_data.instructions?.length > 0? 
+                                                        _data.instructions[0].media : "https://elearning.cite.hku.hk/wp-content/uploads/2020/03/shutterstock_454259326-1024x754.jpg"
+                                                    } className ={classes.media} />
+                                                </Grid>
+                                                <Grid item xs = {12}>
+                                                    <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                                        {_data.title}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid  item xs = {12}>
+                                                    <Typography variant="caption" display="block" gutterBottom color="textSecondary" style = {{textTransform: "initial"}}>
+                                                      {
+                                                          _data.instructions?.length > 0?
+                                                          _data.instructions[0].description
+                                                          :
+                                                          null
+                                                      }
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
+                                ))}
+                    </GridList>  
+                    <Button onClick = {()=>{setStep(1)}} variant="contained" color="primary">Back to Component</Button> 
+            </React.Fragment>
+        )
+    }
+
     const displayStepContent = () => {
         switch(step){
             case 0:
@@ -220,6 +268,10 @@ const DesignComponentSelPair = (props) => {
             case 1:
                 return(
                     displayStep2()
+                )
+            case 2: 
+                return(
+                    displayStep3()
                 )
         }
     }
@@ -233,6 +285,10 @@ const DesignComponentSelPair = (props) => {
 
                     <Step key={2}>
                         <StepLabel >Select Your Component</StepLabel>
+                    </Step>
+
+                    <Step key={3}>
+                        <StepLabel >Select Your Pattern</StepLabel>
                     </Step>
             </Stepper>
             

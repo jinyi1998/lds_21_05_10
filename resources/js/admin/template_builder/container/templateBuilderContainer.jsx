@@ -1,79 +1,120 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import List from '@material-ui/core/List';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-// import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
 
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl';
+// import DesigmItem from './designItem';
 
-import {apiDesignTypeList} from '../../../api';
-import {AppContextStore} from '../../../container/app';
+
+const useStyles = makeStyles(theme => ({
+    button: {
+        maxWidth: 400, margin: "5%"
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      width: '100%',
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+    gridList: {
+        minHeight: 450,
+        margin: 10,
+        flexWrap: 'nowrap',
+        transform: 'translateZ(0)',
+    },
+    media: {
+        height: 250,
+        width: '100%',
+        backgroundSize: 'contain'
+    },
+    root: {
+        flexGrow: 1,
+        backgroundColor: theme.palette.background.paper,
+      },
+  }));
 
 const TemplateBuilderContainer = (props) => {
 
-    const [designType, setDesignType] = React.useState([]);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
-
-    const fetchDesignTypes = () => {
-        apiDesignTypeList().then(
-            response => {
-                setDesignType(response.data)
-                setLoadingOpen(false)
-            }
-        )
-    }
-    React.useEffect(()=>{
-        setLoadingOpen(true);
-        fetchDesignTypes();
-    }
-    ,[])
+    const classes = useStyles();
 
     return (
         <React.Fragment>
-            <Grid container justify="space-between" spacing = {3}>
-                <Grid item xs = {4}>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap>
-                        Design Type Template
-                    </Typography>
-                </Grid>
-                 
-                <Grid item xs = {4} >
-                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
-                        Add new design type
+            <Grid container justify="space-between" spacing = {1}>
+               <Grid item xs = {4}>
+                    <Button 
+                        variant="outlined" 
+                        className ={classes.button}
+                        onClick={ (event)=>{window.location.href = ""}}  
+                    >
+                        <Grid container>
+                            <Grid item xs ={12}>
+                                <LibraryBooksIcon  className ={classes.media} />
+                            </Grid>
+                            <Grid item xs = {12}>
+                                <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                    Design Type
+                                </Typography>
+                            </Grid>
+                            <Grid  item xs = {12}>
+                                <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                                    Edit the default design Type Here
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </Button>
                 </Grid>
 
-                <Grid item xs = {12}>
-                    <Paper>
-                        <List>
-                           {
-                               designType.length == 0? 
-                                <ListItem>
-                                    no available design
-                                </ListItem>
-                                :
-                                designType.map(_designtype => 
-                                    <ListItem button key = {_designtype.id}>
-                                        <ListItemIcon>
-                                            <DashboardIcon />
-                                        </ListItemIcon>
-                                         <ListItemText 
-                                            primary=  {_designtype.name } 
-                                            secondary={"Update At:" + _designtype.updated_at + " || " + "Created By: " + _designtype.updated_by} 
-                                        />
-                                    </ListItem>
-                                )
-                           }
-                        </List>
-                    </Paper>
+                <Grid item xs = {4}>
+                    <Button 
+                        variant="outlined" 
+                        className ={classes.button}
+                        onClick={ (event)=>{window.location.href = "component_template"}}  
+                    >
+                        <Grid container>
+                            <Grid item xs ={12}>
+                                <BookmarksIcon  className ={classes.media} />
+                            </Grid>
+                            <Grid item xs = {12}>
+                                <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                    Component Template
+                                </Typography>
+                            </Grid>
+                            <Grid  item xs = {12}>
+                                <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                                    You can edit the component template here.
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Button>
+                </Grid>
+
+                <Grid item xs = {4}>
+                    <Button 
+                        variant="outlined" 
+                        className ={classes.button}
+                        onClick={ (event)=>{window.location.href = "pattern_template"}}  
+                    >
+                        <Grid container>
+                            <Grid item xs ={12}>
+                                <FormatListNumberedRtlIcon  className ={classes.media} />
+                            </Grid>
+                            <Grid item xs = {12}>
+                                <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                    Pattern Template
+                                </Typography>
+                            </Grid>
+                            <Grid  item xs = {12}>
+                                <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                                    You can edit the pattern template here.
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Button>
                 </Grid>
             </Grid>
         </React.Fragment>

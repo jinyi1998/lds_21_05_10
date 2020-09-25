@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {ContextStore} from '../../../container/designContainer';
-
+import {AppContextStore} from '../../../container/app';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ComponentOutcomeAssessment = (props)=>{
     
-    const { taskTypeColor, options } = React.useContext(ContextStore);
+    const { taskTypeColor, options } = React.useContext(AppContextStore);
     const classes = useStyles();
     const {data} = props;
 

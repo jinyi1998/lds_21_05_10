@@ -7,6 +7,7 @@ import {Pie} from 'react-chartjs-2';
 import Typography from '@material-ui/core/Typography';
 
 import {ComponentContext} from './componentContainer';
+import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -57,7 +58,7 @@ const ComoonentFloatDashboard = (props) => {
         componentID,
         selectComIndex,
         index} = React.useContext(ComponentContext);
-    const { course, options, taskTypeColor } = React.useContext(ContextStore);
+    const { options } = React.useContext(AppContextStore);
 
     const [tasks_time_by_task, set_tasks_time_by_task] = React.useState({});
     const [tasks_num_by_classtype, set_tasks_num_by_classtype] = React.useState({});

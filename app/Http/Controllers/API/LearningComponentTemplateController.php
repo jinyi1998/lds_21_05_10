@@ -29,6 +29,8 @@ class LearningComponentTemplateController extends Controller
     public function store(Request $request)
     {
         //
+        $component = new ComponentTemplate();
+        return $this->save($component, $request);
     }
 
     /**
@@ -40,7 +42,7 @@ class LearningComponentTemplateController extends Controller
     public function show($id)
     {
         //
-        $component = ComponentTemplate::with(['patterns', 'outcomes'])->where('id', $id)->firstOrFail();
+        $component = ComponentTemplate::with(['patterns', 'outcomes', 'tasks'])->where('id', $id)->firstOrFail();
         // foreach($temp as $item){
         //     print_r($item);
         // }
@@ -57,6 +59,8 @@ class LearningComponentTemplateController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $component = ComponentTemplate::find($id);
+        return $this->save($component, $request);
     }
 
     /**
@@ -68,5 +72,78 @@ class LearningComponentTemplateController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public static function getPatternOpts($id){
+        $componentTemp = ComponentTemplate::find($id);
+        return response()->json(
+            $componentTemp->patterns
+        );
+    }
+
+    public static function save(ComponentTemplate $component, Request $request){
+        if($request->has('title')){
+            $component->title = $request->title;
+        }
+
+        if($component->id > 0){
+            // $component->title = $request->title;
+        }else{
+            $component->created_by = 1;
+            $component->created_at = now();
+        }
+        // $component->component_template_id = $request->component_template_id;
+        $component->updated_by = 1;
+        $component->updated_at = now();
+        $component->is_deleted = 0;
+
+        $component->save();
+
+        // outcomes
+        $outcome_asso = [];
+        if($request->has('outcomes')){
+        }
+
+        // pattern
+        if($request->has('patterns') && isset($request->patterns[0])){
+            $_pattern =  $request->patterns[0];
+            $_pattern['component_id'] = $component->id;
+    
+            $request_pattern = new \Illuminate\Http\Request( $_pattern);
+            LearningPatternTemplateController::store($request_pattern);
+        }
+       
+        //tasks
+        if($request->has('tasks')){
+            foreach($request->tasks as $_task){
+                $_task['component_id'] =  $component->id;
+                
+                $request_task = new \Illuminate\Http\Request($_task);
+                LearningTaskTemplateController::store($request_task);
+                 //add to component task relation
+            }
+        }
+
+        $component->save();
+
+        $component = ComponentTemplate::with([
+            'tasks', 
+            'patterns'
+        ])->find($component->id);
+        return $component;
+    }
+
+    public function addPatternRelation(Request $request, $id){
+        $pattern_id =  $request->pattern_id;
+        $component = ComponentTemplate::find($id);
+        $component->patternid()->create([
+            'pattern_id' => $pattern_id,
+            'component_id' => $component->id,
+            'created_by' => 1,
+            'updated_by' => 1,
+            'is_deleted' => 0
+        ]);
+        
+        return $component;
     }
 }

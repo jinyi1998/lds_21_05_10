@@ -30,11 +30,11 @@ class ModifyCourseTaskColumnType extends Migration
     public function down()
     {
         //
-        Schema::table('learningtask', function($table) {
-            $table->string('description')->nullable()->change();
-        });
-        Schema::table('course', function($table) {
-            $table->string('description')->nullable()->change();
-        });
+        // Schema::table('learningtask', function($table) {
+        //     $table->string('description')->nullable()->change();
+        // });
+        // Schema::table('course', function($table) {
+        //     $table->string('description')->nullable()->change();
+        // });
     }
 }

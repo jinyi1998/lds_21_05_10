@@ -26,9 +26,12 @@ class LearningPatternTemplateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public static function store(Request $request)
     {
         //
+        $pattern = new LearningPatternTemplate();
+        $pattern = LearningPatternTemplateController::save( $pattern, $request);
+        return response()->json($pattern);
     }
 
     /**
@@ -54,6 +57,9 @@ class LearningPatternTemplateController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $pattern = LearningPatternTemplate::find($id);
+        $pattern = $this->save( $pattern, $request);
+        return response()->json($pattern);
     }
 
     /**
@@ -65,5 +71,48 @@ class LearningPatternTemplateController extends Controller
     public function destroy($id)
     {
         //
+        $task = LearningPatternTemplate::find($id);
+        $task->componentsid()->delete();
+        $task->tasksid()->delete();
+        $task->delete();
+        return response()->json("");
+    }
+
+    public static function save(LearningPatternTemplate $pattern, Request $request){
+
+        $pattern->title = $request->title;
+        $pattern->created_by = 1;
+        $pattern->updated_by = 1;
+        $pattern->is_deleted = 0;
+        $pattern->created_at = now();
+        $pattern->updated_at = now();
+        $pattern->save();
+
+        if($request->has('component_id')){
+            $pattern->componentsid()->delete();
+            $pattern->componentsid()->create([
+                'pattern_id' => $pattern->id,
+                'component_id' => $request->component_id,
+                'created_by' => 1,
+                'updated_by' => 1,
+                'is_deleted' => 0
+            ]);
+        }
+
+        if($request->has('tasks')){
+            foreach( $request->tasks as $_task){
+                $request_task = new \Illuminate\Http\Request($_task);
+                $task = LearningTaskTemplateController::save(new \App\LearningTaskTemplate(), $request_task);
+                $pattern->tasksid()->create([
+                    'pattern_id' => $pattern->id,
+                    'task_id' => $task->id,
+                    'created_by' => 1,
+                    'updated_by' => 1,
+                    'is_deleted' => 0
+                ]);
+            }
+        }
+
+        return $pattern;
     }
 }

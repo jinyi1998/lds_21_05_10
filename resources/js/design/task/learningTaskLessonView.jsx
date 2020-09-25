@@ -24,6 +24,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 import config from 'react-global-configuration';
+import { AppContextStore } from '../../container/app';
 //   tasks: [
 //     {
 //       id: 0,
@@ -79,7 +80,8 @@ const LearningTaskLessonView = (props) => {
     const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
     const {error, editBtn} = props;
-    const {course, options,  taskTypeColor } = React.useContext(ContextStore);
+    const {course } = React.useContext(ContextStore);
+    const { options, taskTypeColor} = React.useContext(AppContextStore);
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const mode = props.mode;  
 

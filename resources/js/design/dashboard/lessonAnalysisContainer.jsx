@@ -6,7 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import LessonAnalysisContent from './lessonAnalysisContent';
-import {ContextStore} from '../../container/designContainer'
+import {ContextStore} from '../../container/designContainer';
+import {AppContextStore} from '../../container/app';
 import config from 'react-global-configuration';
 import {
     apiLessonAnalysisList
@@ -34,7 +35,8 @@ const generateHoverColor = (num) => {
 
 
 const LessonAnalysisContainer = ()=>{
-    const { course, options } = React.useContext(ContextStore);
+    const { course } = React.useContext(ContextStore);
+    const { options } = React.useContext(AppContextStore);
     const [lesson, setLesson] = React.useState(course.lessons[0].id);
     
     const [data, setData] = React.useState({

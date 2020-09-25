@@ -32,6 +32,8 @@
                     data-design_step = {{ isset($step)? $step : 0 }}
                     data-module = {{ isset($module)? $module : '' }}
                     data-usergroupid = {{ isset($usergroupid)? $usergroupid : '-1' }}
+                    data-patternid = {{ isset($patternid)? $patternid : '-1' }}
+                    data-componentid = {{ isset($componentid)? $componentid : '-1' }}
                     >
                     <!-- <?php print_r(session()->all()) ?> -->
                     </div>

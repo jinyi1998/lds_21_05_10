@@ -16,6 +16,7 @@ import DesignTypeInstruction from './designTypeInstruction';
 
 import QuestionHint from '../components/questionHint';
 import {ContextStore} from '../container/designContainer';
+import {AppContextStore} from '../container/app';
 
 const useStyles = makeStyles(theme => ({
 
@@ -31,8 +32,9 @@ const useStyles = makeStyles(theme => ({
 const DesignType = (props) => {
   const classes = useStyles();
   // const [designType, setDesignType] = React.useState([]); 
-  const { course, options, dispatch } = React.useContext(ContextStore);
+  const { course, dispatch } = React.useContext(ContextStore);
   const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+  const {options} = React.useContext(AppContextStore);
   const designType = options.designType? options.designType : [];
   const {handleNext} = props;
   const [open, setOpen] = React.useState(false);

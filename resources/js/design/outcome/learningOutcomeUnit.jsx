@@ -15,8 +15,8 @@ import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer'
 
 const LearningOutcomeUnit = (props)=>{
-    const {options } = React.useContext(ContextStore);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    
+    const { setLoadingOpen, options } = React.useContext(AppContextStore);
     const {learningOutcomeID} = props;
     const {enableEdit, enableDelete} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;

@@ -108,8 +108,8 @@ const Design = (props) => {
   const classes = useStyles();
 
   const {courseID} = props;
-  const { course, dispatch, options, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
-  const { setLoadingOpen } = React.useContext(AppContextStore);
+  const { course, dispatch, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
+  const { setLoadingOpen, options} = React.useContext(AppContextStore);
   
   //#region data init
   //preload learningOutcome (Unit Level)

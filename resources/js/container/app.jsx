@@ -17,9 +17,26 @@ import UsergroupsListViewContainer from '../usergroup/container/usergroupsListVi
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
 import UserMgmtContainer from '../admin/usersmanagement/container/usersMgmtContainer';
 import TemplateBuilderContainer from '../admin/template_builder/container/templateBuilderContainer';
+import ComponentTemplateViewListContainer from '../admin/template_builder/container/componentTemplateViewListContainer';
+import PatternTemplateViewListContainer from '../admin/template_builder/container/patternTemplateViewListContainer';
+import PatternTemplateBuilderContainer from '../admin/template_builder/container/patternTemplateBuilderContainer';
+import ComponentTemplateBuilderContainer from '../admin/template_builder/container/componentTemplateBuilderContainer';
+
+import {
+  apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
+  apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
+  apiLearningOutcomeTempGet,
+  apiDesignTypeList, apiDesignTypeGet,
+  apiOptionsList,
+  apiLearningTaskGetPatternOpts,
+} 
+from '../api.js';
+
 
 export const AppContextStore = React.createContext({
+  taskTypeColor : () => {
 
+  }
 });
 const drawerWidth = 240;
 
@@ -39,11 +56,112 @@ const  useStyles = makeStyles(theme => ({
 }));
 
 const App = (props) => {
+
   const [currentModule, setCurrentModule] = React.useState(props.module);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
 
   const classes = useStyles();
+
+  const [optionsInit, setOptions] = React.useState({
+    designType: [],
+    learningOutcomeType: [],
+    learningPatternOpts: [],
+    taskType: [],
+    taskClassType: [],
+    taskSize: [],
+    taskTarget: [],
+    taskResource: [],
+    taskElearingResource: [],
+});
+const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
+
+const taskTypeColor = (task_type)=>{
+
+    try{
+        var color = taskTypeColorValue.find(x => x.id == task_type);
+        return ({
+            backgroundColor:  color.color,
+            height: "100%",
+            width: "12px"
+        });
+    }catch{
+        return ({
+            backgroundColor:  "#194d33",
+            height: "100%"
+        });
+    }
+}
+
+  //#region Init Options Data
+
+  async function fetchDesignTypeData() {
+
+    await apiDesignTypeList().then(response => {
+        setOptions(optionsInit=> ({
+            ...optionsInit,
+            "designType": response.data
+        }))
+    })
+  }
+
+  async function fetchlearningTypeTempData() {
+
+      apiLearningOutcomeGetOutcomeType()
+      .then(response => {
+          setOptions(optionsInit=> ({
+              ...optionsInit,
+              "learningOutcomeType": response.data,
+              "learningTypeTemp": response.data
+          }))
+      }).catch(error => console.log(error));
+
+  }
+
+  async function fetchlearningPatternOptsData() {
+      await apiLearningTaskGetPatternOpts().then(
+          response => {
+              setOptions(optionsInit=> ({
+                  ...optionsInit,
+                  "learningPatternOpts": response.data
+              }));
+          }
+      )
+  }
+
+  async function fetchlearningOptsData() {
+
+      await apiOptionsList().then(response=>{
+          setOptions(optionsInit=> ({
+              ...optionsInit,
+              "taskType": response.data.learningTasktypeOpts,
+              "taskClassType": response.data.classTypeOpts,
+              "taskSize": response.data.classSizeOpts,
+              "taskTarget": response.data.classTargetOpts,
+              "taskResource": response.data.resourceOpts,
+              "taskElearingResource": response.data.elearningtoolOpts,
+          }))
+          setTaskTypeColorValue(response.data.learningTasktypeOpts)
+          setLoadingOpen(false)
+      })
+      .catch(error => console.log(error));
+  }
+
+
+
+  async function InitDesignOption() {
+
+      await fetchlearningOptsData();
+      await fetchDesignTypeData();
+      await fetchlearningTypeTempData();
+      await fetchlearningPatternOptsData();
+  }
+  //#endregion
+
+  React.useEffect(()=> {
+    InitDesignOption();
+  }, [])
+
 
   const displayModule = () => {
     switch (currentModule){
@@ -51,7 +169,7 @@ const App = (props) => {
         // return <DesignContainer courseID= {props.value} user = {props.user} step = {props.step}/>;
         break
       case 'designstudio':
-          return <DesignContainer courseID= {props.value} user = {props.user} step = {props.step}/>;
+          return <DesignContainer courseID= {props.course_id} user = {props.user} step = {props.step}/>;
       case 'mydesign':
         return <MyDesign/>;
       case 'publicdesign':
@@ -64,6 +182,14 @@ const App = (props) => {
         return <DashboardContainer />
       case 'admin_template_builder':
         return <TemplateBuilderContainer/>
+      case 'admin_component_template':
+        return <ComponentTemplateViewListContainer />
+      case 'admin_component_template_builder':
+        return <ComponentTemplateBuilderContainer component_id = {props.component_id}/>
+      case 'admin_pattern_template':
+        return <PatternTemplateViewListContainer />
+      case 'admin_pattern_template_builder':
+        return <PatternTemplateBuilderContainer pattern_id = {props.pattern_id}/>
       case 'admin_usersmanagement':
         return <UserMgmtContainer/>
     }
@@ -76,7 +202,9 @@ const App = (props) => {
         setCurrentModule: setCurrentModule,
         sideMenuOpen: sideMenuOpen,
         setSideMenuOpen: setSideMenuOpen,
-        setLoadingOpen: setLoadingOpen
+        setLoadingOpen: setLoadingOpen,
+        options: optionsInit,
+        taskTypeColor: taskTypeColor,
       }}
     >
       <Grid container>

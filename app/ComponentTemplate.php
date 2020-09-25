@@ -11,6 +11,10 @@ class ComponentTemplate extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    public function patternid(){
+        return $this->hasMany('App\ComponentPatternTemplateRelation', 'component_id');
+    }
+
     public function patterns(){
         return $this->hasManyThrough(
             'App\LearningPatternTemplate',
@@ -20,6 +24,17 @@ class ComponentTemplate extends Model
             'id', // component_template id
             'pattern_id' //LearningPatternTemplate pattern id
         )->with(['tasks']);
+    }
+
+    public function tasks(){
+        return $this->hasManyThrough(
+            'App\LearningTaskTemplate',
+            'App\ComponentTaskTemplateRelation',
+            'component_id', //ComponentPatternTemplateRelation compoent id
+            'id', // LearningPatternTemplate id
+            'id', // component_template id
+            'task_id' //LearningPatternTemplate pattern id
+        )->with(['assessmentid', 'toolid', 'resourceid', 'componentid'])->orderBy('sequence');
     }
 
     public function outcomes(){

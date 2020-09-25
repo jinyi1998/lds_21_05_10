@@ -10,6 +10,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import  DesignComponentItem  from './componentItem';
 import  ComponentSelDialog  from './componentSelDialog';
 import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app';
 import InstructionBox from '../../components/instructionBox';
 import config from 'react-global-configuration';
 import {
@@ -53,8 +54,9 @@ const getListStyle = isDraggingOver => ({
 
 const DesignComponentStep = (props) =>
 { 
-    const { course, options, dispatch, refreshCourse, taskTypeColor } = React.useContext(ContextStore);
+    const { course, dispatch, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
+    const { options, taskTypeColor } = React.useContext(AppContextStore);
     const enableAdd = course.permission > 2;
     const enableEdit = course.permission > 2;
     const enableDelete = course.permission > 2;
@@ -121,6 +123,9 @@ const DesignComponentStep = (props) =>
             tempcomponent => {
               tempcomponent.component_template_id = _component.id;
               tempcomponent.course_id = course.id;
+              if(typeof _component.pattern_id !== 'undefined'){
+                tempcomponent.patterns = tempcomponent.patterns.filter(x => x.id == _component.pattern_id)
+              }
               fetchAddLearningComponent(tempcomponent);
             }
            );
@@ -166,7 +171,7 @@ const DesignComponentStep = (props) =>
   
     
     async function fetchAddLearningComponent(component) {
-      component.sequence = course.components.length + 1;
+      component.sequence = course.components.length + 1
       return await apiLearningCompPost(component)
       .then( () => {refreshCourse()})
       .catch(error => console.log(error));

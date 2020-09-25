@@ -33,16 +33,16 @@ class LearningTaskTemplate extends Model
         return $this->hasOne('App\ClassSizeOpts', 'id');
     }
 
-    public function assessment(){
-        return $this->hasManyThrough(
-            'App\LearningOutcomeTemplate',
-            'App\TaskTemplateAssessmentRelation',
-            'learningtask_id', //middle retioan table local id
-            'id', // target table target id
-            'id', // local table local id
-            'learningoutcome_id' //middle relation table target id
-        );
-    }
+    // public function assessment(){
+    //     return $this->hasManyThrough(
+    //         'App\LearningOutcomeTemplate',
+    //         'App\TaskTemplateAssessmentRelation',
+    //         'learningtask_id', //middle retioan table local id
+    //         'id', // target table target id
+    //         'id', // local table local id
+    //         'learningoutcome_id' //middle relation table target id
+    //     );
+    // }
 
 
     public function assessmentid(){
@@ -64,6 +64,14 @@ class LearningTaskTemplate extends Model
             'App\TaskTemplateToolRelation',
             'learningtask_id'
         )->where('is_deleted', 0)->select(['learningtask_id','elearningtool_id']);
+    }
+
+    public function patternid(){
+        return $this->belongsTo('App\PatternTaskTemplateRelation', 'id','task_id');
+    }
+
+    public function componentid(){
+        return $this->belongsTo('App\ComponentTaskTemplateRelation', 'id','task_id');
     }
     // public function type(){
     //     return $this->hasOne('App\getLearningTaskType');

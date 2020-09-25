@@ -4,12 +4,7 @@ import ActionTool from '../design/actionTool';
 
 
 import {
-    apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
-    apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
-    apiLearningOutcomeTempGet,
-    apiDesignTypeList, apiDesignTypeGet,
-    apiOptionsList,
-    apiLearningTaskGetPatternOpts,
+    apiCourseCreate, apiCourseGet,
   } 
   from '../api.js';
 
@@ -131,7 +126,6 @@ const DesignContainer = (props) => {
 
     React.useEffect(()=>{
         setLoadingOpen(true)
-        InitDesignOption();
         InitCourseData()
 
         let user = JSON.parse(props.user);
@@ -160,37 +154,6 @@ const DesignContainer = (props) => {
         fetchCourseData(State.course.id);
     }
     
-    const [optionsInit, setOptions] = React.useState({
-        designType: [],
-        learningOutcomeType: [],
-        learningPatternOpts: [],
-        taskType: [],
-        taskClassType: [],
-        taskSize: [],
-        taskTarget: [],
-        taskResource: [],
-        taskElearingResource: [],
-    });
-
-    const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
-
-    const taskTypeColor = (task_type)=>{
-
-        try{
-            var color = taskTypeColorValue.find(x => x.id == task_type);
-            return ({
-                backgroundColor:  color.color,
-                height: "100%",
-                width: "12px"
-            });
-        }catch{
-            return ({
-                backgroundColor:  "#194d33",
-                height: "100%"
-            });
-        }
-    }
-    
     async function fetchNewCourseData() {
         setLoadingOpen(true)
         await apiCourseCreate().then(
@@ -210,70 +173,6 @@ const DesignContainer = (props) => {
             setLoadingOpen(false)
         }).catch(error => console.log(error));
     }
-    //#region Init Options Data
-
-    async function fetchDesignTypeData() {
-
-        await apiDesignTypeList().then(response => {
-            setOptions(optionsInit=> ({
-                ...optionsInit,
-                "designType": response.data
-            }))
-        })
-    }
-    
-    async function fetchlearningTypeTempData() {
-
-        apiLearningOutcomeGetOutcomeType()
-        .then(response => {
-            setOptions(optionsInit=> ({
-                ...optionsInit,
-                "learningOutcomeType": response.data,
-                "learningTypeTemp": response.data
-            }))
-        }).catch(error => console.log(error));
-
-    }
-
-    async function fetchlearningPatternOptsData() {
-        await apiLearningTaskGetPatternOpts().then(
-            response => {
-                setOptions(optionsInit=> ({
-                    ...optionsInit,
-                    "learningPatternOpts": response.data
-                }));
-            }
-        )
-    }
-
-    async function fetchlearningOptsData() {
-
-        await apiOptionsList().then(response=>{
-            setOptions(optionsInit=> ({
-                ...optionsInit,
-                "taskType": response.data.learningTasktypeOpts,
-                "taskClassType": response.data.classTypeOpts,
-                "taskSize": response.data.classSizeOpts,
-                "taskTarget": response.data.classTargetOpts,
-                "taskResource": response.data.resourceOpts,
-                "taskElearingResource": response.data.elearningtoolOpts,
-            }))
-            setTaskTypeColorValue(response.data.learningTasktypeOpts)
-            setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));
-    }
-
-
-
-    async function InitDesignOption() {
-
-        await fetchlearningOptsData();
-        await fetchDesignTypeData();
-        await fetchlearningTypeTempData();
-        await fetchlearningPatternOptsData();
-    }
-    //#endregion
 
       //#region tour guide related
       const [mode, setMode] = React.useState('');
@@ -298,11 +197,9 @@ const DesignContainer = (props) => {
       <ContextStore.Provider
         value={{
           course: State.course,
-          options: optionsInit,
           dispatch: combineDispatchs([Dispatch]),
           fetchCourseData: fetchCourseData,
           refreshCourse: refreshCourse,
-          taskTypeColor: taskTypeColor,
           tourSetMode: setMode,
           tourSetRun: setRun,
           tourNextStep: tourNextStep,

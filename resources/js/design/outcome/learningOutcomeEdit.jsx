@@ -12,9 +12,13 @@ import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Paper } from '@material-ui/core';
 import config from 'react-global-configuration';
-import {ContextStore} from '../../container/designContainer'
+
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import validator from 'validator';
+
+import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../container/app'
+
 import {
     apiLearningOutcomeGetOutcomeLevel, apiLearningOutcomePost, apiLearningOutcomePut
 } from '../../api.js';
@@ -78,7 +82,7 @@ const LearningOutcomeEdit = (props) => {
         unit_outcomeid: ""
     });
 
-    const { options } = React.useContext(ContextStore);
+    const { options } = React.useContext(AppContextStore);
     const learningTypeTemp = options.learningOutcomeType;
 
     const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);

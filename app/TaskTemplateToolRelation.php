@@ -9,6 +9,6 @@ class TaskTemplateToolRelation extends Model
     //
     protected $table = 'learningtask_template_etool';
     protected $primaryKey = 'id';
-    // protected $visible = ['learningoutcome_id'];
+    protected $fillable = ['elearningtool_id', 'created_by', 'updated_by', 'is_deleted'];
     public $timestamps = true;
 }

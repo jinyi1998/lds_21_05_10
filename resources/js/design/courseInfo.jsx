@@ -37,8 +37,8 @@ const useStyles = makeStyles(theme => ({
 const DesignInfo = (props) => {
 
   const classes = useStyles();
-  const { course, options, dispatch } = React.useContext(ContextStore);
-  const { setLoadingOpen } = React.useContext(AppContextStore);
+  const { course, dispatch } = React.useContext(ContextStore);
+  const { setLoadingOpen, options} = React.useContext(AppContextStore);
   const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
   React.useEffect(()=> {
     tourSetRun(false);

@@ -209,7 +209,40 @@ import config from 'react-global-configuration';
     export const apiLearningCompTempPost = data => learningComponentTempRequest.post('/', JSON.stringify(data));
     export const apiLearningCompTempPut = data => learningComponentTempRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningCompTempDelete = data => learningComponentTempRequest.delete('/', JSON.stringify(data));
+
+    export const apiLearningCompTempGetPatternOpts = data => learningComponentTempRequest.get(`/getPatternOpts/${data}`);
+    export const apiLearningCompTempAddPattern = data => learningComponentTempRequest.post(`addPatternRelation/${data.component_id}`, JSON.stringify(data));
     //#endregion
+
+    //#region learningpatterntemp api
+    const learningPatternTempRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/learningPatternTemplate',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiLearningPattTempList = data => learningPatternTempRequest.get('/', JSON.stringify(data));
+    export const apiLearningPattTempGet = data => learningPatternTempRequest.get(`/${data}`);
+    export const apiLearningPattTempPost = data => learningPatternTempRequest.post('/', JSON.stringify(data));
+    export const apiLearningPattTempPut = data => learningPatternTempRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiLearningPattTempDelete = data => learningPatternTempRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region learningtasktemp api
+    const learningTaskTempRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/learningTaskTemplate',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiLearningTaskTempList = data => learningTaskTempRequest.get('/', JSON.stringify(data));
+    export const apiLearningTaskTempGet = data => learningTaskTempRequest.get(`/${data}`);
+    export const apiLearningTaskTempPost = data => learningTaskTempRequest.post('/', JSON.stringify(data));
+    export const apiLearningTaskTempPut = data => learningTaskTempRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiLearningTaskTempDelete = data => learningTaskTempRequest.delete(`/${data.id}`);
+    //#endregion learningtasktemp api
 
     //#region design type api
     const designTypeRequest = axios.create({
@@ -254,16 +287,6 @@ import config from 'react-global-configuration';
     export const apiLearningTaskCompPut = data => learningTaskCompRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningTaskCompDelete = data => learningTaskCompRequest.delete(`/${data}`);
     //#endregion
-
-    //#region learningtask temp api
-    const learningTaskTempRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningTask',
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
-        },
-    });
-    //#endregion learningtask temp api
 
     //#region learning pattern api
     const learningPatternRequest = axios.create({

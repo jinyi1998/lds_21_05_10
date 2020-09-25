@@ -38,6 +38,7 @@ import {
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightgrey' : '',
+    width: '100%'
 });
 
 const LearningTaskContainer = (props) => {
@@ -122,7 +123,6 @@ const LearningTaskContainer = (props) => {
         setLoadingOpen(true);
 
         var json = taskData;
-        console.log(json);
         if(taskData.id == -1){
             json['component_id'] = componentID;
             //new learning task
@@ -245,7 +245,7 @@ const LearningTaskContainer = (props) => {
 
     return (
         <React.Fragment>
-            <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+            <Grid container alignItems="flex-start" justify="flex-end">
                 <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
                         <Droppable droppableId="droppable">
                         {(provided, snapshot) => (

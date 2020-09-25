@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 use App\Http\Controllers\API\CourseController;
-
+use App\Http\Controllers\API\LearningPatternTemplateController;
+use App\Http\Controllers\API\LearningComponentTemplateController;
 
 class RouteController extends Controller
 {
@@ -92,6 +93,43 @@ class RouteController extends Controller
 
     public function admin_templatebuilder(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_template_builder']);
+    }
+
+    public function admin_component_template(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_component_template']);
+    }
+
+    public function admin_component_template_builder_new(){
+        $componentTempController = new LearningComponentTemplateController();
+
+        $request_component = new \Illuminate\Http\Request();
+        $request_component->title = "new Component";
+        $component = $componentTempController->store($request_component)->getData();
+
+        return redirect('admin/component_template_builder/'. $component->id);
+    }
+
+    public function admin_component_template_builder($id){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_component_template_builder', 'componentid' => $id]);
+    }
+
+
+    public function admin_pattern_template(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_template']);
+    }
+
+    public function admin_pattern_template_builder_new(){
+        $patternTempController = new LearningPatternTemplateController();
+
+        $request_pattern = new \Illuminate\Http\Request();
+        $request_pattern->title = "new Pattern";
+        $pattern = $patternTempController->store($request_pattern)->getData();
+
+        return redirect('admin/pattern_template_builder/'. $pattern->id);
+    }
+
+    public function admin_pattern_template_builder($id){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_template_builder', 'patternid' => $id]);
     }
 
     public function changePassword(Request $request){
