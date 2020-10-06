@@ -49,7 +49,7 @@ const TemplateBuilderContainer = (props) => {
                     <Button 
                         variant="outlined" 
                         className ={classes.button}
-                        onClick={ (event)=>{window.location.href = ""}}  
+                        onClick={ (event)=>{window.location.href = "design_type"}}  
                     >
                         <Grid container>
                             <Grid item xs ={12}>

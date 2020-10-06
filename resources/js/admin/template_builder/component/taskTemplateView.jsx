@@ -263,7 +263,6 @@ const TaskTemplateView = (props) => {
         <Paper className={classes.paper}>
             <Grid container 
             spacing={2} 
-            direction="row"
             justify="center"
     
             >   

@@ -34,7 +34,7 @@ const PatternTemplateAddComponentContainer = (props) => {
 
     React.useEffect(()=>{
         fetchPatterns()
-    }, [])
+    }, [props.component_id])
 
     React.useEffect(()=>{
         var temp = patterns;
@@ -44,12 +44,16 @@ const PatternTemplateAddComponentContainer = (props) => {
                 _pattern.title.toUpperCase().indexOf(searchText.toUpperCase()) > -1
             )
         }
-        setAvaPatterns(temp);
+
+        setAvaPatterns(JSON.parse(JSON.stringify(temp)));
     }, [searchText])
 
     //#region api function related
     const fetchPatterns = () => {
         apiLearningPattTempList().then((response) => {
+            response.data = response.data.filter((_pattern)=>
+                _pattern.componentsid.filter( _component => _component.component_id == props.component_id ).length == 0
+            )
             setPatterns(response.data)
             setAvaPatterns(response.data)
         })
@@ -63,10 +67,14 @@ const PatternTemplateAddComponentContainer = (props) => {
         request['pattern_id'] = pattern.id;
         request['component_id'] = props.component_id;
 
-        console.log(request)
-
         apiLearningCompTempAddPattern(request).then(
-            // location.reload()
+            () =>{
+                if(typeof props.onFinish == 'undefined'){
+                    location.reload()
+                }else{
+                    props.onFinish();
+                }
+            }
         );
     }
     //#endregion
@@ -86,7 +94,6 @@ const PatternTemplateAddComponentContainer = (props) => {
       };
 
     const onClickAdd = (pattern) => {
-        console.log(pattern)
         addPatternToComponent(pattern);
     }
     //#endregion
@@ -102,7 +109,7 @@ const PatternTemplateAddComponentContainer = (props) => {
                         
                            <Table
                             aria-labelledby="tableTitle"
-                            size={ 'medium'}
+                            size={'medium'}
                             aria-label="enhanced table"
                             >
                             <TableHead/>
@@ -111,9 +118,10 @@ const PatternTemplateAddComponentContainer = (props) => {
                                 {avaPatterns
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((_pattern) => (
-                                        <TableRow key={_pattern.name}>
+                                        <TableRow key={_pattern.name} key ={_pattern.id}>
                                             <TableCell component="th" scope="row">
                                                 <PatternTemplateBuilderContainer mode = 'list' pattern_id = {_pattern.id} />
+                                                {/* {_pattern.title} */}
                                             </TableCell>
                                             <TableCell component="th">
                                                 <IconButton color="primary" aria-label="add to shopping cart" onClick = {() => onClickAdd(_pattern) }>
@@ -145,7 +153,7 @@ const PatternTemplateAddComponentContainer = (props) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <Button variant = "contained" color = "Primary" onClick = {() => { setDialogOpen(true) }}> Add Related Pattern</Button>
+            <Button variant = "contained" color = "primary" onClick = {() => { setDialogOpen(true) }}> Add Related Pattern</Button>
         </React.Fragment>
     )
 }

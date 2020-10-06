@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ComponentTemplate;
+use Auth;
+
 
 class LearningComponentTemplateController extends Controller
 {
@@ -30,7 +32,7 @@ class LearningComponentTemplateController extends Controller
     {
         //
         $component = new ComponentTemplate();
-        return $this->save($component, $request);
+        return response()->json($this->save($component, $request));
     }
 
     /**
@@ -42,7 +44,7 @@ class LearningComponentTemplateController extends Controller
     public function show($id)
     {
         //
-        $component = ComponentTemplate::with(['patterns', 'outcomes', 'tasks'])->where('id', $id)->firstOrFail();
+        $component = ComponentTemplate::with(['patterns', 'outcomes', 'tasks', 'designtype'])->where('id', $id)->firstOrFail();
         // foreach($temp as $item){
         //     print_r($item);
         // }
@@ -60,7 +62,7 @@ class LearningComponentTemplateController extends Controller
     {
         //
         $component = ComponentTemplate::find($id);
-        return $this->save($component, $request);
+        return response()->json($this->save($component, $request));
     }
 
     /**
@@ -72,6 +74,17 @@ class LearningComponentTemplateController extends Controller
     public function destroy($id)
     {
         //
+        $component = ComponentTemplate::find($id);
+
+        $component->designtypeid()->delete();     
+        $component->tasks()->delete();
+        $component->outcomes()->delete();
+        $component->patternid()->delete();
+
+        $component->delete();
+
+        return response()->json();
+
     }
 
     public static function getPatternOpts($id){
@@ -89,15 +102,33 @@ class LearningComponentTemplateController extends Controller
         if($component->id > 0){
             // $component->title = $request->title;
         }else{
-            $component->created_by = 1;
+            $component->created_by = Auth::user()->id;
             $component->created_at = now();
         }
         // $component->component_template_id = $request->component_template_id;
-        $component->updated_by = 1;
+        $component->updated_by = Auth::user()->id;
         $component->updated_at = now();
         $component->is_deleted = 0;
 
         $component->save();
+
+        if($request->has('designtype_id')){
+            $count = $component->designtypeid()->where( 'designtype_id', $request->designtype_id)->count();
+
+            if($count > 0){
+
+            }else{
+                $component->designtypeid()->delete();
+                $component->outcomes()->delete();
+                $component->designtypeid()->create([
+                    'designtype_id' =>  $request->designtype_id,
+                    'component_id' => $component->id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => false
+                ]);
+            }
+        }
 
         // outcomes
         $outcome_asso = [];
@@ -139,10 +170,18 @@ class LearningComponentTemplateController extends Controller
         $component->patternid()->create([
             'pattern_id' => $pattern_id,
             'component_id' => $component->id,
-            'created_by' => 1,
-            'updated_by' => 1,
+            'created_by' => Auth::user()->id,
+            'updated_by' => Auth::user()->id,
             'is_deleted' => 0
         ]);
+        
+        return $component;
+    }
+
+    public function deletePatternRelation(Request $request, $id){
+        $pattern_id =  $request->pattern_id;
+        $component = ComponentTemplate::find($id);
+        $component->patternid()->where('pattern_id', $pattern_id)->delete();
         
         return $component;
     }

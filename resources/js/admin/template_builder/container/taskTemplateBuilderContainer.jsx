@@ -33,7 +33,7 @@ const TaskTemplateBuilderContainer = (props) => {
 
     const { setLoadingOpen } = React.useContext(AppContextStore);
 
-    const {options,  taskTypeColor } = React.useContext(AppContextStore);
+    const { options,  taskTypeColor } = React.useContext(AppContextStore);
     const [ displayMode, setDisplayMode ] = React.useState('edit');
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ tasksData, setTasksData] = React.useState([]);
@@ -182,7 +182,11 @@ const TaskTemplateBuilderContainer = (props) => {
         updates.push(updateLearningTask(sourceTask));
 
         Promise.all(updates).then(values => { 
-            props.reloadPattern();
+            if(typeof props.onFinish != 'undefined'){
+                props.onFinish();
+            }else{
+                window.location.reload();
+            }
         });
     }
 
@@ -240,10 +244,11 @@ const TaskTemplateBuilderContainer = (props) => {
                 editTask.component_id = props.component_id;
                 addLearningTask(editTask).then(
                     () => {
-                        if(typeof props.reloadComponent != 'undefined'){
-                            props.reloadComponent();
+                        if(typeof props.onFinish != 'undefined'){
+                            props.onFinish();
+                        }else{
+                            window.location.reload();
                         }
-    
                         setOpenTaskEdit(false)
                     }
                 );
@@ -252,8 +257,10 @@ const TaskTemplateBuilderContainer = (props) => {
                 editTask.pattern_id = props.pattern_id;
                 addLearningTask(editTask).then(
                     () => {
-                        if(typeof props.reloadPattern != 'undefined'){
-                            props.reloadPattern();
+                        if(typeof props.onFinish != 'undefined'){
+                            props.onFinish();
+                        }else{
+                            window.location.reload();
                         }
     
                         setOpenTaskEdit(false)
@@ -264,8 +271,10 @@ const TaskTemplateBuilderContainer = (props) => {
         }else{
             updateLearningTask(editTask).then(
                 () => {
-                    if(typeof props.reloadPattern() != 'undefined'){
-                        props.reloadPattern();
+                    if(typeof props.onFinish() != 'undefined'){
+                        props.onFinish();
+                    }else{
+                        window.location.reload();
                     }
                     setOpenTaskEdit(false)
                 }
@@ -276,8 +285,10 @@ const TaskTemplateBuilderContainer = (props) => {
     const onDeleteTask = (task) => {
         deleteLearningTask(task).then(
             () => {
-                if(typeof props.reloadPattern() != 'undefined'){
-                    props.reloadPattern();
+                if(typeof props.onFinish() != 'undefined'){
+                    props.onFinish();
+                }else{
+                    window.location.reload();
                 }
             }
         );
@@ -286,12 +297,15 @@ const TaskTemplateBuilderContainer = (props) => {
     const onDuplicateTask = (task) => {
         addLearningTask(task).then(
             () => {
-                if(typeof props.reloadPattern() != 'undefined'){
-                    props.reloadPattern();
+                if(typeof props.onFinish() != 'undefined'){
+                    props.onFinish();
+                }else{
+                    window.location.reload();
                 }
             }
         );
     }
+
     //#endregion
 
     //#region display
@@ -343,7 +357,7 @@ const TaskTemplateBuilderContainer = (props) => {
             <Grid container>
                 {
                      tasksData.map( _task => 
-                        <Grid container item xs = {12}>
+                        <Grid container item xs = {12} key = {_task.id}>
                             <Grid item xs = {1}> 
                                 <div style={taskTypeColor(_task.type)}/>
                             </Grid>
@@ -371,13 +385,12 @@ const TaskTemplateBuilderContainer = (props) => {
 
     return (
         <React.Fragment>
-            <Paper style = {{padding: 16}}>
+            <Paper style = {{padding: 16, width: '100%'}}>
                 {display()}
             </Paper>
             
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
-                {/* <DialogTitle id="form-dialog-title">{task.id == -1? "Add Learning Task" : "Edit Learning Task"}</DialogTitle> */}
                 <DialogContent>
                     <DialogContentText>
                         You may add new learning task for this component...

@@ -125,8 +125,12 @@ Route::get('learningComponentTemplate/getPatternOpts/{id}',
 'API\LearningComponentTemplateController@getPatternOpts');
 Route::post('learningComponentTemplate/addPatternRelation/{id}', 
 'API\LearningComponentTemplateController@addPatternRelation');
+Route::put('learningComponentTemplate/deletePatternRelation/{id}', 
+'API\LearningComponentTemplateController@deletePatternRelation');
+
 Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
+Route::resource('learningOutcomeTemplate', 'API\LearningOutcomeTemplateController');
 
 
 Route::resource('usergroup', 'API\UserGroupController');

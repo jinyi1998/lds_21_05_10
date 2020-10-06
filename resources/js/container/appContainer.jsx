@@ -13,6 +13,7 @@ const AppContainer = () => {
             usergroupid = {document.getElementById('appcontainer').dataset.usergroupid? document.getElementById('appcontainer').dataset.usergroupid : -1}
             pattern_id =  {document.getElementById('appcontainer').dataset.patternid}
             component_id = {document.getElementById('appcontainer').dataset.componentid}
+            designtype_id = {document.getElementById('appcontainer').dataset.designtypeid? document.getElementById('appcontainer').dataset.designtypeid : -1}
         />
     );
 }

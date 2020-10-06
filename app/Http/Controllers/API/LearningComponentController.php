@@ -156,14 +156,14 @@ class LearningComponentController extends Controller
                     // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
                     $count = DB::table('course_outcome_relation') 
                     ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcomeid'])
+                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
                     ->where('course_outcome_relation.course_id', '=', $request->course_id)
                     ->count();
 
                     if($count > 0){
                         $uloid = DB::table('course_outcome_relation') 
                         ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-                        ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcomeid'])
+                        ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
                         ->where('course_outcome_relation.course_id', '=', $request->course_id)
                         ->select('learningoutcome.id as outcome_id')->limit(1)->get();
     
@@ -171,7 +171,7 @@ class LearningComponentController extends Controller
                         
                         $_outcome['unit_outcomeid'] =  $uloid[0]['outcome_id'];
                     }else{
-                        $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcomeid'])->get();
+                        $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcome_id'])->get();
                         $new_unit_outcome = json_decode($new_unit_outcome, true);
                         $new_unit_outcome[0]['course_id'] = $request->course_id;
                         $new_unit_outcome[0]['template_id'] = $new_unit_outcome[0]['id'];

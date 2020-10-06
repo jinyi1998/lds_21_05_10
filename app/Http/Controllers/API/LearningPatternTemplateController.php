@@ -16,7 +16,7 @@ class LearningPatternTemplateController extends Controller
     public function index()
     {
         //
-        $patterns = LearningPatternTemplate::all();
+        $patterns = LearningPatternTemplate::with(['componentsid'])->get();
         return response()->json($patterns);
     }
 

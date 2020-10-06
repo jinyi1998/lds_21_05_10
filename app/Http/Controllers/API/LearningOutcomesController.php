@@ -250,64 +250,6 @@ class LearningOutcomesController extends Controller
                 'value' => ['Compose Plan', 'Propose', 'Design', 'Formulate', 'Arrange', 'Collect', 'Construct', 'Create', 'Set up', 'Organize', 'Manage', 'Prepare']
             ],
         ]);
-        // switch ($id){
-        //     default:
-        //     case 3:
-        //         return response()->json([
-        //             [
-        //                 'id' => 1,
-        //                 'description' => 'Pedagogical level 1',
-        //                 'value' => 'Pedagogical level 1'
-        //             ],
-        //             [
-        //                 'id' => 2,
-        //                 'description' => 'Pedagogical level 2',
-        //                 'value' => 'Pedagogical level 2'
-        //             ],
-        //             [
-        //                 'id' => 3,
-        //                 'description' => 'Pedagogical level 3',
-        //                 'value' => 'Pedagogical level 3'
-        //             ],
-        //         ]);
-        //         break;
-        //     case 1:
-        //     case 2:
-        //         return response()->json([
-        //             [
-        //                 'id' => 1,
-        //                 'description' => 'Remember',
-        //                 'value' => 'Recall, relate, recognize, memorize'
-        //             ],
-        //             [
-        //                 'id' => 2,
-        //                 'description' => 'Comprehend',
-        //                 'value' => 'Comprehend...'
-        //             ],
-        //             [
-        //                 'id' => 3,
-        //                 'description' => 'Apply',
-        //                 'value' => 'Apply...'
-        //             ],
-        //             [
-        //                 'id' => 4,
-        //                 'description' => 'Analyze',
-        //                 'value' => 'Analyze...'
-        //             ],
-        //             [
-        //                 'id' => 5,
-        //                 'description' => 'Evaluation',
-        //                 'value' => 'Evaluation...'
-        //             ],
-        //             [
-        //                 'id' => 6,
-        //                 'description' => 'Create',
-        //                 'value' => 'Create...'
-        //             ],
-        //         ]);
-        //         break;
-        // }
-
     }
 
     public function getSTEMType(){

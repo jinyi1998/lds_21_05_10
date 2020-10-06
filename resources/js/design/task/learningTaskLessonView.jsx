@@ -6,9 +6,9 @@ import { Grid, TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import {ContextStore} from '../../container/designContainer'
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from "@material-ui/icons/Edit";
@@ -152,8 +152,8 @@ const LearningTaskLessonView = (props) => {
             </Grid>
 
             <Grid container item xs ={11}>
-                <ExpansionPanel  style={{width: '100%'}}>
-                        <ExpansionPanelSummary
+                <Accordion  style={{width: '100%'}}>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
@@ -175,8 +175,8 @@ const LearningTaskLessonView = (props) => {
                                 </Grid>
                             </Grid>
                             
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Grid item container  xs={12} spacing={4}>
                                 <Grid item xs={1} height="100%">
                                     <div style={taskTypeColor(task.type)}>
@@ -257,8 +257,8 @@ const LearningTaskLessonView = (props) => {
                                        
                                 </Grid>
                             </Grid>
-                        </ExpansionPanelDetails>
-                </ExpansionPanel>
+                        </AccordionDetails>
+                </Accordion>
             </Grid>
 
         </Grid>

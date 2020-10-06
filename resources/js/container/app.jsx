@@ -17,6 +17,8 @@ import UsergroupsListViewContainer from '../usergroup/container/usergroupsListVi
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
 import UserMgmtContainer from '../admin/usersmanagement/container/usersMgmtContainer';
 import TemplateBuilderContainer from '../admin/template_builder/container/templateBuilderContainer';
+import DesignTypeBuilderContainer from '../admin/template_builder/container/designTypeBuilderContainer';
+import DesignTypeViewListContainer from '../admin/template_builder/container/designTypeViewListContainer';
 import ComponentTemplateViewListContainer from '../admin/template_builder/container/componentTemplateViewListContainer';
 import PatternTemplateViewListContainer from '../admin/template_builder/container/patternTemplateViewListContainer';
 import PatternTemplateBuilderContainer from '../admin/template_builder/container/patternTemplateBuilderContainer';
@@ -180,6 +182,10 @@ const taskTypeColor = (task_type)=>{
         return <UsergroupsListViewContainer user = {props.user}/>;
       case 'admin_dashboard':
         return <DashboardContainer />
+      case 'admin_design_type_builder':
+        return <DesignTypeBuilderContainer designtype_id = {props.designtype_id}/>
+      case 'admin_design_type':
+        return <DesignTypeViewListContainer/>
       case 'admin_template_builder':
         return <TemplateBuilderContainer/>
       case 'admin_component_template':

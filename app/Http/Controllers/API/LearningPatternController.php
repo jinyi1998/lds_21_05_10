@@ -85,6 +85,7 @@ class LearningPatternController extends Controller
             // }
             foreach($request->tasks as $key => $_task){
                 // $_task['sequence'] = $key + 1;
+                unset($_task['assessmentid']); //avoid adding assessment
                 $request_task = new \Illuminate\Http\Request($_task);
                 $task = LearningTaskController::save(new LearningTask, $request_task);
 

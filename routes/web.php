@@ -39,6 +39,9 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     // Route::get('/', '\App\Http\Controllers\RouteController@admin_dashboard');
     Route::get('usersmanagement', '\App\Http\Controllers\RouteController@admin_usersmanagement');
     Route::get('template_builder', '\App\Http\Controllers\RouteController@admin_templatebuilder');
+    Route::get('design_type', '\App\Http\Controllers\RouteController@admin_design_type');
+    Route::get('design_type_builder', '\App\Http\Controllers\RouteController@admin_design_type_builder_new');
+    Route::get('design_type_builder/{id}', '\App\Http\Controllers\RouteController@admin_design_type_builder');
     Route::get('component_template_builder', '\App\Http\Controllers\RouteController@admin_component_template_builder_new');
     Route::get('component_template_builder/{id}', '\App\Http\Controllers\RouteController@admin_component_template_builder');
     Route::get('component_template', '\App\Http\Controllers\RouteController@admin_component_template');

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItem from '@material-ui/core/ListItem';
@@ -8,32 +7,32 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-// import DesigmItem from './designItem';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
 
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
 import {
     apiDesignTypeList, 
-    apiLearningCompTempList
+    apiLearningCompTempList,
+    apiLearningCompTempDelete
 } from '../../../api';
 import {AppContextStore} from '../../../container/app';
 
 const ComponentTemplateViewListContainer = (props) => {
 
-    const [designType, setDesignType] = React.useState([]);
-    const [componentTemplates, setComponentTemplates] = React.useState([]);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const [ componentTemplates, setComponentTemplates ] = React.useState([]);
+    const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
+    const [ page, setPage ] = React.useState(0);
 
-    const fetchDesignTypes = () => {
-        apiDesignTypeList().then(
-            response => {
-                setDesignType(response.data)
-                setLoadingOpen(false)
-            }
-        )
-    }
+    const { setLoadingOpen } = React.useContext(AppContextStore);
 
     const fetchComponentTemplates = () => {
         apiLearningCompTempList().then(
@@ -43,12 +42,29 @@ const ComponentTemplateViewListContainer = (props) => {
             }
         )
     }
+
+    const onDeleteComponent = (component) => {
+        apiLearningCompTempDelete(component).then(
+            response => {
+                fetchComponentTemplates()
+            }
+        )
+    }
+
     React.useEffect(()=>{
         setLoadingOpen(true);
-        fetchDesignTypes();
         fetchComponentTemplates();
     }
     ,[])
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+      };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     return (
         <React.Fragment>
@@ -60,14 +76,14 @@ const ComponentTemplateViewListContainer = (props) => {
                 </Grid>
                  
                 <Grid item xs = {4} >
-                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "component_template_builder_new"} }>
+                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "component_template_builder"} }>
                         Add New Component Template
                     </Button>
                 </Grid>
 
                 <Grid item xs = {12}>
                     <Paper>
-                        <List>
+                        {/* <List>
                            {
                                designType.length == 0? 
                                 <ListItem>
@@ -86,7 +102,46 @@ const ComponentTemplateViewListContainer = (props) => {
                                     </ListItem>
                                 )
                            }
-                        </List>
+                        </List> */}
+                        
+
+                        <Table
+                            aria-labelledby="tableTitle"
+                            size={'medium'}
+                            aria-label="enhanced table"
+                            >
+                            <TableHead/>
+
+                            <TableBody>
+                                {componentTemplates
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((_component ) => (
+                                        <TableRow key ={_component.id} hover >
+                                            <TableCell component="th" scope="row"  onClick={ () => {window.location.href = "component_template_builder/"+ _component.id} }>
+                                                <ListItemText 
+                                                    primary=  {_component.title } 
+                                                    secondary={"Update At:" + _component.updated_at + " || " + "Created By: " + _component.updated_by} 
+                                                />
+                                            </TableCell>
+                                            <TableCell component="th">
+                                                <IconButton color="primary" aria-label="add to shopping cart" onClick = {() => {event.preventDefault(); onDeleteComponent(_component)}}>
+                                                    <DeleteForeverIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                          </Table>
+                           <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={componentTemplates.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onChangePage={handleChangePage}
+                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                            />
+                        
                     </Paper>
                 </Grid>
             </Grid>

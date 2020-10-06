@@ -34,6 +34,7 @@
                     data-usergroupid = {{ isset($usergroupid)? $usergroupid : '-1' }}
                     data-patternid = {{ isset($patternid)? $patternid : '-1' }}
                     data-componentid = {{ isset($componentid)? $componentid : '-1' }}
+                    data-designtypeid = {{ isset($designtypeid)? $designtypeid : '-1' }}
                     >
                     <!-- <?php print_r(session()->all()) ?> -->
                     </div>

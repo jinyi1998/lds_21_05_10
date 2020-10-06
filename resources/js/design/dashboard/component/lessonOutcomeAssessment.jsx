@@ -8,9 +8,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import WarningIcon from '@material-ui/icons/Warning';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -111,19 +111,19 @@ const LessonOutcomeAssessment = (props)=>{
        return (
             Object.keys(data.component).map( component_id => {
                 return(
-                    <ExpansionPanel
+                    <Accordion
                         key = {component_id}
                     >
-                        <ExpansionPanelSummary
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             // id= {_task.id}
                             // style = {displayColor(_task.has_assessment)}
                         >
                             <Typography className={classes.heading}>Learning Component: {data.component[component_id]} </Typography>
-                        </ExpansionPanelSummary>
+                        </AccordionSummary>
 
-                        <ExpansionPanelDetails>
+                        <AccordionDetails>
                             <List component="nav">
                                 { Object.keys(data.task).map( task_id => 
                                     {
@@ -164,8 +164,8 @@ const LessonOutcomeAssessment = (props)=>{
                                     }
                                 )} 
                             </List>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )
         })
        )

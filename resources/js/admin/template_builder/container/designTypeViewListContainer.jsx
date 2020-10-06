@@ -14,14 +14,23 @@ import Typography from '@material-ui/core/Typography';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+
 import {apiDesignTypeList} from '../../../api';
 import {AppContextStore} from '../../../container/app';
 
 const DesignTypeViewListContainer = (props) => {
-
-    const [designType, setDesignType] = React.useState([]);
     const { setLoadingOpen } = React.useContext(AppContextStore);
 
+    const [ designType, setDesignType ] = React.useState([]);
+    const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
+    const [ page, setPage ] = React.useState(0);
+  
     const fetchDesignTypes = () => {
         apiDesignTypeList().then(
             response => {
@@ -30,11 +39,29 @@ const DesignTypeViewListContainer = (props) => {
             }
         )
     }
+
+
+    //#region local action
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+      };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const onEnterDesignTypeDetail = (designtype_id) => {
+        window.location.href="./design_type_builder/"+ designtype_id;
+    }
+    //#endregion
+
     React.useEffect(()=>{
         setLoadingOpen(true);
         fetchDesignTypes();
     }
     ,[])
+
 
     return (
         <React.Fragment>
@@ -53,7 +80,7 @@ const DesignTypeViewListContainer = (props) => {
 
                 <Grid item xs = {12}>
                     <Paper>
-                        <List>
+                        {/* <List>
                            {
                                designType.length == 0? 
                                 <ListItem>
@@ -61,7 +88,7 @@ const DesignTypeViewListContainer = (props) => {
                                 </ListItem>
                                 :
                                 designType.map(_designtype => 
-                                    <ListItem button key = {_designtype.id}>
+                                    <ListItem button key = {_designtype.id} onClick = {()=>{window.location.href="./design_type_builder/"+ _designtype.id;}}>
                                         <ListItemIcon>
                                             <DashboardIcon />
                                         </ListItemIcon>
@@ -72,7 +99,43 @@ const DesignTypeViewListContainer = (props) => {
                                     </ListItem>
                                 )
                            }
-                        </List>
+                        </List> */}
+                        <Table
+                            aria-labelledby="tableTitle"
+                            size={'medium'}
+                            aria-label="enhanced table"
+                            >
+                            <TableHead/>
+
+                            <TableBody>
+                                {designType
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((_designtype ) => (
+                                        <TableRow key ={_designtype.id} hover >
+                                            <TableCell component="th" scope="row"  onClick={ () => {onEnterDesignTypeDetail(_designtype.id)} }>
+                                                <ListItemText 
+                                                    primary=  {_designtype.name } 
+                                                    secondary={"Update At:" + _designtype.updated_at + " || " + "Created By: " + _designtype.updated_by} 
+                                                />
+                                            </TableCell>
+                                            {/* <TableCell component="th">
+                                                <IconButton color="primary" aria-label="add to shopping cart" onClick = {() => {event.preventDefault(); onDeletePatternTemplate(_pattern)}}>
+                                                    <DeleteForeverIcon />
+                                                </IconButton>
+                                            </TableCell> */}
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={designType.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                        />
                     </Paper>
                 </Grid>
             </Grid>

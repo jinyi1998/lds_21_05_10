@@ -6,9 +6,9 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Typography from '@material-ui/core/Typography';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     list: {
       width: '100%',
     },
-    expansionPanelSummary: {
+    AccordionSummary: {
       backgroundColor: "#91bbff"
     },
     appBar: {
@@ -72,6 +72,7 @@ const LearningOutcomeContainer = (props)=>{
             tourSetMode('ulo');
         }
     }, [modeLevel])
+    
     const [learningOutcomeOpen, setLearningOutcomeOpen] = React.useState(false);
     const [learningOutcomeSelectOpen, setLearningOutcomeSelectOpen] = React.useState(false);
 
@@ -255,19 +256,19 @@ const LearningOutcomeContainer = (props)=>{
        
       }
 
-      async function updateOutcomeSequence(outcome_relation) {
-        setLoadingOpen(true)
-        if(modeLevel == "component"){
-            await apiLearningOutcomeComponentPut(outcome_relation).then(
-                refreshCourse()
-            ).catch(error => console.log(error));   
-        }else{
-            await apiLearningOutcomeCoursePut(outcome_relation).then(
-                refreshCourse()
-            ).catch(error => console.log(error));   
-        }
-       
-      }
+    async function updateOutcomeSequence(outcome_relation) {
+    setLoadingOpen(true)
+    if(modeLevel == "component"){
+        await apiLearningOutcomeComponentPut(outcome_relation).then(
+            refreshCourse()
+        ).catch(error => console.log(error));   
+    }else{
+        await apiLearningOutcomeCoursePut(outcome_relation).then(
+            refreshCourse()
+        ).catch(error => console.log(error));   
+    }
+    
+    }
 
     //#endregion
     
@@ -444,12 +445,12 @@ const LearningOutcomeContainer = (props)=>{
     return (
         <React.Fragment>
 
-            <ExpansionPanel defaultExpanded	={true}>
-                <ExpansionPanelSummary
+            <Accordion defaultExpanded	={true}>
+                <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
-                className = {classes.expansionPanelSummary}
+                className = {classes.AccordionSummary}
                 >
                     <div>{modeLevel == "course"? 
                         <Typography variant="subtitle1" gutterBottom>
@@ -463,8 +464,8 @@ const LearningOutcomeContainer = (props)=>{
                         </Typography>}
                     </div>
                     
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Grid container>
                         <Grid item xs= {12}>
                         {modeLevel == "course"? 
@@ -484,7 +485,7 @@ const LearningOutcomeContainer = (props)=>{
 
                         </Grid>
                     </Grid>
-                </ExpansionPanelDetails>
+                </AccordionDetails>
                 
                 <Dialog open={learningOutcomeOpen} onClose={closeAddLearningOutcome} onEntered = {onEnterLearningOutcome}>
                     {displayLearningOutcomeEdit()}
@@ -497,7 +498,7 @@ const LearningOutcomeContainer = (props)=>{
                 <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
                     {displayDelLearningOutcomeDialog()}
                 </Dialog>
-        </ExpansionPanel>
+        </Accordion>
       </React.Fragment>
     );
 }

@@ -95,6 +95,25 @@ class RouteController extends Controller
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_template_builder']);
     }
 
+    public function admin_design_type(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_design_type']);
+    }   
+
+    public function admin_design_type_builder($id){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_design_type_builder', 'designtypeid' => $id]);
+    }
+    
+    public function admin_design_type_builder_new(){
+        $designTypeController = new DesignTypeController();
+
+        $request_designtype = new \Illuminate\Http\Request();
+        $request_designtype['title'] = "New Design Type";
+        $designtype = $designTypeController->store($request_designtype)->getData();
+
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_design_type_builder', 'designtypeid' => $designtype->id]);
+    }
+    
+
     public function admin_component_template(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_component_template']);
     }
@@ -103,7 +122,8 @@ class RouteController extends Controller
         $componentTempController = new LearningComponentTemplateController();
 
         $request_component = new \Illuminate\Http\Request();
-        $request_component->title = "new Component";
+        $request_component['title'] = "new Component";
+        // return response()->json($request_component);
         $component = $componentTempController->store($request_component)->getData();
 
         return redirect('admin/component_template_builder/'. $component->id);
@@ -122,7 +142,7 @@ class RouteController extends Controller
         $patternTempController = new LearningPatternTemplateController();
 
         $request_pattern = new \Illuminate\Http\Request();
-        $request_pattern->title = "new Pattern";
+        $request_pattern['title'] = "new Pattern";
         $pattern = $patternTempController->store($request_pattern)->getData();
 
         return redirect('admin/pattern_template_builder/'. $pattern->id);

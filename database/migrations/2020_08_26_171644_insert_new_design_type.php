@@ -58,9 +58,10 @@ class InsertNewDesignType extends Migration
     public function down()
     {
         //
-        DB::table('designtype_component_template_relation')->where('designtype_id', '=', 3)->delete();
-        DB::table('component')->where('component_template_id', '=', 11)->delete();
-        DB::table('component_template')->where('id', '=', 11)->delete();
-        DB::table('design_type')->where('id', '=', 3)->delete();
+        // DB::table('designtype_outcome_template_relation')->where('designtype_id', '=', 3)->delete();
+        // DB::table('designtype_component_template_relation')->where('designtype_id', '=', 3)->delete();
+        // DB::table('component')->where('component_template_id', '=', 11)->delete();
+        // DB::table('component_template')->where('id', '=', 11)->delete();
+        // DB::table('design_type')->where('id', '=', 3)->delete();
     }
 }

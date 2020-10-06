@@ -48,6 +48,24 @@ class ComponentTemplate extends Model
         )->with(['unit_outcomeid_temp']);
     }
 
+    public function designtypeid(){
+        return $this->hasOne(
+            'App\DesignTypeComponentTemplateRelation',
+            'component_id'
+        );
+    }
+
+    public function designtype(){
+        return $this->hasOneThrough(
+            'App\DesignType',
+            'App\DesignTypeComponentTemplateRelation',
+            'component_id', //middle retioan table local id
+            'id', // target table target id
+            'id', // local table local id
+            'designtype_id' //middle relation table target id
+        )->with(['outcomes']);
+    }
+
     public function instructions(){
         return $this->hasManyThrough(
             'App\ComponentInstruction',

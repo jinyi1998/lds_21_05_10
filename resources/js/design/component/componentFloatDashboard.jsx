@@ -10,9 +10,9 @@ import {ComponentContext} from './componentContainer';
 import {AppContextStore} from '../../container/app';
 import {ContextStore} from '../../container/designContainer';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -113,13 +113,13 @@ const ComoonentFloatDashboard = (props) => {
 
     const displayDashboard = () => {
         return (
-            <ExpansionPanel className = {classes.floatingBox}>
-                <ExpansionPanelSummary
+            <Accordion className = {classes.floatingBox}>
+                <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 >
                     <Typography>Component Live Analysis</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                     <Grid container>
                         <Grid item xs = {12}>
                             <Typography variant = "caption">Task type time distribution</Typography>
@@ -146,8 +146,8 @@ const ComoonentFloatDashboard = (props) => {
                             />
                         </Grid>
                     </Grid>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+                </AccordionDetails>
+            </Accordion>
         )
     }
 

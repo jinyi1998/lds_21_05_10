@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
@@ -168,8 +168,8 @@ const Component = ()=>{
 
     return (
       <div className={classes.root}>
-        <ExpansionPanel expanded = {index == selectComIndex} onChange = {handleChange()}>
-          <ExpansionPanelSummary
+        <Accordion expanded = {index == selectComIndex} onChange = {handleChange()}>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon/>}
             aria-controls="panel1a-content"
             id="panel1a-header"
@@ -236,8 +236,8 @@ const Component = ()=>{
                   <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
               </Grid>
             </Grid>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails style = {{ 
+          </AccordionSummary>
+          <AccordionDetails style = {{ 
               "position": "flex" ,
             }}  >
               <Grid container spacing={2}>
@@ -258,8 +258,8 @@ const Component = ()=>{
                 </Grid>
                 
               </Grid>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       </div>
     );
   }

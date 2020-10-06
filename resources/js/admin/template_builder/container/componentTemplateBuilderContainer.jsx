@@ -7,10 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import ComponentDesignTypeView from '../component/componentDesignTypeView';
 import OutcomeBuilderContainer from './outcomeBuilderContainer';
 import TaskTemplateBuilderContainer from './taskTemplateBuilderContainer';
 import PatternTemplateBuilderContainer from './patternTemplateBuilderContainer';
@@ -18,12 +22,13 @@ import PatternTemplateAddComponentContainer from './patternTemplateAddComponentC
 
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+
 import {
     apiLearningCompTempGet,
     apiLearningCompTempPost,
     apiLearningCompTempPut,
-    apiLearningCompTempDelete
+    apiLearningCompTempDelete,
+    apiLearningCompTempDeletePattern
 } from '../../../api';
 import {AppContextStore} from '../../../container/app';
 
@@ -40,32 +45,52 @@ const ComponentTemplateBuilderContainer = (props) => {
 
     const classes = useStyles();
 
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const { setLoadingOpen, options } = React.useContext(AppContextStore);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [isEditTitle, setIsEditTitle] = React.useState(false);
-    const [ openPatternSelect, setOpenPatternSelect] = React.useState(false);
 
     const [ componentTemplate, setComponentTemplate] = React.useState({
        tasks: [],
-       patterns: [] 
+       patterns: [],
+       designtype: {
+           id: -1,
+           outcomes: []
+       }
     });
 
-
     React.useEffect(()=> {
-        apiLearningCompTempGet(props.component_id).then((response)=>{
-            setComponentTemplate(response.data)
-        })
+        reFreshComponent();
     },[])
 
     //#region local action
     const onClickRename = () => {
+        var temp = componentTemplate;
         setLoadingOpen(true)
         setAnchorEl(null)
-        apiLearningCompTempPost(temp).then(() => {
-            window.location.href = "../component_template";
+        apiLearningCompTempPut(temp).then(() => {
+            reFreshComponent();
             setLoadingOpen(false)
         })
-      
+    }
+
+    const reFreshComponent = () => {
+        setLoadingOpen(true);
+        apiLearningCompTempGet(props.component_id).then((response)=>{
+            setComponentTemplate(response.data);
+            setLoadingOpen(false);
+        })
+    }
+
+    const onOutcomeFinish = () => {
+        reFreshComponent();
+    }
+
+    const onPatternFinish = () => {
+        reFreshComponent();
+    }
+
+    const onTaskFinish = () => {
+        reFreshComponent();
     }
 
     const onChangeTitle = (event) => {
@@ -79,9 +104,10 @@ const ComponentTemplateBuilderContainer = (props) => {
         setLoadingOpen(true)
         var temp = componentTemplate;
         temp['title'] = temp['title'] + "_COPY";
+        temp['designtype_id'] = componentTemplate.designtype.id;
         apiLearningCompTempPost(temp).then(() => {
             setLoadingOpen(false)
-            window.location.href = "../component_template";
+            // window.location.href = "../component_template";
         })
     }
 
@@ -92,6 +118,35 @@ const ComponentTemplateBuilderContainer = (props) => {
             window.location.href = "../component_template";
         })
     }
+
+    const onDeletePattern = (pattern_id) => {
+        var request = {
+            'pattern_id': pattern_id,
+            'component_id': componentTemplate.id
+        }
+
+        apiLearningCompTempDeletePattern(request).then(
+            // location.reload()
+        );
+    }
+
+    const onChangeDesignType = (designtype_id) => {
+        var temp = componentTemplate;
+        temp['designtype_id'] = designtype_id;
+        delete temp.tasks; //avoid creating new tasks
+        apiLearningCompTempPut(temp).then(() => {
+            window.location.href = "../component_template";
+            setLoadingOpen(false)
+        })
+    }
+
+    const onFinish = () => {
+        if(typeof props.onFinish == "undefined"){
+            window.location.href = "../component_template";
+        }else{
+            props.onFinish();
+        }
+    }  
     //#endregion 
 
     return (
@@ -134,23 +189,42 @@ const ComponentTemplateBuilderContainer = (props) => {
                                     <TextField label="Component Template Title" variant="filled" fullWidth value = {componentTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
                                 </Grid>
                                 <Grid item xs ={2}>
-                                    <Button variant = "contained" color = "Primary" onClick = {() => {onClickRename()}}>Confirm</Button>
-                                    <Button variant = "contained" color = "Secondary" onClick = {() => {setIsEditTitle(false);   setAnchorEl(null)}}>Cancel</Button>
+                                    <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
+                                    <Button variant = "contained" color = "secondary" onClick = {() => {setIsEditTitle(false);   setAnchorEl(null)}}>Cancel</Button>
                                 </Grid>
                             </Grid>
                         }
+                    </Grid>
+
+                    <Grid item xs = {12}>
+                        <Paper className ={classes.paper}> 
+                            <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                                <Grid item xs ={12}>
+                                    Design Type
+                                </Grid>
+                                <Grid item xs = {12}>
+                                    <ComponentDesignTypeView 
+                                        designtype_id = {componentTemplate.designtype? componentTemplate.designtype.id : -1} onChangeDesignType = {onChangeDesignType}/>
+                                </Grid>
+                            </Grid>
+                        </Paper>
                     </Grid>
                     
                     <Grid item xs = {12}>
                         <Paper className ={classes.paper}> 
                             <Grid container alignItems="flex-start" justify="flex-end" direction="row">
                                 <Grid item xs ={12}>
-                                    Related Pattern
+                                    Related Outcome
                                 </Grid>
                                 <Grid container item xs ={12} >
-                                   <OutcomeBuilderContainer />
+                                   <OutcomeBuilderContainer 
+                                        outcomes = {componentTemplate.outcomes} 
+                                        unit_outcomes_opts = {componentTemplate.designtype? componentTemplate.designtype.outcomes : []}
+                                        component_id = {componentTemplate.id}
+                                        onFinish = {onOutcomeFinish}
+                                    />
                                 </Grid>
-                                <Button variant = "contained" color = "Primary" onClick = {() => {window.location.href = ""}}>Add Related Outcomes</Button>
+                               
                             </Grid>
                         </Paper>
                     </Grid>
@@ -165,15 +239,31 @@ const ComponentTemplateBuilderContainer = (props) => {
                                     {
                                         componentTemplate.patterns.map((_pattern => {
                                             return (
-                                                <Grid item xs ={12}  style={{padding: 16}}>
-                                                    <PatternTemplateBuilderContainer mode = 'list' pattern_id = {_pattern.id}/>
+                                                <Grid container alignItems="center" justify="center" direction="row" key = {_pattern.id}>
+                                                    <Grid item xs ={11}  style={{padding: 16}}>
+                                                        <PatternTemplateBuilderContainer 
+                                                            mode = 'list' 
+                                                            pattern_id = {_pattern.id}
+                                                            onFinish = {onPatternFinish}
+                                                        />
+                                                    </Grid>
+
+                                                    <Grid item xs ={1}>
+                                                        <IconButton color="primary" aria-label="add to shopping cart" onClick = {()=>{onDeletePattern(_pattern.id)}}>
+                                                            <DeleteForeverIcon />
+                                                        </IconButton>
+                                                    </Grid>
                                                 </Grid>
                                             )
                                         }))
                                     }
                                 </Grid>
 
-                                <PatternTemplateAddComponentContainer  component_id = {componentTemplate.id} />
+                                <PatternTemplateAddComponentContainer 
+                                    earse_pattern_id = {componentTemplate.patterns.map( _x => _x.id)}  
+                                    component_id = {componentTemplate.id} 
+                                    onFinish = {onPatternFinish}
+                                />
                             </Grid>
                         </Paper>
                     </Grid>
@@ -187,7 +277,12 @@ const ComponentTemplateBuilderContainer = (props) => {
                                 </Grid>
                                 
                                 <Grid item xs ={12}>
-                                    <TaskTemplateBuilderContainer component_id = {componentTemplate.id} tasksData = {componentTemplate.tasks} mode = "edit"/>
+                                    <TaskTemplateBuilderContainer 
+                                        component_id = {componentTemplate.id} 
+                                        tasksData = {componentTemplate.tasks} 
+                                        mode = "edit"
+                                        onFinish = {onTaskFinish}
+                                    />
                                 </Grid>
 
                             </Grid>
@@ -197,7 +292,7 @@ const ComponentTemplateBuilderContainer = (props) => {
 
                     
                     <Grid item xs = {12}>
-                        <Button variant = "contained" color = "Primary" fullWidth onClick = {() => {window.location.href = "../component_template"}}>Finish</Button>
+                        <Button variant = "contained" color = "primary" fullWidth onClick = {onFinish}>Finish</Button>
                     </Grid>
                 </Grid>
              </Paper>

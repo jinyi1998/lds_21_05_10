@@ -12,9 +12,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -98,8 +98,8 @@ const DesignComponentItem = (props) => {
 
     return(
         <React.Fragment>
-              <ExpansionPanel {...getDraggable(provided, snapshot)} key = {index}>
-                <ExpansionPanelSummary  expandIcon={<ExpandMoreIcon />}>
+              <Accordion {...getDraggable(provided, snapshot)} key = {index}>
+                <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
                     <Grid container spacing={2}>
                         <Grid item xs = {10}>
                             <ControlCameraIcon />
@@ -159,8 +159,8 @@ const DesignComponentItem = (props) => {
                             }
                         </Grid>
                     </Grid>
-                </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
+                </AccordionSummary>
+                    <AccordionDetails>
                         <Grid container>
                             {
                                 component.patterns.length > 0?
@@ -193,8 +193,8 @@ const DesignComponentItem = (props) => {
                             }
                             
                         </Grid>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                    </AccordionDetails>
+                </Accordion>
              {/* <ListItem
                 ContainerComponent="li"
                 ContainerProps={{ ref: provided.innerRef }}

@@ -28,7 +28,7 @@ class LearningPatternTemplate extends Model
     }
 
     public function componentsid(){
-        return $this->belongsTo('App\ComponentPatternTemplateRelation', 'id','pattern_id');
+        return $this->hasMany('App\ComponentPatternTemplateRelation', 'pattern_id');
     }
 
 }

@@ -11,4 +11,5 @@ class DesigntypeOutcomeTempRelation extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    protected $fillable = [ 'designtype_id', 'outcome_id', 'created_by', 'updated_by', 'is_deleted'];
 }

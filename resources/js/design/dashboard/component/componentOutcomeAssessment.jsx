@@ -8,9 +8,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import WarningIcon from '@material-ui/icons/Warning';
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -63,19 +63,19 @@ const ComponentOutcomeAssessment = (props)=>{
         if(_task.has_assessment){
             // has assessment
             return (
-                <ExpansionPanel
+                <Accordion
                 key = {_task.id}
                 >
-                    <ExpansionPanelSummary
+                    <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
                         id= {_task.id}
                         style = {displayColor(_task.has_assessment)}
                     >
                         <Typography className={classes.heading}> {_task.description} </Typography>
-                    </ExpansionPanelSummary>
+                    </AccordionSummary>
     
-                    <ExpansionPanelDetails>
+                    <AccordionDetails>
                     <List style = {{width: '100%'}}>
                         { _task.learningtask_id.map( (_id, index) => 
                             {
@@ -110,8 +110,8 @@ const ComponentOutcomeAssessment = (props)=>{
                             }
                         )} 
                     </List>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                    </AccordionDetails>
+                </Accordion>
             )
           
         }else{

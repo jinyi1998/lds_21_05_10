@@ -10,9 +10,9 @@ import TaskTemplateBuilderContainer from './taskTemplateBuilderContainer';
 import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -46,7 +46,9 @@ const PatternTemplateBuilderContainer = (props) => {
         if(typeof props.mode != 'undefined'){
             setDisplayMode(props.mode)
         }
-    }, [])
+    }, [props.pattern_id])
+
+
 
 
     const reloadPattern = () => {
@@ -136,7 +138,7 @@ const PatternTemplateBuilderContainer = (props) => {
                                 <TextField label="Pattern Title" variant="filled" fullWidth value = {patternTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
                             </Grid>
                             <Grid item xs ={2}>
-                                <Button variant = "contained" color = "Primary" onClick = {() => {onClickRename()}}>Confirm</Button>
+                                <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
                                 <Button variant = "contained" color = "Secondary" onClick = {() => {setIsEditTitle(false)}}>Cancel</Button>
                             </Grid>
                         </Grid>
@@ -148,11 +150,11 @@ const PatternTemplateBuilderContainer = (props) => {
                         Related Task
                     </Grid>
 
-                    <Grid item xs = {12}>
+                    <Grid container item xs = {12}>
                         <TaskTemplateBuilderContainer 
                             pattern_id = {patternTemplate.id}
                             tasksData = {patternTemplate.tasks} 
-                            reloadPattern = {reloadPattern}
+                            onFinish = {reloadPattern}
                             mode = {displayMode}
                         />
                     </Grid>
@@ -160,7 +162,7 @@ const PatternTemplateBuilderContainer = (props) => {
                 </Grid>
 
                 <Grid item xs = {12}>
-                    <Button variant = "contained" color = "Primary" fullWidth onClick = {() => {window.location.href = "../pattern_template"}}>Finish</Button>
+                    <Button variant = "contained" color = "primary" fullWidth onClick = {() => {window.location.href = "../pattern_template"}}>Finish</Button>
                 </Grid>
             </Grid>
             </Paper>
@@ -170,25 +172,24 @@ const PatternTemplateBuilderContainer = (props) => {
     const displayListView = () => {
         return (
             <React.Fragment>
-                <ExpansionPanel>
-                    <ExpansionPanelSummary
+                <Accordion>
+                    <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
                     id="panel1a-header"
                     >
                         <Typography>{patternTemplate.title}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+
                             <TaskTemplateBuilderContainer 
                                 pattern_id = {patternTemplate.id}
                                 tasksData = {patternTemplate.tasks} 
-                                reloadPattern = {reloadPattern}
+                                onFinish = {reloadPattern}
                                 mode = {displayMode}
                             />
-                        </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                    </AccordionDetails>
+                </Accordion>
             </React.Fragment>
         )
     }
