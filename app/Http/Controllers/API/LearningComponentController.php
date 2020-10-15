@@ -11,6 +11,7 @@ use App\LeariningTaskTemplate;
 use App\ComponentPatternTemplateRelation;
 use App\LearningOutcomeTemplate;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class LearningComponentController extends Controller
 {
@@ -135,11 +136,11 @@ class LearningComponentController extends Controller
         if($component->id > 0){
             // $component->title = $request->title;
         }else{
-            $component->created_by = 1;
+            $component->created_by = Auth::user()->id;
             $component->created_at = now();
         }
         // $component->component_template_id = $request->component_template_id;
-        $component->updated_by = 1;
+        $component->updated_by = Auth::user()->id;
         $component->updated_at = now();
         $component->is_deleted = 0;
 
@@ -206,6 +207,9 @@ class LearningComponentController extends Controller
                 $_pattern['tasks'][$key]['sequence'] = $key + 1;
 
                 foreach($outcome_asso as $_outcome_asso){
+                    if(!isset($_task['assessmentid'])){
+                        continue;
+                    }
                    foreach($_task['assessmentid'] as $assessment_key => $_assessment){
                         if($_task['assessmentid'][$assessment_key]['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
                             $_pattern['tasks'][$key]['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
@@ -248,8 +252,8 @@ class LearningComponentController extends Controller
             $component->courseid()->create([
                 'course_id' => $request->course_id,
                 'component_id' => $component->id,
-                'created_by' => 1,
-                'updated_by' => 1,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
                 'is_deleted' => 0
             ]);
         }

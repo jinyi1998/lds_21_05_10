@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\LearningPatternTemplate;
+use Auth;
 
 class LearningPatternTemplateController extends Controller
 {
@@ -16,7 +17,7 @@ class LearningPatternTemplateController extends Controller
     public function index()
     {
         //
-        $patterns = LearningPatternTemplate::with(['componentsid'])->get();
+        $patterns = LearningPatternTemplate::with(['componentsid', 'updatedby', 'createdby'])->get();
         return response()->json($patterns);
     }
 
@@ -81,10 +82,12 @@ class LearningPatternTemplateController extends Controller
     public static function save(LearningPatternTemplate $pattern, Request $request){
 
         $pattern->title = $request->title;
-        $pattern->created_by = 1;
-        $pattern->updated_by = 1;
+        $pattern->created_by = Auth::user()->id;
+        $pattern->updated_by = Auth::user()->id;
         $pattern->is_deleted = 0;
-        $pattern->created_at = now();
+        if(!($pattern->id > 0)){
+            $pattern->created_at = now();
+        }
         $pattern->updated_at = now();
         $pattern->save();
 
@@ -93,8 +96,8 @@ class LearningPatternTemplateController extends Controller
             $pattern->componentsid()->create([
                 'pattern_id' => $pattern->id,
                 'component_id' => $request->component_id,
-                'created_by' => 1,
-                'updated_by' => 1,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
                 'is_deleted' => 0
             ]);
         }
@@ -106,8 +109,8 @@ class LearningPatternTemplateController extends Controller
                 $pattern->tasksid()->create([
                     'pattern_id' => $pattern->id,
                     'task_id' => $task->id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }

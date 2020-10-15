@@ -18,7 +18,7 @@ class LearningComponentTemplateController extends Controller
     public function index()
     {
         //
-        $components = ComponentTemplate::all();
+        $components = ComponentTemplate::with(['createdby', 'updatedby'])->get();
         return response()->json($components);
     }
 
@@ -185,4 +185,9 @@ class LearningComponentTemplateController extends Controller
         
         return $component;
     }
+
+    public function getInstructions($id){
+        $component = ComponentTemplate::find($id);
+        return response()->json($component->instructions);
+    } 
 }

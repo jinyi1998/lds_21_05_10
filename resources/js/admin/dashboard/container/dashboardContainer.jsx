@@ -29,8 +29,7 @@ const DashboardContainer = (props) => {
 
             <Grid item xs = {12}>
                 <Paper className = {classes.paper}>
-                    Template Management
-                    {/* <TemplateMgmtDashboardContainer /> */}
+                    <TemplateMgmtDashboardContainer />
                 </Paper>
             </Grid>
         </Grid>

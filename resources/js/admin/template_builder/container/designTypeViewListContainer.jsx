@@ -111,11 +111,13 @@ const DesignTypeViewListContainer = (props) => {
                                 {designType
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((_designtype ) => (
-                                        <TableRow key ={_designtype.id} hover >
+                                        <TableRow key ={_designtype.id} hover style = {{cursor: "pointer"}}>
                                             <TableCell component="th" scope="row"  onClick={ () => {onEnterDesignTypeDetail(_designtype.id)} }>
                                                 <ListItemText 
                                                     primary=  {_designtype.name } 
-                                                    secondary={"Update At:" + _designtype.updated_at + " || " + "Created By: " + _designtype.updated_by} 
+                                                    secondary={ "Update By:" + _designtype.updatedby.name + '@' + _designtype.updated_at
+                                                    + " || " 
+                                                    + "Created By: " + _designtype.createdby.name + '@' + _designtype.created_at}  
                                                 />
                                             </TableCell>
                                             {/* <TableCell component="th">

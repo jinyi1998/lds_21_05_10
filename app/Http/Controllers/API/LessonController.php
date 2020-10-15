@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Lesson;
 use App\LessonCoureseRelation;
 use App\LessonTaskRelation;
+use Auth;
 
 class LessonController extends Controller
 {
@@ -97,8 +98,8 @@ class LessonController extends Controller
         }
 
         $lesson->is_deleted = 0;
-        $lesson->created_by = 1;
-        $lesson->updated_by = 1;
+        $lesson->created_by = Auth::user()->id;
+        $lesson->updated_by = Auth::user()->id;
         $lesson->save();
         
         if($request->has('tasks_id')){
@@ -109,8 +110,8 @@ class LessonController extends Controller
                     'task_id' => $_task["task_id"],
                     'sequence'=> $_task["sequence"],
                     'lesson_id' => $lesson->id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }
@@ -126,8 +127,8 @@ class LessonController extends Controller
             $lesson->courseid()->create([
                 'course_id' => $request->course_id,
                 'lesson_id' => $lesson->id,
-                'created_by' => 1,
-                'updated_by' => 1,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
                 'is_deleted' => 0
             ]);
         }

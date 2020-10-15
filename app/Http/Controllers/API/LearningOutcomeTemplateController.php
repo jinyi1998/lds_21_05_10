@@ -88,8 +88,8 @@ class LearningOutcomeTemplateController extends Controller
         $outcome->description = $request->description;
         $outcome->STEMType = $request->STEMType;
         $outcome->isCourseLevel = $request->isCourseLevel;
-        $outcome->created_by = 1;
-        $outcome->updated_by = 1;
+        $outcome->created_by = Auth::user()->id;
+        $outcome->updated_by = Auth::user()->id;
         $outcome->is_deleted = 0;
         $outcome->created_at = now();
         $outcome->updated_at = now();

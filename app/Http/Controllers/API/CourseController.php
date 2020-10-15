@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Course;
 use App\Component;
 use App\LearningOutcome;
+use App\LearningTask;
 use App\Lesson;
 use Auth;
 
@@ -138,8 +139,8 @@ class CourseController extends Controller
                 $course->usergroupid()->create([
                     'course_id' => $_usergroup['course_id'],
                     'usergroup_id' => $_usergroup['usergroup_id'],
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }
@@ -420,15 +421,42 @@ class CourseController extends Controller
 
         //component
         $taskMapping = [];
+        $taskAssessmentMapping = [];
         foreach($request->components as $_component){
             // $_component
             $_component_obj = new Component();
             $_component['course_id'] = $course->id;
+            // mapping with new unit new outcome
             foreach($_component['outcomes'] as $index => $_outcome){
                 $_component['outcomes'][$index]['unit_outcomeid']['unit_outcomeid'] = $outcomeMapping[ $_component['outcomes'][$index]['unit_outcomeid']['unit_outcomeid']];
             }
+
+            //save original task-outcome task
+            foreach($_component['tasks'] as $index => $_task){
+                
+                foreach($_task['assessmentid'] as $_index => $_assessment){
+                    $taskAssessmentMapping [$_task['id']]['id'] =  $_task['id'];
+                    $taskAssessmentMapping [$_task['id']]['assessmentid'][$_index]['learningoutcome_id'] = $_component['tasks'][$index]['assessmentid'][$_index]['learningoutcome_id'];
+                    $taskAssessmentMapping [$_task['id']]['assessmentid'][$_index]['learningtask_id'] = $_component['tasks'][$index]['assessmentid'][$_index]['learningtask_id'];
+                }
+                unset($_component['tasks'][$index]['assessmentid']);
+            }
+            foreach($_component['patterns'] as $index_pattern => $_pattern){
+                foreach($_pattern['tasks'] as $index_tasks => $_task){
+                    foreach($_task['assessmentid'] as $_index => $_assessment){
+                        $taskAssessmentMapping [$_task['id']]['id'] =  $_task['id'];
+                        $taskAssessmentMapping [$_task['id']]['assessmentid'][$_index]['learningoutcome_id'] 
+                            = $_component['patterns'][$index_pattern]['tasks'][$index_tasks]['assessmentid'][$_index]['learningoutcome_id'];
+                        $taskAssessmentMapping [$_task['id']]['assessmentid'][$_index]['learningtask_id'] 
+                            =  $_component['patterns'][$index_pattern]['tasks'][$index_tasks]['assessmentid'][$_index]['learningtask_id'];
+                    }
+                    unset($_component['patterns'][$index_pattern]['tasks'][$index_tasks]['assessmentid']);
+                }
+            }
+
             $_component_request = new \Illuminate\Http\Request($_component);
             $new_component = LearningComponentController::save( $_component_obj, $_component_request);
+            
             //generate task mapping array for lesson-task mapping
             foreach($_component['tasks'] as $index => $_task){
                 $taskMapping[$_task['id']] = $new_component['tasks'][$index]['id'];
@@ -438,7 +466,25 @@ class CourseController extends Controller
                     $taskMapping[$_task['id']] = $new_component['patterns'][$index_pattern]['tasks'][$index_tasks]['id'];
                 }
             }
-            // return response()->json($new_component);
+            foreach($taskAssessmentMapping as $_task_index => $_task){
+                $taskAssessmentMapping[$_task_index]['id'] =  $taskMapping[$_task_index];
+                foreach($_component['outcomes'] as $index_outcomes => $_outcomes){
+                    foreach($_task['assessmentid'] as $assessment_index => $_assessment){
+                        if( $_assessment['learningoutcome_id'] == $_outcomes['id']){
+                            $taskAssessmentMapping[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomes'][$index_outcomes]['id'];
+                            $taskAssessmentMapping[$_task_index]['assessmentid'][$assessment_index]['learningtask_id'] =  $taskMapping[$_task_index];
+                        }
+                    }
+                }    
+            }
+        }
+
+        //tasks assessment
+        foreach($taskAssessmentMapping as $_task){
+            $task_obj = LearningTask::find($_task['id']);
+            $_task_request = new \Illuminate\Http\Request($_task);
+            //update the learning task assessment
+            LearningTaskController::save( $task_obj, $_task_request);
         }
 
         //lesson

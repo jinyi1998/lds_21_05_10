@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Usergroup;
 use App\UsergroupUserRelation;
 use App\UsergroupUserTempRelation;
+use Auth;
 
 class UserGroupUserController extends Controller
 {
@@ -39,8 +40,8 @@ class UserGroupUserController extends Controller
                     "usergroup_id" => $request->usergroup_id,
                     "permission" => 2,
                     "is_deleted" => 0,
-                    "created_by" => $request->user_id,
-                    "updated_by" => $request->user_id,
+                    "created_by" => Auth::user()->id,
+                    "updated_by" => Auth::user()->id,
                 ]
             );
             return response()->json($usergroupUserRelation);
@@ -51,8 +52,8 @@ class UserGroupUserController extends Controller
                     "usergroup_id" => $request->usergroup_id,
                     "permission" => 2,
                     "is_deleted" => 0,
-                    "created_by" => $request->user_id,
-                    "updated_by" => $request->user_id,
+                    "created_by" => Auth::user()->id,
+                    "updated_by" => Auth::user()->id,
                 ]
             );
             return response()->json($usergroupUserTempRelation);

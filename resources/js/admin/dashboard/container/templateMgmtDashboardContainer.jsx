@@ -3,9 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import {Line} from 'react-chartjs-2';
 
-import {apiUserMgmtDashboard} from '../../../api';
+import {apiLearningCompTempList, apiDesignTypeList, apiLearningPattTempList} from '../../../api';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,30 +22,47 @@ const useStyles = makeStyles((theme) => ({
 const TemplateMgmtDashboardContainer = (props) => {
 
     const classes = useStyles();
-    const [todayUser, setTodayUser] = React.useState([]);
-    const [sevenDaysUser, setSevenDaysUser] = React.useState([]);
+    const [templateData, setTemplateData] = React.useState({
+        design_type: 0,
+        component_temp: 0,
+        pattern_temp: 0
+    })
 
-
-    const fetchUserData = () => {
-        apiUserMgmtDashboard().then( response => {
-            handleUserData(response.data);
+    const fetchDesignType = () => {
+        apiDesignTypeList().then( response => {
+            setTemplateData( prev => ({...prev, design_type: response.data.length}))
         })
         .catch(error => console.log(error))
     }
 
-
-    const handleUserData = (data) => {
-        setTodayUser(data.today_users);
+    const fetchCompTemp = () => {
+        apiLearningCompTempList().then( response => {
+            setTemplateData( prev => ({...prev, component_temp: response.data.length}))
+        })
+        .catch(error => console.log(error))
     }
 
+    const fetchPattTemp = () => {
+        apiLearningPattTempList().then( response => {
+            setTemplateData( prev => ({...prev, pattern_temp: response.data.length}))
+        })
+        .catch(error => console.log(error))
+    }
 
     React.useEffect(()=>{
-        fetchUserData();
+        fetchDesignType();
+        fetchCompTemp();
+        fetchPattTemp();
     }, [])
 
 
     return (
         <Grid container spacing = {2}>
+            <Grid item xs = {12}>
+                <Typography variant="h6" gutterBottom color = "textPrimary">
+                    Template Management Dashboard
+                </Typography>
+            </Grid>
             <Grid item xs = {4}>
                 <Paper className = {classes.paper}>  
                     <Typography variant="h6" gutterBottom color = "primary">
@@ -52,13 +70,20 @@ const TemplateMgmtDashboardContainer = (props) => {
                     </Typography>
 
                     <Typography variant="h4" gutterBottom color = "inherit">
-                       {todayUser.length}
+                       {templateData.design_type}
                     </Typography>
                     
                     <br/>
                     <br/>
                     <Typography variant="body2" gutterBottom color = "secondary">
                         On {new Date().toLocaleDateString()}
+                    </Typography>
+                    <br/>
+                    <br/>
+                    <Typography variant="body2" gutterBottom color = "secondary">
+                        <Link href="design_type">
+                            Go To Details
+                        </Link>
                     </Typography>
                 </Paper>
             </Grid>
@@ -70,13 +95,20 @@ const TemplateMgmtDashboardContainer = (props) => {
                     </Typography>
 
                     <Typography variant="h4" gutterBottom color = "inherit">
-                       {todayUser.length}
+                       {templateData.component_temp}
                     </Typography>
 
                     <br/>
                     <br/>
                     <Typography variant="body2" gutterBottom color = "secondary">
                         On {new Date().toLocaleDateString()}
+                    </Typography>
+                    <br/>
+                    <br/>
+                    <Typography variant="body2" gutterBottom color = "secondary">
+                        <Link href="component_template">
+                            Go To Details
+                        </Link>
                     </Typography>
                 </Paper>
             </Grid>
@@ -88,13 +120,21 @@ const TemplateMgmtDashboardContainer = (props) => {
                     </Typography>
 
                     <Typography variant="h4" gutterBottom color = "inherit">
-                       {todayUser.length}
+                       {templateData.pattern_temp}
                     </Typography>
 
                     <br/>
                     <br/>
                     <Typography variant="body2" gutterBottom color = "secondary">
                         On {new Date().toLocaleDateString()}
+                    </Typography>
+                    
+                    <br/>
+                    <br/>
+                    <Typography variant="body2" gutterBottom color = "secondary">
+                        <Link href="pattern_template">
+                            Go To Details
+                        </Link>
                     </Typography>
                 </Paper>
             </Grid>

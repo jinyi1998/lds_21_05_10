@@ -209,10 +209,28 @@ import config from 'react-global-configuration';
     export const apiLearningCompTempPost = data => learningComponentTempRequest.post('/', JSON.stringify(data));
     export const apiLearningCompTempPut = data => learningComponentTempRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningCompTempDelete = data => learningComponentTempRequest.delete(`/${data.id}`);
-
+    
+    export const apiLearningCompTempGetInstructions =  data => learningComponentTempRequest.get(`/getInstructions/${data}`); 
     export const apiLearningCompTempGetPatternOpts = data => learningComponentTempRequest.get(`/getPatternOpts/${data}`);
     export const apiLearningCompTempAddPattern = data => learningComponentTempRequest.post(`addPatternRelation/${data.component_id}`, JSON.stringify(data));
     export const apiLearningCompTempDeletePattern = data => learningComponentTempRequest.put(`deletePatternRelation/${data.component_id}`, JSON.stringify(data));
+    //#endregion
+
+    //#region learningcomponenttempinstruction api
+    const learningComponentInstructionRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/componentInstruction',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiLearningCompInstructionList = data => learningComponentInstructionRequest.get('/', JSON.stringify(data));
+    export const apiLearningCompInstructionGet = data => learningComponentInstructionRequest.get(`/${data}`);
+    export const apiLearningCompInstructionPost = data => learningComponentInstructionRequest.post('/', JSON.stringify(data));
+    export const apiLearningCompInstructionPut = data => learningComponentInstructionRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiLearningCompInstructionDelete = data => learningComponentInstructionRequest.delete(`/${data.id}`);
+    
+    export const apiLearningCompInstructionUploadImg = data => learningComponentInstructionRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion
 
     //#region learningpatterntemp api
@@ -255,7 +273,11 @@ import config from 'react-global-configuration';
     });
     export const apiDesignTypeList = data => designTypeRequest.get(`/`);
     export const apiDesignTypeGet = data => designTypeRequest.get(`/${data}`);
+    export const apiDesignTypePost = data => designTypeRequest.post('/', JSON.stringify(data));
+    export const apiDesignTypePut = data => designTypeRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiDesignTypeDelete = data => designTypeRequest.delete(`/${data.id}`);
     export const apiLearningCompGetLearningCompByDesignType = data => designTypeRequest.get(`/getLearningComponentByDesignType/${data}`);
+    export const apiDesignTypeUploadImg = data => designTypeRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion design type
 
     //#region learning task api
@@ -314,6 +336,98 @@ import config from 'react-global-configuration';
         },
     });
     export const apiOptionsList = data => optionsRequest.get(`/`);
+    //#endregion
+
+
+    //#region class size opts
+     const classSizeOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/classSize',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiClassSizeOptsList = data => classSizeOptsRequest.get('/', JSON.stringify(data));
+    export const apiClassSizeOptsGet = data => classSizeOptsRequest.get(`/${data}`);
+    export const apiClassSizeOptsPost = data => classSizeOptsRequest.post('/', JSON.stringify(data));
+    export const apiClassSizeOptsPut = data => classSizeOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiClassSizeOptsDelete = data => classSizeOptsRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region class target opts
+    const classTargetOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/classTarget',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiClassTargetOptsList = data => classTargetOptsRequest.get('/', JSON.stringify(data));
+    export const apiClassTargetOptsGet = data => classTargetOptsRequest.get(`/${data}`);
+    export const apiClassTargetOptsPost = data => classTargetOptsRequest.post('/', JSON.stringify(data));
+    export const apiClassTargetOptsPut = data => classTargetOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiClassTargetOptsDelete = data => classTargetOptsRequest.delete(`/${data.id}`);
+    //#endregion
+
+
+    //#region class type opts
+    const classTypeOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/classType',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiClassTypeOptsList = data => classTypeOptsRequest.get('/', JSON.stringify(data));
+    export const apiClassTypeOptsGet = data => classTypeOptsRequest.get(`/${data}`);
+    export const apiClassTypeOptsPost = data => classTypeOptsRequest.post('/', JSON.stringify(data));
+    export const apiClassTypeOptsPut = data => classTypeOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiClassTypeOptsDelete = data => classTypeOptsRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region tasks type opts
+      const taskTypeOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/taskType',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiTaskTypeOptsList = data => taskTypeOptsRequest.get('/', JSON.stringify(data));
+    export const apiTaskTypeOptsGet = data => taskTypeOptsRequest.get(`/${data}`);
+    export const apiTaskTypeOptsPost = data => taskTypeOptsRequest.post('/', JSON.stringify(data));
+    export const apiTaskTypeOptsPut = data => taskTypeOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiTaskTypeOptsDelete = data => taskTypeOptsRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region resource opts
+      const resourceOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/resource',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiResourceOptsList = data => resourceOptsRequest.get('/', JSON.stringify(data));
+    export const apiResourceOptsGet = data => resourceOptsRequest.get(`/${data}`);
+    export const apiResourceOptsPost = data => resourceOptsRequest.post('/', JSON.stringify(data));
+    export const apiResourceOptsPut = data => resourceOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiResourceOptsDelete = data => resourceOptsRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region elearning opts
+      const elearningToolOptsRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/elearningTool',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiElearningToolOptsList = data => elearningToolOptsRequest.get('/', JSON.stringify(data));
+    export const apiElearningToolOptsGet = data => elearningToolOptsRequest.get(`/${data}`);
+    export const apiElearningToolOptsPost = data => elearningToolOptsRequest.post('/', JSON.stringify(data));
+    export const apiElearningToolOptsPut = data => elearningToolOptsRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiElearningToolOptsDelete = data => elearningToolOptsRequest.delete(`/${data.id}`);
     //#endregion
 
     //#region componentanalysis api

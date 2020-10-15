@@ -84,6 +84,5 @@ class FileSystemController extends Controller
         $file_name = 'course_temp'.$id.'.json';
         Storage::disk('public')->put($file_name, json_encode($course));
         return response($file_name);
-        //return response()->download(storage_path('app/public/'.$file_name.'json'))->deleteFileAfterSend();
     }
 }

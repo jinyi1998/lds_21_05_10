@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DesignType;
+use Auth;
+use Intervention\Image\Facades\Image as Image;
+use Illuminate\Support\Facades\Storage;
 
 class DesignTypeController extends Controller
 {
@@ -16,7 +19,7 @@ class DesignTypeController extends Controller
     public function index()
     {
         //
-        $designTypes = DesignType::all();
+        $designTypes = DesignType::with(['updatedby', 'createdby'])->get();
         return response()->json($designTypes);
     }
 
@@ -29,6 +32,10 @@ class DesignTypeController extends Controller
     public function store(Request $request)
     {
         //
+        $designType = new DesignType();
+        $designType = $this->save($designType, $request);
+
+        return response()->json($designType);
     }
 
     /**
@@ -54,6 +61,10 @@ class DesignTypeController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $designType = DesignType::find($id);
+        $designType = $this->save($designType, $request);
+
+        return response()->json($designType);
     }
 
     /**
@@ -65,6 +76,10 @@ class DesignTypeController extends Controller
     public function destroy($id)
     {
         //
+        $designType = DesignType::find($id);
+        $designType->delete();
+
+        return response()->json();
     }
 
     public function getLearningComponentByDesignType($id){
@@ -74,7 +89,48 @@ class DesignTypeController extends Controller
         return response()->json(
             $designType['components']
         );
-
     }
 
+    public function save(DesignType $designType, Request $request){
+        if($request->has('name')){
+            $designType->name = $request->name;
+        }
+        if($request->has('description')){
+            $designType->description = $request->description;
+        }
+        if($request->has('media')){
+            $designType->media = $request->media;
+        }
+        if($request->has('hint')){
+            $designType->hint = $request->hint;
+        }
+
+        if($designType->id > 0){
+
+        }else{
+            $designType->created_by = Auth::user()->id;
+            $designType->created_at = now();
+        }
+
+        $designType->updated_by = Auth::user()->id;
+        $designType->updated_at = now();
+
+        $designType->save();
+
+        return $designType;
+    }
+
+    public function uploadImg(Request $request){
+        $data = $request->all();
+        $png_url = "designtype_".time().".png";
+        $path =  public_path().'/asset'.'/image'.'/design_type_logo'. '/'.$png_url;
+    
+        $image = Image::make(file_get_contents($data[0]))->save($path);     
+        $image->destroy();
+        $response = array(
+            'status' => 'success',
+            'path' => '/asset'.'/image'.'/design_type_logo'. '/'.$png_url,
+        );
+        return response()->json($response);
+    }
 }

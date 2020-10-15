@@ -48,4 +48,21 @@ class DesignType extends Model
             'component_id' //LearningPatternTemplate pattern id
         )->select(['component_template.*','component_template.id as template_id'])->with(['instructions']);
     }
+
+    public function createdby(){
+        return $this->hasOne(
+            'App\User',
+            'id',
+            'created_by'
+        );
+    }
+
+    public function updatedby(){
+        return $this->hasOne(
+            'App\User',
+            'id',
+            'updated_by'
+        );
+    }
+
 }

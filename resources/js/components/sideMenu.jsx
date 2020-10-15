@@ -24,7 +24,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 import {AppContextStore} from '../container/app';
-import { parseJSON } from 'jquery';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const drawerWidth = 240;
 
@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
  const SideMenu = (props) => {
 
 
-  const user = parseJSON(props.user);
+  const user = JSON.parse(props.user);
   const { currentModule, sideMenuOpen, setSideMenuOpen } = React.useContext(AppContextStore);
 
   const classes = useStyles();
@@ -73,6 +73,49 @@ const useStyles = makeStyles(theme => ({
   const handleListItemClick = (event, index) => {
     window.location.href = "/"+index;
   };
+
+  const highlightModule = () => {
+    switch (currentModule){
+      default:
+        console.log(currentModule);
+        return "";
+
+      case 'mydesign':
+      case 'designstudio':
+        return 'mydesign';
+
+      case 'publicdesign':
+        return 'publicdesign';
+
+      case 'usergroups':
+        return 'usergroups';
+
+      case 'admin_dashboard':
+        return 'admin_dashboard';
+
+      case 'admin_usersmanagement':
+        return 'admin_usersmanagement';
+
+      case 'admin_template_builder':
+      case 'admin_design_type_builder':
+      case 'admin_design_type':
+      case 'admin_template_builder':
+      case 'admin_component_template':
+      case 'admin_component_template_builder':
+      case 'admin_pattern_template':
+      case 'admin_pattern_template_builder':
+        return 'admin_template_builder';
+
+      case 'admin_site_management':
+      case 'admin_classsize_opts':
+      case 'admin_classtype_opts':
+      case 'admin_classtarget_opts':
+      case 'admin_resource_opts':
+      case 'admin_elearningtool_opts':
+      case 'admin_tasktype_opts':
+        return 'admin_site_management';
+    }
+  }
 
   const displayAdminMenu = () => {
     if(user.is_admin){
@@ -84,7 +127,7 @@ const useStyles = makeStyles(theme => ({
           </ListSubheader>
             <ListItem button  
               onClick={event => handleListItemClick(event, 'admin/dashboard')} 
-              selected={currentModule == 'admin_dashboard'} 
+              selected={highlightModule() == 'admin_dashboard'} 
             >
                 <ListItemIcon>
                     <LineStyleIcon />
@@ -94,7 +137,7 @@ const useStyles = makeStyles(theme => ({
 
             <ListItem button  
               onClick={event => handleListItemClick(event, 'admin/usersmanagement')} 
-              selected={currentModule == 'admin_usersmanagement'} 
+              selected={highlightModule() == 'admin_usersmanagement'} 
             >
               <ListItemIcon>
                   <PermContactCalendarIcon />
@@ -104,12 +147,23 @@ const useStyles = makeStyles(theme => ({
 
             <ListItem button  
               onClick={event => handleListItemClick(event, 'admin/template_builder')} 
-              selected={currentModule == 'admin_template_builder'} 
+              selected={highlightModule() == 'admin_template_builder'} 
             >
               <ListItemIcon>
                   <BuildIcon />
               </ListItemIcon>
               <ListItemText primary="Template Builder" />
+            </ListItem>
+
+
+            <ListItem button  
+              onClick={event => handleListItemClick(event, 'admin/sitemanagement')} 
+              selected={highlightModule() == 'admin_site_management'} 
+            >
+              <ListItemIcon>
+                  <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Site Management" />
             </ListItem>
 
 
@@ -142,7 +196,7 @@ const useStyles = makeStyles(theme => ({
                 <div>
                     <ListItem button  
                             onClick={event => handleListItemClick(event, 'mydesign')} 
-                            selected={currentModule == 'mydesign'} 
+                            selected={highlightModule() == 'mydesign'} 
                             >
                         <ListItemIcon>
                             <DashboardIcon />
@@ -151,7 +205,7 @@ const useStyles = makeStyles(theme => ({
                     </ListItem>
                     <ListItem button
                             onClick={event => handleListItemClick(event, 'publicdesign')} 
-                            selected={currentModule == 'publicdesign'}
+                            selected={highlightModule() == 'publicdesign'}
                             >
                         <ListItemIcon>
                             <ShoppingCartIcon />
@@ -161,7 +215,7 @@ const useStyles = makeStyles(theme => ({
 
                     <ListItem button
                             onClick={event => handleListItemClick(event, 'usergroups')} 
-                            selected={currentModule == 'usergroups'}
+                            selected={highlightModule() == 'usergroups'}
                             >
                         <ListItemIcon>
                             <GroupIcon />

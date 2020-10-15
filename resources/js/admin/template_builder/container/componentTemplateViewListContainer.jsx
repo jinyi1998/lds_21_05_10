@@ -116,11 +116,14 @@ const ComponentTemplateViewListContainer = (props) => {
                                 {componentTemplates
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((_component ) => (
-                                        <TableRow key ={_component.id} hover >
+                                        <TableRow key ={_component.id} hover style = {{cursor: "pointer"}}>
                                             <TableCell component="th" scope="row"  onClick={ () => {window.location.href = "component_template_builder/"+ _component.id} }>
                                                 <ListItemText 
                                                     primary=  {_component.title } 
-                                                    secondary={"Update At:" + _component.updated_at + " || " + "Created By: " + _component.updated_by} 
+                                                    secondary={
+                                                        "Update By:" + _component.updatedby.name + '@' + _component.updated_at
+                                                        + " || " 
+                                                        + "Created By: " + _component.createdby.name + "@" + _component.created_at} 
                                                 />
                                             </TableCell>
                                             <TableCell component="th">

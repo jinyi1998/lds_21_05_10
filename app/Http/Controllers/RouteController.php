@@ -91,6 +91,7 @@ class RouteController extends Controller
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_usersmanagement']);
     }
 
+    #region temp management
     public function admin_templatebuilder(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_template_builder']);
     }
@@ -151,6 +152,34 @@ class RouteController extends Controller
     public function admin_pattern_template_builder($id){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_template_builder', 'patternid' => $id]);
     }
+    #endregion
+
+    #region site management related
+    public function admin_site_management(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_site_management']);
+    }
+
+    public function admin_classsize_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_classsize_opts']);
+    }
+    public function admin_classtype_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_classtype_opts']);
+    }
+    public function admin_classtarget_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_classtarget_opts']);
+    }
+    public function admin_resource_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_resource_opts']);
+    }
+    public function admin_elearningtool_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_elearningtool_opts']);
+    }
+    public function admin_tasktype_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_tasktype_opts']);
+    }
+    #endregion
+
+
 
     public function changePassword(Request $request){
         try{

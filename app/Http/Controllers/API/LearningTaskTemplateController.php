@@ -8,6 +8,7 @@ use App\LearningTaskTemplate;
 use App\TaskTemplateToolRelation;
 use App\TaskTemplateResourceRelation;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 
 class LearningTaskTemplateController extends Controller
@@ -120,8 +121,8 @@ class LearningTaskTemplateController extends Controller
         }
 
         $task->is_deleted = 0;
-        $task->created_by = 1;
-        $task->updated_by = 1;
+        $task->created_by = Auth::user()->id;
+        $task->updated_by = Auth::user()->id;
         $task->created_at = now();
         $task->updated_at = now();
 
@@ -134,8 +135,8 @@ class LearningTaskTemplateController extends Controller
                     'task_id' => $task->id,
                     'component_id' => $request->component_id,
                     'sequence' => $request->sequence,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }
@@ -148,8 +149,8 @@ class LearningTaskTemplateController extends Controller
                     'task_id' => $task->id,
                     'pattern_id' => $request->pattern_id,
                     'sequence' => $request->sequence,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }
@@ -174,8 +175,8 @@ class LearningTaskTemplateController extends Controller
             foreach($request->resourceid as $_resource){
                 $test = new TaskTemplateResourceRelation([
                     'resource_id' => $_resource['resource_id'],
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                     ]);
                 $task->resourceid()->save($test);
@@ -188,8 +189,8 @@ class LearningTaskTemplateController extends Controller
                 // return response($_assessment['learningoutcome_id'], 200);
                 $test = new TaskTemplateToolRelation([
                     'elearningtool_id' => $_tool['elearningtool_id'],
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                     ]);
                 $task->toolid()->save($test);

@@ -16,6 +16,8 @@ import UsergroupContainer from '../usergroup/container/usergroupContainer';
 import UsergroupsListViewContainer from '../usergroup/container/usergroupsListViewContainer';
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
 import UserMgmtContainer from '../admin/usersmanagement/container/usersMgmtContainer';
+
+//#region template management
 import TemplateBuilderContainer from '../admin/template_builder/container/templateBuilderContainer';
 import DesignTypeBuilderContainer from '../admin/template_builder/container/designTypeBuilderContainer';
 import DesignTypeViewListContainer from '../admin/template_builder/container/designTypeViewListContainer';
@@ -23,6 +25,17 @@ import ComponentTemplateViewListContainer from '../admin/template_builder/contai
 import PatternTemplateViewListContainer from '../admin/template_builder/container/patternTemplateViewListContainer';
 import PatternTemplateBuilderContainer from '../admin/template_builder/container/patternTemplateBuilderContainer';
 import ComponentTemplateBuilderContainer from '../admin/template_builder/container/componentTemplateBuilderContainer';
+//#endregion
+
+//#region site management related
+import SiteManagementContainer from '../admin/sitemanagement/container/siteManagementContainer';
+import ClassSizeOptsContainer from '../admin/sitemanagement/container/classSizeOptsContainer';
+import ClassTargetOptsContainer from '../admin/sitemanagement/container/classTargetOptsContainer';
+import ClassTypeOptsContainer from '../admin/sitemanagement/container/classTypeOptsContainer';
+import ELearningToolsOptsContainer from '../admin/sitemanagement/container/elearningToolsOptsContainer';
+import ResourceOptsContainer from '../admin/sitemanagement/container/resourceOptsContainer';
+import TaskTypeOptsContainer from '../admin/sitemanagement/container/taskTypeOptsContainer';
+//#endregion
 
 import {
   apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
@@ -45,7 +58,7 @@ const drawerWidth = 240;
 const  useStyles = makeStyles(theme => ({
   appBarShift: {
     marginLeft: drawerWidth,
-    maxWidth: `calc(91% - ${drawerWidth}px)`,
+    maxWidth: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -55,6 +68,10 @@ const  useStyles = makeStyles(theme => ({
     zIndex: theme.zIndex.drawer + 9999,
     color: '#fff',
   },
+  normal: {
+    margin: 36,
+    maxWidth: `calc(100% - 72px)`,
+  }
 }));
 
 const App = (props) => {
@@ -76,24 +93,24 @@ const App = (props) => {
     taskResource: [],
     taskElearingResource: [],
 });
-const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
+  const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
-const taskTypeColor = (task_type)=>{
+  const taskTypeColor = (task_type)=>{
 
-    try{
-        var color = taskTypeColorValue.find(x => x.id == task_type);
-        return ({
-            backgroundColor:  color.color,
-            height: "100%",
-            width: "12px"
-        });
-    }catch{
-        return ({
-            backgroundColor:  "#194d33",
-            height: "100%"
-        });
-    }
-}
+      try{
+          var color = taskTypeColorValue.find(x => x.id == task_type);
+          return ({
+              backgroundColor:  color.color,
+              height: "100%",
+              width: "12px"
+          });
+      }catch{
+          return ({
+              backgroundColor:  "#194d33",
+              height: "100%"
+          });
+      }
+  }
 
   //#region Init Options Data
 
@@ -180,8 +197,11 @@ const taskTypeColor = (task_type)=>{
         return  <UsergroupContainer user = {props.user}  usergroupid = {props.usergroupid}/>
       case 'usergroups':
         return <UsergroupsListViewContainer user = {props.user}/>;
+
       case 'admin_dashboard':
         return <DashboardContainer />
+
+      //#region admin_temps_management
       case 'admin_design_type_builder':
         return <DesignTypeBuilderContainer designtype_id = {props.designtype_id}/>
       case 'admin_design_type':
@@ -196,8 +216,26 @@ const taskTypeColor = (task_type)=>{
         return <PatternTemplateViewListContainer />
       case 'admin_pattern_template_builder':
         return <PatternTemplateBuilderContainer pattern_id = {props.pattern_id}/>
+      //#endregion
+
       case 'admin_usersmanagement':
         return <UserMgmtContainer/>
+
+      //#region admin_site_management_related
+      case 'admin_site_management':
+        return <SiteManagementContainer />;
+      case 'admin_classsize_opts':
+        return <ClassSizeOptsContainer />;
+      case 'admin_classtype_opts':
+        return <ClassTypeOptsContainer />;
+      case 'admin_classtarget_opts':
+        return <ClassTargetOptsContainer />;
+      case 'admin_resource_opts':
+        return <ResourceOptsContainer />;
+      case 'admin_elearningtool_opts':
+        return <ELearningToolsOptsContainer />;
+      case 'admin_tasktype_opts':
+        return <TaskTypeOptsContainer />;
     }
   }
 
@@ -218,11 +256,11 @@ const taskTypeColor = (task_type)=>{
               <TopMenu user = {props.user}/>
           </Grid>
 
-            <Grid item xs ={1}>
+            <Grid item style = {{width: 72}}>
                 <SideMenu user = {props.user}/>
             </Grid>
             
-            <Grid xs = {11} item className={clsx(sideMenuOpen && classes.appBarShift)}>
+            <Grid xs item className={clsx(sideMenuOpen && classes.appBarShift, !sideMenuOpen && classes.normal)}>
                 {displayModule()}
                 {/* test */}
             </Grid>

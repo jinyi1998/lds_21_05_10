@@ -8,6 +8,7 @@ use App\LearningPattern;
 use App\LearningTask;
 use App\PatternTaskRelation;
 use App\ComponentPatternRelation;
+use Auth;
 
 
 class LearningPatternController extends Controller
@@ -69,8 +70,8 @@ class LearningPatternController extends Controller
     public static function save(LearningPattern $pattern, Request $request){
 
         $pattern->title = $request->title;
-        $pattern->created_by = 1;
-        $pattern->updated_by = 1;
+        $pattern->created_by = Auth::user()->id;
+        $pattern->updated_by = Auth::user()->id;
         $pattern->is_deleted = 0;
         $pattern->created_at = now();
         $pattern->updated_at = now();
@@ -95,8 +96,8 @@ class LearningPatternController extends Controller
                     'pattern_id' => $pattern->id,
                     'sequence' =>  $key + 1,
                     'task_id' => $task->id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
                 $pattern->tasksid()->save($taskRelation);
@@ -107,8 +108,8 @@ class LearningPatternController extends Controller
             $pattern->componentid()->create([
                 'pattern_id' => $pattern->id,
                 'component_id' => $request->component_id,
-                'created_by' => 1,
-                'updated_by' => 1,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
                 'is_deleted' => 0
             ]);
         }

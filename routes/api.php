@@ -123,11 +123,16 @@ Route::get('learningOutcomeTemplate/getOutcomeTempByDesignType/{id}', 'API\Learn
 Route::resource('learningComponentTemplate', 'API\LearningComponentTemplateController');
 Route::get('learningComponentTemplate/getPatternOpts/{id}', 
 'API\LearningComponentTemplateController@getPatternOpts');
+Route::get('learningComponentTemplate/getInstructions/{id}', 
+'API\LearningComponentTemplateController@getInstructions');
 Route::post('learningComponentTemplate/addPatternRelation/{id}', 
 'API\LearningComponentTemplateController@addPatternRelation');
 Route::put('learningComponentTemplate/deletePatternRelation/{id}', 
 'API\LearningComponentTemplateController@deletePatternRelation');
 
+Route::post('componentInstruction/uploadImg', 
+'API\LearningComponentInstructionController@uploadImg');
+Route::resource('componentInstruction', 'API\LearningComponentInstructionController');
 Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 Route::resource('learningOutcomeTemplate', 'API\LearningOutcomeTemplateController');
@@ -152,7 +157,16 @@ Route::middleware('design_permission')->resource('course', 'API\CourseController
 
 Route::get('designType/getLearningComponentByDesignType/{id}', 
 'API\DesignTypeController@getLearningComponentByDesignType');
+Route::post('designType/uploadImg', 
+'API\DesignTypeController@uploadImg');
 Route::resource('designType', 'API\DesignTypeController');
+
+Route::resource('classSize', 'API\ClassSizeController');
+Route::resource('classTarget', 'API\ClassTargetController');
+Route::resource('classType', 'API\ClassTypeController');
+Route::resource('taskType', 'API\TaskTypeController');
+Route::resource('resource', 'API\ResourceController');
+Route::resource('elearningTool', 'API\ElearningToolController');
 
 Route::get('user/search/{id}', 'API\UserController@searchUser');
 Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');

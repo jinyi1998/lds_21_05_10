@@ -36,7 +36,6 @@ const DesignTypeBuilderContainer = (props) => {
     const refreshDesignType = () => {
         apiDesignTypeGet(props.designtype_id).then((response)=>{
             setDesignType(response.data)
-            console.log(response.data);
         })
     }
 
@@ -46,8 +45,8 @@ const DesignTypeBuilderContainer = (props) => {
             case 1:
                 return (
                     <Grid container spacing = {2}>
-                        <DesignTypeBuilderBasicInfoView />
-                        {displayButton()}
+                        <DesignTypeBuilderBasicInfoView handleNext = {handleNext}/>
+                        {/* {displayButton()} */}
                     </Grid> 
                 );
             case 2:

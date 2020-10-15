@@ -23,8 +23,8 @@ class CreateDesigntypeOutcomeTemplateRelation extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            $table->foreign('designtype_id')->references('id')->on('design_type');
-            $table->foreign('outcome_id')->references('id')->on('learningoutcome_template');
+            $table->foreign('designtype_id')->references('id')->on('design_type')->onDelete('cascade');;
+            $table->foreign('outcome_id')->references('id')->on('learningoutcome_template')->onDelete('cascade');;
         });
 
         DB::table('designtype_outcome_template_relation')->insert([

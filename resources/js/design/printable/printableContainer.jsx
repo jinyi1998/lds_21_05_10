@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import html2canvas from 'html2canvas';  
-import jsPDF from 'jspdf';  
+// import jsPDF from 'jspdf';  
 
 import {apiCourseGet,
     apiOptionsList, apiDesignTypeList, apiLearningTaskGetPatternOpts, 
@@ -149,33 +149,33 @@ const PrintableContainer = (props) => {
        
     }, [])
 
-    const printDocument = () => {  
-        const input = document.getElementById('pdfdiv');  
-        html2canvas(input)  
-          .then((canvas) => {  
-            var imgWidth = 200;  
-            var pageHeight = 290;  
-            var imgHeight = canvas.height * imgWidth / canvas.width;  
-            var heightLeft = imgHeight;  
-            const imgData = canvas.toDataURL('image/png');  
-            const pdf = new jsPDF('p', 'mm', 'a4')  
-            var position = 0;  
-            var heightLeft = imgHeight;  
-            // pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);  
-            // pdf.save("download.pdf");  
+    // const printDocument = () => {  
+    //     const input = document.getElementById('pdfdiv');  
+    //     html2canvas(input)  
+    //       .then((canvas) => {  
+    //         var imgWidth = 200;  
+    //         var pageHeight = 290;  
+    //         var imgHeight = canvas.height * imgWidth / canvas.width;  
+    //         var heightLeft = imgHeight;  
+    //         const imgData = canvas.toDataURL('image/png');  
+    //         const pdf = new jsPDF('p', 'mm', 'a4')  
+    //         var position = 0;  
+    //         var heightLeft = imgHeight;  
+    //         // pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);  
+    //         // pdf.save("download.pdf");  
 
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
+    //         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //         heightLeft -= pageHeight;
 
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            pdf.save("download.pdf");  
-          });  
-      }  
+    //         while (heightLeft >= 0) {
+    //             position = heightLeft - imgHeight;
+    //             pdf.addPage();
+    //             pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+    //             heightLeft -= pageHeight;
+    //         }
+    //         pdf.save("download.pdf");  
+    //       });  
+    //   }  
 
     return (
         <PrintableStore.Provider

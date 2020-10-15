@@ -114,7 +114,6 @@ const Design = (props) => {
   //#region data init
   //preload learningOutcome (Unit Level)
   async function importOutcomeTemplateToCourse(outcome) {
-
     await apiLearningOutcomePost(outcome)
     .then(response=> {return response.data})
   }
@@ -122,7 +121,7 @@ const Design = (props) => {
   //preload learningComponent
   async function fetchInitDataWithDesignType() {
     updateCourse();
-    apiDesignTypeGet( course.designType).then(
+    apiDesignTypeGet(course.designType).then(
       response => {
         //component
         response.data.componentsid.map((data, index) => {
@@ -187,8 +186,9 @@ const Design = (props) => {
       if(course.designType != "" && course.designType != null){
         // fetchlearningTypeTempData();
         clearCourseComponent();
-        fetchInitDataWithDesignType();
-        handleNext();
+        fetchInitDataWithDesignType().then(()=>{
+          handleNext();
+        });
       }
     
   }, [course.designType]);

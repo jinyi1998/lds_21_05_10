@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\LearningOutcome;
+use Auth;
 
 class LearningOutcomesController extends Controller
 {
@@ -112,8 +113,8 @@ class LearningOutcomesController extends Controller
         $outcome->description = $request->description;
         $outcome->STEMType = $request->STEMType;
         $outcome->isCourseLevel = $request->isCourseLevel;
-        $outcome->created_by = 1;
-        $outcome->updated_by = 1;
+        $outcome->created_by = Auth::user()->id;
+        $outcome->updated_by = Auth::user()->id;
         $outcome->is_deleted = 0;
         $outcome->created_at = now();
         $outcome->updated_at = now();
@@ -131,8 +132,8 @@ class LearningOutcomesController extends Controller
                     // 'id' =>  $outcome->componentid()->get()->id,
                     'outcome_id' => $outcome->id,
                     'component_id' => $request->component_id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0,
                     'sequence' =>  $sequence + 1,
                 ]);
@@ -140,8 +141,8 @@ class LearningOutcomesController extends Controller
                 $outcome->componentid()->create([
                     'outcome_id' => $outcome->id,
                     'component_id' => $request->component_id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0,
                     'sequence' =>  $sequence + 1,
                 ]);
@@ -157,16 +158,16 @@ class LearningOutcomesController extends Controller
                 $outcome->unit_outcomeid()->update([
                     'component_outcomeid' => $outcome->id,
                     'unit_outcomeid' => $request->unit_outcomeid,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }else{
                 $outcome->unit_outcomeid()->create([
                     'component_outcomeid' => $outcome->id,
                     'unit_outcomeid' => $request->unit_outcomeid,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);
             }
@@ -181,8 +182,8 @@ class LearningOutcomesController extends Controller
                 $outcome->courseid()->create([
                     'outcome_id' => $outcome->id,
                     'course_id' => $request->course_id,
-                    'created_by' => 1,
-                    'updated_by' => 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
                     'is_deleted' => 0,
                     'sequence' => $sequence + 1
                 ]);

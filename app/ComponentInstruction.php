@@ -12,4 +12,8 @@ class ComponentInstruction extends Model
     public $timestamps = true;
 
     protected $fillable = ['title', 'media', 'description', 'created_by', 'updated_by', 'is_deleted'];
+
+    public function componentid(){
+        return $this->belongsTo('App\ComponentComponentInstructionRelation', 'id','component_instruction_id');
+    }
 }

@@ -39,6 +39,19 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     // Route::get('/', '\App\Http\Controllers\RouteController@admin_dashboard');
     Route::get('usersmanagement', '\App\Http\Controllers\RouteController@admin_usersmanagement');
     Route::get('template_builder', '\App\Http\Controllers\RouteController@admin_templatebuilder');
+
+    #region site managmeent
+    Route::get('sitemanagement', '\App\Http\Controllers\RouteController@admin_site_management');
+    Route::get('classsize_opts', '\App\Http\Controllers\RouteController@admin_classsize_opts');
+    Route::get('classtype_opts', '\App\Http\Controllers\RouteController@admin_classtype_opts');
+    Route::get('classtarget_opts', '\App\Http\Controllers\RouteController@admin_classtarget_opts');
+    Route::get('resource_opts', '\App\Http\Controllers\RouteController@admin_resource_opts');
+    Route::get('elearningtool_opts', '\App\Http\Controllers\RouteController@admin_elearningtool_opts');
+    Route::get('tasktype_opts', '\App\Http\Controllers\RouteController@admin_tasktype_opts');
+    #endregion
+   
+
+    #region design temp builder
     Route::get('design_type', '\App\Http\Controllers\RouteController@admin_design_type');
     Route::get('design_type_builder', '\App\Http\Controllers\RouteController@admin_design_type_builder_new');
     Route::get('design_type_builder/{id}', '\App\Http\Controllers\RouteController@admin_design_type_builder');
@@ -48,6 +61,8 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('pattern_template_builder', '\App\Http\Controllers\RouteController@admin_pattern_template_builder_new');
     Route::get('pattern_template_builder/{id}', '\App\Http\Controllers\RouteController@admin_pattern_template_builder');
     Route::get('pattern_template', '\App\Http\Controllers\RouteController@admin_pattern_template');
+    #endregion
+  
     Route::get('dashboard', '\App\Http\Controllers\RouteController@admin_dashboard');
 
 });

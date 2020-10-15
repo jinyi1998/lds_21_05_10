@@ -28,7 +28,7 @@ const MyDesign = (props)=>{
         setLoadingOpen(true)
         apiFileCourseImport(JSON.parse(event.target.result))
         .then(response => {
-            window.location.reload(false); 
+            window.location.reload(); 
         });
     };
 

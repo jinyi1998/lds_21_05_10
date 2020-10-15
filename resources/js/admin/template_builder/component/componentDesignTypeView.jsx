@@ -61,8 +61,8 @@ const ComponentDesignTypeView = (props) => {
                             <Button onClick = {()=>setLocking(false)}><LockOpenIcon /></Button>
                             :
                             <React.Fragment>
-                                    <Button onClick = {()=>setLocking(true)}>Cancel</Button>
-                                    <Button onClick = {()=>setWarningOpen(true)}>Confirm</Button>
+                                    <Button  variant = "contained" color = "secondary" onClick = {()=>setLocking(true)}>Cancel</Button>
+                                    <Button  variant = "contained" color = "primary" onClick = {()=>setWarningOpen(true)}>Confirm</Button>
                             </React.Fragment>
                         }
                 </Grid>

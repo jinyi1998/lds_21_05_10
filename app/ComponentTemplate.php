@@ -76,4 +76,21 @@ class ComponentTemplate extends Model
             'component_instruction_id' //middle relation table target id
         );
     }
+
+    public function createdby(){
+        return $this->hasOne(
+            'App\User',
+            'id',
+            'created_by'
+        );
+    }
+
+    public function updatedby(){
+        return $this->hasOne(
+            'App\User',
+            'id',
+            'updated_by'
+        );
+    }
+
 }

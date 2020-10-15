@@ -127,11 +127,13 @@ const PatternTemplateViewListContainer = (props) => {
                                 {patterns
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((_pattern ) => (
-                                        <TableRow key ={_pattern.id} hover >
+                                        <TableRow key ={_pattern.id} hover style = {{cursor: "pointer"}}>
                                             <TableCell component="th" scope="row"  onClick={ () => {onEnterPatternTemplateDetail(_pattern.id)} }>
                                                 <ListItemText 
                                                     primary=  {_pattern.title } 
-                                                    secondary={"Update At:" + _pattern.updated_at + " || " + "Created By: " + _pattern.updated_by} 
+                                                    secondary={"Update By:" + _pattern.updated_at + "@" + _pattern.updatedby.name
+                                                                + " || " + 
+                                                                "Created By: " + _pattern.created_at + "@"+ _pattern.createdby.name} 
                                                 />
                                             </TableCell>
                                             <TableCell component="th">

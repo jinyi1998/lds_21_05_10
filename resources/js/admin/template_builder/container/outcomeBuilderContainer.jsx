@@ -26,6 +26,7 @@ import {
 
 const OutcomeBuilderContainer = (props) => {
 
+    const { setLoadingOpen } = React.useContext(AppContextStore);
     const [ outcomes, setOutcomes ] = React.useState([]);
     const [ unitOutcomeOpts, setUnitOutcomeOpts] = React.useState([]);
     const [ openOutcomeEdit, setOpenOutcomeEdit] = React.useState(false);
@@ -42,19 +43,23 @@ const OutcomeBuilderContainer = (props) => {
     });
 
     React.useEffect(()=> {
-
+        setLoadingOpen(true)
         if(typeof props.outcomes != 'undefined' ){
             setOutcomes(props.outcomes)
         }
-
-
     }, [props.outcomes])
 
     React.useEffect(()=>{
         if(typeof props.unit_outcomes_opts != 'undefined' ){
+            setLoadingOpen(true)
             setUnitOutcomeOpts(props.unit_outcomes_opts);
         }
     }, [props.unit_outcomes_opts])
+
+    React.useEffect(()=> {
+        setLoadingOpen(false)
+    }, [unitOutcomeOpts, outcomes])
+
 
     //#region local action
     const onEditOutcome = (outcome) => {
@@ -156,7 +161,7 @@ const OutcomeBuilderContainer = (props) => {
             </Paper>
             
         
-            <Dialog open={openOutcomeEdit} onClose={() => setOpenOutcomeEdit(false)} aria-labelledby="form-dialog-title" maxWidth = "md">
+            <Dialog open={openOutcomeEdit} onClose={() => setOpenOutcomeEdit(false)} maxWidth = "md">
                 <OutcomeTemplateEditView 
                     outcome = {editOutcome} 
                     unitOutcomeOpts = {unitOutcomeOpts} 
