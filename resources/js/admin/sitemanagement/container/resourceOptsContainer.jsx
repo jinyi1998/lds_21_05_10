@@ -133,7 +133,7 @@ const ResourceOptsContainer = () => {
                                                 <ListItemText 
                                                     primary = {_resourceOpts.description}
                                                     secondary= {
-                                                        "Update By:" + _resourceOpts.updatedby.name + "@" + _resourceOpts.updated_at
+                                                        "Updated By:" + _resourceOpts.updatedby.name + "@" + _resourceOpts.updated_at
                                                         + " || " 
                                                         + "Created By: " + _resourceOpts.createdby.name + "@" + _resourceOpts.created_at } 
                                                 />

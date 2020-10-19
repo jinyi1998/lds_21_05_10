@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -65,30 +67,33 @@ const OutcomeTemplateView = (props) => {
                             <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
                             {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
                         </React.Fragment>
-                    
                     } 
                 />
                 <ListItemSecondaryAction>
                     {
                         enableEdit?
-                        <IconButton edge="end" aria-label="edit" onClick = {() => props.onEditOutcome(outcome)}>
-                            <EditIcon />
-                        </IconButton>
+                        <Tooltip title="Edit">
+                            <IconButton edge="end" aria-label="edit" onClick = {() => props.onEditOutcome(outcome)}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
                         :
                         null
                     }
                     
                     {
                         enableDelete?
-                        <IconButton edge="end" aria-label="delete" onClick = {() => props.onDeleteOutcome(outcome)}>
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Delete">
+                            <IconButton edge="end" aria-label="delete" onClick = {() => props.onDeleteOutcome(outcome)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
                         :
                         null
                     }
                 
                 </ListItemSecondaryAction>
-        </ListItem>
+            </ListItem>
         </React.Fragment>
     );
 }

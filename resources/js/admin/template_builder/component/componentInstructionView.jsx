@@ -22,7 +22,7 @@ import { apiLearningCompInstructionGet,
 import {AppContextStore} from '../../../container/app';
 
 const ComponentInstructionView = (props) => {
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const { setLoadingOpen, returnImgSrc } = React.useContext(AppContextStore);
 
     const [ instruction, setInstruction] = React.useState({
         id: -1,
@@ -139,7 +139,7 @@ const ComponentInstructionView = (props) => {
         return (
             <React.Fragment>
                  <Grid container item xs = {12} justify = "center">
-                    <img src = {instruction.media} style = {{width: 400}}/>
+                    <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
                 </Grid>
 
                 <Grid item xs = {12}>
@@ -182,7 +182,7 @@ const ComponentInstructionView = (props) => {
                     </React.Fragment>
                     :
                     <React.Fragment>
-                         <img src = {instruction.media} style = {{width: 400}}/>
+                         <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
                          <IconButton onClick = {onClickEditPic}><EditIcon/></IconButton>
                     </React.Fragment>
                     }

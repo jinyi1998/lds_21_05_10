@@ -133,7 +133,7 @@ const ClassTargetOptsContainer = () => {
                                                 <ListItemText 
                                                     primary = {_classTargetOpts.description}
                                                     secondary= {
-                                                        "Update By:" + _classTargetOpts.updatedby.name + "@" + _classTargetOpts.updated_at
+                                                        "Updated By:" + _classTargetOpts.updatedby.name + "@" + _classTargetOpts.updated_at
                                                         + " || " 
                                                         + "Created By: " + _classTargetOpts.createdby.name + "@" + _classTargetOpts.created_at } 
                                                 />

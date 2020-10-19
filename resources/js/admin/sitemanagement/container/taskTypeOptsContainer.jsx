@@ -185,7 +185,7 @@ const TaskTypeOptsContainer = () => {
                                                 <ListItemText 
                                                     primary = {_taskTypeOpts.description}
                                                     secondary= {
-                                                        "Update By:" + _taskTypeOpts.updatedby.name + "@" + _taskTypeOpts.updated_at
+                                                        "Updated By:" + _taskTypeOpts.updatedby.name + "@" + _taskTypeOpts.updated_at
                                                         + " || " 
                                                         + "Created By: " + _taskTypeOpts.createdby.name + "@" + _taskTypeOpts.created_at } 
                                                 />

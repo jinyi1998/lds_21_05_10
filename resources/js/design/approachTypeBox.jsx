@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-
+import {AppContextStore} from '../container/app';
 import { red } from '@material-ui/core/colors';
 
 
@@ -36,6 +36,7 @@ const DesignTypeBox = (props) => {
 
     const classes = useStyles();
     const {designBoxData, onClick, onClickMore} = props;
+    const { returnImgSrc } = React.useContext(AppContextStore);
     
     const handleExpandClick = (event) => {
       event.stopPropagation();
@@ -54,7 +55,7 @@ const DesignTypeBox = (props) => {
         >
           <Grid container>
               <Grid item xs ={12}>
-                  <img src = {designBoxData.media} className ={classes.media} />
+                  <img src = {returnImgSrc(designBoxData.media)} className ={classes.media} />
               </Grid>
               <Grid item xs = {12}>
                   <Typography variant="subtitle2" color="primary"  data-tour = {"designtype_title_" + designBoxData.id} style = {{textTransform: "initial"}}>

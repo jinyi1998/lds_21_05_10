@@ -134,7 +134,7 @@ const ClassSizeOptsContainer = () => {
                                                 <ListItemText 
                                                     primary = {_classSizeOpts.description}
                                                     secondary= {
-                                                        "Update By:" + _classSizeOpts.updatedby.name + "@" + _classSizeOpts.updated_at
+                                                        "Updated By:" + _classSizeOpts.updatedby.name + "@" + _classSizeOpts.updated_at
                                                         + " || " 
                                                         + "Created By: " + _classSizeOpts.createdby.name + "@" + _classSizeOpts.created_at } 
                                                 />

@@ -29,7 +29,7 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
     }); 
 
     React.useEffect(()=>{
-        setLoadingOpen(false);
+        setLoadingOpen(true);
         setDesignTypeInfo({
             id: designType.id,
             name: designType.name,
@@ -37,7 +37,7 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
             hint: designType.hint,
             media: designType.media
         })
-        setLoadingOpen(true)
+        setLoadingOpen(false)
     }, [designType]);
 
     //#region local action
@@ -133,7 +133,7 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
                         </React.Fragment>
                         :
                         <React.Fragment>
-                             <img src = {designTypeInfo.media} style = {{maxWidth: 400}}/>
+                             <img src = {returnImgSrc(designTypeInfo.media)} style = {{maxWidth: 400}}/>
                              {/* <Button  variant="contained" color="primary" onClick = {onEditPic}>
                                 Edit Picture
                             </Button> */}

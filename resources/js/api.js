@@ -246,6 +246,7 @@ import config from 'react-global-configuration';
     export const apiLearningPattTempPost = data => learningPatternTempRequest.post('/', JSON.stringify(data));
     export const apiLearningPattTempPut = data => learningPatternTempRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningPattTempDelete = data => learningPatternTempRequest.delete(`/${data.id}`);
+    export const apiLearningPattTempUploadImg = data => learningPatternTempRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion
 
     //#region learningtasktemp api

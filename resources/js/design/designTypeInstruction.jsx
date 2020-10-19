@@ -2,8 +2,10 @@ import React from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import {apiLearningCompGetLearningCompByDesignType} from '../api';
 import { Carousel } from 'react-responsive-carousel';
+import { AppContextStore } from '../container/app';
 
 const DesignTypeInstruction = (props) => {
+    const {returnImgSrc} = React.useContext(AppContextStore);
     const [instructions, setInstruction] = React.useState([]);
     React.useEffect(()=> {
         fetcComponentOptsData();
@@ -22,7 +24,7 @@ const DesignTypeInstruction = (props) => {
                 result = [{
                     title: "No instruction",
                     description: "No instruction",
-                    media: "https://instem.cite.hku.hk/wp-content/uploads/elementor/thumbs/bus_SDL_STEM_en_1024-og6c3wyfn5owkbkmm8ktoy80tq6h8hn3yrh97zlg2o.png"
+                    media: ""
                 }]
             }
             setInstruction(result);
@@ -37,7 +39,7 @@ const DesignTypeInstruction = (props) => {
                 instructions.map((_instruction, index) => {
                 return (
                     <div key = {index} style = {{backgroundColor: "#FFFFFF"}}>
-                        <img alt="" src={_instruction.media} />
+                        <img alt="" src={returnImgSrc(_instruction.media)} />
                         <div className="legend">
                         <h5>{_instruction.title}</h5>
                         <p style = {{textTransform: "initial"}}>

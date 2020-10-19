@@ -112,6 +112,32 @@ const App = (props) => {
       }
   }
 
+  const returnImgSrc = (image_url) => {
+    if(typeof image_url == "string"){
+      var temp = image_url;
+
+      if( temp.substring(0, 1) == "/"){
+
+      }else{
+        temp = "/"+temp;
+      }
+     
+      var http = new XMLHttpRequest();
+  
+      http.open('HEAD', temp, false);
+      http.send();
+
+      if (http.status != 404){
+        return temp;
+      }else{
+        // image not found
+        return "/asset/image/data-not-found.png";
+      }
+    }else{
+      return "/asset/image/data-not-found.png";
+    }
+  }
+
   //#region Init Options Data
 
   async function fetchDesignTypeData() {
@@ -249,6 +275,7 @@ const App = (props) => {
         setLoadingOpen: setLoadingOpen,
         options: optionsInit,
         taskTypeColor: taskTypeColor,
+        returnImgSrc: returnImgSrc
       }}
     >
       <Grid container>

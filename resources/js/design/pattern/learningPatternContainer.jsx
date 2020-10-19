@@ -168,7 +168,7 @@ const LearningPatternContainer = (props) => {
              </Paper>
             
 
-             <Dialog open={editPatternOpen} onClose={() => setEditPatternOpen(false)} aria-labelledby="form-dialog-title">
+             <Dialog open={editPatternOpen} onClose={() => setEditPatternOpen(false)} maxWidth = "md" style = {{minHeight: 400}}>
                 <DialogTitle id="form-dialog-title">Edit Learning Pattern</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

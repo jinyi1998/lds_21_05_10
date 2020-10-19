@@ -133,7 +133,10 @@ Route::put('learningComponentTemplate/deletePatternRelation/{id}',
 Route::post('componentInstruction/uploadImg', 
 'API\LearningComponentInstructionController@uploadImg');
 Route::resource('componentInstruction', 'API\LearningComponentInstructionController');
+
+Route::post('learningPatternTemplate/uploadImg', 'API\LearningPatternTemplateController@uploadImg');
 Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateController');
+
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 Route::resource('learningOutcomeTemplate', 'API\LearningOutcomeTemplateController');
 
@@ -155,10 +158,8 @@ Route::post('course/updatePermission', 'API\CourseController@updateCoursePermiss
 Route::middleware('design_permission')->resource('course', 'API\CourseController');
 
 
-Route::get('designType/getLearningComponentByDesignType/{id}', 
-'API\DesignTypeController@getLearningComponentByDesignType');
-Route::post('designType/uploadImg', 
-'API\DesignTypeController@uploadImg');
+Route::get('designType/getLearningComponentByDesignType/{id}', 'API\DesignTypeController@getLearningComponentByDesignType');
+Route::post('designType/uploadImg', 'API\DesignTypeController@uploadImg');
 Route::resource('designType', 'API\DesignTypeController');
 
 Route::resource('classSize', 'API\ClassSizeController');

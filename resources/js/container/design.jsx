@@ -13,6 +13,7 @@ import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/component/componentStep';
 import BasicReview from '../design/basicReview';
 import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import ComponentSelectContainer from '../design/component/container/componentSelectContainer';
 import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
@@ -120,46 +121,30 @@ const Design = (props) => {
 
   //preload learningComponent
   async function fetchInitDataWithDesignType() {
+    var updates = [];
+    setLoadingOpen(true);
+
     updateCourse();
     apiDesignTypeGet(course.designType).then(
       response => {
-        //component
-        response.data.componentsid.map((data, index) => {
-          getComponentTemplateData(data.component_id).then(component => {
-            component.component_template_id = component.id
-            component.course_id = course.id
-            component.sequence = index + 1
-            importComponentTemplateToComponent(component)
-          });
-        })
-
         //outcome
         response.data.outcomes.map((_outcome) => {
           var _outcome_temp = _outcome;
           _outcome_temp.course_id = course.id
-          importOutcomeTemplateToCourse(_outcome_temp);
+          updates.push( importOutcomeTemplateToCourse(_outcome_temp) );
         })
       }
-    )
-  }
-
-  async function getComponentTemplateData(id) {
-
-    return await apiLearningCompTempGet(id)
-    .then(respsonse => {return respsonse.data})
+    );
+    
+    Promise.all(updates).then(()=>{
+      setLoadingOpen(false)
+    })
   }
 
   async function clearCourseComponent() {
     await apiCourseClearComponent(course.id).then(
       response => {return response}
     )
-  }
-
-  async function importComponentTemplateToComponent(componentTemplate) {
-    apiLearningCompPost(componentTemplate)
-    .then(response => {
-      return response.data;
-    })
   }
 
   async function updateCourse(is_finish = false) {
@@ -200,10 +185,11 @@ const Design = (props) => {
 
         if(course.components.length == 0){
           setLoadingOpen(false)
+          setActiveStep(0);
         }else{
           setLoadingOpen(false)
           if(props.step == 0){
-              setActiveStep(1);
+              setActiveStep(4);
           }
         }
       }
@@ -212,8 +198,6 @@ const Design = (props) => {
     }
   }, [course.isinited]);
   
-
-
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
       //final step
@@ -291,8 +275,8 @@ const Design = (props) => {
       case 3:
         return (
           <React.Fragment>
-             <DesignComponentStep />
-             <div className={classes.buttons}>
+             {/* <DesignComponentStep /> */}
+             {/* <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>
                   Back
@@ -309,7 +293,8 @@ const Design = (props) => {
                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                   </Button>
               )}
-            </div>
+            </div> */}
+            <ComponentSelectContainer handleNext = {handleNext} />
           </React.Fragment>
         )
       case 4:
@@ -317,11 +302,6 @@ const Design = (props) => {
           <React.Fragment>
             <UnitPlanContainer/>
              <div className={classes.buttons}>
-              {activeStep !== 0 && (
-                <Button onClick={handleBack} className={classes.button}>
-                  Back
-                </Button>
-              )}
               {activeStep !== 0 &&(
                     <Button
                     variant="contained"
@@ -355,8 +335,6 @@ const Design = (props) => {
           </React.Fragment>
         )
         // return <DesignComponentStep />;
-      // case 3:
-      //   return  <BasicReview />
       default:
         return <div> Some Error Occur </div>;
     }

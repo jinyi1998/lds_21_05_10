@@ -4,6 +4,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,6 +13,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import {AppContextStore} from '../../../container/app';
 
@@ -61,8 +64,14 @@ const ComponentDesignTypeView = (props) => {
                             <Button onClick = {()=>setLocking(false)}><LockOpenIcon /></Button>
                             :
                             <React.Fragment>
-                                    <Button  variant = "contained" color = "secondary" onClick = {()=>setLocking(true)}>Cancel</Button>
-                                    <Button  variant = "contained" color = "primary" onClick = {()=>setWarningOpen(true)}>Confirm</Button>
+                                    <IconButton color="primary" onClick = {()=>setWarningOpen(true)}>
+                                        <DoneIcon/>
+                                    </IconButton>
+                                    <IconButton color="secondary" onClick = {()=>setLocking(true)}>
+                                        <CancelIcon/>
+                                    </IconButton>
+                                    {/* <Button  variant = "contained" color = "secondary" onClick = {()=>setLocking(true)}>Cancel</Button>
+                                    <Button  variant = "contained" color = "primary" onClick = {()=>setWarningOpen(true)}>Confirm</Button> */}
                             </React.Fragment>
                         }
                 </Grid>

@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-
+import Tooltip from '@material-ui/core/Tooltip';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -85,12 +85,17 @@ const DesignTypeBuilderComponentView = (props) => {
                                             primary={_component.title}
                                         />
                                         <ListItemSecondaryAction>
-                                            <IconButton edge="end" aria-label="edit" onClick = {()=>onEditComponent(_component.id)}>
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton edge="end" aria-label="delete" onClick = {() => onDeleteComponent(_component)}>
-                                                <DeleteIcon />
-                                            </IconButton>
+                                            <Tooltip title="Edit">
+                                                <IconButton edge="end" aria-label="edit" onClick = {()=>onEditComponent(_component.id)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </Tooltip>
+
+                                            <Tooltip title="Delete">
+                                                <IconButton edge="end" aria-label="delete" onClick = {() => onDeleteComponent(_component)}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>      
                                         </ListItemSecondaryAction>
                                     </ListItem>
                                 )

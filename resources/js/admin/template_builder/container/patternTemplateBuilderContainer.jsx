@@ -10,11 +10,17 @@ import TaskTemplateBuilderContainer from './taskTemplateBuilderContainer';
 import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
+import ImageUploader from "react-images-upload";
 
+import PhotoCamera from '@material-ui/icons/PhotoCamera'
+import CloseIcon from '@material-ui/icons/Close';;
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Cancel';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,7 +29,8 @@ import {
     apiLearningPattTempGet,
     apiLearningPattTempPost,
     apiLearningPattTempPut,
-    apiLearningPattTempDelete
+    apiLearningPattTempDelete,
+    apiLearningPattTempUploadImg
  } from '../../../api';
 
 import {AppContextStore} from '../../../container/app';
@@ -34,12 +41,16 @@ const PatternTemplateBuilderContainer = (props) => {
     const [patternTemplate, setPatternTemplate] =  React.useState({
         id: -1,
         tasks: [],
-        title: ""
+        title: "",
+        media: ""
     });
-    const [displayMode, setDisplayMode] = React.useState('edit');
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [isEditTitle, setIsEditTitle] = React.useState(false);
-    const {setLoadingOpen} = React.useContext(AppContextStore);
+    const [ pictures, setPictures] = React.useState("");
+    const [ isEditPic, setIsEditPic ] = React.useState(false);
+
+    const [ displayMode, setDisplayMode ] = React.useState('edit');
+    const [ anchorEl, setAnchorEl ] = React.useState(null);
+    const [ isEditTitle, setIsEditTitle ] = React.useState(false);
+    const {setLoadingOpen, returnImgSrc} = React.useContext(AppContextStore);
 
     React.useEffect(()=> {
         reloadPattern();
@@ -48,8 +59,51 @@ const PatternTemplateBuilderContainer = (props) => {
         }
     }, [props.pattern_id])
 
+    const onDropMedia = picture => {
+        if(picture.length > 0){
+            let fileReader = new FileReader();
+            fileReader.onloadend = () => {
+                setPictures(fileReader.result);
+            }
+            fileReader.readAsDataURL(picture[0]);
+        }else{
+            setPictures("");
+        }
+    }
 
+    const onEditMedia = () => {
+        setIsEditPic(true);
+    }
 
+    const onCancelMedia = () => {
+        setPictures("");
+        setIsEditPic(false);
+    }
+
+    const onSaveMedia = () => {
+        if( pictures != ""){
+            //update pattern media
+            apiLearningPattTempUploadImg(pictures).then((response) => {
+                var temp  = JSON.parse(JSON.stringify(patternTemplate));
+                temp['media'] = response.data.path;
+                //avoid adding new tasks
+                delete temp['tasks'];
+                apiLearningPattTempPut(temp).then(
+                    ()=>{
+                        reloadPattern();
+                        setIsEditTitle(false);
+                        setAnchorEl(null);
+                        setIsEditPic(false);
+                    }
+                )
+            })
+
+        }
+    }   
+
+    const onFinish = () => {
+        window.location.href = "../pattern_template";
+    }
 
     const reloadPattern = () => {
         setLoadingOpen(true)
@@ -61,7 +115,6 @@ const PatternTemplateBuilderContainer = (props) => {
         )
     }
 
-
     const onChangeTitle = (event) => {
         setPatternTemplate({
             ...patternTemplate,
@@ -70,7 +123,8 @@ const PatternTemplateBuilderContainer = (props) => {
     }
 
     const onClickRename = () => {
-        var temp  = patternTemplate;
+        var temp  = JSON.parse(JSON.stringify(patternTemplate));
+
         //avoid adding new tasks
         delete temp['tasks'];
         apiLearningPattTempPut(patternTemplate).then(
@@ -80,6 +134,12 @@ const PatternTemplateBuilderContainer = (props) => {
                 setAnchorEl(null);
             }
         )
+    }
+
+    const onCancelRename = () => {
+        reloadPattern();
+        setIsEditTitle(false);
+        setAnchorEl(null);
     }
 
     const addPatternTemplate = () => {
@@ -101,7 +161,8 @@ const PatternTemplateBuilderContainer = (props) => {
     const diplayEditView = () => {
         return (
             <Paper style = {{padding: 16}}>
-            <Grid container  justify="center" alignItems="center">
+                <Grid container  justify="center" alignItems="center">
+                
                 <Grid item xs = {12}>
                     {
                         !isEditTitle? 
@@ -138,16 +199,57 @@ const PatternTemplateBuilderContainer = (props) => {
                                 <TextField label="Pattern Title" variant="filled" fullWidth value = {patternTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
                             </Grid>
                             <Grid item xs ={2}>
-                                <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
-                                <Button variant = "contained" color = "Secondary" onClick = {() => {setIsEditTitle(false)}}>Cancel</Button>
+                                <IconButton color = "primary" onClick = {onClickRename}>
+                                    <DoneIcon/>
+                                </IconButton>
+                                <IconButton color = "Secondary" onClick = {onCancelRename}> 
+                                    <CancelIcon /> 
+                                </IconButton>
+                                {/* <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
+                                <Button variant = "contained" color = "Secondary" onClick = {() => {setIsEditTitle(false)}}>Cancel</Button> */}
                             </Grid>
                         </Grid>
                     }
                 </Grid>
-                
+
+                <Grid container item xs ={12} justify = {"center"}>
+                {
+                    isEditPic?
+                    <React.Fragment>
+                        <Grid item xs = {10}>
+                            <ImageUploader
+                                withIcon={true}
+                                onChange={onDropMedia}
+                                imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                                maxFileSize={5242880}
+                                singleImage = {true}
+                                withPreview = {true}
+                            />
+                        </Grid>
+                        <Grid container item xs = {2} alignItems = {"center"}>
+                            <IconButton color="primary" aria-label="upload picture">
+                                <DoneIcon onClick = {onSaveMedia}/>
+                            </IconButton>
+                            <IconButton color="secondary" aria-label="upload picture">
+                                <CloseIcon onClick = {onCancelMedia}/>
+                            </IconButton>
+                        </Grid>
+                    </React.Fragment>
+                    :
+                    <React.Fragment>
+                        <img src = {returnImgSrc(patternTemplate.media)} style = {{maxWidth: 400}}/>
+                        <IconButton color="primary" aria-label="upload picture">
+                            <PhotoCamera onClick = {onEditMedia}/>
+                        </IconButton>
+                    </React.Fragment>
+                }
+                </Grid>
+
                 <Grid container item xs = {12}>
                     <Grid item xs = {12}>
-                        Related Task
+                        <Typography variant="h6" gutterBottom>
+                            Related Task
+                        </Typography>     
                     </Grid>
 
                     <Grid container item xs = {12}>
@@ -162,7 +264,7 @@ const PatternTemplateBuilderContainer = (props) => {
                 </Grid>
 
                 <Grid item xs = {12}>
-                    <Button variant = "contained" color = "primary" fullWidth onClick = {() => {window.location.href = "../pattern_template"}}>Finish</Button>
+                    <Button variant = "contained" color = "primary" fullWidth onClick = {onFinish}>Finish</Button>
                 </Grid>
             </Grid>
             </Paper>

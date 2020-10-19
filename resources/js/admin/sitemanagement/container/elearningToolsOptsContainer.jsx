@@ -133,7 +133,7 @@ const ELearningToolsOptsContainer = () => {
                                                 <ListItemText 
                                                     primary = {_elearningToolOpts.description}
                                                     secondary= {
-                                                        "Update By:" + _elearningToolOpts.updatedby.name + "@" + _elearningToolOpts.updated_at
+                                                        "Updated By:" + _elearningToolOpts.updatedby.name + "@" + _elearningToolOpts.updated_at
                                                         + " || " 
                                                         + "Created By: " + _elearningToolOpts.createdby.name + "@" + _elearningToolOpts.created_at } 
                                                 />

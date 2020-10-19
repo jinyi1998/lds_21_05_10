@@ -7,16 +7,17 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
+
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
 
 import ComponentDesignTypeView from '../component/componentDesignTypeView';
 import OutcomeBuilderContainer from './outcomeBuilderContainer';
@@ -68,7 +69,7 @@ function TabPanel(props) {
         )}
       </div>
     );
-  }
+}
 
 TabPanel.propTypes = {
     children: PropTypes.node,
@@ -88,8 +89,8 @@ const ComponentTemplateBuilderContainer = (props) => {
     const classes = useStyles();
 
     const { setLoadingOpen } = React.useContext(AppContextStore);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [isEditTitle, setIsEditTitle] = React.useState(false);
+    const [ anchorEl, setAnchorEl ] = React.useState(null);
+    const [ isEditTitle, setIsEditTitle ] = React.useState(false);
     const [ tab, setTab ] = React.useState(0);
 
     const [ componentTemplate, setComponentTemplate] = React.useState({
@@ -107,13 +108,27 @@ const ComponentTemplateBuilderContainer = (props) => {
 
     //#region local action
     const onClickRename = () => {
-        var temp = componentTemplate;
+        // deep copy temp from component template
+        var temp = JSON.parse(JSON.stringify(componentTemplate)); 
+        //aviod adding new patterns
+        delete temp['patterns'];
+        //aviod adding new tasks
+        delete temp['tasks'];
+
         setLoadingOpen(true)
         setAnchorEl(null)
+
         apiLearningCompTempPut(temp).then(() => {
             reFreshComponent();
-            setLoadingOpen(false)
+            setIsEditTitle(false);
+            setLoadingOpen(false);
         })
+    }
+
+    const onCancelRename = () => {
+        setIsEditTitle(false);
+        setAnchorEl(null);
+        reFreshComponent();
     }
 
     const reFreshComponent = () => {
@@ -168,9 +183,9 @@ const ComponentTemplateBuilderContainer = (props) => {
             'component_id': componentTemplate.id
         }
 
-        apiLearningCompTempDeletePattern(request).then(
-            // location.reload()
-        );
+        apiLearningCompTempDeletePattern(request).then(()=>{
+            reFreshComponent();
+        });
     }
 
     const onChangeDesignType = (designtype_id) => {
@@ -318,10 +333,10 @@ const ComponentTemplateBuilderContainer = (props) => {
                                 </Grid>
                                 <Grid item xs ={2}>
                                     <IconButton
-                                    aria-label="more"
-                                    aria-controls="long-menu"
-                                    aria-haspopup="true"
-                                    onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
+                                        aria-label="more"
+                                        aria-controls="long-menu"
+                                        aria-haspopup="true"
+                                        onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
                                     >
                                         <MoreVertIcon />
                                     </IconButton>
@@ -345,8 +360,14 @@ const ComponentTemplateBuilderContainer = (props) => {
                                     <TextField label="Component Template Title" variant="filled" fullWidth value = {componentTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
                                 </Grid>
                                 <Grid item xs ={2}>
-                                    <Button variant = "contained" color = "secondary" onClick = {() => {setIsEditTitle(false);   setAnchorEl(null)}}>Cancel</Button>
-                                    <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
+                                    <IconButton color = "primary" onClick = {onClickRename}>
+                                        <DoneIcon/>
+                                    </IconButton>
+                                    <IconButton color = "secondary" onClick = {onCancelRename}>
+                                        <CancelIcon/>
+                                    </IconButton>
+                                    {/* <Button variant = "contained" color = "secondary" onClick = {onCancelRename}>Cancel</Button>
+                                    <Button variant = "contained" color = "primary" onClick = {onClickRename}>Confirm</Button> */}
                                 </Grid>
                             </Grid>
                         }

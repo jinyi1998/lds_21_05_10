@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\LearningPatternTemplate;
 use Auth;
+use Intervention\Image\Facades\Image as Image;
 
 class LearningPatternTemplateController extends Controller
 {
@@ -89,6 +90,9 @@ class LearningPatternTemplateController extends Controller
             $pattern->created_at = now();
         }
         $pattern->updated_at = now();
+        if($request->has('media')){
+            $pattern->media = $request->media;
+        }
         $pattern->save();
 
         if($request->has('component_id')){
@@ -117,5 +121,19 @@ class LearningPatternTemplateController extends Controller
         }
 
         return $pattern;
+    }
+
+    public function uploadImg(Request $request){
+        $data = $request->all();
+        $png_url = "pattern_media_".time().".png";
+        $path =  public_path().'/asset'.'/image'.'/pattern_media'. '/'.$png_url;
+    
+        $image = Image::make(file_get_contents($data[0]))->save($path);     
+        $image->destroy();
+        $response = array(
+            'status' => 'success',
+            'path' => '/asset'.'/image'.'/pattern_media'. '/'.$png_url,
+        );
+        return response()->json($response);
     }
 }

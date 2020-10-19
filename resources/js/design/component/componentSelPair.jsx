@@ -24,6 +24,8 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import GridOnIcon from '@material-ui/icons/GridOn';
 import ListIcon from '@material-ui/icons/List';
 
+import {AppContextStore} from '../../container/app';
+
 import {
     apiDesignTypeList,
     apiLearningCompGetLearningCompByDesignType,
@@ -58,7 +60,8 @@ const useStyles = makeStyles(theme => ({
 const DesignComponentSelPair = (props) => {
     const classes = useStyles();
     const {handleAddShoppingCart} = props;
-    
+    const {returnImgSrc} = React.useContext(AppContextStore);
+
     const [designTypeOtps, setDesignTypeOtps] = React.useState([
     ])
     
@@ -141,7 +144,7 @@ const DesignComponentSelPair = (props) => {
                                         <Button style= {{width: 400, margin: "5%"}}  onClick={(event) => onSelectDesignType(_data.id)} variant="outlined">
                                             <Grid container>
                                                 <Grid item xs ={12}>
-                                                    <img src = {_data.media} className ={classes.media} />
+                                                    <img src = {returnImgSrc(_data.media)} className ={classes.media} />
                                                 </Grid>
                                                 <Grid item xs = {12}>
                                                     <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
@@ -192,7 +195,7 @@ const DesignComponentSelPair = (props) => {
                                             <Grid container>
                                                 <Grid item xs ={12}>
                                                     <img src = {_data.instructions?.length > 0? 
-                                                        _data.instructions[0].media : "https://elearning.cite.hku.hk/wp-content/uploads/2020/03/shutterstock_454259326-1024x754.jpg"
+                                                        returnImgSrc(_data.instructions[0].media) : returnImgSrc("")
                                                     } className ={classes.media} />
                                                 </Grid>
                                                 <Grid item xs = {12}>
@@ -231,7 +234,7 @@ const DesignComponentSelPair = (props) => {
                                             <Grid container>
                                                 <Grid item xs ={12}>
                                                     <img src = {_data.instructions?.length > 0? 
-                                                        _data.instructions[0].media : "https://elearning.cite.hku.hk/wp-content/uploads/2020/03/shutterstock_454259326-1024x754.jpg"
+                                                        returnImgSrc(_data.instructions[0].media) : returnImgSrc("")
                                                     } className ={classes.media} />
                                                 </Grid>
                                                 <Grid item xs = {12}>
