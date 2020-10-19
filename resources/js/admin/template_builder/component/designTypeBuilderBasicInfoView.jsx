@@ -17,7 +17,7 @@ import { apiDesignTypePut, apiDesignTypeUploadImg } from '../../../api';
 
 const DesignTypeBuilderBasicInfoView = (props) =>{
     const { designType, refreshDesignType } = React.useContext(DesignTypeBuilderContextStore);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const { setLoadingOpen, returnImgSrc } = React.useContext(AppContextStore);
 
     const [ pictures, setPictures] = React.useState("");
     const [ isEditPic, setIsEditPic ] = React.useState(false);

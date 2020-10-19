@@ -118,9 +118,12 @@ class LearningComponentInstructionController extends Controller
     public function uploadImg(Request $request){
         $data = $request->all();
         $png_url = "component_instruction_".time().".png";
-        $path =  public_path().'/asset'.'/image'.'/component_instruction'. '/'.$png_url;
+        $path =  public_path().'/asset'.'/image'.'/component_instruction';
+        if(!file_exists($path)){
+            mkdir($path);
+        }
     
-        $image = Image::make(file_get_contents($data[0]))->save($path);     
+        $image = Image::make(file_get_contents($data[0]))->save($path. '/'.$png_url);     
         $image->destroy();
         $response = array(
             'status' => 'success',
