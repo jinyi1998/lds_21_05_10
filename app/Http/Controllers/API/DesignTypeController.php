@@ -123,9 +123,13 @@ class DesignTypeController extends Controller
     public function uploadImg(Request $request){
         $data = $request->all();
         $png_url = "designtype_".time().".png";
-        $path =  public_path().'/asset'.'/image'.'/design_type_logo'. '/'.$png_url;
+        $path =  public_path().'/asset'.'/image'.'/design_type_logo';
+
+        if(!file_exists($path)){
+            mkdir($path);
+        }
     
-        $image = Image::make(file_get_contents($data[0]))->save($path);     
+        $image = Image::make(file_get_contents($data[0]))->save($path.'/'.$png_url);     
         $image->destroy();
         $response = array(
             'status' => 'success',

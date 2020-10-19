@@ -126,9 +126,12 @@ class LearningPatternTemplateController extends Controller
     public function uploadImg(Request $request){
         $data = $request->all();
         $png_url = "pattern_media_".time().".png";
-        $path =  public_path().'/asset'.'/image'.'/pattern_media'. '/'.$png_url;
+        $path =  public_path().'/asset'.'/image'.'/pattern_media';
+        if(!file_exists($path)){
+            mkdir($path, 0777, true);
+        }
     
-        $image = Image::make(file_get_contents($data[0]))->save($path);     
+        $image = Image::make(file_get_contents($data[0]))->save($path.'/'.$png_url);     
         $image->destroy();
         $response = array(
             'status' => 'success',
