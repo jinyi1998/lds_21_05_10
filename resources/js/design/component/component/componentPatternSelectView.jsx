@@ -12,10 +12,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 
 import LearningTaskView from '../../task/learningTaskView';
+import ComponentPatternBinFilterContainer from '../container/componentPatternBinFilterContainer';
 
 import {AppContextStore} from '../../../container/app';
 
@@ -113,7 +113,7 @@ const ComponentPatternSelectView = (props) => {
     }
 
     const displayDisplay = () => {
-        if(!(selectDisplayPattern == -1)){
+        if(!(selectDisplayPattern == -1 || patternOpts.length == 0 || typeof patternOpts[selectDisplayPattern] == 'undefined')){
             return (
                 <DialogContent>
                     <Grid container alignItems="flex-start">
@@ -142,18 +142,16 @@ const ComponentPatternSelectView = (props) => {
                             <Grid item xs ={12}> <Typography variant="h6" gutterBottom> Tasks</Typography></Grid>
                             {patternOpts[selectDisplayPattern].tasks.map((_task, index)=>{
                                 return(
-                                    <React.Fragment>
-                                        <Grid item xs ={12} key = {index}>
-                                            <LearningTaskView 
-                                                taskID = {_task.id} 
-                                                taskData = {_task} 
-                                                key = {index}
-                                                editBtn = {false}
-                                                duplicateBtn = {false}
-                                                deleteBtn = {false}
-                                            />
-                                        </Grid>
-                                    </React.Fragment>
+                                    <Grid item xs ={12} key = {index}>
+                                        <LearningTaskView 
+                                            taskID = {_task.id} 
+                                            taskData = {_task} 
+                                            key = {index}
+                                            editBtn = {false}
+                                            duplicateBtn = {false}
+                                            deleteBtn = {false}
+                                        />
+                                    </Grid>
                                 );
                             })}
                         </Grid>
@@ -162,7 +160,7 @@ const ComponentPatternSelectView = (props) => {
             );
         }else{
             return (
-                "error"
+                null
             );
         }
        
@@ -211,10 +209,21 @@ const ComponentPatternSelectView = (props) => {
                                 </Tooltip>
                             </React.Fragment>
                     }
+                    <Grid item xs>
+                        <ComponentPatternBinFilterContainer 
+                            originalPatterns = {props.component.patterns} 
+                            patternOpts = {patternOpts} 
+                            setPatternOpts = {setPatternOpts}/>
+                    </Grid>
                    
                 </Grid>
                 <Grid container>
-                    {
+                    {   
+                        patternOpts.length == 0? 
+                        <Grid container item xs = {12} justify = "center" alignContent = "center" style = {{margin: 24}}>
+                            <Typography variant = "subtitle1">No available patterns</Typography>
+                        </Grid>
+                        :
                         patternOpts.map((_patternOpt, index)=>{
                             return(
                                 <Grid item xs = {4} key ={index}>
@@ -231,7 +240,6 @@ const ComponentPatternSelectView = (props) => {
                                             <Grid item xs = {12}>
                                                 <Checkbox
                                                     checked={selectPattern == index}
-                                                    // onClick = {(e) => {e.preventDefault(); e.stopPropagation();}}
                                                     onClick={(event) => handleOnSelect(event, index)}
                                                 />
                                             </Grid>

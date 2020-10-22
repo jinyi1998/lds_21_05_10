@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl';
+import KitchenIcon from '@material-ui/icons/Kitchen';
 // import DesigmItem from './designItem';
 
 
@@ -111,6 +112,30 @@ const TemplateBuilderContainer = (props) => {
                             <Grid  item xs = {12}>
                                 <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
                                     You can edit the pattern template here.
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Button>
+                </Grid>
+
+                <Grid item xs = {4}>
+                    <Button 
+                        variant="outlined" 
+                        className ={classes.button}
+                        onClick={ (event)=>{window.location.href = "patternbin_category"}}  
+                    >
+                        <Grid container>
+                            <Grid item xs ={12}>
+                                <KitchenIcon  className ={classes.media} />
+                            </Grid>
+                            <Grid item xs = {12}>
+                                <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                    Pattern Bin Management
+                                </Typography>
+                            </Grid>
+                            <Grid  item xs = {12}>
+                                <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                                    You can edit the pattern bin/ category here.
                                 </Typography>
                             </Grid>
                         </Grid>

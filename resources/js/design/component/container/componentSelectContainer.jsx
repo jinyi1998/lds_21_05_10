@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import ComponentPatternSelectView from '../component/componentPatternSelectView';
 import ComponentAddContainer from './componentAddContainer';
+import ComponentPatternBinFilterContainer from './componentPatternBinFilterContainer';
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
@@ -150,10 +151,10 @@ const ComponentSelectContainer = (props ) => {
                     </Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onCloseDialog}>
+                    <Button onClick={onCloseDialog} variant = {"outlined"}>
                         I need more time here
                     </Button>
-                    <Button onClick={()=>{importComponentTempToComponent()}} color="secondary" autoFocus>
+                    <Button onClick={()=>{importComponentTempToComponent()}} color="secondary" autoFocus variant = {"outlined"}>
                         I am ready to go!
                     </Button>
                 </DialogActions>
@@ -203,15 +204,13 @@ const ComponentSelectContainer = (props ) => {
             {
                 components.map((_component, index) => {
                     return(
-                        <React.Fragment>
-                            <Grid container style = {{padding: 16}}>
-                               <ComponentPatternSelectView 
-                                    component = {_component} 
-                                    feedbackComponent ={feedbackComponent} 
-                                    onDeleteComponent = {() => onDeleteComponent(index)}
-                                />
-                            </Grid>   
-                        </React.Fragment>
+                        <Grid container style = {{padding: 16}} key = {index}>
+                            <ComponentPatternSelectView 
+                                component = {_component} 
+                                feedbackComponent ={feedbackComponent} 
+                                onDeleteComponent = {() => onDeleteComponent(index)}
+                            />
+                        </Grid>   
                     )
                 }) 
             }

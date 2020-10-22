@@ -25,6 +25,9 @@ import ComponentTemplateViewListContainer from '../admin/template_builder/contai
 import PatternTemplateViewListContainer from '../admin/template_builder/container/patternTemplateViewListContainer';
 import PatternTemplateBuilderContainer from '../admin/template_builder/container/patternTemplateBuilderContainer';
 import ComponentTemplateBuilderContainer from '../admin/template_builder/container/componentTemplateBuilderContainer';
+import PatternBinCategoryListContainer from '../admin/template_builder/container/patternBinCategoryListContainer';
+import PatternBinCategoryContainer from '../admin/template_builder/container/patternBinCategoryContainer';
+import PatternBinContainer from '../admin/template_builder/container/patternBinContainer';
 //#endregion
 
 //#region site management related
@@ -242,6 +245,12 @@ const App = (props) => {
         return <PatternTemplateViewListContainer />
       case 'admin_pattern_template_builder':
         return <PatternTemplateBuilderContainer pattern_id = {props.pattern_id}/>
+      case 'admin_pattern_bin_category_list':
+        return < PatternBinCategoryListContainer/>;
+      case 'admin_pattern_bin_category':
+        return < PatternBinCategoryContainer patternbin_category_id = {props.patternbin_category_id}/>;
+      case 'admin_pattern_bin':
+        return < PatternBinContainer  patternbin_id = {props.patternbin_id}/>;
       //#endregion
 
       case 'admin_usersmanagement':

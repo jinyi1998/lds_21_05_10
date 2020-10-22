@@ -185,7 +185,8 @@ const Design = (props) => {
 
         if(course.components.length == 0){
           setLoadingOpen(false)
-          setActiveStep(0);
+          // setActiveStep(0);
+          setActiveStep(props.step - 1);
         }else{
           setLoadingOpen(false)
           if(props.step == 0){
@@ -271,7 +272,6 @@ const Design = (props) => {
             </div>
           </React.Fragment>
         )
-        // return  <LearningOutcomeToDo />
       case 3:
         return (
           <React.Fragment>

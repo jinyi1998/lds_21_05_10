@@ -61,6 +61,9 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('pattern_template_builder', '\App\Http\Controllers\RouteController@admin_pattern_template_builder_new');
     Route::get('pattern_template_builder/{id}', '\App\Http\Controllers\RouteController@admin_pattern_template_builder');
     Route::get('pattern_template', '\App\Http\Controllers\RouteController@admin_pattern_template');
+    Route::get('patternbin_category', '\App\Http\Controllers\RouteController@admin_pattern_bin_category_list');
+    Route::get('patternbin_category/{id}', '\App\Http\Controllers\RouteController@admin_pattern_bin_category');
+    Route::get('patternbin/{id}', '\App\Http\Controllers\RouteController@admin_pattern_bin');
     #endregion
   
     Route::get('dashboard', '\App\Http\Controllers\RouteController@admin_dashboard');

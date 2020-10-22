@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LearningPatternTemplate extends Model
 {
     //
-    protected $table = 'learningpatteren_template';
+    protected $table = 'learningpattern_template';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
@@ -29,6 +29,10 @@ class LearningPatternTemplate extends Model
 
     public function componentsid(){
         return $this->hasMany('App\ComponentPatternTemplateRelation', 'pattern_id');
+    }
+
+    public function patternbinsid(){
+        return $this->hasMany('App\PatternBinPatternRelation', 'pattern_id');
     }
 
     public function createdby(){

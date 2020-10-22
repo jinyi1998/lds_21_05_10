@@ -35,6 +35,7 @@
                     data-patternid = {{ isset($patternid)? $patternid : '-1' }}
                     data-componentid = {{ isset($componentid)? $componentid : '-1' }}
                     data-designtypeid = {{ isset($designtypeid)? $designtypeid : '-1' }}
+                    data-patternbin_category_id = {{ isset($patternbin_category_id)? $patternbin_category_id : '-1' }}
                     >
                     <!-- <?php print_r(session()->all()) ?> -->
                     </div>

@@ -23,7 +23,7 @@ import ComponentDesignTypeView from '../component/componentDesignTypeView';
 import OutcomeBuilderContainer from './outcomeBuilderContainer';
 import TaskTemplateBuilderContainer from './taskTemplateBuilderContainer';
 import PatternTemplateBuilderContainer from './patternTemplateBuilderContainer';
-import PatternTemplateAddComponentContainer from './patternTemplateAddComponentContainer';
+import PatternTemplateSelectContainer from './patternTemplateSelectContainer';
 import ComponentTemplateInstructionContainer from './componentTemplateInstructionContainer'
 
 
@@ -278,7 +278,7 @@ const ComponentTemplateBuilderContainer = (props) => {
                             }
                         </Grid>
 
-                        <PatternTemplateAddComponentContainer 
+                        <PatternTemplateSelectContainer 
                             earse_pattern_id = {componentTemplate.patterns.map( _x => _x.id)}  
                             component_id = {componentTemplate.id} 
                             onFinish = {onPatternFinish}

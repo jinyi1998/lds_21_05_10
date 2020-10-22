@@ -13,7 +13,7 @@ class CreateLearningpatterenTemplate extends Migration
      */
     public function up()
     {
-        Schema::create('learningpatteren_template', function (Blueprint $table) {
+        Schema::create('learningpattern_template', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
             $table->smallInteger('created_by');
@@ -23,7 +23,7 @@ class CreateLearningpatterenTemplate extends Migration
             $table->timestamp('updated_at')->useCurrent();
         });
 
-        DB::table('learningpatteren_template')->insert([
+        DB::table('learningpattern_template')->insert([
             [
                 'title' => 'Pattern 1: Client interview',
                 'created_by' => 1,
@@ -131,7 +131,7 @@ class CreateLearningpatterenTemplate extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learningpatteren_template');
+        Schema::dropIfExists('learningpattern_template');
         // Schema::dropIfExists('learningpatteren_learningtask_relation_template');
     }
 }
