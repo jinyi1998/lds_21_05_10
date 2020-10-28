@@ -73,6 +73,10 @@ class LearningComponentInstructionController extends Controller
     public function destroy($id)
     {
         //
+        $instruction = ComponentInstruction::find($id);
+        $instruction->delete();
+
+        return response()->json("success");
     }
 
     public function save (ComponentInstruction $instruction, Request $request){
@@ -98,16 +102,38 @@ class LearningComponentInstructionController extends Controller
         $instruction->save();
 
         if($request->has('component_id')){
-            $instruction->componentid()->delete();
-            $instruction->componentid()->create([
-                'component_id' => $request->component_id,
-                'component_instruction_id' => $instruction->id,
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
-                'is_deleted' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            if( $instruction->componentid()
+                ->where('component_component_instruction_relation.component_id', $request->component_id)
+                ->where('component_component_instruction_relation.component_instruction_id', $instruction->id)
+                ->count()){
+                    //update existing
+                    if($request->has('sequence')){
+                        $instruction->componentid()->update([
+                            'component_id' => $request->component_id,
+                            'component_instruction_id' => $instruction->id,
+                            'created_by' => Auth::user()->id,
+                            'updated_by' => Auth::user()->id,
+                            'sequence' => $request->sequence,
+                            'is_deleted' => 0,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+            }else{
+                //create new one
+                $instruction->componentid()->create([
+                    'component_id' => $request->component_id,
+                    'component_instruction_id' => $instruction->id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'sequence' => 1,
+                    'is_deleted' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+            // $instruction->componentid()->delete();
+          
         }
         $instruction->save();
 

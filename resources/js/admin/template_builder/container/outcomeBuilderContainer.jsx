@@ -57,7 +57,7 @@ const OutcomeBuilderContainer = (props) => {
     }, [props.unit_outcomes_opts])
 
     React.useEffect(()=> {
-        setLoadingOpen(false)
+        // setLoadingOpen(false)
     }, [unitOutcomeOpts, outcomes])
 
 

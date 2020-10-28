@@ -74,7 +74,7 @@ class ComponentTemplate extends Model
             'id', // target table target id
             'id', // local table local id
             'component_instruction_id' //middle relation table target id
-        );
+        )->with(['componentid'])->orderBy('sequence');
     }
 
     public function createdby(){

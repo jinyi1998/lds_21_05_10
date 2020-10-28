@@ -57,7 +57,7 @@ const ToolMenu = (props) => {
         }).then(
             response=>{
                 // location.reload();
-                console.log(response);
+                // console.log(response);
             }
         )
         .catch(error => console.log(error));
@@ -125,7 +125,7 @@ const ToolMenu = (props) => {
                         label="Turn On Design Studio Tutourial"
                     />
                 </MenuItem>
-                <MenuItem onClick={()=> OnCloseUserMenu('language')}>Language Setting</MenuItem>
+                {/* <MenuItem onClick={()=> OnCloseUserMenu('language')}>Language Setting</MenuItem> */}
                 <MenuItem onClick={()=>OnCloseUserMenu('logout')}>Logout</MenuItem>
              
             </Menu>

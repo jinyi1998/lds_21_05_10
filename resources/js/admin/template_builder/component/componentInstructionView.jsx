@@ -23,6 +23,7 @@ import {AppContextStore} from '../../../container/app';
 
 const ComponentInstructionView = (props) => {
     const { setLoadingOpen, returnImgSrc } = React.useContext(AppContextStore);
+    const {provided, snapshot, index} = props;
 
     const [ instruction, setInstruction] = React.useState({
         id: -1,
@@ -42,6 +43,37 @@ const ComponentInstructionView = (props) => {
 
 
     //#region local action
+    const getDraggable = (provided, snapshot) => {
+        if(typeof provided == 'undefined'){
+            return (
+               null
+            );
+        }else{
+            return (
+                {
+                    // styles we need to apply on draggables
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    style: getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )
+                }
+            );
+        }
+    }
+
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+      
+        ...(isDragging && {
+          background: "rgb(235,235,235)"
+        })
+    });
+    
+    
     const handleOnChange = (event) =>{
         switch(event.target.name){
             case 'title':
@@ -105,12 +137,14 @@ const ComponentInstructionView = (props) => {
         if(instruction.id == -1){
             // create new instruction
             apiLearningCompInstructionPost(instruction).then((response)=>{
-                setInstruction(response.data);
+                // setInstruction(response.data);
+                props.reloadInstructions();
                 setLoadingOpen(false);
             })
         }else{
             apiLearningCompInstructionPut(instruction).then((response)=>{
-                setInstruction(response.data)
+                // setInstruction(response.data)
+                props.reloadInstructions();
                 setLoadingOpen(false);
             })
         }
@@ -205,7 +239,7 @@ const ComponentInstructionView = (props) => {
     return (
         <React.Fragment>
             <Paper style = {{padding: 16}}>
-                <Grid container item xs ={12}>
+                <Grid container item xs ={12}  {...getDraggable(provided, snapshot)}>
 
                     <Grid container item xs ={11}>
                        {

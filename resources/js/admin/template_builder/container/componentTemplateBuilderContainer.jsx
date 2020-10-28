@@ -375,7 +375,7 @@ const ComponentTemplateBuilderContainer = (props) => {
                     
                     <Grid container item xs = {12}>
                         <Tabs value={tab} onChange={handleChange} indicatorColor="primary" textColor="primary">
-                            <Tab label="Baisc" {...a11yProps(0)} value = {0}/>
+                            <Tab label="Basic" {...a11yProps(0)} value = {0}/>
                             <Tab label="Instruction" {...a11yProps(1)} value = {1}/>
                         </Tabs>
                     </Grid>

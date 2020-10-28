@@ -82,7 +82,7 @@ const LearningOutcomeEdit = (props) => {
         unit_outcomeid: ""
     });
 
-    const { options } = React.useContext(AppContextStore);
+    const { options, setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
     const learningTypeTemp = options.learningOutcomeType;
 
     const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
@@ -215,7 +215,6 @@ const LearningOutcomeEdit = (props) => {
     }
 
     const outcomeDescchange = value => {
-   
         setLearningOutcome({...learningOutcome, description:value});
     }
 
@@ -249,19 +248,34 @@ const LearningOutcomeEdit = (props) => {
             json["course_id"] = courseID;
         }
 
-
+        setLoadingOpen(true);
         if(outcomeID == -1){
+           
             apiLearningOutcomePost(json)
-            .then(  refreshCourse() )
-            .catch(error => console.log(error));
+            .then( () => {
+                setLoadingOpen(false)
+                displayMsg("success", "Outcome Added");
+                refreshCourse();
+            })
+            .catch(error => {
+                setLoadingOpen(false);
+                displayMsg("error", "Error Occured");
+                console.log(error)
+            });
     
         }else{
             apiLearningOutcomePut(json)
-            .then(  refreshCourse() )
-            .catch(error => console.log(error));
+            .then( ()=> {
+                setLoadingOpen(false)
+                displayMsg("success", "Outcome Updated");
+                refreshCourse()
+            })
+            .catch(error => {
+                setLoadingOpen(false);
+                displayMsg("error", "Error Occured");
+                console.log(error)
+            });
         }
-       
-
         handleClose();
     }
 

@@ -16,8 +16,8 @@ require('./design/printable/printableContainer');
 require('./components/sideMenu');
 require('./components/topMenu');
 require('./container/app');
-require('./dashboard/myDesign');
-require('./dashboard/publicDesign');
+require('./dashboard/container/myDesignContainer');
+require('./dashboard/container/publicDesignContainer');
 require('./usergroup/container/usergroupsListViewContainer');
 require('./usergroup/container/usergroupContainer');
 

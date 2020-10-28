@@ -98,9 +98,17 @@ const PatternBinCategoryListContainer = (props) => {
                             <TableHead/>
 
                             <TableBody>
-                                {patternBinCategoryList
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((_patternBinCategory ) => (
+                                {
+                                patternBinCategoryList.length == 0 ?
+                                <TableRow key ={0} hover style = {{cursor: "pointer"}}>
+                                    <TableCell component="th" scope="row">
+                                        No Pattern Bin
+                                    </TableCell>
+                                </TableRow>
+                                :
+                                patternBinCategoryList
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((_patternBinCategory ) => (
                                         <TableRow key ={_patternBinCategory.id} hover style = {{cursor: "pointer"}}>
                                             <TableCell component="th" scope="row"  onClick={ () => {onEnterPatternBinCategoryDetail(_patternBinCategory.id)} }>
                                                 <ListItemText 

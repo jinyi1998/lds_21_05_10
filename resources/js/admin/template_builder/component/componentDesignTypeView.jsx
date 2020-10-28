@@ -31,9 +31,15 @@ const ComponentDesignTypeView = (props) => {
     
     React.useEffect(()=>{
         setDesignTypeID(props.designtype_id)
-        setLoadingOpen(false)
+        // setLoadingOpen(false)
     }
     ,[props.designtype_id])
+
+    React.useEffect(()=>{
+        if(Object.keys(options).length > 0){
+            setLoadingOpen(false)
+        }
+    })
 
     //#region local action
     const onChangeDesignType = (event) => {
