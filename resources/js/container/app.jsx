@@ -1,17 +1,20 @@
 
 import React from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import SideMenu from '../components/sideMenu';
 import TopMenu from '../components/topMenu';
 
 import DesignContainer from './designContainer';
-import MyDesign from '../dashboard/myDesign';
-import PublicDesign from '../dashboard/publicDesign';
+import MyDesignContainer from '../dashboard/container/myDesignContainer';
+import PublicDesignContainer from '../dashboard/container/publicDesignContainer';
 import UsergroupContainer from '../usergroup/container/usergroupContainer';
 import UsergroupsListViewContainer from '../usergroup/container/usergroupsListViewContainer';
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
@@ -25,6 +28,9 @@ import ComponentTemplateViewListContainer from '../admin/template_builder/contai
 import PatternTemplateViewListContainer from '../admin/template_builder/container/patternTemplateViewListContainer';
 import PatternTemplateBuilderContainer from '../admin/template_builder/container/patternTemplateBuilderContainer';
 import ComponentTemplateBuilderContainer from '../admin/template_builder/container/componentTemplateBuilderContainer';
+import PatternBinCategoryListContainer from '../admin/template_builder/container/patternBinCategoryListContainer';
+import PatternBinCategoryContainer from '../admin/template_builder/container/patternBinCategoryContainer';
+import PatternBinContainer from '../admin/template_builder/container/patternBinContainer';
 //#endregion
 
 //#region site management related
@@ -74,11 +80,18 @@ const  useStyles = makeStyles(theme => ({
   }
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const App = (props) => {
 
   const [currentModule, setCurrentModule] = React.useState(props.module);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [loadingOpen, setLoadingOpen] = React.useState(false);
+  const [ responseOpen, setResponseOpen ] = React.useState(false);
+  const [ responseType, setResponseType ] = React.useState("error");
+  const [ responseMsg, setResponseMsg ] = React.useState("error");
 
   const classes = useStyles();
 
@@ -138,56 +151,62 @@ const App = (props) => {
     }
   }
 
+  const displayMsg = (type, msg) => {
+    setResponseType(type);
+    setResponseMsg(msg);
+    setResponseOpen(true);
+  }
+  
+  const handleClose = () => {
+    setResponseOpen(false);
+  }
+
   //#region Init Options Data
 
   async function fetchDesignTypeData() {
 
-    await apiDesignTypeList().then(response => {
-        setOptions(optionsInit=> ({
-            ...optionsInit,
-            "designType": response.data
-        }))
+    return apiDesignTypeList().then(response => {
+        // setOptions(optionsInit=> ({
+        //     ...optionsInit,
+        //     "designType": response.data
+        // }))
+        return {"designType": response.data};
     })
   }
 
   async function fetchlearningTypeTempData() {
 
-      apiLearningOutcomeGetOutcomeType()
+    return apiLearningOutcomeGetOutcomeType()
       .then(response => {
-          setOptions(optionsInit=> ({
-              ...optionsInit,
-              "learningOutcomeType": response.data,
-              "learningTypeTemp": response.data
-          }))
+          return {
+            "learningOutcomeType": response.data,
+            "learningTypeTemp": response.data
+          }
       }).catch(error => console.log(error));
 
   }
 
   async function fetchlearningPatternOptsData() {
-      await apiLearningTaskGetPatternOpts().then(
+      return apiLearningTaskGetPatternOpts().then(
           response => {
-              setOptions(optionsInit=> ({
-                  ...optionsInit,
-                  "learningPatternOpts": response.data
-              }));
+              return { "learningPatternOpts": response.data};
           }
       )
   }
 
   async function fetchlearningOptsData() {
 
-      await apiOptionsList().then(response=>{
-          setOptions(optionsInit=> ({
-              ...optionsInit,
-              "taskType": response.data.learningTasktypeOpts,
-              "taskClassType": response.data.classTypeOpts,
-              "taskSize": response.data.classSizeOpts,
-              "taskTarget": response.data.classTargetOpts,
-              "taskResource": response.data.resourceOpts,
-              "taskElearingResource": response.data.elearningtoolOpts,
-          }))
+      return apiOptionsList().then(response=>{
+
           setTaskTypeColorValue(response.data.learningTasktypeOpts)
-          setLoadingOpen(false)
+          return {
+            "taskType": response.data.learningTasktypeOpts,
+            "taskClassType": response.data.classTypeOpts,
+            "taskSize": response.data.classSizeOpts,
+            "taskTarget": response.data.classTargetOpts,
+            "taskResource": response.data.resourceOpts,
+            "taskElearingResource": response.data.elearningtoolOpts,
+          }
       })
       .catch(error => console.log(error));
   }
@@ -195,18 +214,29 @@ const App = (props) => {
 
 
   async function InitDesignOption() {
+    setLoadingOpen(true)
+    var updates = [];
+    updates.push(fetchlearningOptsData());
+    updates.push(fetchDesignTypeData());
+    updates.push(fetchlearningTypeTempData());
+    updates.push(fetchlearningPatternOptsData());
 
-      await fetchlearningOptsData();
-      await fetchDesignTypeData();
-      await fetchlearningTypeTempData();
-      await fetchlearningPatternOptsData();
+    Promise.all(updates).then((response)=>{
+      var temp = {};
+      response.map(_response => {
+        Object.keys(_response).map(_key => {
+          temp[_key] = _response[_key];
+        })
+      });
+      setOptions(temp);
+      setLoadingOpen(false)
+    });
   }
   //#endregion
 
   React.useEffect(()=> {
     InitDesignOption();
   }, [])
-
 
   const displayModule = () => {
     switch (currentModule){
@@ -216,9 +246,9 @@ const App = (props) => {
       case 'designstudio':
           return <DesignContainer courseID= {props.course_id} user = {props.user} step = {props.step}/>;
       case 'mydesign':
-        return <MyDesign/>;
+        return <MyDesignContainer/>;
       case 'publicdesign':
-        return <PublicDesign/>;
+        return <PublicDesignContainer/>;
       case 'usergroup':
         return  <UsergroupContainer user = {props.user}  usergroupid = {props.usergroupid}/>
       case 'usergroups':
@@ -242,6 +272,12 @@ const App = (props) => {
         return <PatternTemplateViewListContainer />
       case 'admin_pattern_template_builder':
         return <PatternTemplateBuilderContainer pattern_id = {props.pattern_id}/>
+      case 'admin_pattern_bin_category_list':
+        return < PatternBinCategoryListContainer/>;
+      case 'admin_pattern_bin_category':
+        return < PatternBinCategoryContainer patternbin_category_id = {props.patternbin_category_id}/>;
+      case 'admin_pattern_bin':
+        return < PatternBinContainer  patternbin_id = {props.patternbin_id}/>;
       //#endregion
 
       case 'admin_usersmanagement':
@@ -275,7 +311,8 @@ const App = (props) => {
         setLoadingOpen: setLoadingOpen,
         options: optionsInit,
         taskTypeColor: taskTypeColor,
-        returnImgSrc: returnImgSrc
+        returnImgSrc: returnImgSrc,
+        displayMsg: displayMsg
       }}
     >
       <Grid container>
@@ -289,13 +326,18 @@ const App = (props) => {
             
             <Grid xs item className={clsx(sideMenuOpen && classes.appBarShift, !sideMenuOpen && classes.normal)}>
                 {displayModule()}
-                {/* test */}
             </Grid>
       </Grid>
 
       <Backdrop className={classes.backdrop} open={loadingOpen} onClick={() => setLoadingOpen(false)}>
             <CircularProgress color="inherit" />
       </Backdrop>
+
+      <Snackbar open={responseOpen} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={responseType}>
+            {responseMsg}
+        </Alert>
+      </Snackbar>
 
     </AppContextStore.Provider>
   );

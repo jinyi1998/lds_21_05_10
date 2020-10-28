@@ -1,7 +1,6 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItem from '@material-ui/core/ListItem';
+
+import TextField from '@material-ui/core/TextField';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -19,8 +18,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
-import {
-    apiDesignTypeList, 
+import { 
     apiLearningCompTempList,
     apiLearningCompTempDelete
 } from '../../../api';
@@ -29,6 +27,8 @@ import {AppContextStore} from '../../../container/app';
 const ComponentTemplateViewListContainer = (props) => {
 
     const [ componentTemplates, setComponentTemplates ] = React.useState([]);
+    const [ componentsDisplay, setComponentsDisplay] = React.useState([]);
+    const [ searchText, setSearchText ] = React.useState("");
     const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
     const [ page, setPage ] = React.useState(0);
 
@@ -57,6 +57,15 @@ const ComponentTemplateViewListContainer = (props) => {
     }
     ,[])
 
+    React.useEffect(()=>{
+        setComponentsDisplay(componentTemplates);
+    }, [componentTemplates])
+
+    React.useEffect(()=>{
+        onSearch();
+    }, [searchText])
+
+
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -65,6 +74,19 @@ const ComponentTemplateViewListContainer = (props) => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
+
+    const onChangeSearchText = (event) => {
+        setSearchText(event.target.value);
+    }
+
+    const onSearch = () =>{
+        if(searchText.length > 0){
+            var temp = componentTemplates.filter((_component) => _component.title.toUpperCase().indexOf(searchText.toUpperCase()) >= 0);
+            setComponentsDisplay(temp);
+        }else{
+            setComponentsDisplay(componentTemplates);
+        }
+    }
 
     return (
         <React.Fragment>
@@ -81,39 +103,27 @@ const ComponentTemplateViewListContainer = (props) => {
                     </Button>
                 </Grid>
 
+
+                <Grid container item xs = {12} justify = {"flex-end"}>
+                    <Grid item xs ={2}>
+                        <TextField variant = {"outlined"} label = {"Search"} value = {searchText} onChange = {onChangeSearchText} />
+                    </Grid>
+                </Grid>
+
                 <Grid item xs = {12}>
                     <Paper>
-                        {/* <List>
-                           {
-                               designType.length == 0? 
-                                <ListItem>
-                                    no available design
-                                </ListItem>
-                                :
-                                componentTemplates.map(_component => 
-                                    <ListItem button key = {_component.id}  onClick={ () => {window.location.href = "component_template_builder/"+ _component.id} }>
-                                        <ListItemIcon>
-                                            <DashboardIcon />
-                                        </ListItemIcon>
-                                         <ListItemText 
-                                            primary=  {_component.title } 
-                                            secondary={"Update At:" + _component.updated_at + " || " + "Created By: " + _component.updated_by} 
-                                        />
-                                    </ListItem>
-                                )
-                           }
-                        </List> */}
-                        
-
-                        <Table
-                            aria-labelledby="tableTitle"
-                            size={'medium'}
-                            aria-label="enhanced table"
-                            >
+                        <Table size={'medium'}>
                             <TableHead/>
-
                             <TableBody>
-                                {componentTemplates
+                                {
+                                    componentsDisplay.length == 0?
+                                    <TableRow hover style = {{cursor: "pointer"}}>
+                                        <TableCell component="th">
+                                            No Available Components
+                                        </TableCell>
+                                </TableRow>
+                                :
+                                componentsDisplay
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((_component ) => (
                                         <TableRow key ={_component.id} hover style = {{cursor: "pointer"}}>
@@ -138,7 +148,7 @@ const ComponentTemplateViewListContainer = (props) => {
                            <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
-                                count={componentTemplates.length}
+                                count={componentsDisplay.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onChangePage={handleChangePage}

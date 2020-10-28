@@ -7,13 +7,13 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import DesignStepper from '../design/designStepper';
+import DesignStageStepper from '../design/component/designStageStepper';
 
 import DesignType from '../design/approachType';
 import DesignInfo from '../design/courseInfo';
-import DesignComponentStep from '../design/component/componentStep';
-import BasicReview from '../design/basicReview';
+import DesignComponentStep from '../design/learningComponent/componentStep';
 import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
-import ComponentSelectContainer from '../design/component/container/componentSelectContainer';
+import ComponentSelectContainer from '../design/learningComponent/container/componentSelectContainer';
 import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
@@ -21,6 +21,8 @@ import DashBoardContainer from '../design/dashboard/dashboardContainer';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
+
+
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
@@ -62,7 +64,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
+// const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
+const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -85,7 +88,6 @@ const PageMenu = (props) => {
         <MenuIcon />
       </Button>
       <Menu
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -93,7 +95,7 @@ const PageMenu = (props) => {
       >
         <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activePage == "courseinfo"}>Course Information</MenuItem>
         <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activePage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
-        <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Curriculum Components</MenuItem>
+        {/* <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Curriculum Components</MenuItem> */}
         <CssBaseline />
         <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Curriculum Component Design</MenuItem>
         <CssBaseline />
@@ -186,10 +188,14 @@ const Design = (props) => {
         if(course.components.length == 0){
           setLoadingOpen(false)
           setActiveStep(0);
+          // setActiveStep(props.step - 1);
         }else{
           setLoadingOpen(false)
           if(props.step == 0){
-              setActiveStep(4);
+              // setActiveStep(4);
+            setActionPage('unitPlan')
+          }else if(props.step == 5){
+            setActionPage('finish')
           }
         }
       }
@@ -201,12 +207,8 @@ const Design = (props) => {
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
       //final step
-      // setActionPage('unitPlan');
-      updateCourse(true).then(
-        (response) => {
-          window.location.href = "/mydesign";
-        }
-      )
+      setActionPage('unitPlan');
+      // onFinish();
     }else{
       setActiveStep(activeStep + 1);
     }
@@ -216,6 +218,14 @@ const Design = (props) => {
     setActiveStep(activeStep - 1);
   };
 
+  const onFinish = () => {
+    updateCourse(true).then(
+      (response) => {
+        window.location.href = "/mydesign";
+      }
+    )
+  }
+  
   const getStepContent = (step) => {
     switch (step) {
       case 0:
@@ -271,7 +281,6 @@ const Design = (props) => {
             </div>
           </React.Fragment>
         )
-        // return  <LearningOutcomeToDo />
       case 3:
         return (
           <React.Fragment>
@@ -298,43 +307,52 @@ const Design = (props) => {
           </React.Fragment>
         )
       case 4:
-        return (
-          <React.Fragment>
-            <UnitPlanContainer/>
-             <div className={classes.buttons}>
-              {activeStep !== 0 &&(
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                    data-tour = "next"
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-              )}
-            </div>
-          </React.Fragment>
-        )
+        setActionPage('unitPlan');
+        break;
+        // return (
+        //   <React.Fragment>
+
+        //     <UnitPlanContainer/>
+        //      <div className={classes.buttons}>
+        //       {activeStep !== 0 &&(
+        //             <Button
+        //             variant="contained"
+        //             color="primary"
+        //             onClick={handleNext}
+        //             className={classes.button}
+        //             data-tour = "next"
+        //           >
+        //             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+        //           </Button>
+        //       )}
+        //     </div>
+        //   </React.Fragment>
+        // )
       
       case 5:
-        return (
-          <React.Fragment>
-             <PrintableContainer isPrint = {false} courseid = {courseID}/>
-             {activeStep !== 0 &&(
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                    data-tour = "next"
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-              )}
-          </React.Fragment>
-        )
-        // return <DesignComponentStep />;
+        setActionPage('finish');
+        break;
+        // return (
+        //   <React.Fragment>
+        //      <PrintableContainer isPrint = {false} courseid = {courseID}/>
+        //      {activeStep !== 0 && (
+        //         <Button onClick={handleBack} className={classes.button}>
+        //           Back
+        //         </Button>
+        //       )}
+        //      {activeStep !== 0 &&(
+        //             <Button
+        //             variant="contained"
+        //             color="primary"
+        //             onClick={handleNext}
+        //             className={classes.button}
+        //             data-tour = "next"
+        //           >
+        //             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+        //           </Button>
+        //       )}
+        //   </React.Fragment>
+        // )
       default:
         return <div> Some Error Occur </div>;
     }
@@ -362,8 +380,13 @@ const Design = (props) => {
       case 'unitPlan':
         return(
           <React.Fragment>
-          <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
+            <DesignStageStepper activeStep = {0}/>
+            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
             <UnitPlanContainer/>
+            <Grid container item xs = {12} justify = {"flex-end"}>
+              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActionPage('finish')}> Next </Button>
+            </Grid>
+          
         </React.Fragment>
         );
       case 'learningOutcomes':
@@ -372,12 +395,6 @@ const Design = (props) => {
             <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
             <LearningOutcomeContainer  />
        </React.Fragment>);
-      case 'review':
-        return( 
-        <React.Fragment>
-          <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-          <BasicReview/>
-        </React.Fragment>);
       case 'courseinfo':
         return(
           <React.Fragment>
@@ -385,28 +402,29 @@ const Design = (props) => {
             <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
           </React.Fragment>
         )
-        case 'dashboard':
+      case 'dashboard':
+        return(
+          <React.Fragment>
+            <DashBoardContainer />
+          </React.Fragment>
+        )
+      case 'finish':
           return(
             <React.Fragment>
-              <DashBoardContainer />
+               <DesignStageStepper activeStep = {1}/>
+              <PrintableContainer isPrint = {false} courseid = {courseID}/>
+              <Grid container item xs ={12} justify = {"flex-end"}>
+                <Grid item xs = {2}>
+                  <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActionPage('unitPlan')} fullWidth> Edit </Button>
+                </Grid>
+                <Grid item xs = {2}>
+                  <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>
+                </Grid>
+              </Grid>
+              
             </React.Fragment>
-          )      
-    }
-  }
+          )
 
-
-  const displayTitle = () => {
-    switch(activePage){
-      case 'basic': 
-        return "Basic Setup";
-      case 'majorStep':
-        return "Learning Components"
-      case 'unitPlan':
-        return "Unit Design"
-      case 'learningOutcomes':
-          return "Unit Level Learning Outcomes"
-      case 'courseinfo':
-          return "Course Information"
     }
   }
 

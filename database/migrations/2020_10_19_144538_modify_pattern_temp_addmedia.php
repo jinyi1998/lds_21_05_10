@@ -14,7 +14,7 @@ class ModifyPatternTempAddmedia extends Migration
     public function up()
     {
         //
-        Schema::table('learningpatteren_template', function (Blueprint $table) {
+        Schema::table('learningpattern_template', function (Blueprint $table) {
             // $table->foreign('component_id')->references('id')->on('component_template');
             $table->text('media')->nullable();
         });

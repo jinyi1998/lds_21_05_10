@@ -24,7 +24,7 @@ class CreateTemplateRelational extends Migration
             $table->timestamp('updated_at')->useCurrent();
 
             $table->foreign('component_id')->references('id')->on('component_template');
-            $table->foreign('pattern_id')->references('id')->on('learningpatteren_template');
+            $table->foreign('pattern_id')->references('id')->on('learningpattern_template');
         });
 
         //component pattern init data 
@@ -378,7 +378,7 @@ class CreateTemplateRelational extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            $table->foreign('pattern_id')->references('id')->on('learningpatteren_template');
+            $table->foreign('pattern_id')->references('id')->on('learningpattern_template');
             $table->foreign('task_id')->references('id')->on('learningtask_template');
 
         });

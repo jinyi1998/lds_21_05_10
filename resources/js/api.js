@@ -249,6 +249,39 @@ import config from 'react-global-configuration';
     export const apiLearningPattTempUploadImg = data => learningPatternTempRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion
 
+
+    //#region patternbin category api
+    const patternbinCategoryRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/patternbinCategory',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiPatternbinCategoryList = data => patternbinCategoryRequest.get('/', JSON.stringify(data));
+    export const apiPatternbinCategoryGet = data => patternbinCategoryRequest.get(`/${data}`);
+    export const apiPatternbinCategoryPost = data => patternbinCategoryRequest.post('/', JSON.stringify(data));
+    export const apiPatternbinCategoryPut = data => patternbinCategoryRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiPatternbinCategoryDelete = data => patternbinCategoryRequest.delete(`/${data.id}`);
+    //#endregion
+
+    //#region patternbin api
+    const patternbinRequest =  axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/patternbin',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiPatternbinList = data => patternbinRequest.get('/', JSON.stringify(data));
+    export const apiPatternbinGet = data => patternbinRequest.get(`/${data}`);
+    export const apiPatternbinPost = data => patternbinRequest.post('/', JSON.stringify(data));
+    export const apiPatternbinPut = data => patternbinRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiPatternbinDelete = data => patternbinRequest.delete(`/${data.id}`);
+    export const apiPatternbinAddPattern = data => patternbinRequest.post(`addPatternRelation/${data.patternbin_id}`, JSON.stringify(data));
+    export const apiPatternbinDeletePattern = data => patternbinRequest.put(`deletePatternRelation/${data.patternbin_id}`, JSON.stringify(data));
+    //#endregion
+
     //#region learningtasktemp api
     const learningTaskTempRequest = axios.create({
         baseURL: 'http://'+config.get('url')+'/api/learningTaskTemplate',

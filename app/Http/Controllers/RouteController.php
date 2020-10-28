@@ -152,6 +152,17 @@ class RouteController extends Controller
     public function admin_pattern_template_builder($id){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_template_builder', 'patternid' => $id]);
     }
+
+    public function admin_pattern_bin_category_list(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_bin_category_list']);
+    }
+
+    public function admin_pattern_bin_category($id){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_bin_category', 'patternbin_category_id' => $id]);
+    }
+    public function admin_pattern_bin($id){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_pattern_bin', 'patternbin_id' => $id]);
+    }
     #endregion
 
     #region site management related

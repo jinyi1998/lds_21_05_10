@@ -140,6 +140,13 @@ Route::resource('learningPatternTemplate', 'API\LearningPatternTemplateControlle
 Route::resource('learningTaskTemplate', 'API\LearningTaskTemplateController');
 Route::resource('learningOutcomeTemplate', 'API\LearningOutcomeTemplateController');
 
+Route::post('patternbin/addPatternRelation/{id}', 
+'API\PatternBinController@addPatternRelation');
+Route::put('patternbin/deletePatternRelation/{id}', 
+'API\PatternBinController@deletePatternRelation');
+Route::resource('patternbin', 'API\PatternBinController');
+Route::resource('patternbinCategory', 'API\PatternBinCategoryController');
+
 
 Route::resource('usergroup', 'API\UserGroupController');
 Route::resource('usergroupuser', 'API\UserGroupUserController');

@@ -64,7 +64,7 @@ const LearningOutcomeContainer = (props)=>{
 
     const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep, tourStepIndex } = React.useContext(ContextStore);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
 
     React.useEffect(()=> {
         if(modeLevel == "course"){
@@ -149,6 +149,9 @@ const LearningOutcomeContainer = (props)=>{
             return;
         }
 
+        setLoadingOpen(true);
+        var updates = [];
+
         //sync the data to root state
         var tempOutcomes =  JSON.parse(JSON.stringify(course.outcomes));
         tempOutcomes.map((_outcome, index)=> {
@@ -168,7 +171,7 @@ const LearningOutcomeContainer = (props)=>{
               id : tempOutcomes[i].courseid.id,
               sequence: tempOutcomes[i].courseid.sequence - 1
             }
-            updateOutcomeSequence(tempOutcome);
+            updates.push( updateOutcomeSequence(tempOutcome) );
          }
         }else{
 
@@ -177,10 +180,18 @@ const LearningOutcomeContainer = (props)=>{
               id : tempOutcomes[i].courseid.id,
               sequence: tempOutcomes[i].courseid.sequence + 1
             }
-            updateOutcomeSequence(tempOutcome);
+            updates.push ( updateOutcomeSequence(tempOutcome));
           }
         }
-        updateOutcomeSequence(sourceOutcomes);
+        updates.push( updateOutcomeSequence(sourceOutcomes));
+
+        Promise.all(updates).then(() => {
+            setLoadingOpen(false);
+            displayMsg("success", "Outcomes Sequences Updated");
+        }).catch(error => {
+            setLoadingOpen(false);
+            displayMsg("error", "Opps, Some error occured");
+        })
     }
 
     const onDragEndComponent = (result) => {
@@ -188,6 +199,9 @@ const LearningOutcomeContainer = (props)=>{
         if (!result.destination) {
             return;
         }
+
+        setLoadingOpen(true);
+        var updates = [];
 
         //sync the data to root state
         var tempOutcomes =  JSON.parse(JSON.stringify(component.outcomeid));
@@ -210,7 +224,7 @@ const LearningOutcomeContainer = (props)=>{
               sequence: tempOutcomes[i].sequence - 1
             }
             // console.log(tempOutcome);
-            updateOutcomeSequence(tempOutcome);
+            updates.push( updateOutcomeSequence(tempOutcome) );
          }
         }else{
 
@@ -220,11 +234,19 @@ const LearningOutcomeContainer = (props)=>{
               sequence: tempOutcomes[i].sequence + 1
             }
             // console.log(tempOutcome);
-            updateOutcomeSequence(tempOutcome);
+            updates.push( updateOutcomeSequence(tempOutcome) );
           }
         }
         // console.log(sourceOutcomes);
-        updateOutcomeSequence(sourceOutcomes);
+        updates.push( updateOutcomeSequence(sourceOutcomes) );
+
+        Promise.all(updates).then(() => {
+            setLoadingOpen(false);
+            displayMsg("success", "Outcomes Sequences Updated");
+        }).catch(error => {
+            setLoadingOpen(false);
+            displayMsg("error", "Opps, Some error occured");
+        })
     }
     //#endregion
 
@@ -240,9 +262,13 @@ const LearningOutcomeContainer = (props)=>{
                 ()=>{
                     refreshCourse()
                     setLoadingOpen(false)
+                    displayMsg("success", "Outcomes Deleted");
                 }
             )
-            .catch(error => console.log(error));   
+            .catch(error => {
+                console.log(error)
+                displayMsg("error", "Opps, Some error occured");
+            });   
 
         }else{
             apiLearningOutcomeDelete(learningOutcome.id)
@@ -250,8 +276,12 @@ const LearningOutcomeContainer = (props)=>{
                 //load the default learning outcomes by api request
                 refreshCourse()
                 setLoadingOpen(false)
+                displayMsg("success", "Outcomes Deleted");
             })
-            .catch(error => console.log(error));   
+            .catch(error => {
+                console.log(error)
+                displayMsg("error", "Opps, Some error occured");
+            });   
         }
        
       }

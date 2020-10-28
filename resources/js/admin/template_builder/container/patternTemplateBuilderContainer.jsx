@@ -205,8 +205,6 @@ const PatternTemplateBuilderContainer = (props) => {
                                 <IconButton color = "Secondary" onClick = {onCancelRename}> 
                                     <CancelIcon /> 
                                 </IconButton>
-                                {/* <Button variant = "contained" color = "primary" onClick = {() => {onClickRename()}}>Confirm</Button>
-                                <Button variant = "contained" color = "Secondary" onClick = {() => {setIsEditTitle(false)}}>Cancel</Button> */}
                             </Grid>
                         </Grid>
                     }
@@ -227,19 +225,19 @@ const PatternTemplateBuilderContainer = (props) => {
                             />
                         </Grid>
                         <Grid container item xs = {2} alignItems = {"center"}>
-                            <IconButton color="primary" aria-label="upload picture">
-                                <DoneIcon onClick = {onSaveMedia}/>
+                            <IconButton color="primary" aria-label="upload picture"  onClick = {onSaveMedia}>
+                                <DoneIcon/>
                             </IconButton>
-                            <IconButton color="secondary" aria-label="upload picture">
-                                <CloseIcon onClick = {onCancelMedia}/>
+                            <IconButton color="secondary" onClick = {onCancelMedia}>
+                                <CloseIcon/>
                             </IconButton>
                         </Grid>
                     </React.Fragment>
                     :
                     <React.Fragment>
                         <img src = {returnImgSrc(patternTemplate.media)} style = {{maxWidth: 400}}/>
-                        <IconButton color="primary" aria-label="upload picture">
-                            <PhotoCamera onClick = {onEditMedia}/>
+                        <IconButton color="primary" onClick = {onEditMedia}>
+                            <PhotoCamera/>
                         </IconButton>
                     </React.Fragment>
                 }
@@ -276,9 +274,7 @@ const PatternTemplateBuilderContainer = (props) => {
             <React.Fragment>
                 <Accordion>
                     <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+                        expandIcon={<ExpandMoreIcon />}
                     >
                         <Typography>{patternTemplate.title}</Typography>
                     </AccordionSummary>

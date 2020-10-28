@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import DesigmItem from '../../dashboard/designItem';
+import designItemContainer from '../../dashboard/container/designItemContainer';
 import Typography from '@material-ui/core/Typography';
 import {ContextStore} from '../container/usergroupContainer';
 import {AppContextStore} from '../../container/app';

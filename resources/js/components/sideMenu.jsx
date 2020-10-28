@@ -104,6 +104,9 @@ const useStyles = makeStyles(theme => ({
       case 'admin_component_template_builder':
       case 'admin_pattern_template':
       case 'admin_pattern_template_builder':
+      case 'admin_pattern_bin_category_list':
+      case 'admin_pattern_bin_category':
+      case 'admin_pattern_bin': 
         return 'admin_template_builder';
 
       case 'admin_site_management':
