@@ -133,7 +133,7 @@ const ComponentPatternBinFilterContainer = (props) => {
             <Grid container spacing = {2}>
                 <Grid item xs = {2}>
                     <TextField
-                        label={"Search Text"}
+                        label={"Search By Pattern Title"}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
@@ -149,7 +149,6 @@ const ComponentPatternBinFilterContainer = (props) => {
                    <Grid item xs = {2}>
                     <FormControl style = {{ 
                             minWidth: 150,
-                            // margin: 16
                         }}
                         key = {_cat.id}
                     >

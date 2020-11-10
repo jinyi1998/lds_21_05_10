@@ -166,8 +166,14 @@ Route::middleware('design_permission')->resource('course', 'API\CourseController
 
 
 Route::get('designType/getLearningComponentByDesignType/{id}', 'API\DesignTypeController@getLearningComponentByDesignType');
+Route::get('designType/getDesignTypeInstruction/{id}', 'API\DesignTypeController@getDesignTypeInstruction');
 Route::post('designType/uploadImg', 'API\DesignTypeController@uploadImg');
 Route::resource('designType', 'API\DesignTypeController');
+
+Route::post('designTypeInstruction/uploadImg', 
+'API\DesigntypeInstructionController@uploadImg');
+Route::resource('designTypeInstruction', 'API\DesigntypeInstructionController');
+
 
 Route::resource('classSize', 'API\ClassSizeController');
 Route::resource('classTarget', 'API\ClassTargetController');

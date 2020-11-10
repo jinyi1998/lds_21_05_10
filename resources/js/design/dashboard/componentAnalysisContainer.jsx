@@ -32,7 +32,7 @@ const generateHoverColor = (num) => {
 const ComponentAnalysisContainer = ()=>{
     const { course } = React.useContext(ContextStore);
     const { options, taskTypeColor } = React.useContext (AppContextStore);
-    const [component, setComponent] = React.useState(course.components[0].id);
+    const [ component, setComponent ] = React.useState(course.components[0].id);
     
     const [data, setData] = React.useState({
         task_assessment:  [],
@@ -46,19 +46,6 @@ const ComponentAnalysisContainer = ()=>{
         fetchcomponentanalysis(component)
     }
     , [component])
-
-    const genTaskTypeColor = (tasktype_id) => {
-        var temp = [];
-        tasktype_id.map((_id)=>{
-            try{
-                var _temp = taskTypeColor(_id);
-                temp.push(_temp.backgroundColor);
-            }catch (_unused) {
-                temp.push('#' +  Math.random().toString(16).substr(-6));
-            }
-        })
-        return temp;
-    }
 
 
     async function fetchcomponentanalysis(id) {
@@ -144,24 +131,27 @@ const ComponentAnalysisContainer = ()=>{
     const displayComponentTabBar = () => {
         return (
             <Tabs
-                // orientation="vertical"
                 variant="scrollable"
                 value={component}
                 indicatorColor="primary"
                 textColor="primary"
             >    
+            
+                {course.components.length > 0?
+                    course.components.map(
+                        _component => 
+                            <Tab 
+                                label= {_component.title}
+                                value={_component.id} 
+                                selected = {component == _component.id} 
+                                onClick = {()=>{setComponent(_component.id)}}
+                                key = {_component.id} 
+                            />
 
-                {course.components.map(
-                    _component => 
-                        <Tab 
-                            label= {_component.title}
-                            value={_component.id} 
-                            selected = {component == _component.id} 
-                            onClick = {()=>{setComponent(_component.id)}}
-                            key = {_component.id} 
-                        />
-
-                )}
+                    )
+                    :
+                    null
+                }
               
             </Tabs>
         );

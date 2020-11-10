@@ -12,12 +12,15 @@ import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
-
-import LearningOutcomeContainer from '../../outcome/learningOutcomeContainer';
-import LearningTaskContainer from '../../task/container/learningTaskContainer';
-import LearningPatternContainer from '../../pattern/container/learningPatternContainer';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+
+
+import LearningOutcomeContainer from '../../outcome/container/learningOutcomeContainer';
+import LearningTaskContainer from '../../task/container/learningTaskContainer';
+import LearningTaskMainContainer from '../../task/container/learningTaskMainContainer';
+import LearningPatternContainer from '../../pattern/container/learningPatternContainer';
+import LearningPatternMainContainer from '../../pattern/container/learningPatternMainContainer';
 
 import ComponentFloatDashboardContainer from './componentFloatDashboardContainer';
 
@@ -244,9 +247,9 @@ const ComponentContainer = (props)=>{
                               open={Boolean(anchorEl)}
                               onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
                             >
-                              <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>Rename</MenuItem>
-                              <MenuItem onClick={()=> {event.stopPropagation(); duplicateComponent(component.id)}}>Duplicate</MenuItem>
-                              <MenuItem onClick={()=> {event.stopPropagation(); deleteComponent(component.id)}}>Delete</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); setEditComponent(true)}}>Rename</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); duplicateComponent(component.id)}}>Duplicate</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); deleteComponent(component.id)}}>Delete</MenuItem>
                             </Menu>
                           </React.Fragment>
                         
@@ -256,7 +259,6 @@ const ComponentContainer = (props)=>{
                     : 
                       null
                   }
-
 
                   <Grid item xs={12} data-tour = "component_time">
                       <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
@@ -269,21 +271,23 @@ const ComponentContainer = (props)=>{
                 }}>
                   <Grid container spacing={2}>
 
-                    <Grid item xs={12}> 
-                      <LearningOutcomeContainer component ={component}/>
-                    </Grid>
-
-                    {typeof component.patterns == 'undefined' || component.patterns.length == 0?
-                      null:  
-                      <Grid item xs = {12}>
-                          <LearningPatternContainer componentID = {component.id} patternData = {component.patterns[0]}/>
+                    <Grid container item xs = {5}>
+                      <Grid item xs={12}> 
+                        <LearningOutcomeContainer component ={component}/>
                       </Grid>
-                    }
-
-                    <Grid item xs = {12}>
-                        <LearningTaskContainer componentID = {component.id} tasksData = {component.tasks}/>
                     </Grid>
-                    
+
+                    <Grid container item xs = {7} spacing={2} alignContent = {"flex-start"}>
+                      <Grid item xs = {12}>
+                            {/* <LearningPatternContainer componentID = {component.id} patternData = {component.patterns[0]}/> */}
+                            <LearningPatternMainContainer component_id = {component.id} patternsData = {component.patterns} /> 
+                      </Grid>
+
+                      <Grid item xs = {12}>
+                          <LearningTaskMainContainer component_id = {component.id} tasksData = {component.tasks}/>
+                      </Grid>
+                    </Grid>
+
                   </Grid>
               </AccordionDetails>
             </Accordion>

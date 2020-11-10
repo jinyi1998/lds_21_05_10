@@ -193,7 +193,8 @@ const ComponentTemplateBuilderContainer = (props) => {
         temp['designtype_id'] = designtype_id;
         delete temp.tasks; //avoid creating new tasks
         apiLearningCompTempPut(temp).then(() => {
-            window.location.href = "../component_template";
+            reFreshComponent();
+            // window.location.href = "../component_template";
             setLoadingOpen(false)
         })
     }

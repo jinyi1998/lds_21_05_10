@@ -6,28 +6,34 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import DesignStepper from '../design/designStepper';
 import DesignStageStepper from '../design/component/designStageStepper';
 
-import DesignType from '../design/approachType';
+import StemPracticeContainer from '../design/stemPractice/container/stemPracticeContainer';
 import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/learningComponent/componentStep';
-import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import LearningOutcomeContainer from '../design/outcome/container/learningOutcomeContainer';
 import ComponentSelectContainer from '../design/learningComponent/container/componentSelectContainer';
 import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 
-
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
 import MenuIcon from '@material-ui/icons/Menu';
-
-
+import InfoIcon from '@material-ui/icons/Info';
+import GpsFixedIcon from '@material-ui/icons/GpsFixed';
+import ExploreIcon from '@material-ui/icons/Explore';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
 import {AppContextStore} from '../container/app';
-import config from 'react-global-configuration';
 
 import {
   apiCourseUpdate, apiCourseClearComponent,
@@ -61,6 +67,11 @@ const useStyles = makeStyles(theme => ({
   },
   layout: {
     padding: '16px'
+  },
+  flex: {
+    flexGrow: 1,
+    overflow: 'auto',
+    minHeight: '100%',
   }
 }));
 
@@ -84,7 +95,7 @@ const PageMenu = (props) => {
 
   return (
     <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button color = {"primary"} variant = {"contained"} aria-haspopup="true" onClick={handleClick} style = {{margin: 16}}>
         <MenuIcon />
       </Button>
       <Menu
@@ -103,6 +114,65 @@ const PageMenu = (props) => {
         {/* <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem> */}
       </Menu>
     </div>
+  );
+}
+
+const PageListMenu = (props) => {
+  const {activePage, setActionPage} = props;
+  return (
+
+    <List component="nav" aria-label="main mailbox folders" style = {{ 
+      position: "sticky",
+      top: 72}}
+    >
+      <ListSubheader>Course Overview</ListSubheader>
+      <ListItem
+        button
+        selected={activePage === 'courseinfo'}
+        onClick={(event) => setActionPage('courseinfo')}
+      >
+        {/* <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Course Information" />
+      </ListItem>
+
+      <ListItem
+        button
+        selected={activePage === 'learningOutcomes'}
+        onClick={(event) => setActionPage('learningOutcomes')}
+      >
+        {/* <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Unit Level Learning Outcomes" />
+      </ListItem>
+
+      <ListSubheader>Design Stage</ListSubheader>
+      <ListItem
+        button
+        selected={activePage === 'unitPlan'}
+        onClick={(event) => setActionPage('unitPlan')}
+      >
+        {/* <ListItemIcon>
+          <ExploreIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Curriculum Component Design" />
+      </ListItem>
+
+      <ListSubheader>Review Stage</ListSubheader>
+        <ListItem
+          button
+          selected={activePage === 'finish'}
+          onClick={(event) => setActionPage('finish')}
+        >
+          {/* <ListItemIcon>
+            <ExploreIcon />
+          </ListItemIcon> */}
+          <ListItemText primary="Review" />
+        </ListItem>
+    </List>
+   
   );
 }
 
@@ -181,13 +251,30 @@ const Design = (props) => {
   }, [course.designType]);
 
   React.useEffect(() => {
+    initDesign();
+  }, [course.isinited]);
+
+  React.useEffect(()=>{
+    if( activePage == ''){
+      initDesign();
+    }
+  }, [activePage])
+
+
+  const initDesign = () => {
     setLoadingOpen(true)
     if(courseID != -1){
       if(course.isinited){
 
-        if(course.components.length == 0){
+        if(course.components.length == 0 ){
           setLoadingOpen(false)
-          setActiveStep(0);
+          if(course.unit_title == ""  && course.outcomes.length > 0){
+            setActiveStep(1);
+          }else if(course.outcomes.length > 0){
+            setActiveStep(2);
+          }else{
+            setActiveStep(0);
+          }
           // setActiveStep(props.step - 1);
         }else{
           setLoadingOpen(false)
@@ -202,7 +289,7 @@ const Design = (props) => {
     }else{
       setLoadingOpen(false)
     }
-  }, [course.isinited]);
+  }
   
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
@@ -231,7 +318,7 @@ const Design = (props) => {
       case 0:
         return (
           <React.Fragment>
-             <DesignType handleNext = {handleNext}/>
+             <StemPracticeContainer handleNext = {handleNext}/>
              <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>
@@ -380,47 +467,81 @@ const Design = (props) => {
       case 'unitPlan':
         return(
           <React.Fragment>
-            <DesignStageStepper activeStep = {0}/>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <UnitPlanContainer/>
-            <Grid container item xs = {12} justify = {"flex-end"}>
-              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActionPage('finish')}> Next </Button>
+            {/* <DesignStageStepper activeStep = {0}/> */}
+            <Grid container>
+              <Grid item xs ={1}>
+                <PageListMenu activePage ={activePage} setActionPage ={setActionPage}/> 
+              </Grid>
+              <Grid item xs ={11}>
+                <UnitPlanContainer/>
+                <Grid container item xs = {12} justify = {"flex-end"}>
+                  <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActionPage('finish')}> Next </Button>
+                </Grid>
+              </Grid>
             </Grid>
-          
+            {/* <PageMenu activePage ={activePage} setActionPage ={setActionPage}/> */} 
         </React.Fragment>
         );
       case 'learningOutcomes':
           return( 
           <React.Fragment>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <LearningOutcomeContainer  />
+            {/* <DesignStageStepper activeStep = {1}/> */}
+            <Grid container>
+              <Grid item xs ={1}>
+                <PageListMenu activePage ={activePage} setActionPage ={setActionPage}/> 
+              </Grid>
+              <Grid item xs ={11}>
+                <LearningOutcomeContainer  />
+              </Grid>
+            </Grid>
+            {/* <PageMenu activePage ={activePage} setActionPage ={setActionPage}/> */}
+
        </React.Fragment>);
       case 'courseinfo':
         return(
           <React.Fragment>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
+            {/* <DesignStageStepper activeStep = {1}/> */}
+            <Grid container>
+              <Grid item xs ={1}>
+                <PageListMenu activePage ={activePage} setActionPage ={setActionPage}/> 
+              </Grid>
+              <Grid item xs ={11} style={{maxHeight: '100%', overflow: 'auto'}}>
+              <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
+              </Grid>
+            </Grid>
+            {/* <PageMenu activePage ={activePage} setActionPage ={setActionPage}/> */}
+
           </React.Fragment>
         )
       case 'dashboard':
         return(
           <React.Fragment>
+            <DesignStageStepper activeStep = {1}/>
             <DashBoardContainer />
           </React.Fragment>
         )
       case 'finish':
           return(
             <React.Fragment>
-               <DesignStageStepper activeStep = {1}/>
-              <PrintableContainer isPrint = {false} courseid = {courseID}/>
-              <Grid container item xs ={12} justify = {"flex-end"}>
-                <Grid item xs = {2}>
-                  <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActionPage('unitPlan')} fullWidth> Edit </Button>
+              {/* <DesignStageStepper activeStep = {1}/> */}
+              <Grid container>
+                <Grid item xs ={1}>
+                  <PageListMenu activePage ={activePage} setActionPage ={setActionPage}/> 
                 </Grid>
-                <Grid item xs = {2}>
-                  <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>
+
+                <Grid item xs ={11}>
+                  <PrintableContainer isPrint = {false} courseid = {courseID}/>
+                  <Grid container item xs ={12} justify = {"flex-end"}>
+                    <Grid item xs = {2}>
+                      <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActionPage('unitPlan')} fullWidth> Edit </Button>
+                    </Grid>
+                    <Grid item xs = {2}>
+                      <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
+             
               
             </React.Fragment>
           )

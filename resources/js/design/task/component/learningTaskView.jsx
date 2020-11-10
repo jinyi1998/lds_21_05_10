@@ -65,7 +65,8 @@ const useStyles = makeStyles(theme => ({
         margin: 16
     },
     contentGrid: {
-        textAlign: "left"
+        textAlign: "left",
+        minWidth: '152px'
     },
     chips: {
         display: 'flex',
@@ -89,7 +90,7 @@ const LearningTaskView = (props) => {
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
     const [duplicateTo, setDuplicateTo] = React.useState( -1);
-    const {editBtn, duplicateBtn, deleteBtn} = props;
+    const {editBtn, duplicateBtn, deleteBtn, dragAble} = props;
     const {provided, snapshot, index} = props;
 
     const [task, setTask] = React.useState({
@@ -106,7 +107,7 @@ const LearningTaskView = (props) => {
         resourceid: [],
         // STEMType: [],
         description: "",
-        content: "",
+        has_assessment: false
     });  
 
     const getDraggable = (provided, snapshot) => {
@@ -178,7 +179,7 @@ const LearningTaskView = (props) => {
                {...getDraggable(provided, snapshot)}
             >
                 <Grid container item xs={1} height="100%">
-                    {typeof provided == 'undefined'?    
+                    {typeof provided == 'undefined' || !props.enableDrag?    
                         null
                     :
                         <Grid item xs ={4} container  justify="center" alignItems="center">
@@ -193,14 +194,14 @@ const LearningTaskView = (props) => {
                 </Grid>
 
                 
-                <Grid container item xs={10}>
-                    <Grid item xs={10} className={classes.contentGrid}>
+                <Grid container item xs>
+                    <Grid item xs={9} className={classes.contentGrid}>
                         <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
                             {task.title}
                         </Typography>
                     </Grid>
                    
-                    <Grid item xs={2} className={classes.contentGrid}>
+                    <Grid item xs={3} className={classes.contentGrid}>
                         {
                             editBtn == true?
                                 <IconButton onClick={()=>onClickEdit()}>

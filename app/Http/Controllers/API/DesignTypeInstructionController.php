@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App\DesigntypeInstruction;
+use Intervention\Image\Facades\Image as Image;
 
 class DesignTypeInstructionController extends Controller
 {
@@ -58,7 +59,7 @@ class DesignTypeInstructionController extends Controller
     {
         //
         $instruction = DesigntypeInstruction::find($id);
-        $instruction = $this->save($instruction, $id);
+        $instruction = $this->save($instruction, $request);
 
         return response()->json($instruction);
     }
@@ -73,6 +74,7 @@ class DesignTypeInstructionController extends Controller
     {
         //
         $instruction = DesigntypeInstruction::find($id);
+        $instruction->delete();
         return response()->json('success');
     }
 
@@ -105,8 +107,35 @@ class DesignTypeInstructionController extends Controller
         $instruction->save();
 
         if($request->has('designtype_id')){
-            
+            if($instruction->designtypeid()->exists()){
+                if($request->has('sequence')){
+                    $instruction->designtypeid()->update([
+                        'designtype_id' => $request->designtype_id, 
+                        'designtype_instruction_id' => $instruction->id, 
+                        'sequence' => $request->sequence,
+                        'updated_by' => Auth::user()->id, 
+                        'updated_at' => now(),
+                        'is_deleted' => false
+                    ]);
+                }
+                // $instruction->designtypeid()->update([
+
+                // ]);
+            }else{
+                $instruction->designtypeid()->create([
+                    'designtype_id' => $request->designtype_id, 
+                    'designtype_instruction_id' => $instruction->id, 
+                    'sequence' => $instruction->designtypeid()->count() + 1, 
+                    'created_by' => Auth::user()->id, 
+                    'updated_by' => Auth::user()->id, 
+                    'is_deleted' => false
+                ]);
+            }
         }
+
+        $instruction->save();
+
+        return $instruction;
     }
 
     public function uploadImg(Request $request){

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\LearningTask;
 use App\ComponentTaskRelation;
+use App\PatternTaskRelation;
 use App\TaskAssessmentRelation;
 use App\TaskResourceRelation;
 use App\TaskToolRelation;
@@ -33,11 +34,8 @@ class LearningTaskController extends Controller
      */
     public static function store(Request $request)
     {
-        $task = new LearningTask;
+        $task = new LearningTask;  
         $task = LearningTaskController::save($task, $request);
-        if($request->has('component_id')){
-            $request['sequence'] = ComponentTaskRelation::where('component_id', '=', $request->has('component_id'))->count() + 1;
-        }     
         return response()->json($task);
     }
 
@@ -1356,187 +1354,6 @@ class LearningTaskController extends Controller
         );
     }
 
-    public function getTaskTypeOption(){
-        return response()->json([
-            [
-                'id' => 1,
-                'description' => 'Receiving and interpreting information'
-            ],
-            [
-                'id' => 2,
-                'description' => 'Exploration through conversation'
-            ],
-            [
-                'id' => 3,
-                'description' => 'Construction: Conceptual/visual artefacts'
-            ],
-            [
-                'id' => 4,
-                'description' => 'Presentation, performance and illustration'
-            ],
-            [
-                'id' => 5,
-                'description' => 'Informaton exploration'
-            ],
-            [
-                'id' => 6,
-                'description' => 'Self/Peer-Assessment'
-            ],
-            [
-                'id' => 7,
-                'description' => 'Revision'
-            ],
-            [
-                'id' => 8,
-                'description' => 'Tangible/immersive investigation'
-            ],
-            [
-                'id'=> 9,
-                'description' => 'Reflection'
-            ],
-            [
-                'id'=> 10,
-                'description' => 'Presentations, illustration, and performance'
-            ]
-        ]);
-    }
-
-    public function getTaskSizeOption(){
-        return response()->json([
-            [
-                'id' => 1,
-                'value'=> 1,
-                'description' => 'N/A',
-            ],
-            [
-                'id' => 2,
-                'value'=> 2,
-                'description' => '6 per group',
-            ],
-            [
-                'id' => 3,
-                'value'=> 3,
-                'description' => '5 per group',
-            ],
-            [
-                'id' => 4,
-                'value'=> 4,
-                'description' => '4 per group',
-            ],
-            [
-                'id' => 5,
-                'value'=> 5,
-                'description' => '3 per group',
-            ],
-            [
-                'id' => 6,
-                'value'=> 6,
-                'description' => '2 per group',
-            ],
-            [
-                'id' => 7,
-                'value'=> 7,
-                'description' => 'individual',
-            ],
-        ]);
-    }
-
-    public function getTaskClassTypeOption(){
-        return response()->json([
-            [
-                'id' => 1,
-                'value'=> 'In Class',
-                'description' => 'In Class',
-            ],
-            [
-                'id' => 2,
-                'value'=> 'Out Class',
-                'description' => 'Out Class',
-            ],
-        ]);
-    }
-
-    public function getTaskTargetTypeOption(){
-        return response()->json([
-            [
-                'id' => 1,
-                'description' => 'Whole Class',
-            ],
-            [
-                'id' => 2,
-                'description' => 'Group',
-            ],
-            [
-                'id' => 3,
-                'description' => 'Individual',
-            ],
-        ]);
-    }
-
-    public function getTaskResourceTypeOption(){
-        return response()->json([
-            [
-                'id' => 1,
-                'description' => 'Videos',
-            ],
-            [
-                'id' => 2,
-                'description' => 'Articles',
-            ],
-            [
-                'id' => 3,
-                'description' => 'Worksheets',
-            ],
-            [
-                'id' => 4,
-                'description' => 'Rubrics',
-            ],
-            [
-                'id' => 5,
-                'description' => 'Materials',
-            ],
-            [
-                'id' => 6,
-                'description' => 'Guidelines',
-            ],
-        ]);
-    }
-
-    public function getTaskELeraningResourceTypeOption(){
-        return response()->json(
-            [
-                [
-                    'id' => 1,
-                    'description' => 'Moodle (discussion forum)',
-                ],
-                [
-                    'id' => 2,
-                    'description' => 'Moodle (wiki)',
-                ],
-                [
-                    'id' => 3,
-                    'description' => 'Moodle (portfolio)',
-                ],
-                [
-                    'id' => 4,
-                    'description' => 'Moodle (Polling/ survey)',
-                ],
-                [
-                    'id' => 5,
-                    'description' => 'Instant messenger',
-                ],
-                [
-                    'id' => 6,
-                    'description' => 'Video conferencing system',
-                ],
-                [
-                    'id' => 7,
-                    'description' => 'Google toolkits',
-                ],
-            ]
-        );
-    }
-
     public static function save(LearningTask $task, Request $request){
         if($request->has('title')){
             $task->title = $request->title;
@@ -1559,6 +1376,10 @@ class LearningTaskController extends Controller
         if($request->has('description')){
             $task->description = $request->description;
         }
+
+        if($request->has('has_assessment')){
+            $task->has_assessment = $request->has_assessment;
+        }
         // if($request->has('sequence')){
         //     $task->sequence = $request->sequence;
         // }
@@ -1573,11 +1394,59 @@ class LearningTaskController extends Controller
         //assessment
         if($request->has('component_id')){
             if($request->has('sequence')){
-                $task->componentid()->delete();
+                if( $task->componentid()->exists()) {
+                    $task->componentid()->update([
+                        'task_id' => $task->id,
+                        'component_id' => $request->component_id,
+                        'sequence' => $request->sequence,
+                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id,
+                        'is_deleted' => 0
+                    ]);
+
+                }else{
+                    $task->componentid()->create([
+                        'task_id' => $task->id,
+                        'component_id' => $request->component_id,
+                        'sequence' => $request->sequence,
+                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id,
+                        'is_deleted' => 0
+                    ]);
+                }
+            }else{
                 $task->componentid()->create([
                     'task_id' => $task->id,
                     'component_id' => $request->component_id,
-                    'sequence' => $request->sequence,
+                    'sequence' =>  ComponentTaskRelation::where('component_id', '=', $request->component_id)->count() + 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                ]);
+            }
+        }
+
+        if($request->has('pattern_id')){
+            if($request->has('sequence')){
+              $sequence  =  $request->sequence;
+            }else{
+               $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->count() + 1;
+            }
+            if( $task->patternid()->exists()) {
+                $task->patternid()->update([
+                    'task_id' => $task->id,
+                    'pattern_id' => $request->pattern_id,
+                    'sequence' => $sequence,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                ]);
+
+            }else{
+                $task->patternid()->create([
+                    'task_id' => $task->id,
+                    'pattern_id' => $request->pattern_id,
+                    'sequence' => $sequence,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0

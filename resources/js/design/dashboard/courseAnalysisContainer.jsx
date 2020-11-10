@@ -50,7 +50,8 @@ const CourseAnalysisContainer = ()=>{
 
     const classes = useStyles();
 
-    const { course, options } = React.useContext(AppContextStore);
+    const { options } = React.useContext(AppContextStore);
+    const { course } = React.useContext(ContextStore);
 
     const [data, setData] = React.useState({
         tasks_num_by_type:  {},
@@ -62,6 +63,7 @@ const CourseAnalysisContainer = ()=>{
     }, []);
 
     async function fetchcourseanalysis() {
+        console.log(course);
         await apiCourseAnalysisList(course.id)
         .then(response => {
 

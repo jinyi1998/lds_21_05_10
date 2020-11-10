@@ -54,7 +54,6 @@ const LoginForm = (props) => {
         if(validate()){
           document.form.submit();
         }
-        console.log(data);
     };
 
     const dataOnChange = (event) => {
@@ -159,10 +158,15 @@ const LoginForm = (props) => {
                       Cancel
                     </Button>
                     <Grid container justify="flex-end">
-                        <Grid item>
-                        <Link href="register" variant="body2">
-                            Do not have an account? Register!
-                        </Link>
+                        <Grid item xs = {12} container justify="flex-end">
+                          <Link href="register" variant="body2">
+                              Do not have an account? Register!
+                          </Link>
+                        </Grid>
+                        <Grid item xs = {12} container justify="flex-end">
+                          <Link href="password/reset" variant="body2">
+                              Forget your password
+                          </Link>
                         </Grid>
                     </Grid>
                     <input type="hidden" name = "_token" value = {$('meta[name="csrf-token"]').attr('content')} />

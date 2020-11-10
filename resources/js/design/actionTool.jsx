@@ -71,7 +71,7 @@ export default function ActionTool() {
         case 'share':
             break;
         case 'designstudio':
-            setActionPage('basic');
+            setActionPage('');
             break;
         case 'dashboard':
             setActionPage('dashboard');
@@ -116,7 +116,7 @@ export default function ActionTool() {
                 return null;
               }
             case 'designstudio':
-              if(activePage == "basic"){
+              if(!(activePage == "dashboard")){
                 return null;
               }else{
                 return(

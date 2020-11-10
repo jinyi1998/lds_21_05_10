@@ -70,6 +70,7 @@ const useStyles = makeStyles(theme => ({
         resourceid: [],
         // STEMType: [],
         description: "",
+        has_assessment: false
     });  
     const [tool, setTool] = React.useState([])
     const [resource, setResource] = React.useState([])
@@ -85,7 +86,7 @@ const useStyles = makeStyles(theme => ({
             setTool(toolData);
             var resourceData = taskData.resourceid.map( _resource => {return _resource.resource_id});
             setResource(resourceData);
-         
+            setHasAssessment(taskData.has_assessment);
             setTask(taskData);
         }
 
@@ -135,6 +136,15 @@ const useStyles = makeStyles(theme => ({
         }
     }
     , [resource])
+
+    React.useEffect( ()=>{  
+        // update the original resourceid
+        if(task.id != -999){
+        
+           setTask({...task, has_assessment: hasAssessment});
+       }
+   }
+   , [hasAssessment])
 
     React.useEffect(()=>{
         if(task.id != -999){
@@ -199,7 +209,12 @@ const useStyles = makeStyles(theme => ({
             case "content":
                 setTask({...task, content: event.target.value});
                 break;
+            
         }
+    }
+
+    const onChangeIsAssessment = (event) => {
+        setHasAssessment(!hasAssessment);
     }
     
     const classTypeOtps = options.taskClassType;
@@ -236,7 +251,7 @@ const useStyles = makeStyles(theme => ({
                                 <FormControlLabel
                                     control={<Checkbox 
                                         checked={hasAssessment} 
-                                        onChange={() => onChangeIsAssessment()} 
+                                        onChange={onChangeIsAssessment} 
                                         value="Assessment" />}
                                     label="Have Assessment?"
                                 />

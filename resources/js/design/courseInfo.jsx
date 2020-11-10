@@ -1,12 +1,13 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../container/designContainer';
-import {AppContextStore} from '../container/app';
+
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import validator from 'validator';
 
@@ -17,6 +18,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import QuestionHint from '../components/questionHint';
+
+import {ContextStore} from '../container/designContainer';
+import {AppContextStore} from '../container/app';
 import {
   apiLessonDelete, apiLessonCreate,
   apiCourseUpdate, apiCourseClearLesson
@@ -254,23 +258,21 @@ const DesignInfo = (props) => {
         </Grid> */}
         
         <Grid item xs={12} md={6}>
+          <InputLabel>
+            Level
+            <QuestionHint title= {
+              <React.Fragment>
+                Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
+                <br />
+                Teachers may consider learners’ characteristics, like Grade 5 students, when filling this blank. 
+                <br/>
+                It is always important for teachers to think from a learner’s perspective when designing a unit.
+              </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="level" 
             name="level" 
-            label={
-              <React.Fragment>
-                Level
-                <QuestionHint title= {
-                  <React.Fragment>
-                    Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
-                    <br />
-                    Teachers may consider learners’ characteristics, like Grade 5 students, when filling this blank. 
-                    <br/>
-                    It is always important for teachers to think from a learner’s perspective when designing a unit.
-                  </React.Fragment>
-                }/>
-              </React.Fragment>
-            } 
             data-tour = "level"
             value = {courseData.level}
             error = {! (error["level"]=="")}
@@ -296,20 +298,18 @@ const DesignInfo = (props) => {
         </Grid> */}
 
         <Grid item xs={12} md={6}>
+          <InputLabel>
+            Number of Lesson
+            <QuestionHint title = {
+              <React.Fragment>
+              Teachers should think about whether it is realistic to ask students to 
+              complete the tasks and achieve the learning outcomes in the no. of lessons given.
+              </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="no_of_lesson" 
             name="no_of_lesson" 
-            label= { 
-              <React.Fragment>
-                Number of Lesson
-                <QuestionHint title = {
-                  <React.Fragment>
-                  Teachers should think about whether it is realistic to ask students to 
-                  complete the tasks and achieve the learning outcomes in the no. of lessons given.
-                  </React.Fragment>
-                }/>
-              </React.Fragment>
-            } 
             data-tour = "no_of_lesson"
             type="number"
             value = {courseData.no_of_lesson}
@@ -319,30 +319,27 @@ const DesignInfo = (props) => {
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
             disabled = {!(courseData.permission > 2)}
             onChange={onChange} />
-         
         </Grid>
 
         
         <Grid item xs={12} md={12}>
+          <InputLabel>
+            Description
+            <QuestionHint title = {
+                <React.Fragment>
+                  Learning design is an iterative process. 
+                  <br/>
+                  As a starting point, we would advise teachers to put down some keywords there, which may be elaborated or modified later. These keywords can be related to the teaching content, learning experiences, pedagogical approach and so on. 
+                  <br/>
+                  Also if this were to be done by a collaborative team, then different members can contribute different keywords. 
+                </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="description" 
             name="description" 
             data-tour = "description"
             value = {courseData.description} 
-            label= {
-              <React.Fragment>
-                  Description
-                  <QuestionHint title = {
-                      <React.Fragment>
-                        Learning design is an iterative process. 
-                        <br/>
-                        As a starting point, we would advise teachers to put down some keywords there, which may be elaborated or modified later. These keywords can be related to the teaching content, learning experiences, pedagogical approach and so on. 
-                        <br/>
-                        Also if this were to be done by a collaborative team, then different members can contribute different keywords. 
-                      </React.Fragment>
-                  }/>
-              </React.Fragment>
-            } 
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}

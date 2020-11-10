@@ -82,13 +82,16 @@ const LearningTaskEditView = (props) => {
         resourceid: [],
         // STEMType: [],
         description: "",
+        has_assessment: false,
     });  
 
     const [tool, setTool] = React.useState([])
     const [resource, setResource] = React.useState([])
     const [assessment, setAssessment] = React.useState([])
-
-
+    const [hasAssessment, setHasAssessment] = React.useState(
+        false
+     );
+     
     React.useEffect( ()=>{  
         // fetchlearningTask(taskID)
         if(taskID == -1){
@@ -100,11 +103,11 @@ const LearningTaskEditView = (props) => {
             var resourceData = taskData.resourceid.map( _resource => {return _resource.resource_id});
             setResource(resourceData);
             if(showAssessment){
-                var hasAssessment = (taskData.assessmentid?.length > 0)? true: false
-                setHasAssessment(hasAssessment);
+                // var hasAssessment = (taskData.assessmentid?.length > 0)? true: false
+                setHasAssessment(taskData.has_assessment);
                 var assessmentData = taskData.assessmentid.map( _assessment => {return _assessment.learningoutcome_id});
                 setAssessment(assessmentData);
-            }
+            }   
          
             setTask(taskData);
             // setTask({...task, id: -1});
@@ -177,7 +180,11 @@ const LearningTaskEditView = (props) => {
    }
    , [assessment])
 
-
+    React.useEffect( ()=>{
+        if(task.id != -999){
+            setTask({...task, has_assessment: hasAssessment});
+        }
+    }, [hasAssessment]) 
 
     React.useEffect(()=>{
         if(task.id != -999){
@@ -185,9 +192,6 @@ const LearningTaskEditView = (props) => {
         }
     },[task])
     
-    const [hasAssessment, setHasAssessment] = React.useState(
-       false
-    );
 
 
     const onChangeIsAssessment = () => {
@@ -363,6 +367,7 @@ const LearningTaskEditView = (props) => {
                         showAssessment == true?
                             <React.Fragment>
                                 <Grid item xs={12} className={classes.contentGrid}>
+                                    <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["has_assessment"]=="")} margin='dense'>
                                     <FormControlLabel
                                         control={<Checkbox 
                                             checked={hasAssessment} 
@@ -370,8 +375,13 @@ const LearningTaskEditView = (props) => {
                                             value="Assessment" />}
                                         label="Have Assessment?"
                                     />
+                                    {displayAssessment()}
+                                     <FormHelperText>
+                                        {! (error["has_assessment"]=="")? error["has_assessment"]:  ""}
+                                    </FormHelperText>
+                                    </FormControl>
                                 </Grid>
-                                {displayAssessment()}
+                              
                             </React.Fragment>
                         :
                         null

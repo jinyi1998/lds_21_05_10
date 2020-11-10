@@ -126,9 +126,8 @@ class LearningPatternController extends Controller
     {
         //
         $pattern = LearningPattern::find($id);
-        $pattern->is_deleted = 1;
-        $pattern->save();
-        return response()->json("");
+        $pattern->delete();
+        return response()->json("success");
     }
 
     /**
@@ -144,7 +143,7 @@ class LearningPatternController extends Controller
         //add tasks to tasks
         foreach( $pattern->tasks as $_task){
             $_task['component_id'] = $pattern->componentid->component_id;
-            $_task['sequence'] = $_task->patternid->sequence;
+            // $_task['sequence'] = $_task->patternid->sequence;
             $request = new \Illuminate\Http\Request();
             $request->merge($_task->toArray());
             LearningTaskController::save(new LearningTask(), $request);

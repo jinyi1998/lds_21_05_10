@@ -204,7 +204,7 @@ const ComponentSelectContainer = (props ) => {
             <Grid container >
                 <Grid item xs ={12}>
                     <Typography variant="subtitle1" gutterBottom>
-                        There are five curriculum components (CC) under the design type: {designType.name}. Please choose the component patterm for each CC.
+                        There are five curriculum components (CC) under the design type: {designType.name}. Please choose the component pattern for each CC.
                     </Typography>
                 </Grid>
 

@@ -45,6 +45,7 @@ const ComponentPatternSelectView = (props) => {
         is_selected: false
     });
 
+    const [ patternOptsOrig, setPatternOptsOrig ] = React.useState([]);
     const [ patternOpts, setPatternOpts ] = React.useState([]);
     const [ selectPattern, setSelectPattern ] = React.useState(-1);
     const [ selectDisplayPattern, setSelectDisplayPattern ] = React.useState(-1);
@@ -54,6 +55,10 @@ const ComponentPatternSelectView = (props) => {
     React.useEffect(()=>{
         setComponent(props.component);
         setPatternOpts(props.component.patterns);
+
+        if(patternOptsOrig.length == 0){
+            setPatternOptsOrig(props.component.patterns);
+        }   
 
         if(props.component.patterns.length == 0){
             //if no pattern, no need to select
@@ -214,7 +219,7 @@ const ComponentPatternSelectView = (props) => {
                     }
                     <Grid item xs>
                         <ComponentPatternBinFilterContainer 
-                            originalPatterns = {props.component.patterns} 
+                            originalPatterns = {patternOptsOrig} 
                             patternOpts = {patternOpts} 
                             setPatternOpts = {setPatternOpts}/>
                     </Grid>

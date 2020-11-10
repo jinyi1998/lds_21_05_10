@@ -150,14 +150,14 @@ class LearningOutcomesController extends Controller
        
         }
 
-        if($request->has('unit_outcomeid')){
-            if($request->unit_outcomeid == -1){
+        if($request->has('unit_outcome_id')){
+            if($request->unit_outcome_id == -1){
                 // do nothing
             }   
             else if($outcome->unit_outcomeid()->exists()){
                 $outcome->unit_outcomeid()->update([
                     'component_outcomeid' => $outcome->id,
-                    'unit_outcomeid' => $request->unit_outcomeid,
+                    'unit_outcomeid' => $request->unit_outcome_id,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
@@ -165,7 +165,7 @@ class LearningOutcomesController extends Controller
             }else{
                 $outcome->unit_outcomeid()->create([
                     'component_outcomeid' => $outcome->id,
-                    'unit_outcomeid' => $request->unit_outcomeid,
+                    'unit_outcomeid' => $request->unit_outcome_id,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
