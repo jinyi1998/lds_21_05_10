@@ -198,6 +198,8 @@ const LessonPlanView = (props) => {
                 </Grid>
 
                 <Grid item xs ={12}>
+                    Target learning time: {lesson.time} min(s)
+                    <br />
                     Estimated learning time: {totalTime()} min(s)
                 </Grid>
                 

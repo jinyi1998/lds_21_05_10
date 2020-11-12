@@ -27,7 +27,7 @@ const QuestionHint = (props) => {
             } 
             placement="right-end"
         >
-            <HelpIcon/>
+            <HelpIcon  fontSize="small"/>
         </Tooltip>   
     );
 }

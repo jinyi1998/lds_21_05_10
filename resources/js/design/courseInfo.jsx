@@ -22,7 +22,7 @@ import QuestionHint from '../components/questionHint';
 import {ContextStore} from '../container/designContainer';
 import {AppContextStore} from '../container/app';
 import {
-  apiLessonDelete, apiLessonCreate,
+  apiLessonDelete, apiLessonCreate, apiLessonUpdate,
   apiCourseUpdate, apiCourseClearLesson
 } 
 from '../api.js';
@@ -62,6 +62,12 @@ const DesignInfo = (props) => {
     "lesson_time": "",
   });
   
+  React.useEffect(()=>{
+    if(courseData.lessons.length> 0){
+      setLessonTime(courseData.lessons[0].time)
+    }
+  }, [courseData.lessons])
+
   const validate = () => {
     var validated = true;
     var tempError = {
@@ -160,8 +166,7 @@ const DesignInfo = (props) => {
       if(course.no_of_lesson > courseData.no_of_lesson){
         //del lesson
         for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
-          
-          var lessonid = course.lessons[i].id;
+        
           await apiLessonDelete(course.lessons[i].id).then(response => {
             setLoadingOpen(false)
           })
@@ -185,14 +190,29 @@ const DesignInfo = (props) => {
           .catch(error => console.log(error));
         }
       }
-     
+      
+      for(var i = 0; i < courseData.no_of_lesson; i++){
+        let int_i = parseInt(i);
+        if(course.lessons[i].time == lesson_time){
+          continue;
+        }
+        await apiLessonUpdate( {
+          "lesson_id": course.lessons[i].id,
+          "time": lesson_time,
+        })
+        .then(response => {
+            setLoadingOpen(false)
+        })
+        .catch(error => console.log(error));
+      }
+
     }else{
         
       await apiCourseClearLesson(course.id);
           
       // init the lesson with input no of lesson
         for(var i = 0; i<courseData.no_of_lesson; i++){
-
+          
           await apiLessonCreate( {
             "time": lesson_time,
             "title": 'Lesson' + (i + 1),
@@ -283,20 +303,6 @@ const DesignInfo = (props) => {
          
         </Grid>
 
-        {/* <Grid item xs={12} md={6}>
-          <TextField 
-            id="lesson_time" 
-            name="lesson_time" 
-            label="Time per lesson" 
-            type="number"
-            value = {lesson_time}
-            error = {! (error["lesson_time"]=="")}
-            helperText= {! (error["lesson_time"]=="")? error["lesson_time"]:  ""}
-            fullWidth 
-            InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
-            onChange={onChange} />
-        </Grid> */}
-
         <Grid item xs={12} md={6}>
           <InputLabel>
             Number of Lesson
@@ -321,6 +327,24 @@ const DesignInfo = (props) => {
             onChange={onChange} />
         </Grid>
 
+
+        <Grid item xs={6} md={6}>
+          <InputLabel>
+            Time Per Lesson
+          </InputLabel>
+          <TextField 
+            id="lesson_time" 
+            name="lesson_time" 
+            type="number"
+            value = {lesson_time}
+            error = {! (error["lesson_time"]=="")}
+            helperText= {! (error["lesson_time"]=="")? error["lesson_time"]:  ""}
+            fullWidth 
+            InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
+            onChange={onChange} />
+        </Grid>
+
+    
         
         <Grid item xs={12} md={12}>
           <InputLabel>

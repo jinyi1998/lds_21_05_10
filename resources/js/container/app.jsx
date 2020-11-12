@@ -63,7 +63,7 @@ const drawerWidth = 240;
 
 const  useStyles = makeStyles(theme => ({
   appBarShift: {
-    // marginLeft: drawerWidth,
+    marginLeft: drawerWidth,
     maxWidth: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,

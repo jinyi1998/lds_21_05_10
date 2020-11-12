@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   drawerPaper: {
-    position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -187,6 +186,7 @@ const useStyles = makeStyles(theme => ({
             paper: clsx(classes.drawerPaper, !sideMenuOpen && classes.drawerPaperClose),
           }}
           open={sideMenuOpen}
+          style = {{position: "sticky", top: "72px"}}
       >
           <div className={classes.toolbarIcon}>
               <IconButton onClick={() => {setSideMenuOpen(!sideMenuOpen)}}>
