@@ -37,7 +37,7 @@ const LessonPlanEditTask = (props) => {
         )
     }else{
         return (
-            <Dialog open={openLessonTaskEdit} onClose={() => setOpenLessonTaskEdit(false)} aria-labelledby="form-dialog-title">
+            <Dialog open={openLessonTaskEdit} onClose={() => setOpenLessonTaskEdit(false)} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">Edit Lesson Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

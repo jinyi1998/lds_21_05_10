@@ -57,6 +57,7 @@ const DesignInfo = (props) => {
   const [error, setError] = React.useState({
     "unit_title": "",
     "level": "",
+    "subject": "",
     "no_of_lesson": "",
     "description": "",
     "lesson_time": "",
@@ -72,6 +73,7 @@ const DesignInfo = (props) => {
     var validated = true;
     var tempError = {
       "unit_title": "",
+      "subject": "",
       "level": "",
       "no_of_lesson": "",
       "description": "",
@@ -79,7 +81,7 @@ const DesignInfo = (props) => {
     }
 
     if(validator.isEmpty(courseData.unit_title.toString())){
-      tempError["unit_title"] = "Please enter the course unit title";
+      tempError["unit_title"] = "Please enter the course topic";
       // setError({...error, unitTitle: "Please enter the course unit title"})
       validated = false;
     }
@@ -91,7 +93,7 @@ const DesignInfo = (props) => {
     // }
 
     if(validator.isEmpty(courseData.level.toString())){
-      tempError["level"] = "Please enter the course level";
+      tempError["level"] = "Please enter the grade";
       // setError({...error, level: "Please enter the course level"})
       validated = false;
     }
@@ -103,7 +105,7 @@ const DesignInfo = (props) => {
     }
 
     if(!validator.isInt(lesson_time.toString(), {min: 0, max: 120})){
-      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 12-";
+      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 120";
      //  setError({...error, no_of_lesson: "error"})
       validated = false;
    }
@@ -232,6 +234,7 @@ const DesignInfo = (props) => {
       "level": courseData.level,
       "no_of_lesson": courseData.no_of_lesson,
       "description": courseData.description,
+      "subject": courseData.subject
     }).then(response => {
       dispatch({
         type: "INIT_COURSE",
@@ -247,7 +250,7 @@ const DesignInfo = (props) => {
     <React.Fragment>
 
       <Typography variant="h6" gutterBottom>
-          Design type: STEM ({options.designType.find(x => x.id== course.design_type_id)?.name})
+          Design type: {options.designType.find(x => x.id== course.design_type_id)?.name}
       </Typography>
 
       <Grid container spacing={5} data-tour = "course_info">
@@ -255,7 +258,7 @@ const DesignInfo = (props) => {
           <TextField  
           id="unit_title" 
           name="unit_title" 
-          label="Unit Title" 
+          label="Topic" 
           data-tour = "unit_title"
           value = {courseData.unit_title}
           error = {! (error["unit_title"]=="")}
@@ -264,22 +267,10 @@ const DesignInfo = (props) => {
           disabled = {!(courseData.permission > 2)}
           onChange={onChange}/>
         </Grid>
-
-        {/* <Grid item xs={6} md={6}>
-          <TextField 
-          id="schoolName" 
-          name="SCHOOL_NAME"
-          value = {courseData.schoolName} 
-          label="School Name"  
-          error = {! (error["schoolName"]=="")}
-          helperText= {! (error["schoolName"]=="")? error["schoolName"]:  ""}
-          fullWidth 
-          onChange={onChange}/>
-        </Grid> */}
         
         <Grid item xs={12} md={6}>
           <InputLabel>
-            Level
+            Grade
             <QuestionHint title= {
               <React.Fragment>
                 Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
@@ -297,6 +288,23 @@ const DesignInfo = (props) => {
             value = {courseData.level}
             error = {! (error["level"]=="")}
             helperText= {! (error["level"]=="")? error["level"]:  ""}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+         
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            Subject
+          </InputLabel>
+          <TextField 
+            id="subject" 
+            name="subject" 
+            data-tour = "subject"
+            value = {courseData.subject}
+            error = {! (error["subject"]=="")}
+            helperText= {! (error["subject"]=="")? error["subject"]:  ""}
             disabled = {!(courseData.permission > 2)}
             fullWidth 
             onChange={onChange} />

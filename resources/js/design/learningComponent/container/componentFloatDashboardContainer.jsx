@@ -73,13 +73,13 @@ const ComponentFloatDashboardContainer = (props) => {
                 datasets: [{
                     data: [],
                     backgroundColor: [],
-                    hoverBackgroundColor: []
+                    // hoverBackgroundColor: []
             }]
         }
         temp_tasks_time_by_type["labels"] = Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp_tasks_time_by_type["datasets"][0]["data"] = Object.values(data['tasks_time_by_type'])
         temp_tasks_time_by_type["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
+        // temp_tasks_time_by_type["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         set_tasks_time_by_task(temp_tasks_time_by_type);
 
@@ -89,13 +89,13 @@ const ComponentFloatDashboardContainer = (props) => {
                 datasets: [{
                     data: [],
                     backgroundColor: [],
-                    hoverBackgroundColor: []
+                    // hoverBackgroundColor: []
             }]
         }
         temp_tasks_num_by_classtarget["labels"] = Object.keys(data['tasks_num_by_classtarget']).map( _id => options.taskTarget.find(x=> x.id == _id)?.description)
         temp_tasks_num_by_classtarget["datasets"][0]["data"] = Object.values(data['tasks_num_by_classtarget'])
         temp_tasks_num_by_classtarget["datasets"][0]["backgroundColor"] = Object.keys(data['tasks_num_by_classtarget']).map( _id => colorConfig.find(x=> x.id == _id)?.color)
-        temp_tasks_num_by_classtarget["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_num_by_classtarget']).length)
+        // temp_tasks_num_by_classtarget["datasets"][0]["hoverBackgroundColor"] =  generateHoverColor(Object.keys(data['tasks_num_by_classtarget']).length)
         // console.log(temp_tasks_num_by_classtarget);
         set_tasks_num_by_classtype(temp_tasks_num_by_classtarget);
     }

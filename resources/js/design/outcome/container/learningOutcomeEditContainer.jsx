@@ -364,13 +364,13 @@ const LearningOutcomeEditContainer = (props) => {
                             {error['outcomeType'] ==""? "Required": error['outcomeType']}
                             <QuestionHint title = {
                                 <React.Fragment>
-                                There are three types of learning outcomes: disciplinary knowledge, disciplinary skills and generic skills.
-                                <br/>
-                                Disciplinary knowledge generally refers to the facts, concepts, theories, and principles that are taught and learned in specific subjects/disciplines.
-                                <br/>
-                                Disciplinary skills are about the ability to perform a task, such as reading, writing, and calculating.
-                                <br/>
-                                Generic skills are often referred to as 21st century skills, includes communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.
+                                    There are three types of learning outcomes: disciplinary knowledge, disciplinary skills, and generic skills. 
+                                    <br/>
+                                    Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples.   
+                                    <br/>
+                                    Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically. 
+                                    <br/>
+                                    Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning. 
                                 </React.Fragment>
                             }/>
                             </React.Fragment>

@@ -187,12 +187,30 @@ const LearningTaskContainer = (props) => {
 
     async function duplicateLearningTask(task, duplicateTo) {
         setLoadingOpen(true);
-        if(duplicateTo != -1){
-            var json = task;
-            json['component_id'] = duplicateTo;
-            json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
-            
-            return await apiLearningTaskPost(json)
+
+        if(typeof component_id != 'undefined'){
+            if(duplicateTo != -1){
+                var json = task;
+                json['component_id'] = duplicateTo;
+                json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
+                
+                return await apiLearningTaskPost(json)
+                .then(response => {
+                    //load the default learning outcomes by api request
+                    refreshCourse();
+                    setLoadingOpen(false);  
+                    displayMsg("success", "Learning Task Duplicated"); 
+                })
+                .catch(error => {
+                    console.log(error);
+                    displayMsg("error", "Some Errors Occured");
+                })
+            }
+        }else if(typeof pattern_id != 'undefined') {
+            var temp_task = JSON.parse(JSON.stringify(task));
+            temp_task['pattern_id'] = pattern_id;
+            delete temp_task.sequence;
+            return await apiLearningTaskPost(temp_task)
             .then(response => {
                 //load the default learning outcomes by api request
                 refreshCourse();
@@ -204,6 +222,9 @@ const LearningTaskContainer = (props) => {
                 displayMsg("error", "Some Errors Occured");
             })
         }
+
+
+    
     }
 
     async function deleteLearningTask(task) {
@@ -269,7 +290,7 @@ const LearningTaskContainer = (props) => {
             return;
         }
         var updates = [];
-        setLoadingOpen(false);
+        setLoadingOpen(true);
 
         //sync the data to root state
         var tempTasks =  JSON.parse(JSON.stringify(tasksData));
@@ -320,11 +341,15 @@ const LearningTaskContainer = (props) => {
     }
 
     const handlePatternTaskDragEnd = (result) => {
-        if (!result.destination) {
+        if (!result.destination || !result.source ) {
+            return;
+        }
+
+        if(result.destination.index == result.source.index){
             return;
         }
         var updates = [];
-        setLoadingOpen(false);
+        setLoadingOpen(true);
 
         //sync the data to root state
         var tempTasks =  JSON.parse(JSON.stringify(tasksData));
@@ -336,32 +361,32 @@ const LearningTaskContainer = (props) => {
         });
 
         var sourceTask = {
-          id: tempTasks[result.source.index].patternid.id,
+          id: tempTasks[result.source.index].id,
+          pattern_id: tempTasks[result.source.index].patternid.pattern_id,
           sequence: tempTasks[result.destination.index].patternid.sequence
         }
 
         if(result.source.index < result.destination.index){
           for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
             let tempTask = {
-              id : tempTasks[i].patternid.id,
+              id : tempTasks[i].id,
+              pattern_id: tempTasks[i].patternid.pattern_id,
               sequence: tempTasks[i].patternid.sequence - 1
             }
-            // console.log(tempTask);
-            updates.push( updateComponentTaskLessonRelation(tempTask) );
+            updates.push( apiLearningTaskPut(tempTask) );
          }
         }else{
 
           for(var i = result.destination.index; i < result.source.index; i++){
             let tempTask = {
-              id : tempTasks[i].patternid.id,
+              id : tempTasks[i].id,
+              pattern_id: tempTasks[i].patternid.pattern_id,
               sequence: tempTasks[i].patternid.sequence + 1
             }
-            // console.log(tempTask);
-            updates.push ( updateComponentTaskLessonRelation(tempTask) );
+            updates.push ( apiLearningTaskPut(tempTask) );
           }
         }
-        // console.log(sourceTask);
-        updates.push( updateComponentTaskLessonRelation(sourceTask) );
+        updates.push( apiLearningTaskPut(sourceTask) );
 
         Promise.all(updates).then(()=>{
             setLoadingOpen(false);

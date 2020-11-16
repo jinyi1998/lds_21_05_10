@@ -45,16 +45,6 @@ import {AppContextStore} from '../../../container/app';
 //     }
 //   ],
 
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
-  
-    ...(isDragging && {
-      background: "rgb(235,235,235)"
-    })
-});
-
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -66,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     },
     contentGrid: {
         textAlign: "left",
-        minWidth: '152px'
+        minWidth: '150px'
     },
     chips: {
         display: 'flex',
@@ -110,6 +100,15 @@ const LearningTaskView = (props) => {
         has_assessment: false
     });  
 
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+      
+        ...(isDragging && {
+          background: "rgb(235,235,235)"
+        })
+    });
+    
     const getDraggable = (provided, snapshot) => {
         if(typeof provided == 'undefined'){
             return (
@@ -161,7 +160,14 @@ const LearningTaskView = (props) => {
     }
 
     const onClickDuplicate = () => {
-        setDuplicateDialogOpen(true);
+        if(typeof taskData.patternid.pattern_id != 'undefined'){
+           //duplicate in pattern, skip the copy to dialog 
+           duplicateLearningTask();
+        }else{
+            // component task
+            setDuplicateDialogOpen(true);
+        }
+    
     }
 
     const onConfirmDuplicate = () => {
@@ -182,12 +188,12 @@ const LearningTaskView = (props) => {
                     {typeof provided == 'undefined' || !props.enableDrag?    
                         null
                     :
-                        <Grid item xs ={4} container  justify="center" alignItems="center">
+                        <Grid item xs ={4} container  justify="flex-start" alignItems="center">
                             <DragHandleIcon />
                         </Grid>
                     }
                  
-                    <Grid item xs ={8}>
+                    <Grid item xs ={8} container  justify="flex-end" alignItems="center">
                         <div style={taskTypeColor(task.type)}/>
                     </Grid>
 

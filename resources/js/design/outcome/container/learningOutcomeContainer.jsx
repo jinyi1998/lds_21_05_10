@@ -315,7 +315,7 @@ const LearningOutcomeContainer = (props)=>{
             });   
         }
        
-      }
+    }
 
     async function updateOutcomeSequence(outcome_relation) {
     setLoadingOpen(true)
@@ -375,83 +375,69 @@ const LearningOutcomeContainer = (props)=>{
         if(modeLevel == "course"){
             return (
                 <Grid container alignItems="flex-start" justify="flex-end" direction="row">
-                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                    <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <RootRef rootRef={provided.innerRef}>
-                        <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view" style = {{width: "100%"}}>
-                                {
-                                    options.learningOutcomeType.map(_lo_type => 
-                                        <React.Fragment>
-                                            <ListSubheader color ="primary">
-                                                {_lo_type.description}
-                                            </ListSubheader>
-                                            {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).length > 0?
-                                            <React.Fragment>
-                                                {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).sort((a,b)=> a.sequence - b.sequence).map(
-                                                (_outcome, index )=>
-                                                (
-                                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
-                                                    {(provided, snapshot) => (
-                                                        <LearningOutcomeUnit 
-                                                        learningOutcome = {_outcome}
-                                                        key={index} 
-                                                        provided = {provided} 
-                                                        snapshot = {snapshot} 
-                                                        component = {component} 
-                                                        onOpenDelDialog = {onOpenDelDialog} 
-                                                        onOpenEditDialog = {editLearningOutcome}
-                                                        onDuplicateOutcome = {onDuplicateOutcome}
-                                                        enableEdit = {enableEdit}
-                                                        enableDuplicate = {enableDuplicate}
-                                                        enableDelete = {enableDelete}
-                                                        index = {index}/> 
-                                                    )}
-                                                    </Draggable>
-                                                )
-                                                )}
-                                            </React.Fragment>
-                                            :
-                                            <ListItem>
-                                                <ListItemText primary = {"There is no outcome under this learning outcome type"} />
-                                            </ListItem>
-                                        }
-                                        </React.Fragment>
-                                    )
-                                }
-                                {/* {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).map(
-                                    (_outcome, index )=>
-                                    (
-                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                    {
+                        options.learningOutcomeType.map(_lo_type => 
+                            <Grid container item xs = {12}>
+                                <Grid container item xs = {12}>
+                                    <ListSubheader color ="primary">
+                                        {_lo_type.description}
+                                    </ListSubheader>
+                                </Grid>
+
+                                <Grid container item xs = {12}>
+                                {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).length > 0?
+                               
+                                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                                        <Droppable droppableId="droppable">
                                         {(provided, snapshot) => (
-                                            <LearningOutcomeUnit 
-                                            learningOutcome = {_outcome}
-                                            key={index} 
-                                            provided = {provided} 
-                                            snapshot = {snapshot} 
-                                            component = {component} 
-                                            onOpenDelDialog = {onOpenDelDialog} 
-                                            onOpenEditDialog = {editLearningOutcome}
-                                            enableEdit = {enableEdit}
-                                            enableDelete = {enableDelete}
-                                            index = {index}/> 
+                                            <RootRef rootRef={provided.innerRef}>
+                                            <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view">
+                                            {
+                                                course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).sort((a,b)=> a.sequence - b.sequence).map(
+                                                (_outcome, index )=>
+                                                    (
+                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                                        {(provided, snapshot) => (
+                                                            <LearningOutcomeUnit 
+                                                            learningOutcome = {_outcome}
+                                                            key={index} 
+                                                            provided = {provided} 
+                                                            snapshot = {snapshot} 
+                                                            component = {component} 
+                                                            onOpenDelDialog = {onOpenDelDialog} 
+                                                            onOpenEditDialog = {editLearningOutcome}
+                                                            onDuplicateOutcome = {onDuplicateOutcome}
+                                                            enableEdit = {enableEdit}
+                                                            enableDuplicate = {enableDuplicate}
+                                                            enableDelete = {enableDelete}
+                                                            index = {index}/> 
+                                                        )}
+                                                        </Draggable>
+                                                    )
+                                                )
+                                            }
+                                            {provided.placeholder}
+                                            </List>
+                                            </RootRef>
                                         )}
-                                        </Draggable>
-                                    )
-                                )} */}
-                            {provided.placeholder}
-                        </List>
-                        </RootRef>
-                    )}
-                    </Droppable>
+                                        </Droppable>
+                                    </DragDropContext>
+                                
+                                :
+                                <ListItem>
+                                    <ListItemText primary = {"There is no outcome under this learning outcome type"} />
+                                </ListItem>
+                                }
+                                </Grid>
+                            </Grid>
+                        )
+                    }
                     {
                         enableAdd? 
                         <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
                         :
                         null
                     }
-                    
-                    </DragDropContext>
                 </Grid>
             )
         }else{
@@ -540,6 +526,7 @@ const LearningOutcomeContainer = (props)=>{
 
     const getListStyle = isDraggingOver => ({
         background: isDraggingOver ? 'lightgrey' : '',
+        width: '100%'
     });
 
     return (

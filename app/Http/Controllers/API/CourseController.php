@@ -112,6 +112,9 @@ class CourseController extends Controller
         if($request->has('level')){
             $course->level = $request->level;
         }
+        if($request->has('subject')){
+            $course->subject = $request->subject;
+        }
         if($request->has('no_of_lesson')){
             $course->no_of_lesson = $request->no_of_lesson;
         }

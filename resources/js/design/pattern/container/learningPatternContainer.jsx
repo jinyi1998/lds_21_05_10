@@ -63,9 +63,14 @@ const LearningPatternContainer = (props) => {
     const [ isEdit, setIsEdit ] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const enableDrag = course.permission > 2;
+    const enableDuplicate = course.permission > 2;
+
     React.useEffect(() => {
         setPattern(props.patternData);
     }, [props.patternData])
+
+    const canEdit = course.permission > 2;
 
 
     //#region local function
@@ -74,6 +79,7 @@ const LearningPatternContainer = (props) => {
     }
 
     const onDuplicate = () => {
+        setLoadingOpen(true);
         var pattern_temp = JSON.parse(JSON.stringify(pattern));
         pattern_temp['component_id'] = component.id;
         apiLearningPatternPost(pattern_temp).then((response)=>{
@@ -107,42 +113,46 @@ const LearningPatternContainer = (props) => {
                 expandIcon={<ExpandMoreIcon />}
                 >
                     <Grid container>
-                        <Grid item xs = {10}>
+                        <Grid item xs >
                             <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>   {pattern.title}</Typography>
                         </Grid>
-
-                        <Grid item xs = {2}>
-                            <React.Fragment>
-                                <IconButton
-                                aria-label="more"
-                                aria-controls="long-menu"
-                                aria-haspopup="true"
-                                onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
-                                >
-                                    <MoreVertIcon />
-                                </IconButton>
-                                <Menu
-                                id="pattern-edit-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
-                                >
-                                {/* <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>
-                                    <ListItemIcon><EditIcon/></ListItemIcon>
-                                    Rename
-                                </MenuItem> */}
-                                <MenuItem onClick={(e)=> {e.stopPropagation(); onDuplicate()}}>
-                                    <ListItemIcon><FileCopyIcon/></ListItemIcon>
-                                    Duplicate
-                                </MenuItem>
-                                <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
-                                    <ListItemIcon><DeleteIcon/></ListItemIcon>
-                                    Delete
-                                </MenuItem>
-                                </Menu>
-                            </React.Fragment>    
-                        </Grid>
+                        {   canEdit ? 
+                            <Grid item xs = {2}>
+                                <React.Fragment>
+                                    <IconButton
+                                    aria-label="more"
+                                    aria-controls="long-menu"
+                                    aria-haspopup="true"
+                                    onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                    <Menu
+                                    id="pattern-edit-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
+                                    >
+                                    {/* <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>
+                                        <ListItemIcon><EditIcon/></ListItemIcon>
+                                        Rename
+                                    </MenuItem> */}
+                                    <MenuItem onClick={(e)=> {e.stopPropagation(); onDuplicate()}}>
+                                        <ListItemIcon><FileCopyIcon/></ListItemIcon>
+                                        Duplicate
+                                    </MenuItem>
+                                    <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
+                                        <ListItemIcon><DeleteIcon/></ListItemIcon>
+                                        Delete
+                                    </MenuItem>
+                                    </Menu>
+                                </React.Fragment>    
+                            </Grid>
+                            : 
+                            null 
+                        }
+                      
                     </Grid>
 
                 </AccordionSummary>
@@ -150,8 +160,8 @@ const LearningPatternContainer = (props) => {
                     <LearningTaskContainer 
                         pattern_id = {pattern.id} 
                         tasksData = {pattern.tasks} 
-                        enableDrag = {false}
-                        enableDuplicate = {false}
+                        enableDrag = {enableDrag}
+                        enableDuplicate = {enableDuplicate}
                     />
                 </AccordionDetails>
             </Accordion>

@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
       backgroundSize: 'contain'
   },
 
-  test_after: {
-    transition: "opacity 1s ease-out",
+  hover_after: {
+    transition: "opacity 0.5s ease,  height 0.5s ease",
     content: ' ',
     opacity: 0.6,
     width: "100%",
@@ -30,38 +30,37 @@ const useStyles = makeStyles(theme => ({
   action: {
     backgroundColor: "#ffffff",
     padding: "0px 30px 0px 30px",
-    height: "50px",
+    transition: "opacity 0.5s ease, height 0.5s ease",
+   
   },
 
   action_before: {
-    transition: "opacity 0.5s ease",
     opacity: 0,
     zIndex: 1,
+    height: "0px",
   },
 
   action_after: {
-
     position: "relative",
-    transition: "opacity 0.5s ease",
     opacity: 1,
     width: "100%",
+    height: "50px",
     zIndex: 1,
   },
 
   info: {
     padding: "5%",
+    transition: "opacity 0.5s ease, background-color 0.5s ease, height 0.5s ease",
   },
 
   info_before: {
     // transition: "opacity 0.1s linear, background-color 0.1s linear",
-
     backgroundColor: "#fff",
     opacity: 1,
     zIndex: 1,
   },
 
-  info_after: {
-    transition: "opacity 1s linear, background-color 1s linear",
+  info_after:{
     height: 'calc(100% - 100px)',
     backgroundColor: "#050038",
     opacity: 0.6,
@@ -113,7 +112,7 @@ const StemPractice = (props) => {
             {/* media */}
             <Grid
             container
-            className={clsx(isMouseOver && classes.test_after)}
+            className={clsx(isMouseOver && classes.hover_after, !isMouseOver && classes.media)}
             variant="outlined" 
       
             data-tour = {"designtype_action_" +  designBoxData.id}

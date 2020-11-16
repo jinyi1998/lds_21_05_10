@@ -15,6 +15,7 @@ const courseInitState = {
     course: {
         unit_title: "",
         level: "",
+        subject: "",
         no_of_lesson: "",
         description: 1,
         componentid: [],
@@ -121,8 +122,9 @@ const DesignContainer = (props) => {
     const [displayGuideTour, setDisplayGuideTour] = React.useState(false);
     const { setLoadingOpen } = React.useContext(AppContextStore);
     
-    const [activePage, setActionPage] = React.useState('basic');
-    const [activeStep, setActiveStep] = React.useState(parseInt(props.step));
+    const [activeStage, setActiveStage] = React.useState('basic');
+    const [activeStep, setActiveStep] = React.useState(parseInt(props.step)); //step in basic page
+    const [activePage, setActivePage] =  React.useState(''); //page in design stage
 
     React.useEffect(()=>{
         setLoadingOpen(true)
@@ -206,8 +208,10 @@ const DesignContainer = (props) => {
           tourStepIndex: stepIndex,
           activeStep: activeStep,
           setActiveStep: setActiveStep,
+          activeStage: activeStage,
+          setActiveStage: setActiveStage,
           activePage: activePage,
-          setActionPage: setActionPage
+          setActivePage: setActivePage
         }}
       >
         <TourGuide 

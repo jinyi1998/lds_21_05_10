@@ -102,7 +102,10 @@ const LessonPlanViewContainer = (props) => {
                 updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
             />
 
-             <Dialog open={editMode} onClose={() => {setEditMode(false)}} style = {{minWidth: "400px", minHeight: "300px"}} onEntered = {()=>{tourNextStep()}} maxWidth = {"md"}>  
+             <Dialog open={editMode} 
+                onClose={() => {setEditMode(false)}} 
+                style = {{minWidth: "400px", minHeight: "300px"}} 
+                onEntered = {()=>{tourNextStep()}} maxWidth = {"md"}>  
                 <LessonPlanTaskSelect 
                         lesson = {lesson}
                         setEditMode = {setEditMode}

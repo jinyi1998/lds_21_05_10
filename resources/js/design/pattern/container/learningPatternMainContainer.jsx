@@ -108,9 +108,14 @@ const LearningTaskMainContainer = (props) => {
                             </Typography>
                         </Grid>
                     }
+                    {
+                         course.permission > 2?
                         <Grid container item xs = {12} justify = {"flex-start"}>
                             <Button variant = {"outlined"} color = {"secondary"} onClick = {onClickLoadPattern}>Load New Pattern</Button>
                         </Grid>
+                         :
+                         null
+                    }
                     </Grid>
                 </AccordionDetails>
             </Accordion>

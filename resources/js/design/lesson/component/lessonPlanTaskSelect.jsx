@@ -220,7 +220,7 @@ const LessonPlanTaskSelect = (props) => {
         <React.Fragment>
             <DialogTitle>Add your tasks into lesson</DialogTitle>
             <DialogContent>
-                <Grid container>
+                <Grid container item xs = {12}>
                     {displayEditContent()}
                 </Grid>
             </DialogContent>

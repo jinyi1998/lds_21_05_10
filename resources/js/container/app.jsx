@@ -127,6 +127,10 @@ const App = (props) => {
 
   const returnImgSrc = (image_url) => {
     if(typeof image_url == "string"){
+      if(image_url == ""){
+        return "/asset/image/data-not-found.png";
+      }
+      
       var temp = image_url;
 
       if( temp.substring(0, 1) == "/"){

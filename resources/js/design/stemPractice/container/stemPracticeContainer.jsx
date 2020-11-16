@@ -168,15 +168,12 @@ const StemPracticeContainer = (props) => {
       <Grid container>
         <Grid item xs = {12}>
           <Typography variant="h6" gutterBottom>
-            Choose the disciplinary practice for your STEM curriculum unit
+            What do you want your students to become? 
             <QuestionHint title = {<div>
-              "The aim of STEM education is to equip students with knowledge and skills in the four STEM disciplines, for example, scientific inquiry, application of technological knowledge, design thinking, logical thinking, and so on. 
-              <br/>
-              In order to strengthen students’ ability to integrate knowledge and experiences like the experts in the fields of STEM, the learning design needs to provide students with opportunities to experience an authentic practice format in STEM areas.
-              <br/>
-              There are two authentic practice formats in STEM, engineering design and scientific investigation. 
-              <br/>
-              “Engineering design” refers to STEM lessons that provide students with opportunities to construct some products, while “Scientific investigation” refers to lessons in which students design and conduct a scientific investigation to address a scientific problem. We refers to these two authentic practice formats in STEM as disciplinary practice." 
+              By answering this question, we hope that you will have a preliminary idea of what opportunities to provide for students to solve in a real-world scenario, and what to do to equip them with relevant knowledge and skills in the fields of STEM. 
+              <br />
+              We usually adopt two practices “engineering design” and “scientific investigation” as the disciplinary practices to engage learners in STEM. 
+
             </div>}/>
           </Typography>
         </Grid>
