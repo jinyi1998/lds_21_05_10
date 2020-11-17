@@ -115,11 +115,11 @@ class LessonController extends Controller
                     'is_deleted' => 0
                 ]);
             }
-            $time = 0;
-            foreach($lesson->tasks as $_task){
-                $time += $_task->time;
-            }
-            $lesson->time = $time;
+            // $time = 0;
+            // foreach($lesson->tasks as $_task){
+            //     $time += $_task->time;
+            // }
+            // $lesson->time = $time;
         }
 
         if($request->has('course_id')){

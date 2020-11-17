@@ -20,10 +20,6 @@ class DesignType extends Model
     }
 
     public function outcomes(){
-        // return $this->hasMany(
-        //     'App\DesigntypeOutcomeTempRelation',
-        //     'designtype_id'
-        // )->select(['designtype_id', 'outcome_id']);
         return $this->hasManyThrough(
             'App\LearningOutcomeTemplate',
             'App\DesigntypeOutcomeTempRelation',
@@ -35,10 +31,6 @@ class DesignType extends Model
     }
 
     public function components(){
-        // return $this->hasMany(
-        //     'App\DesigntypeOutcomeTempRelation',
-        //     'designtype_id'
-        // )->select(['designtype_id', 'outcome_id']);
         return $this->hasManyThrough(
             'App\ComponentTemplate',
             'App\DesignTypeComponentTemplateRelation',
@@ -47,6 +39,17 @@ class DesignType extends Model
             'id', // component_template id
             'component_id' //LearningPatternTemplate pattern id
         )->select(['component_template.*','component_template.id as template_id'])->with(['instructions']);
+    }
+
+    public function instructions(){
+        return $this->hasManyThrough(
+            'App\DesigntypeInstruction',
+            'App\DesigntypeInstructionRelation',
+            'designtype_id', 
+            'id',
+            'id',
+            'designtype_instruction_id'
+        )->orderBy('designtype_instruction_relation.sequence')->with(['designtypeid']);
     }
 
     public function createdby(){

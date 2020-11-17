@@ -58,21 +58,21 @@ const ComponentAnalysisContent = (props)=>{
                     </Paper>
                 </Grid>     
 
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Component Task Time Distribution By Task Type</h5>
                         <Pie data={data['tasks_time_by_type']} />
                     </Paper>
                 </Grid>    
 
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Component Task Number Distribution By Task Type</h5>
                         <Pie data={data['tasks_num_by_type']} />
                     </Paper>
                 </Grid>   
 
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Component Task Time Distribution By Tasks</h5>
                         <Pie data={data['tasks_time_by_task']} />

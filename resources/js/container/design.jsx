@@ -6,28 +6,36 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import DesignStepper from '../design/designStepper';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import DesignStepper from '../design/component/designStepper';
 import DesignStageStepper from '../design/component/designStageStepper';
 
-import DesignType from '../design/approachType';
+import StemPracticeContainer from '../design/stemPractice/container/stemPracticeContainer';
 import DesignInfo from '../design/courseInfo';
 import DesignComponentStep from '../design/learningComponent/componentStep';
-import LearningOutcomeContainer from '../design/outcome/learningOutcomeContainer';
+import LearningOutcomeContainer from '../design/outcome/container/learningOutcomeContainer';
 import ComponentSelectContainer from '../design/learningComponent/container/componentSelectContainer';
 import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
-
+import ComponentPlanContainer from '../design/learningComponent/container/componentPlanContainer';
+import LessonPlan from '../design/lesson/container/lessonPlanContainer';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
 import MenuIcon from '@material-ui/icons/Menu';
-
-
+import InfoIcon from '@material-ui/icons/Info';
+import GpsFixedIcon from '@material-ui/icons/GpsFixed';
+import ExploreIcon from '@material-ui/icons/Explore';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
 import {AppContextStore} from '../container/app';
-import config from 'react-global-configuration';
 
 import {
   apiCourseUpdate, apiCourseClearComponent,
@@ -61,15 +69,20 @@ const useStyles = makeStyles(theme => ({
   },
   layout: {
     padding: '16px'
+  },
+  flex: {
+    flexGrow: 1,
+    overflow: 'auto',
+    minHeight: '100%',
   }
 }));
 
 // const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
-const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
+const steps = ['STEM PRACTICE', 'COURSE/ CURRICULUM UNIT INFO', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const {activePage, setActionPage} = props;
+  const {activeStage, setActiveStage} = props;
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -77,32 +90,110 @@ const PageMenu = (props) => {
 
   const handleClose = (name) => {
     if(name!=""){
-      setActionPage(name);
+      setActiveStage(name);
     }
     setAnchorEl(null);
   };
 
   return (
     <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button color = {"primary"} variant = {"contained"} aria-haspopup="true" onClick={handleClick} style = {{margin: 16}}>
         <MenuIcon />
       </Button>
       <Menu
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={()=> handleClose(activePage)}
+        onClose={()=> handleClose(activeStage)}
       >
-        <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activePage == "courseinfo"}>Course Information</MenuItem>
-        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activePage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
-        {/* <MenuItem onClick={() => handleClose("majorStep")}  selected = {activePage == "majorStep"}>Curriculum Components</MenuItem> */}
+        <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activeStage == "courseinfo"}>Course Information</MenuItem>
+        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activeStage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
+        {/* <MenuItem onClick={() => handleClose("majorStep")}  selected = {activeStage == "majorStep"}>Curriculum Components</MenuItem> */}
         <CssBaseline />
-        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activePage == "unitPlan"}>Curriculum Component Design</MenuItem>
+        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activeStage == "unitPlan"}>Curriculum Component Design</MenuItem>
         <CssBaseline />
       
-        {/* <MenuItem onClick={() => handleClose("review")} selected = {activePage == "review"}>Your Design</MenuItem> */}
+        {/* <MenuItem onClick={() => handleClose("review")} selected = {activeStage == "review"}>Your Design</MenuItem> */}
       </Menu>
     </div>
+  );
+}
+
+const PageListMenu = (props) => {
+  const {activeStage, setActiveStage} = props;
+
+  return (
+
+    <List component="nav" aria-label="main mailbox folders" style = {{ 
+      position: "sticky",
+      top: 72}}
+    >
+      <ListSubheader>Course Overview</ListSubheader>
+      <ListItem
+        button
+        selected={activeStage === 'courseinfo'}
+        onClick={(event) => setActiveStage('courseinfo')}
+      >
+        {/* <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Course Information" />
+      </ListItem>
+
+      <ListItem
+        button
+        selected={activeStage === 'learningOutcomes'}
+        onClick={(event) => setActiveStage('learningOutcomes')}
+      >
+        {/* <ListItemIcon>
+          <InfoIcon />
+        </ListItemIcon> */}
+        <ListItemText primary="Unit Level Learning Outcomes" />
+      </ListItem>
+
+      <ListSubheader>Design Stage</ListSubheader>
+      {/* <ListItem
+        button
+        selected={activeStage === 'unitPlan'}
+        onClick={(event) => setActiveStage('unitPlan')}
+      >
+        <ListItemIcon>
+          <ExploreIcon />
+        </ListItemIcon>
+        <ListItemText primary="Curriculum Component Design" />
+      </ListItem> */}
+
+      <ListItem
+        button
+        selected={activeStage === 'componentPlan'}
+        onClick={(event) => setActiveStage('componentPlan')}
+      >
+        <ListItemText primary="Curriculum Component Plan" />
+      </ListItem>
+
+      <ListItem
+        button
+        selected={activeStage === 'lessonPlan'}
+        onClick={(event) => setActiveStage('lessonPlan')}
+      >
+        <ListItemText primary="Lesson Plan" />
+      </ListItem>
+
+      
+
+      <ListSubheader>Review Stage</ListSubheader>
+        <ListItem
+          button
+          selected={activeStage === 'finish'}
+          onClick={(event) => setActiveStage('finish')}
+        >
+          {/* <ListItemIcon>
+            <ExploreIcon />
+          </ListItemIcon> */}
+          <ListItemText primary="Review" />
+        </ListItem>
+    </List>
+   
   );
 }
 
@@ -111,7 +202,11 @@ const Design = (props) => {
   const classes = useStyles();
 
   const {courseID} = props;
-  const { course, dispatch, activePage, setActionPage, activeStep, setActiveStep } = React.useContext(ContextStore);
+  const { course, dispatch, 
+    activeStage, setActiveStage, 
+    activeStep, setActiveStep,
+    activePage, setActivePage 
+  } = React.useContext(ContextStore);
   const { setLoadingOpen, options} = React.useContext(AppContextStore);
   
   //#region data init
@@ -181,33 +276,54 @@ const Design = (props) => {
   }, [course.designType]);
 
   React.useEffect(() => {
+    initDesign();
+  }, [course.isinited]);
+
+  React.useEffect(()=>{
+    if( activeStage == ''){
+      initDesign();
+    }
+  }, [activeStage])
+
+
+  const initDesign = () => {
     setLoadingOpen(true)
     if(courseID != -1){
       if(course.isinited){
 
-        if(course.components.length == 0){
+        if(course.components.length == 0 ){
           setLoadingOpen(false)
-          setActiveStep(0);
+          if(course.unit_title == ""  && course.outcomes.length > 0){
+            setActiveStep(1);
+          }else if(course.outcomes.length > 0){
+            setActiveStep(2);
+          }else{
+            setActiveStep(0);
+          }
           // setActiveStep(props.step - 1);
         }else{
           setLoadingOpen(false)
           if(props.step == 0){
               // setActiveStep(4);
-            setActionPage('unitPlan')
+            // setActiveStage('unitPlan')
+            setActiveStage('designStage');
+            setActivePage('componentPlan');
           }else if(props.step == 5){
-            setActionPage('finish')
+            setActiveStage('designStage');
+            setActivePage('finish');
           }
         }
       }
     }else{
       setLoadingOpen(false)
     }
-  }, [course.isinited]);
+  }
   
   const handleNext = () => {
     if(activeStep + 1 == steps.length){
       //final step
-      setActionPage('unitPlan');
+      setActiveStage('designStage');
+      setActivePage('componentPlan');
       // onFinish();
     }else{
       setActiveStep(activeStep + 1);
@@ -231,7 +347,7 @@ const Design = (props) => {
       case 0:
         return (
           <React.Fragment>
-             <DesignType handleNext = {handleNext}/>
+             <StemPracticeContainer handleNext = {handleNext}/>
              <div className={classes.buttons}>
               {activeStep !== 0 && (
                 <Button onClick={handleBack} className={classes.button}>
@@ -284,30 +400,12 @@ const Design = (props) => {
       case 3:
         return (
           <React.Fragment>
-             {/* <DesignComponentStep /> */}
-             {/* <div className={classes.buttons}>
-              {activeStep !== 0 && (
-                <Button onClick={handleBack} className={classes.button}>
-                  Back
-                </Button>
-              )}
-              {activeStep !== 0 &&(
-                    <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                    data-tour = "next"
-                  >
-                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                  </Button>
-              )}
-            </div> */}
             <ComponentSelectContainer handleNext = {handleNext} />
           </React.Fragment>
         )
       case 4:
-        setActionPage('unitPlan');
+        setActiveStage('designStage');
+        setActivePage('componentPlan');
         break;
         // return (
         //   <React.Fragment>
@@ -330,7 +428,7 @@ const Design = (props) => {
         // )
       
       case 5:
-        setActionPage('finish');
+        setActiveStage('finish');
         break;
         // return (
         //   <React.Fragment>
@@ -358,8 +456,8 @@ const Design = (props) => {
     }
   }
 
-  const getActivePage = () => {
-    switch (activePage){
+  const getActiveStage = () => {
+    switch (activeStage){
       default:
       case 'basic': 
         return (
@@ -373,33 +471,89 @@ const Design = (props) => {
       case 'majorStep':
         return (
           <React.Fragment>
-            <PageMenu  activePage ={activePage} setActionPage ={setActionPage}/>
+            <PageMenu  activeStage ={activeStage} setActiveStage ={setActiveStage}/>
             <DesignComponentStep/>
           </React.Fragment>
           );
-      case 'unitPlan':
+      case 'designStage':
         return(
           <React.Fragment>
-            <DesignStageStepper activeStep = {0}/>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
+              <Grid container>
+               
+                <Grid item xs ={2}>
+                  <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage}/> 
+                </Grid>
+                
+                <Grid item xs>
+                  <Grid container item xs = {12}>
+                    <Paper style = {{width: '100%', padding: 16, margin: 16}}>
+                      <Grid item xs = {12}>
+                        <Typography variant="h4" gutterBottom style = {{fontWeight: 900}}>
+                          {course.unit_title}
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs = {12}>
+                        <Typography variant="h6" gutterBottom>
+                          By {course.createdby.name} @{course.createdby.school}
+                        </Typography>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                  {getDesignStageContent()}
+                </Grid>
+              </Grid>
+          </React.Fragment>
+        )
+    }
+  }
+
+  const getDesignStageContent = () => {
+    switch (activePage){
+      case 'unitPlan':
+        return(          
+          <Grid item xs>
             <UnitPlanContainer/>
             <Grid container item xs = {12} justify = {"flex-end"}>
-              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActionPage('finish')}> Next </Button>
+              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('finish')}> Next </Button>
             </Grid>
-          
-        </React.Fragment>
+          </Grid>
         );
+
+      case 'componentPlan':
+        return(
+          <Grid container item xs spacing = {2}>
+            <Grid item xs = {12}>
+              <ComponentPlanContainer/>
+            </Grid>
+            <Grid container item xs = {12} justify = {"flex-end"}>
+              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('lessonPlan')}> Next </Button>
+            </Grid>
+          </Grid>
+        );
+      case 'lessonPlan':
+         return(
+          <Grid item xs>
+            <LessonPlan/>
+            <Grid container item xs = {12} justify = {"flex-end"}>
+              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('componentPlan')}> Back </Button>
+              <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('finish')}> Next </Button>
+            </Grid>
+          </Grid>
+        );
+
       case 'learningOutcomes':
-          return( 
-          <React.Fragment>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <LearningOutcomeContainer  />
-       </React.Fragment>);
+        return( 
+            <Grid item xs >
+              <LearningOutcomeContainer  />
+            </Grid>
+        );
       case 'courseinfo':
         return(
           <React.Fragment>
-            <PageMenu activePage ={activePage} setActionPage ={setActionPage}/>
-            <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
+           <Grid item xs  style={{maxHeight: '100%', overflow: 'auto'}}>
+              <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
+            </Grid>
           </React.Fragment>
         )
       case 'dashboard':
@@ -409,22 +563,19 @@ const Design = (props) => {
           </React.Fragment>
         )
       case 'finish':
-          return(
-            <React.Fragment>
-               <DesignStageStepper activeStep = {1}/>
-              <PrintableContainer isPrint = {false} courseid = {courseID}/>
-              <Grid container item xs ={12} justify = {"flex-end"}>
-                <Grid item xs = {2}>
-                  <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActionPage('unitPlan')} fullWidth> Edit </Button>
-                </Grid>
-                <Grid item xs = {2}>
-                  <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>
-                </Grid>
+        return(
+          <Grid item xs>
+            <PrintableContainer isPrint = {false} courseid = {courseID}/>
+            <Grid container item xs ={12} justify = {"flex-end"}>
+              <Grid item xs = {2}>
+                <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActivePage('componentPlan')} fullWidth> Edit </Button>
               </Grid>
-              
-            </React.Fragment>
-          )
-
+              <Grid item xs = {2}>
+                <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        )
     }
   }
 
@@ -435,7 +586,7 @@ const Design = (props) => {
         <Paper className={classes.paper} style ={{padding: "16px"}}>
           <Grid container spacing = {4}>
             <Grid item xs = {12}>
-              {getActivePage()}
+              {getActiveStage()}
             </Grid>
           </Grid>
         </Paper>

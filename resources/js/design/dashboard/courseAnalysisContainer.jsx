@@ -50,7 +50,8 @@ const CourseAnalysisContainer = ()=>{
 
     const classes = useStyles();
 
-    const { course, options } = React.useContext(AppContextStore);
+    const { options } = React.useContext(AppContextStore);
+    const { course } = React.useContext(ContextStore);
 
     const [data, setData] = React.useState({
         tasks_num_by_type:  {},
@@ -62,6 +63,7 @@ const CourseAnalysisContainer = ()=>{
     }, []);
 
     async function fetchcourseanalysis() {
+        console.log(course);
         await apiCourseAnalysisList(course.id)
         .then(response => {
 
@@ -86,7 +88,7 @@ const CourseAnalysisContainer = ()=>{
                 datasets: [{
                     data: [],
                     backgroundColor: [],
-                    hoverBackgroundColor: []
+                    // hoverBackgroundColor: []
                 }]
             },
             tasks_time_by_type: {
@@ -94,7 +96,7 @@ const CourseAnalysisContainer = ()=>{
                 datasets: [{
                     data: [],
                     backgroundColor: [],
-                    hoverBackgroundColor: []
+                    // hoverBackgroundColor: []
                 }]
             },
         };
@@ -103,12 +105,12 @@ const CourseAnalysisContainer = ()=>{
         temp["tasks_num_by_type"]["labels"] = Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp["tasks_num_by_type"]["datasets"][0]["data"] = Object.values(data['tasks_num_by_type'])
         temp["tasks_num_by_type"]["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_num_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp["tasks_num_by_type"]["datasets"][0]["hoverBackgroundColor"] =generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
+        // temp["tasks_num_by_type"]["datasets"][0]["hoverBackgroundColor"] =generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
 
         temp["tasks_time_by_type"]["labels"] = Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.description)
         temp["tasks_time_by_type"]["datasets"][0]["data"] = Object.values(data['tasks_time_by_type'])
         temp["tasks_time_by_type"]["datasets"][0]["backgroundColor"] =  Object.keys(data['tasks_time_by_type']).map( _id => options.taskType.find(x=> x.id == _id)?.color)
-        temp["tasks_time_by_type"]["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
+        // temp["tasks_time_by_type"]["datasets"][0]["hoverBackgroundColor"] = generateHoverColor(Object.keys(data['tasks_time_by_type']).length)
     
         //#endregion
     

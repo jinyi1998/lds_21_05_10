@@ -4,24 +4,30 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from  '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
-import LearningTaskView from '../../task/component/learningTaskView';
-import LearningPatternEditView from '../component/learningPatternEditView';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+
+import LearningTaskContainer from '../../task/container/learningTaskContainer';
 
 import {ComponentContext} from '../../learningComponent/container/componentContainer';
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
 import {
-    apiLearningCompGetPatternOpts,
-    apiLearningPatternGet, apiLearningPatternPut, apiLearningPatternUnlock
+    apiLearningPatternGet, apiLearningPatternPost, apiLearningPatternDelete
 } from '../../../api.js';
 
 const useStyles = makeStyles(theme => ({
@@ -54,149 +60,111 @@ const LearningPatternContainer = (props) => {
     const classes = useStyles();
     
     const [pattern, setPattern] = React.useState(props.patternData);
-    const [patternTempOpts, setPatternTempOpts] = React.useState([]);
-    const [patternTempID, setPatternTempID] = React.useState(-1);
+    const [ isEdit, setIsEdit ] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const [editPatternOpen, setEditPatternOpen] = React.useState(false);
+    const enableDrag = course.permission > 2;
+    const enableDuplicate = course.permission > 2;
 
-    const enableUnlock = course.permission > 2;
+    React.useEffect(() => {
+        setPattern(props.patternData);
+    }, [props.patternData])
+
+    const canEdit = course.permission > 2;
+
 
     //#region local function
-    async function reloadPattern(id) {
-        setLoadingOpen(true)
-        return await apiLearningPatternGet(id).then(response => {
-            //load the default learning outcomes by api request
-            setPattern(response.data);
-            setLoadingOpen(false)
-        })
-        .catch(error => console.log(error));
-    }
-    
-    async function reloadPatternTemplate(id) {
-        return await apiLearningCompGetPatternOpts(id)
-        .then(response => {
-            //load the default learning outcomes by api request
-            setPatternTempOpts(response.data);
-            return response;
-        })
-        .catch(error => console.log(error));
-    }
-  
-    async function unlockLearningPattern() {
-        setLoadingOpen(true)
-        return await apiLearningPatternUnlock(pattern)
-        .then(response => {
-            //load the default learning outcomes by api request
-            setLoadingOpen(false)
-            displayMsg("success", "Pattern Unlocked");
-            refreshCourse()
-        })
-        .catch(error => {
-            console.log(error);
-            displayMsg("error", "Error Occured");
-        });
-    }
-
-    async function saveLearningPattern() {
-        var json = patternTempOpts.find(x => x.id == patternTempID);
-        json["pattern_id"] = pattern.id;
-
-        return await apiLearningPatternPut(json)
-        .then(response => {
-              //load the default learning outcomes by api request
-              setLoadingOpen(false);
-              setEditPatternOpen(false);
-              reloadPattern(pattern.id);
-              displayMsg("success", "Pattern Unlocked");
-              refreshCourse();
-        })
-        .catch(error => {
-            console.log(error);
-            displayMsg("error", "Error Occured");
-        });
-    }
-
-    const unLockPattern = () => {
-        unlockLearningPattern()
-    }
-
     const onEditPattern = () => {
-        setEditPatternOpen(true);
+
+    }
+
+    const onDuplicate = () => {
+        setLoadingOpen(true);
+        var pattern_temp = JSON.parse(JSON.stringify(pattern));
+        pattern_temp['component_id'] = component.id;
+        apiLearningPatternPost(pattern_temp).then((response)=>{
+            refreshCourse()
+            displayMsg('success', 'pattern duplicated')
+        }).catch(error => {
+            setLoadingOpen(false);
+            displayMsg('error', 'error when pattern duplicate ')
+            console.log(error);
+        })
+        setAnchorEl(null);
+    }
+
+    const onDelete = () => {
+        setLoadingOpen(true);
+        apiLearningPatternDelete(pattern.id).then(()=>{
+            refreshCourse()
+            displayMsg('success', 'pattern deleted')
+        }).catch(error => {
+            setLoadingOpen(false);
+            displayMsg('error', 'pattern deleted error');
+            console.log(error);
+        })
+        setAnchorEl(null)
     }
     //#endregion
-
-    React.useEffect( ()=>{  
-        // fetchlearningPattern(pattern.id)
-        reloadPatternTemplate(component.id);
-    }
-    , [pattern.id])
-
     return (
         <React.Fragment>
-             <Paper className={classes.paper} data-tour = "component_pattern_view">
-                {
-                patternTempOpts?.length > 1? 
-                    <Grid item xs={4}>
-                        <Button variant="contained" color="primary" onClick={()=>onEditPattern()} data-tour = "component_pattern_change">
-                            Reload Learning Patterns
-                        </Button>
-                    </Grid>
-                    :
-                    null
-                }
-                
-                <Grid container spacing = {4}>
-                    <Grid item xs = {8} data-tour = "component_pattern_title">
-                        {pattern.title}
-                    </Grid>
-
-                    <Grid item xs = {4}>
-                        {
-                            enableUnlock?
-                            <Button color="primary" variant="contained" onClick={()=> unLockPattern()} data-tour = "component_pattern_unlock" > <LockOpenIcon/>Unlock me</Button>
-                            :
-                            null
+            <Accordion  data-tour = "component_pattern_view">
+                <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                >
+                    <Grid container>
+                        <Grid item xs >
+                            <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>   {pattern.title}</Typography>
+                        </Grid>
+                        {   canEdit ? 
+                            <Grid item xs = {2}>
+                                <React.Fragment>
+                                    <IconButton
+                                    aria-label="more"
+                                    aria-controls="long-menu"
+                                    aria-haspopup="true"
+                                    onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
+                                    >
+                                        <MoreVertIcon />
+                                    </IconButton>
+                                    <Menu
+                                    id="pattern-edit-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={Boolean(anchorEl)}
+                                    onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
+                                    >
+                                    {/* <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>
+                                        <ListItemIcon><EditIcon/></ListItemIcon>
+                                        Rename
+                                    </MenuItem> */}
+                                    <MenuItem onClick={(e)=> {e.stopPropagation(); onDuplicate()}}>
+                                        <ListItemIcon><FileCopyIcon/></ListItemIcon>
+                                        Duplicate
+                                    </MenuItem>
+                                    <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
+                                        <ListItemIcon><DeleteIcon/></ListItemIcon>
+                                        Delete
+                                    </MenuItem>
+                                    </Menu>
+                                </React.Fragment>    
+                            </Grid>
+                            : 
+                            null 
                         }
+                      
                     </Grid>
-                    
-                    {pattern.tasks?.map((_task, index)=>
-                       <div data-tour = "component_pattern_task" key = {index} style = {{"width": "100%"}}>
-                        <LearningTaskView 
-                                taskID = {_task.id} 
-                                taskData = {_task} 
-                                key = {index}
-                                editBtn = {false}
-                                duplicateBtn = {false}
-                                deleteBtn = {false}
-                            />
-                        </div>
-                    )}
-                    
-                </Grid>
-             </Paper>
-            
 
-             <Dialog open={editPatternOpen} onClose={() => setEditPatternOpen(false)} maxWidth = "md" style = {{minHeight: 400}}>
-                <DialogTitle id="form-dialog-title">Edit Learning Pattern</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        You may edit learning pattern for this component...
-                    </DialogContentText>
-                    <LearningPatternEditView 
-                        patternTempOpts = {patternTempOpts}
-                        setPatternTempID = {setPatternTempID}
+                </AccordionSummary>
+                <AccordionDetails>
+                    <LearningTaskContainer 
+                        pattern_id = {pattern.id} 
+                        tasksData = {pattern.tasks} 
+                        enableDrag = {enableDrag}
+                        enableDuplicate = {enableDuplicate}
                     />
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={() => setEditPatternOpen(false)} >
-                        Cancel
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={() => saveLearningPattern()} >
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                </AccordionDetails>
+            </Accordion>
         </React.Fragment> 
     );
 }

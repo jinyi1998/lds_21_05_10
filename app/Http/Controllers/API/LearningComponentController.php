@@ -170,7 +170,7 @@ class LearningComponentController extends Controller
     
                         $uloid = json_decode($uloid, true);
                         
-                        $_outcome['unit_outcomeid'] =  $uloid[0]['outcome_id'];
+                        $_outcome['unit_outcome_id'] =  $uloid[0]['outcome_id'];
                     }else{
                         $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcome_id'])->get();
                         $new_unit_outcome = json_decode($new_unit_outcome, true);
@@ -180,13 +180,13 @@ class LearningComponentController extends Controller
                         $new_unit_outcome = LearningOutcomesController::store($request_new_unit_outcome)->getContent();
                         $new_unit_outcome = json_decode($new_unit_outcome);
 
-                        $_outcome['unit_outcomeid'] =  $new_unit_outcome->id;
+                        $_outcome['unit_outcome_id'] =  $new_unit_outcome->id;
                     }
 
                  
                 }else if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
                     // do nothing
-                    $_outcome['unit_outcomeid'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
+                    $_outcome['unit_outcome_id'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
                 }
 
                 $request_outcome = new \Illuminate\Http\Request($_outcome);

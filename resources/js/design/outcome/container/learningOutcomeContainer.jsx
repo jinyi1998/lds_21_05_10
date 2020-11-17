@@ -19,23 +19,24 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import {ContextStore} from '../../container/designContainer'
-import {AppContextStore} from '../../container/app';
+import {ContextStore} from '../../../container/designContainer'
+import {AppContextStore} from '../../../container/app';
 
-import LearningOutcomeAddFromSelect from './learningOutcomeAddFromSelect';
-import LearningOutcomeUnit from './learningOutcomeUnit';
-import LearningOutcomeEdit from './learningOutcomeEdit';
-import InstructionBox from '../../components/instructionBox';
+import LearningOutcomeAddFromSelect from '../learningOutcomeAddFromSelect';
+import LearningOutcomeUnit from '../component/learningOutcomeUnit';
+import LearningOutcomeEditContainer from './learningOutcomeEditContainer';
+import InstructionBox from '../../../components/instructionBox';
 
-import QuestionHint from '../../components/questionHint';
+import QuestionHint from '../../../components/questionHint';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import {
     apiLearningOutcomeDelete, apiLearningOutcomeDeletComponentRelation,
     apiLearningOutcomeComponentPut,
-    apiLearningOutcomeCoursePut,
-} from "../../api.js"
+    apiLearningOutcomePost, apiLearningOutcomeCoursePut,
+    
+} from "../../../api.js"
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -64,7 +65,7 @@ const LearningOutcomeContainer = (props)=>{
 
     const { course, refreshCourse } = React.useContext(ContextStore);
     const { tourSetMode, tourSetRun, tourNextStep, tourStepIndex } = React.useContext(ContextStore);
-    const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
+    const { setLoadingOpen, displayMsg, options } = React.useContext(AppContextStore);
 
     React.useEffect(()=> {
         if(modeLevel == "course"){
@@ -73,6 +74,8 @@ const LearningOutcomeContainer = (props)=>{
         }
     }, [modeLevel])
     
+    
+    // const [ ulo, setUlo ] = React.useState([]); 
     const [learningOutcomeOpen, setLearningOutcomeOpen] = React.useState(false);
     const [learningOutcomeSelectOpen, setLearningOutcomeSelectOpen] = React.useState(false);
 
@@ -87,11 +90,15 @@ const LearningOutcomeContainer = (props)=>{
         isCourseLevel: true
     });
 
+
+    // React.useEffect(()=>{
+    // }, [course.outcome])
     const enableAdd = course.permission > 2; 
     const enableEdit = course.permission > 2; 
     const enableDrag = course.permission > 2; 
     const enableDelete = course.permission > 2; 
-  
+    const enableDuplicate =  course.permission > 2; 
+    
 
 
     //#region  action related
@@ -120,7 +127,6 @@ const LearningOutcomeContainer = (props)=>{
 
 
     const handleOnSave = (addedLearningOutcome, action = "") => {
-
     }
 
     const onOpenDelDialog = (outcome) => {
@@ -153,7 +159,7 @@ const LearningOutcomeContainer = (props)=>{
         var updates = [];
 
         //sync the data to root state
-        var tempOutcomes =  JSON.parse(JSON.stringify(course.outcomes));
+        var tempOutcomes =  JSON.parse(JSON.stringify(course.outcomes.sort( (a,b) => a.outcomeType - b.outcomeType).sort((a,b) => a.sequence - b.sequence)));
         tempOutcomes.map((_outcome, index)=> {
             if(_outcome.courseid.sequence == null){
                 tempOutcomes[index].courseid.sequence = index + 1;
@@ -248,6 +254,31 @@ const LearningOutcomeContainer = (props)=>{
             displayMsg("error", "Opps, Some error occured");
         })
     }
+
+    const onDuplicateOutcome = (outcome) => {
+        setLoadingOpen(true);
+        if(modeLevel == "component"){
+            outcome.component_id = outcome.componentid[0].component_id;
+            outcome.unit_outcome_id = outcome.unit_outcomeid.unit_outcomeid;
+            apiLearningOutcomePost(outcome).then(()=>{
+                refreshCourse();
+                displayMsg('success', 'outcome duplicated');
+            }).catch(error => {
+                displayMsg('error', 'Error occured');
+                console.log(error);
+            })
+
+        }else{
+            outcome.course_id = outcome.courseid.course_id;
+            apiLearningOutcomePost(outcome).then(()=>{
+                refreshCourse();
+                displayMsg('success', 'outcome duplicated');
+            }).catch(error => {
+                displayMsg('error', 'Error occured');
+                console.log(error);
+            })
+        }
+    }
     //#endregion
 
     //#region Data Request Related 
@@ -284,7 +315,7 @@ const LearningOutcomeContainer = (props)=>{
             });   
         }
        
-      }
+    }
 
     async function updateOutcomeSequence(outcome_relation) {
     setLoadingOpen(true)
@@ -306,7 +337,7 @@ const LearningOutcomeContainer = (props)=>{
     const displayLearningOutcomeEdit = () => {
         if(modeLevel ==  "course" ){
             return ( 
-                <LearningOutcomeEdit 
+                <LearningOutcomeEditContainer 
                     outcomeID = {learningOutcomeID} 
                     courseID= {course.id} 
                     onClose={closeAddLearningOutcome} 
@@ -316,7 +347,7 @@ const LearningOutcomeContainer = (props)=>{
             );
         }else{
             return ( 
-                <LearningOutcomeEdit 
+                <LearningOutcomeEditContainer 
                     outcomeID = {learningOutcomeID} 
                     componentID = {component.id} 
                     onClose={closeAddLearningOutcome} 
@@ -337,53 +368,76 @@ const LearningOutcomeContainer = (props)=>{
                     handleOnSave={handleOnSave} 
                 />
             )
-        }
-        
+        } 
     }
 
     const displayLearningOutcomes = () => {
         if(modeLevel == "course"){
             return (
                 <Grid container alignItems="flex-start" justify="flex-end" direction="row">
-                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                    <Droppable droppableId="droppable">
-                    {(provided, snapshot) => (
-                        <RootRef rootRef={provided.innerRef}>
-                        <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view" style = {{width: "100%"}}>
+                    {
+                        options.learningOutcomeType.map(_lo_type => 
+                            <Grid container item xs = {12}>
+                                <Grid container item xs = {12}>
+                                    <ListSubheader color ="primary">
+                                        {_lo_type.description}
+                                    </ListSubheader>
+                                </Grid>
 
-                                {course.outcomes.map(
-                                    (_outcome, index )=>
-                                    (
-                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                <Grid container item xs = {12}>
+                                {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).length > 0?
+                               
+                                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                                        <Droppable droppableId="droppable">
                                         {(provided, snapshot) => (
-                                            <LearningOutcomeUnit 
-                                            learningOutcome = {_outcome}
-                                            key={index} 
-                                            provided = {provided} 
-                                            snapshot = {snapshot} 
-                                            component = {component} 
-                                            onOpenDelDialog = {onOpenDelDialog} 
-                                            onOpenEditDialog = {editLearningOutcome}
-                                            enableEdit = {enableEdit}
-                                            enableDelete = {enableDelete}
-                                            index = {index}/> 
+                                            <RootRef rootRef={provided.innerRef}>
+                                            <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view">
+                                            {
+                                                course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).sort((a,b)=> a.sequence - b.sequence).map(
+                                                (_outcome, index )=>
+                                                    (
+                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                                        {(provided, snapshot) => (
+                                                            <LearningOutcomeUnit 
+                                                            learningOutcome = {_outcome}
+                                                            key={index} 
+                                                            provided = {provided} 
+                                                            snapshot = {snapshot} 
+                                                            component = {component} 
+                                                            onOpenDelDialog = {onOpenDelDialog} 
+                                                            onOpenEditDialog = {editLearningOutcome}
+                                                            onDuplicateOutcome = {onDuplicateOutcome}
+                                                            enableEdit = {enableEdit}
+                                                            enableDuplicate = {enableDuplicate}
+                                                            enableDelete = {enableDelete}
+                                                            index = {index}/> 
+                                                        )}
+                                                        </Draggable>
+                                                    )
+                                                )
+                                            }
+                                            {provided.placeholder}
+                                            </List>
+                                            </RootRef>
                                         )}
-                                        </Draggable>
-                                    )
-                                )}
-                            {provided.placeholder}
-                        </List>
-                        </RootRef>
-                    )}
-                    </Droppable>
+                                        </Droppable>
+                                    </DragDropContext>
+                                
+                                :
+                                <ListItem>
+                                    <ListItemText primary = {"There is no outcome under this learning outcome type"} />
+                                </ListItem>
+                                }
+                                </Grid>
+                            </Grid>
+                        )
+                    }
                     {
                         enableAdd? 
                         <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
                         :
                         null
                     }
-                    
-                    </DragDropContext>
                 </Grid>
             )
         }else{
@@ -414,7 +468,9 @@ const LearningOutcomeContainer = (props)=>{
                                                                 component = {component} 
                                                                 onOpenDelDialog = {onOpenDelDialog} 
                                                                 onOpenEditDialog = {editLearningOutcome}
+                                                                onDuplicateOutcome = {onDuplicateOutcome}
                                                                 enableEdit = {enableEdit}
+                                                                enableDuplicate = {enableDuplicate}
                                                                 enableDelete = {enableDelete}
                                                                 index = {index}/> 
                                                             )}
@@ -470,6 +526,7 @@ const LearningOutcomeContainer = (props)=>{
 
     const getListStyle = isDraggingOver => ({
         background: isDraggingOver ? 'lightgrey' : '',
+        width: '100%'
     });
 
     return (
@@ -478,8 +535,6 @@ const LearningOutcomeContainer = (props)=>{
             <Accordion defaultExpanded	={true}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
                 className = {classes.AccordionSummary}
                 >
                     <div>{modeLevel == "course"? 
@@ -517,11 +572,11 @@ const LearningOutcomeContainer = (props)=>{
                     </Grid>
                 </AccordionDetails>
                 
-                <Dialog open={learningOutcomeOpen} onClose={closeAddLearningOutcome} onEntered = {onEnterLearningOutcome}>
+                <Dialog open={learningOutcomeOpen} onClose={closeAddLearningOutcome} onEntered = {onEnterLearningOutcome} maxWidth = {"md"}>
                     {displayLearningOutcomeEdit()}
                 </Dialog>
 
-                <Dialog open={learningOutcomeSelectOpen} onClose={()=> setLearningOutcomeSelectOpen(false)}>
+                <Dialog open={learningOutcomeSelectOpen} onClose={()=> setLearningOutcomeSelectOpen(false)} maxWidth = {"md"}>
                     {displayLearningOutcomeSelect()}
                 </Dialog>
 

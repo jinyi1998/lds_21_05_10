@@ -16,14 +16,14 @@ import config from 'react-global-configuration';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import validator from 'validator';
 
-import {ContextStore} from '../../container/designContainer'
-import {AppContextStore} from '../../container/app'
+import {ContextStore} from '../../../container/designContainer'
+import {AppContextStore} from '../../../container/app'
 
 import {
     apiLearningOutcomeGetOutcomeLevel, apiLearningOutcomePost, apiLearningOutcomePut
-} from '../../api.js';
+} from '../../../api.js';
 
-import QuestionHint from '../../components/questionHint';
+import QuestionHint from '../../../components/questionHint';
 // learningOutcomes: [
 //     {
 //       id: 0,
@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
       },
   }));
 
-const LearningOutcomeEdit = (props) => {
+const LearningOutcomeEditContainer = (props) => {
     const classes = useStyles();
     const handleClose = props.onClose;
     const {handleOnSave, courseID, componentID, outcomeID} = props;
@@ -62,7 +62,7 @@ const LearningOutcomeEdit = (props) => {
         STEMType: "",
         description: "",
         isCourseLevel: true,
-        unit_outcomeid: -1
+        unit_outcome_id: -1
       });
 
     const [step, setStep] = React.useState(0);
@@ -79,8 +79,10 @@ const LearningOutcomeEdit = (props) => {
         outcomeType: "",
         STEMType: "",
         description: "",
-        unit_outcomeid: ""
+        unit_outcome_id: ""
     });
+
+    const [ autoString, setAutoString ] = React.useState([]);
 
     const { options, setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
     const learningTypeTemp = options.learningOutcomeType;
@@ -103,12 +105,12 @@ const LearningOutcomeEdit = (props) => {
                 STEMType: "",
                 description: "",
                 isCourseLevel: true,
-                unit_outcomeid: -1
+                unit_outcome_id: -1
             });
         }else if(componentID != -1 && typeof componentID != "undefined"){
             setLearningOutcome({
                 ...props.learningOutcome,
-                unit_outcomeid: props.learningOutcome.unit_outcomeid.unit_outcomeid
+                unit_outcome_id: props.learningOutcome.unit_outcomeid.unit_outcomeid
             });
         }else{
             setLearningOutcome({
@@ -163,17 +165,22 @@ const LearningOutcomeEdit = (props) => {
     }, [learningOutcome]);
 
     React.useEffect(()=>{
-        var clo = course.outcomes.find(x=> x.id == learningOutcome.unit_outcomeid);
+        var clo = course.outcomes.find(x=> x.id == learningOutcome.unit_outcome_id);
         if(typeof clo != 'undefined'){
             setLearningOutcome({
                 ...clo,
                 isCourseLevel: false,
-                unit_outcomeid: clo.id
+                unit_outcome_id: clo.id
              });
         }
       
     }, [checked]);
 
+    React.useEffect(()=>{
+        var temp = learningLevelTemp.find(x => x.description == learningOutcome.level)? learningLevelTemp.find(x => x.description == learningOutcome.level).value : [];
+        temp = temp.filter(x => x.toLocaleUpperCase().indexOf(learningOutcome.description.toLocaleUpperCase()) != -1);
+        setAutoString(temp)
+    }, [learningOutcome.level, learningOutcome.description])
     //#region action related
     const handleChange = () => {
         var stepCount = 0;
@@ -196,8 +203,8 @@ const LearningOutcomeEdit = (props) => {
         tourNextStep();
         setLearningOutcome({...learningOutcome, 
             outcomeType: event.target.value, 
-            level: "", 
-            description: ""
+            // level: "", 
+            // description: ""
         })
     }
 
@@ -220,7 +227,7 @@ const LearningOutcomeEdit = (props) => {
 
     const unitOutcomeChange = event => {
         setLearningOutcome({...learningOutcome, 
-            unit_outcomeid: event.target.value, 
+            unit_outcome_id: event.target.value, 
         });
     }
 
@@ -294,7 +301,7 @@ const LearningOutcomeEdit = (props) => {
             outcomeType: "",
             STEMType: "",
             description: "",
-            unit_outcomeid: ""
+            unit_outcome_id: ""
         }
 
         if(validator.isEmpty(learningOutcome.level.toString())){
@@ -313,8 +320,8 @@ const LearningOutcomeEdit = (props) => {
         }
         
         if(componentID != -1 && typeof componentID != "undefined"){
-            if(learningOutcome.unit_outcomeid == -1){
-                tempError["unit_outcomeid"] = "Please enter the parent ulo";
+            if(learningOutcome.unit_outcome_id == -1){
+                tempError["unit_outcome_id"] = "Please enter the parent ulo";
                 validated = false;
             }
         }
@@ -357,13 +364,13 @@ const LearningOutcomeEdit = (props) => {
                             {error['outcomeType'] ==""? "Required": error['outcomeType']}
                             <QuestionHint title = {
                                 <React.Fragment>
-                                There are three types of learning outcomes: disciplinary knowledge, disciplinary skills and generic skills.
-                                <br/>
-                                Disciplinary knowledge generally refers to the facts, concepts, theories, and principles that are taught and learned in specific subjects/disciplines.
-                                <br/>
-                                Disciplinary skills are about the ability to perform a task, such as reading, writing, and calculating.
-                                <br/>
-                                Generic skills are often referred to as 21st century skills, includes communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.
+                                    There are three types of learning outcomes: disciplinary knowledge, disciplinary skills, and generic skills. 
+                                    <br/>
+                                    Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples.   
+                                    <br/>
+                                    Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically. 
+                                    <br/>
+                                    Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning. 
                                 </React.Fragment>
                             }/>
                             </React.Fragment>
@@ -439,10 +446,10 @@ const LearningOutcomeEdit = (props) => {
                             id="unit"
                             data-tour = "lo_edit_unit"
                             className={classes.selectEmpty}
-                            value = {learningOutcome.unit_outcomeid}
+                            value = {learningOutcome.unit_outcome_id}
                             onChange = {unitOutcomeChange}
                             disabled = {checked}
-                            error = {error['unit_outcomeid']!=""}
+                            error = {error['unit_outcome_id']!=""}
                             >
                                 <MenuItem value={-1} disabled>
                                     <em>Unit Level Learning Outcomes</em>
@@ -469,7 +476,7 @@ const LearningOutcomeEdit = (props) => {
                                             You need to associate this newly added learning outcomes to one of the unit level learning outcomes you set in the previous step.
                                         </React.Fragment>} 
                                     />
-                                    {error['unit_outcomeid']==""? "Required": error['unit_outcomeid']}
+                                    {error['unit_outcome_id']==""? "Required": error['unit_outcome_id']}
                                 </React.Fragment>
                             
                             </FormHelperText>
@@ -567,13 +574,14 @@ const LearningOutcomeEdit = (props) => {
 
     const displayOutcomeDes = () => {
         if(step > 1){
-            var autoString = learningLevelTemp.find(x => x.description == learningOutcome.level)? learningLevelTemp.find(x => x.description == learningOutcome.level).value : [];
+           
             return (
                 <Grid item xs={12} data-tour = "lo_edit_description">
                         <Autocomplete
                             freeSolo
-                            disableClearable
+                            includeInputInList
                             options={autoString}
+                            autoComplete
                             value =  {learningOutcome.description}  
                             onInputChange={(event, newInputValue) => {
                                 outcomeDescchange(newInputValue);
@@ -610,7 +618,7 @@ const LearningOutcomeEdit = (props) => {
     return (
         <React.Fragment>
             
-            <Paper style={ {padding: "16px"} }>
+            <Paper style={ {padding: "64px"} }>
             
 
             <Grid container spacing={5}>
@@ -636,4 +644,4 @@ const LearningOutcomeEdit = (props) => {
 
 }
 
-export default LearningOutcomeEdit;
+export default LearningOutcomeEditContainer;

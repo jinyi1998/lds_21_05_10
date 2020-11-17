@@ -103,13 +103,17 @@ const ComponentAddView = (props) => {
     const onClickComponent = (component) => {
         fetcComponentPatternOptsData(component.id)
         setSelectComponent(component);
-        handleAddShoppingCart(component);
-        // setStep(2);
+        if(typeof props.module == "undefined" ||  props.module == "template"){
+            handleAddShoppingCart(component);
+        }else{
+            setStep(2);
+        }
     }
 
     const onClickPattern = (pattern_id) => {
         var temp = JSON.parse( JSON.stringify(selectComponent)); //new obj instead of pon
         temp.pattern_id = parseInt(pattern_id);
+        temp.pattern_title = patternOpts.find(x => x.id == pattern_id)?.title;
         handleAddShoppingCart(temp);
     }
 
@@ -229,34 +233,33 @@ const ComponentAddView = (props) => {
         return (
             <React.Fragment>
                  <GridList className={classes.gridList}>
-                                 {patternOpts.map((_data, index)=>( 
-                                    <Grid index xs = {4} key = {index}>
-                                        <Button style= {{width: 300, margin: "5%"}} onClick = {() =>onClickPattern(_data.id)} variant="outlined">
-                                            <Grid container>
-                                                <Grid item xs ={12}>
-                                                    <img src = {_data.instructions?.length > 0? 
-                                                        returnImgSrc(_data.instructions[0].media) : returnImgSrc("")
-                                                    } className ={classes.media} />
-                                                </Grid>
-                                                <Grid item xs = {12}>
-                                                    <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
-                                                        {_data.title}
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid  item xs = {12}>
-                                                    <Typography variant="caption" display="block" gutterBottom color="textSecondary" style = {{textTransform: "initial"}}>
-                                                      {
-                                                          _data.instructions?.length > 0?
-                                                          _data.instructions[0].description
-                                                          :
-                                                          null
-                                                      }
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </Button>
+                        {patternOpts.map((_data, index)=>( 
+                            <Grid index xs = {4} key = {index}>
+                                <Button style= {{width: 300, margin: "5%"}} onClick = {() =>onClickPattern(_data.id)} variant="outlined">
+                                    <Grid container>
+                                        <Grid item xs ={12}>
+                                            <img src = { returnImgSrc(_data.media)
+                                            } className ={classes.media} />
+                                        </Grid>
+                                        <Grid item xs = {12}>
+                                            <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                                {_data.title}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid  item xs = {12}>
+                                            <Typography variant="caption" display="block" gutterBottom color="textSecondary" style = {{textTransform: "initial"}}>
+                                                {
+                                                    _data.instructions?.length > 0?
+                                                    _data.instructions[0].description
+                                                    :
+                                                    null
+                                                }
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                ))}
+                                </Button>
+                            </Grid>
+                        ))}
                     </GridList>  
                     <Button onClick = {()=>{setStep(1)}} variant="contained" color="primary">Back to Component</Button> 
             </React.Fragment>
@@ -280,21 +283,33 @@ const ComponentAddView = (props) => {
         }
     }
 
+    const displayStepper = () => {
+        return (
+            <Stepper activeStep={step} style = {{padding: '2% 25%'}}>
+                <Step key={1}>
+                    <StepLabel >Select Your Template Design Type</StepLabel>
+                </Step>
+
+                <Step key={2}>
+                    <StepLabel >Select Your Component</StepLabel>
+                </Step>
+
+                {
+                    typeof props.module == "undefined" ||  props.module == "template"?
+                    null
+                    :
+                    <Step key={3}>
+                        <StepLabel >Select Your Pattern</StepLabel>
+                    </Step>
+                }
+
+            </Stepper>
+        )
+    }
+
     return(
       <Paper>
-            <Stepper activeStep={step} style = {{padding: '2% 25%'}}>
-                    <Step key={1}>
-                        <StepLabel >Select Your Template Design Type</StepLabel>
-                    </Step>
-
-                    <Step key={2}>
-                        <StepLabel >Select Your Component</StepLabel>
-                    </Step>
-
-                    {/* <Step key={3}>
-                        <StepLabel >Select Your Pattern</StepLabel>
-                    </Step> */}
-            </Stepper>
+            {displayStepper()}
             
             <ToggleButtonGroup
                 value={view}

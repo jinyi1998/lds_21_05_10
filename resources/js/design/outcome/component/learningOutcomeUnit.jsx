@@ -10,15 +10,15 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
-import {AppContextStore} from '../../container/app';
-import {ContextStore} from '../../container/designContainer'
+import {AppContextStore} from '../../../container/app';
 
 const LearningOutcomeUnit = (props)=>{
     
     const { setLoadingOpen, options } = React.useContext(AppContextStore);
     const {learningOutcomeID} = props;
-    const {enableEdit, enableDelete} = props;
+    const {enableEdit, enableDuplicate, enableDelete} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;
     const {provided, snapshot} = props;
 
@@ -39,8 +39,16 @@ const LearningOutcomeUnit = (props)=>{
         setOutcome(props.learningOutcome);
     }, [props.learningOutcome]);
 
+    const onDuplicateOutcome = (outcome) =>{
+        if(typeof props.onDuplicateOutcome == 'undefined'){
+            console.log('error occur');
+        }else{
+            props.onDuplicateOutcome(outcome)
+        }
+    }
     return (
         <ListItem
+        key = {outcome.id}
         ContainerComponent="li"
         ContainerProps={{ ref: provided.innerRef }}
         {...provided.draggableProps}
@@ -55,10 +63,10 @@ const LearningOutcomeUnit = (props)=>{
             <ListItemText
                 primary={
                     <React.Fragment>
-                          <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_type">
+                          {/* <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_type">
                               { learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description}
                             </Typography>
-                           - 
+                           -  */}
                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
                                {outcome.description}
                             </Typography>
@@ -93,7 +101,14 @@ const LearningOutcomeUnit = (props)=>{
                     :
                     null
                 }
-                
+                {
+                    enableDuplicate?
+                    <IconButton edge="end" aria-label="edit" onClick = {()=> onDuplicateOutcome(outcome)} data-tour = "">
+                        <FileCopyIcon />
+                    </IconButton>
+                    :
+                    null
+                }
                 {
                     enableDelete?
                     <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">

@@ -49,6 +49,7 @@ const ComponentDesignTypeView = (props) => {
     const onConfirmSave = () => {
         props.onChangeDesignType(designTypeID);
         setWarningOpen(false)
+        setLocking(true)
     }
 
     //#endregion

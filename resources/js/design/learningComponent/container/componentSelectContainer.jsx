@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-
+import RootRef from "@material-ui/core/RootRef";
 import Typography from '@material-ui/core/Typography';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -9,13 +9,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
+
 import ComponentPatternSelectView from '../component/componentPatternSelectView';
 import ComponentAddContainer from './componentAddContainer';
+import ComponentPatternSelectConfirmView from '../component/componentPatternSelectConfirmView'
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
 import { apiDesignTypeGet, apiLearningCompTempGet, apiLearningCompPost, apiLearningPattTempGet } from '../../../api';
+import { result } from 'lodash';
 
 
 const ComponentSelectContainer = (props ) => {
@@ -35,6 +40,11 @@ const ComponentSelectContainer = (props ) => {
     React.useEffect(()=>{
         fetchComponents()
     }, [course])
+
+    const getListStyle = isDraggingOver => ({
+        background: isDraggingOver ? 'lightgrey' : '',
+        width: '100%'
+    });
 
     //#region local functino
     const fetchComponents = () => {
@@ -129,6 +139,27 @@ const ComponentSelectContainer = (props ) => {
         setComponents(temp);
     }
 
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+        var temp =  JSON.parse( JSON.stringify(components) );
+        var source = JSON.parse( JSON.stringify(components[result.source.index]) );
+        
+        if(result.destination.index == result.source.index){
+
+        }else if(result.destination.index > result.source.index){
+            temp.splice(result.destination.index + 1, 0, source);
+            temp.splice(result.source.index , 1);
+            
+        }else{
+            temp.splice(result.destination.index, 0, source);
+            temp.splice(result.source.index + 1 , 1);
+        }
+
+        temp.map((_temp, index) => _temp.sequence = index + 1);
+        setComponents(temp);
+    }
     //#endregion
 
     //#region display function related
@@ -143,23 +174,11 @@ const ComponentSelectContainer = (props ) => {
     const displaySuccessDialog = () => {
         return (
             <React.Fragment>
-                <DialogContent>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Congratulations!
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                        You have successfully choose the component patterns for all your CC.
-                        Now you are ready to plan the detailed settings!
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onCloseDialog} variant = {"outlined"}>
-                        I need more time here
-                    </Button>
-                    <Button onClick={()=>{importComponentTempToComponent()}} color="secondary" autoFocus variant = {"outlined"}>
-                        I am ready to go!
-                    </Button>
-                </DialogActions>
+                <ComponentPatternSelectConfirmView 
+                    importComponentTempToComponent = {importComponentTempToComponent}
+                    onCloseDialog = {onCloseDialog}
+                    components = {components}
+                />
             </React.Fragment>
         );
     }
@@ -204,7 +223,7 @@ const ComponentSelectContainer = (props ) => {
             <Grid container >
                 <Grid item xs ={12}>
                     <Typography variant="subtitle1" gutterBottom>
-                        There are five curriculum components (CC) under the design type: {designType.name}. Please choose the component patterm for each CC.
+                        There are five curriculum components (CC) under the design type: {designType.name}. Please choose the component pattern for each CC.
                     </Typography>
                 </Grid>
 
@@ -218,19 +237,38 @@ const ComponentSelectContainer = (props ) => {
                     </Typography>
                 </Grid>
             </Grid>
-            {
-                components.map((_component, index) => {
-                    return(
-                        <Grid container style = {{padding: 16}} key = {index}>
-                            <ComponentPatternSelectView 
-                                component = {_component} 
-                                feedbackComponent ={feedbackComponent} 
-                                onDeleteComponent = {() => onDeleteComponent(index)}
-                            />
-                        </Grid>   
-                    )
-                }) 
-            }
+
+            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                        <Droppable droppableId="droppable">
+                        {(provided, snapshot) => (
+                            <RootRef rootRef={provided.innerRef}>
+                                <Grid container item xs = {12}  style={getListStyle(snapshot.isDraggingOver)}>
+                                {
+                                    components.map((_component, index) => {
+                                        return(
+                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!true}>
+                                              {(provided, snapshot) => (
+                                                 <Grid container style = {{padding: 16}} key = {index}>
+                                                    <ComponentPatternSelectView 
+                                                        provided = {provided} 
+                                                        snapshot = {snapshot} 
+                                                        component = {_component} 
+                                                        feedbackComponent ={feedbackComponent} 
+                                                        onDeleteComponent = {() => onDeleteComponent(index)}
+                                                    />
+                                                </Grid>   
+                                            )}
+                                             
+                                            </Draggable>
+                                        )
+                                    }) 
+                                }
+                                </Grid>
+                            </RootRef>
+                        )}
+                        </Droppable>
+            </DragDropContext>
+
             <Grid container justify = "center" spacing = {4}>
                 <Grid item >
                     <Button variant="contained" color="secondary" onClick = {()=>setOpenAddDialog(true)}>Add Curriculum Component</Button>
@@ -243,6 +281,7 @@ const ComponentSelectContainer = (props ) => {
             <Dialog
                 open={isOpen}
                 onClose={onCloseDialog}
+                maxWidth = {"lg"}
             >
               {displayDialog()}
             </Dialog>

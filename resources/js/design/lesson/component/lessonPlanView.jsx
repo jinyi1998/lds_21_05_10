@@ -198,7 +198,9 @@ const LessonPlanView = (props) => {
                 </Grid>
 
                 <Grid item xs ={12}>
-                    Estimated learning time: {totalTime()} min(s)
+                    Targeted Learning Time: {lesson.time} min(s)
+                    <br />
+                    Estimated Learning Time: {totalTime()} min(s)
                 </Grid>
                 
                 <Grid item xs ={12}>
@@ -251,7 +253,7 @@ const LessonPlanView = (props) => {
                 }
             </Grid>
 
-            <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title">
+            <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = {"md"}>
                 <DialogTitle id="form-dialog-title">Edit Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>

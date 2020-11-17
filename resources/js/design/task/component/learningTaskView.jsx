@@ -45,16 +45,6 @@ import {AppContextStore} from '../../../container/app';
 //     }
 //   ],
 
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
-  
-    ...(isDragging && {
-      background: "rgb(235,235,235)"
-    })
-});
-
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -65,7 +55,8 @@ const useStyles = makeStyles(theme => ({
         margin: 16
     },
     contentGrid: {
-        textAlign: "left"
+        textAlign: "left",
+        minWidth: '150px'
     },
     chips: {
         display: 'flex',
@@ -89,7 +80,7 @@ const LearningTaskView = (props) => {
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
     const [duplicateTo, setDuplicateTo] = React.useState( -1);
-    const {editBtn, duplicateBtn, deleteBtn} = props;
+    const {editBtn, duplicateBtn, deleteBtn, dragAble} = props;
     const {provided, snapshot, index} = props;
 
     const [task, setTask] = React.useState({
@@ -106,9 +97,18 @@ const LearningTaskView = (props) => {
         resourceid: [],
         // STEMType: [],
         description: "",
-        content: "",
+        has_assessment: false
     });  
 
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+      
+        ...(isDragging && {
+          background: "rgb(235,235,235)"
+        })
+    });
+    
     const getDraggable = (provided, snapshot) => {
         if(typeof provided == 'undefined'){
             return (
@@ -160,7 +160,14 @@ const LearningTaskView = (props) => {
     }
 
     const onClickDuplicate = () => {
-        setDuplicateDialogOpen(true);
+        if(typeof taskData.patternid.pattern_id != 'undefined'){
+           //duplicate in pattern, skip the copy to dialog 
+           duplicateLearningTask();
+        }else{
+            // component task
+            setDuplicateDialogOpen(true);
+        }
+    
     }
 
     const onConfirmDuplicate = () => {
@@ -178,29 +185,29 @@ const LearningTaskView = (props) => {
                {...getDraggable(provided, snapshot)}
             >
                 <Grid container item xs={1} height="100%">
-                    {typeof provided == 'undefined'?    
+                    {typeof provided == 'undefined' || !props.enableDrag?    
                         null
                     :
-                        <Grid item xs ={4} container  justify="center" alignItems="center">
+                        <Grid item xs ={4} container  justify="flex-start" alignItems="center">
                             <DragHandleIcon />
                         </Grid>
                     }
                  
-                    <Grid item xs ={8}>
+                    <Grid item xs ={8} container  justify="flex-end" alignItems="center">
                         <div style={taskTypeColor(task.type)}/>
                     </Grid>
 
                 </Grid>
 
                 
-                <Grid container item xs={10}>
-                    <Grid item xs={10} className={classes.contentGrid}>
+                <Grid container item xs>
+                    <Grid item xs={9} className={classes.contentGrid}>
                         <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
                             {task.title}
                         </Typography>
                     </Grid>
                    
-                    <Grid item xs={2} className={classes.contentGrid}>
+                    <Grid item xs={3} className={classes.contentGrid}>
                         {
                             editBtn == true?
                                 <IconButton onClick={()=>onClickEdit()}>

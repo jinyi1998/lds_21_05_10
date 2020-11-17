@@ -91,6 +91,7 @@ const TaskTemplateView = (props) => {
         // STEMType: [],
         description: "",
         content: "",
+        has_assessment: false
     });  
 
     //#region init opts data
@@ -198,10 +199,7 @@ const TaskTemplateView = (props) => {
                             <AssessmentIcon />
                         </Tooltip>
                       
-                       {task.assessment?.map(
-                           _assessment => 
-                           _assessment.description.concat(', ')
-                       )}
+                       {task.has_assessment? "Assessment(s) is needed" : null}
                     </Grid>
 
                     <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_time">

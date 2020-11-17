@@ -311,8 +311,26 @@ import config from 'react-global-configuration';
     export const apiDesignTypePut = data => designTypeRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiDesignTypeDelete = data => designTypeRequest.delete(`/${data.id}`);
     export const apiLearningCompGetLearningCompByDesignType = data => designTypeRequest.get(`/getLearningComponentByDesignType/${data}`);
+    export const apiGetDesignTypeInstruction = data => designTypeRequest.get(`/getDesignTypeInstruction/${data}`);
     export const apiDesignTypeUploadImg = data => designTypeRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion design type
+
+
+    //#region design type instruction
+    const designTypeInstructionRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/designTypeInstruction',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiDesignTypeInstructionList = data => designTypeInstructionRequest.get(`/`);
+    export const apiDesignTypeInstructionGet = data => designTypeInstructionRequest.get(`/${data}`);
+    export const apiDesignTypeInstructionPost = data => designTypeInstructionRequest.post('/', JSON.stringify(data));
+    export const apiDesignTypeInstructionPut = data => designTypeInstructionRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiDesignTypeInstructionDelete = data => designTypeInstructionRequest.delete(`/${data.id}`);
+    export const apiDesignTypeInstructionUploadImg = data => designTypeInstructionRequest.post('/uploadImg', JSON.stringify(data));
+    //#endregion
 
     //#region learning task api
     const learningTaskRequest = axios.create({

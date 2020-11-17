@@ -119,7 +119,9 @@ class LearningTaskTemplateController extends Controller
         if($request->has('description')){
             $task->description = $request->description;
         }
-
+        if($request->has('has_assessment')){
+            $task->has_assessment = $request->has_assessment;
+        }
         $task->is_deleted = 0;
         $task->created_by = Auth::user()->id;
         $task->updated_by = Auth::user()->id;

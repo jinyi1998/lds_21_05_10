@@ -31,7 +31,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
 
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 0, // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: 'flex',
@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   drawerPaper: {
-    position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -55,7 +54,7 @@ const useStyles = makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
+    width: 0,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9),
     },
@@ -179,59 +178,64 @@ const useStyles = makeStyles(theme => ({
 
   return (
       <React.Fragment>
-    
-        <Drawer
-            variant="permanent"
-            classes={{
-              paper: clsx(classes.drawerPaper, !sideMenuOpen && classes.drawerPaperClose),
-            }}
-            open={sideMenuOpen}
-         >
-            <div className={classes.toolbarIcon}>
-                <IconButton onClick={() => {setSideMenuOpen(!sideMenuOpen)}}>
-                    <ChevronLeftIcon />
-                </IconButton>
-            </div>
+      {
+        sideMenuOpen?
+          <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !sideMenuOpen && classes.drawerPaperClose),
+          }}
+          open={sideMenuOpen}
+          style = {{position: "sticky", top: "72px"}}
+      >
+          <div className={classes.toolbarIcon}>
+              <IconButton onClick={() => {setSideMenuOpen(!sideMenuOpen)}}>
+                  <ChevronLeftIcon />
+              </IconButton>
+          </div>
 
-            <Divider />
+          <Divider />
 
-            <List>
-                <div>
-                    <ListItem button  
-                            onClick={event => handleListItemClick(event, 'mydesign')} 
-                            selected={highlightModule() == 'mydesign'} 
-                            >
-                        <ListItemIcon>
-                            <DashboardIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="My Design" />
-                    </ListItem>
-                    <ListItem button
-                            onClick={event => handleListItemClick(event, 'publicdesign')} 
-                            selected={highlightModule() == 'publicdesign'}
-                            >
-                        <ListItemIcon>
-                            <ShoppingCartIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Public Design" />
-                    </ListItem>
+          <List>
+              <div>
+                  <ListItem button  
+                          onClick={event => handleListItemClick(event, 'mydesign')} 
+                          selected={highlightModule() == 'mydesign'} 
+                          >
+                      <ListItemIcon>
+                          <DashboardIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="My Design" />
+                  </ListItem>
+                  <ListItem button
+                          onClick={event => handleListItemClick(event, 'publicdesign')} 
+                          selected={highlightModule() == 'publicdesign'}
+                          >
+                      <ListItemIcon>
+                          <ShoppingCartIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Public Design" />
+                  </ListItem>
 
-                    <ListItem button
-                            onClick={event => handleListItemClick(event, 'usergroups')} 
-                            selected={highlightModule() == 'usergroups'}
-                            >
-                        <ListItemIcon>
-                            <GroupIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="User Groups" />
-                    </ListItem>
-                </div>
+                  <ListItem button
+                          onClick={event => handleListItemClick(event, 'usergroups')} 
+                          selected={highlightModule() == 'usergroups'}
+                          >
+                      <ListItemIcon>
+                          <GroupIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="User Groups" />
+                  </ListItem>
+              </div>
 
-                {displayAdminMenu()}
-            </List>
-
-            <Divider />
-        </Drawer>
+              {displayAdminMenu()}
+          </List>
+          <Divider />
+      </Drawer>
+      :
+      null
+      }  
+       
       </React.Fragment>
     )
 }

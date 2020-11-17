@@ -12,12 +12,16 @@ import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
-
-import LearningOutcomeContainer from '../../outcome/learningOutcomeContainer';
-import LearningTaskContainer from '../../task/container/learningTaskContainer';
-import LearningPatternContainer from '../../pattern/container/learningPatternContainer';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+
+
+import LearningOutcomeContainer from '../../outcome/container/learningOutcomeContainer';
+import LearningTaskContainer from '../../task/container/learningTaskContainer';
+import LearningTaskMainContainer from '../../task/container/learningTaskMainContainer';
+import LearningPatternContainer from '../../pattern/container/learningPatternContainer';
+import LearningPatternMainContainer from '../../pattern/container/learningPatternMainContainer';
 
 import ComponentFloatDashboardContainer from './componentFloatDashboardContainer';
 
@@ -69,6 +73,8 @@ const ComponentContainer = (props)=>{
   const classes = useStyles();
 
   const {componentID, index} = props;
+  const {provided, snapshot} = props;
+  const isDraggable = props.isDraggable? props.isDraggable : false;
 
   const selectComIndex = props.selectComIndex;
   const setSelectComIndex = props.setSelectComIndex;
@@ -93,6 +99,36 @@ const ComponentContainer = (props)=>{
     );
     return time;
   };
+
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  
+    ...(isDragging && {
+      background: "rgb(235,235,235)"
+    })
+});
+
+  const getDraggable = (provided, snapshot) => {
+      if(typeof provided == 'undefined'){
+          return (
+            null
+          );
+      }else{
+          return (
+              {
+                  // styles we need to apply on draggables
+                  ref: provided.innerRef,
+                  ...provided.draggableProps,
+                  ...provided.dragHandleProps,
+                  style: getItemStyle(
+                      snapshot.isDragging,
+                      provided.draggableProps.style
+                  )
+              }
+          );
+      }
+  }
 
     //#region action button
     const handleChange = (panel) => (event, isExpanded) => {
@@ -195,22 +231,36 @@ const ComponentContainer = (props)=>{
             selectComIndex: props.selectComIndex,
             setSelectComIndex: props.setSelectComIndex
         }}>
+          <Accordion 
+            expanded = {index == selectComIndex} 
+            onChange = {handleChange()}
+            {...getDraggable(provided, snapshot)}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon/>}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+              data-tour = "component_expand_panel"
+              style = {{ 
+                "position": "sticky" ,
+                "zIndex": 499,
+                "backgroundColor": componentTitleColor,
+                "top": 60
+              }} 
+            >
+              <Grid container spacing = {3} alignItems = {"center"}>
+                {
+                  isDraggable?
+                  <Grid item xs = {1}>
+                    <DragHandleIcon />
+                  </Grid>
+                  : 
+                  null
+                }
+          
 
-            <Accordion expanded = {index == selectComIndex} onChange = {handleChange()}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                data-tour = "component_expand_panel"
-                style = {{ 
-                  "position": "sticky" ,
-                  "zIndex": 499,
-                  "backgroundColor": componentTitleColor,
-                  "top": 60
-                }} 
-              >
-                <Grid container spacing = {3}>
-                  <Grid item xs={11}  data-tour = "component_header">
+                <Grid container item xs spacing = {3}>
+                  <Grid item xs  data-tour = "component_header">
                     {
                         editComponent?
                         <TextField value = {componentTitle} onChange = {(event => setComponentTitlte(event.target.value))} fullWidth></TextField>
@@ -244,9 +294,9 @@ const ComponentContainer = (props)=>{
                               open={Boolean(anchorEl)}
                               onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
                             >
-                              <MenuItem onClick={()=> {event.stopPropagation(); setEditComponent(true)}}>Rename</MenuItem>
-                              <MenuItem onClick={()=> {event.stopPropagation(); duplicateComponent(component.id)}}>Duplicate</MenuItem>
-                              <MenuItem onClick={()=> {event.stopPropagation(); deleteComponent(component.id)}}>Delete</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); setEditComponent(true)}}>Rename</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); duplicateComponent(component.id)}}>Duplicate</MenuItem>
+                              <MenuItem onClick={(e)=> {e.stopPropagation(); deleteComponent(component.id)}}>Delete</MenuItem>
                             </Menu>
                           </React.Fragment>
                         
@@ -257,36 +307,39 @@ const ComponentContainer = (props)=>{
                       null
                   }
 
-
                   <Grid item xs={12} data-tour = "component_time">
                       <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
                   </Grid>
+
                 </Grid>
-              </AccordionSummary>
+              </Grid>
+            </AccordionSummary>
 
-              <AccordionDetails style = {{ 
-                    "position": "flex" ,
-                }}>
-                  <Grid container spacing={2}>
+            <AccordionDetails style = {{ 
+                  "position": "flex" ,
+              }}>
+                <Grid container spacing={2}>
 
+                  <Grid container item xs = {5}>
                     <Grid item xs={12}> 
                       <LearningOutcomeContainer component ={component}/>
                     </Grid>
+                  </Grid>
 
-                    {typeof component.patterns == 'undefined' || component.patterns.length == 0?
-                      null:  
-                      <Grid item xs = {12}>
-                          <LearningPatternContainer componentID = {component.id} patternData = {component.patterns[0]}/>
-                      </Grid>
-                    }
+                  <Grid container item xs = {7} spacing={2} alignContent = {"flex-start"}>
+                    <Grid item xs = {12}>
+                          {/* <LearningPatternContainer componentID = {component.id} patternData = {component.patterns[0]}/> */}
+                          <LearningPatternMainContainer component_id = {component.id} patternsData = {component.patterns} /> 
+                    </Grid>
 
                     <Grid item xs = {12}>
-                        <LearningTaskContainer componentID = {component.id} tasksData = {component.tasks}/>
+                        <LearningTaskMainContainer component_id = {component.id} tasksData = {component.tasks}/>
                     </Grid>
-                    
                   </Grid>
-              </AccordionDetails>
-            </Accordion>
+
+                </Grid>
+            </AccordionDetails>
+          </Accordion>
           <ComponentFloatDashboardContainer />
         </ComponentContext.Provider>
     );

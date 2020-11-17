@@ -1,12 +1,13 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import {ContextStore} from '../container/designContainer';
-import {AppContextStore} from '../container/app';
+
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import validator from 'validator';
 
@@ -17,8 +18,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import QuestionHint from '../components/questionHint';
+
+import {ContextStore} from '../container/designContainer';
+import {AppContextStore} from '../container/app';
 import {
-  apiLessonDelete, apiLessonCreate,
+  apiLessonDelete, apiLessonCreate, apiLessonUpdate,
   apiCourseUpdate, apiCourseClearLesson
 } 
 from '../api.js';
@@ -53,15 +57,23 @@ const DesignInfo = (props) => {
   const [error, setError] = React.useState({
     "unit_title": "",
     "level": "",
+    "subject": "",
     "no_of_lesson": "",
     "description": "",
     "lesson_time": "",
   });
   
+  React.useEffect(()=>{
+    if(courseData.lessons.length> 0){
+      setLessonTime(courseData.lessons[0].time)
+    }
+  }, [courseData.lessons])
+
   const validate = () => {
     var validated = true;
     var tempError = {
       "unit_title": "",
+      "subject": "",
       "level": "",
       "no_of_lesson": "",
       "description": "",
@@ -69,7 +81,7 @@ const DesignInfo = (props) => {
     }
 
     if(validator.isEmpty(courseData.unit_title.toString())){
-      tempError["unit_title"] = "Please enter the course unit title";
+      tempError["unit_title"] = "Please enter the course topic";
       // setError({...error, unitTitle: "Please enter the course unit title"})
       validated = false;
     }
@@ -81,7 +93,7 @@ const DesignInfo = (props) => {
     // }
 
     if(validator.isEmpty(courseData.level.toString())){
-      tempError["level"] = "Please enter the course level";
+      tempError["level"] = "Please enter the grade";
       // setError({...error, level: "Please enter the course level"})
       validated = false;
     }
@@ -93,7 +105,7 @@ const DesignInfo = (props) => {
     }
 
     if(!validator.isInt(lesson_time.toString(), {min: 0, max: 120})){
-      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 12-";
+      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 120";
      //  setError({...error, no_of_lesson: "error"})
       validated = false;
    }
@@ -156,8 +168,7 @@ const DesignInfo = (props) => {
       if(course.no_of_lesson > courseData.no_of_lesson){
         //del lesson
         for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
-          
-          var lessonid = course.lessons[i].id;
+        
           await apiLessonDelete(course.lessons[i].id).then(response => {
             setLoadingOpen(false)
           })
@@ -181,14 +192,29 @@ const DesignInfo = (props) => {
           .catch(error => console.log(error));
         }
       }
-     
+      
+      for(var i = 0; i < courseData.no_of_lesson; i++){
+        let int_i = parseInt(i);
+        if(course.lessons[i].time == lesson_time){
+          continue;
+        }
+        await apiLessonUpdate( {
+          "lesson_id": course.lessons[i].id,
+          "time": lesson_time,
+        })
+        .then(response => {
+            setLoadingOpen(false)
+        })
+        .catch(error => console.log(error));
+      }
+
     }else{
         
       await apiCourseClearLesson(course.id);
           
       // init the lesson with input no of lesson
         for(var i = 0; i<courseData.no_of_lesson; i++){
-
+          
           await apiLessonCreate( {
             "time": lesson_time,
             "title": 'Lesson' + (i + 1),
@@ -208,6 +234,7 @@ const DesignInfo = (props) => {
       "level": courseData.level,
       "no_of_lesson": courseData.no_of_lesson,
       "description": courseData.description,
+      "subject": courseData.subject
     }).then(response => {
       dispatch({
         type: "INIT_COURSE",
@@ -223,7 +250,7 @@ const DesignInfo = (props) => {
     <React.Fragment>
 
       <Typography variant="h6" gutterBottom>
-          Design type: STEM ({options.designType.find(x => x.id== course.design_type_id)?.name})
+          Design type: {options.designType.find(x => x.id== course.design_type_id)?.name}
       </Typography>
 
       <Grid container spacing={5} data-tour = "course_info">
@@ -231,7 +258,7 @@ const DesignInfo = (props) => {
           <TextField  
           id="unit_title" 
           name="unit_title" 
-          label="Unit Title" 
+          label="Topic" 
           data-tour = "unit_title"
           value = {courseData.unit_title}
           error = {! (error["unit_title"]=="")}
@@ -240,37 +267,23 @@ const DesignInfo = (props) => {
           disabled = {!(courseData.permission > 2)}
           onChange={onChange}/>
         </Grid>
-
-        {/* <Grid item xs={6} md={6}>
-          <TextField 
-          id="schoolName" 
-          name="SCHOOL_NAME"
-          value = {courseData.schoolName} 
-          label="School Name"  
-          error = {! (error["schoolName"]=="")}
-          helperText= {! (error["schoolName"]=="")? error["schoolName"]:  ""}
-          fullWidth 
-          onChange={onChange}/>
-        </Grid> */}
         
         <Grid item xs={12} md={6}>
+          <InputLabel>
+            Grade
+            <QuestionHint title= {
+              <React.Fragment>
+                Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
+                <br />
+                Teachers may consider learners’ characteristics, like Grade 5 students, when filling this blank. 
+                <br/>
+                It is always important for teachers to think from a learner’s perspective when designing a unit.
+              </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="level" 
             name="level" 
-            label={
-              <React.Fragment>
-                Level
-                <QuestionHint title= {
-                  <React.Fragment>
-                    Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
-                    <br />
-                    Teachers may consider learners’ characteristics, like Grade 5 students, when filling this blank. 
-                    <br/>
-                    It is always important for teachers to think from a learner’s perspective when designing a unit.
-                  </React.Fragment>
-                }/>
-              </React.Fragment>
-            } 
             data-tour = "level"
             value = {courseData.level}
             error = {! (error["level"]=="")}
@@ -281,35 +294,36 @@ const DesignInfo = (props) => {
          
         </Grid>
 
-        {/* <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            Subject
+          </InputLabel>
           <TextField 
-            id="lesson_time" 
-            name="lesson_time" 
-            label="Time per lesson" 
-            type="number"
-            value = {lesson_time}
-            error = {! (error["lesson_time"]=="")}
-            helperText= {! (error["lesson_time"]=="")? error["lesson_time"]:  ""}
+            id="subject" 
+            name="subject" 
+            data-tour = "subject"
+            value = {courseData.subject}
+            error = {! (error["subject"]=="")}
+            helperText= {! (error["subject"]=="")? error["subject"]:  ""}
+            disabled = {!(courseData.permission > 2)}
             fullWidth 
-            InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
             onChange={onChange} />
-        </Grid> */}
+         
+        </Grid>
 
         <Grid item xs={12} md={6}>
+          <InputLabel>
+            Number of Lesson
+            <QuestionHint title = {
+              <React.Fragment>
+              Teachers should think about whether it is realistic to ask students to 
+              complete the tasks and achieve the learning outcomes in the no. of lessons given.
+              </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="no_of_lesson" 
             name="no_of_lesson" 
-            label= { 
-              <React.Fragment>
-                Number of Lesson
-                <QuestionHint title = {
-                  <React.Fragment>
-                  Teachers should think about whether it is realistic to ask students to 
-                  complete the tasks and achieve the learning outcomes in the no. of lessons given.
-                  </React.Fragment>
-                }/>
-              </React.Fragment>
-            } 
             data-tour = "no_of_lesson"
             type="number"
             value = {courseData.no_of_lesson}
@@ -319,30 +333,45 @@ const DesignInfo = (props) => {
             InputProps={{endAdornment: <InputAdornment position="end">lesson(s)</InputAdornment>}}
             disabled = {!(courseData.permission > 2)}
             onChange={onChange} />
-         
         </Grid>
 
+
+        <Grid item xs={6} md={6}>
+          <InputLabel>
+            Time Per Lesson
+          </InputLabel>
+          <TextField 
+            id="lesson_time" 
+            name="lesson_time" 
+            type="number"
+            value = {lesson_time}
+            error = {! (error["lesson_time"]=="")}
+            helperText= {! (error["lesson_time"]=="")? error["lesson_time"]:  ""}
+            fullWidth 
+            InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
+            onChange={onChange} />
+        </Grid>
+
+    
         
         <Grid item xs={12} md={12}>
+          <InputLabel>
+            Description
+            <QuestionHint title = {
+                <React.Fragment>
+                  Learning design is an iterative process. 
+                  <br/>
+                  As a starting point, we would advise teachers to put down some keywords there, which may be elaborated or modified later. These keywords can be related to the teaching content, learning experiences, pedagogical approach and so on. 
+                  <br/>
+                  Also if this were to be done by a collaborative team, then different members can contribute different keywords. 
+                </React.Fragment>
+            }/>
+          </InputLabel>
           <TextField 
             id="description" 
             name="description" 
             data-tour = "description"
             value = {courseData.description} 
-            label= {
-              <React.Fragment>
-                  Description
-                  <QuestionHint title = {
-                      <React.Fragment>
-                        Learning design is an iterative process. 
-                        <br/>
-                        As a starting point, we would advise teachers to put down some keywords there, which may be elaborated or modified later. These keywords can be related to the teaching content, learning experiences, pedagogical approach and so on. 
-                        <br/>
-                        Also if this were to be done by a collaborative team, then different members can contribute different keywords. 
-                      </React.Fragment>
-                  }/>
-              </React.Fragment>
-            } 
             multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}

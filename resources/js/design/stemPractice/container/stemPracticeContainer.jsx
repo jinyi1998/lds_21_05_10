@@ -4,32 +4,36 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
-import DesignTypeBox from './approachTypeBox';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 
-import DesignTypeInstruction from './designTypeInstruction';
+import CancelIcon from '@material-ui/icons/Cancel';
 
-import QuestionHint from '../components/questionHint';
-import {ContextStore} from '../container/designContainer';
-import {AppContextStore} from '../container/app';
+import StemPractice from '../component/StemPractice';
+import StemPracticeInstruction from '../component/stemPracticeInstruction';
+
+import QuestionHint from '../../../components/questionHint';
+import {ContextStore} from '../../../container/designContainer';
+import {AppContextStore} from '../../../container/app';
 
 const useStyles = makeStyles(theme => ({
 
   gridList: {
     minHeight: 450,
-    margin: 10,
+    // margin: 10,
     flexWrap: 'nowrap',
   }
 }));
 
 
 
-const DesignType = (props) => {
+const StemPracticeContainer = (props) => {
   const classes = useStyles();
   // const [designType, setDesignType] = React.useState([]); 
   const { course, dispatch } = React.useContext(ContextStore);
@@ -67,8 +71,14 @@ const DesignType = (props) => {
         PaperProps ={{
           backgroundColor: "transparent"
         }}
-      >
-        <DesignTypeInstruction design_type_id = {instructionID} />
+      >  
+        <Grid container justify = "flex-end">
+          <IconButton onClick = {()=>setInstructionOpen(false)} edge = "start">
+            <CancelIcon />
+          </IconButton>
+        </Grid>
+        
+        <StemPracticeInstruction design_type_id = {instructionID} onSelectSTEMPractice = {onSelectSTEMPractice}/>
       </Dialog>
     )
   }
@@ -86,9 +96,9 @@ const DesignType = (props) => {
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
            {warningType == "match"?
-           "Detected you have selected the same design before. Are you going to re-initalize the all outcomes/ components/ lessons data?"
+           "Detected you have selected the same design before. Are you going to re-initalize the all outcomes data?"
            :
-           "Detected you select a different design. The system will re-initalize all of the outcomes/ components/ lessons data. Are you sure to continue"
+           "Detected you select a different design. The system will re-initalize all of the outcomes data. Are you sure to continue"
            }
           </DialogContentText>
         </DialogContent>
@@ -124,22 +134,22 @@ const DesignType = (props) => {
     )
   }
 
-  const onClick = (event, design_type) => {
+  const onSelectSTEMPractice = (design_type_id) => {
       // event.preventDefault();
 
-      if(course.components.length == 0){
+      if(course.outcomes.length == 0){
           dispatch({
             type: "DESIGN_TYPE",
-            value: design_type
+            value: design_type_id
           });
       }else{
-        if(design_type == course.design_type_id){
+        if(design_type_id == course.design_type_id){
           setWarningType('match');
-          setValue(design_type);
+          setValue(design_type_id);
           setOpen(true);
         }else{
           setWarningType('different');
-          setValue(design_type);
+          setValue(design_type_id);
           setOpen(true);
         }
       }
@@ -158,41 +168,27 @@ const DesignType = (props) => {
       <Grid container>
         <Grid item xs = {12}>
           <Typography variant="h6" gutterBottom>
-            Choose the disciplinary practice for your STEM curriculum unit
+            What do you want your students to become? 
             <QuestionHint title = {<div>
-              "The aim of STEM education is to equip students with knowledge and skills in the four STEM disciplines, for example, scientific inquiry, application of technological knowledge, design thinking, logical thinking, and so on. 
-              <br/>
-              In order to strengthen students’ ability to integrate knowledge and experiences like the experts in the fields of STEM, the learning design needs to provide students with opportunities to experience an authentic practice format in STEM areas.
-              <br/>
-              There are two authentic practice formats in STEM, engineering design and scientific investigation. 
-              <br/>
-              “Engineering design” refers to STEM lessons that provide students with opportunities to construct some products, while “Scientific investigation” refers to lessons in which students design and conduct a scientific investigation to address a scientific problem. We refers to these two authentic practice formats in STEM as disciplinary practice." 
+              By answering this question, we hope that you will have a preliminary idea of what opportunities to provide for students to solve in a real-world scenario, and what to do to equip them with relevant knowledge and skills in the fields of STEM. 
+              <br />
+              We usually adopt two practices “engineering design” and “scientific investigation” as the disciplinary practices to engage learners in STEM. 
+
             </div>}/>
           </Typography>
         </Grid>
         <Grid item xs = {12}>
           <GridList className={classes.gridList}>
             {designType.map((_data, i) => (
-                <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} onClickMore = {onClickMore}>
-                </DesignTypeBox>
+                <StemPractice designBoxData={_data} key={i} onSelectSTEMPractice={onSelectSTEMPractice} onClickMore = {onClickMore} />
             ))}
           </GridList>
         </Grid>
         {displayInstructionDialog()}
         {displayWarningDialog()}
       </Grid>
-     
-    
-      {/* <GridList className={classes.gridList} cols={4} data-tour = "designtype_list">
-          {designType.map((_data, i) => (
-            <DesignTypeBox designBoxData={_data} key={i} onClick={onClick} onClickMore = {onClickMore}>
-            </DesignTypeBox>
-          ))}
-      </GridList> */}
-     
-  
     </React.Fragment>
   );
 }
 
-export default DesignType;
+export default StemPracticeContainer;

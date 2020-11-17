@@ -35,7 +35,7 @@ const UserSearchBox = (props) => {
             .then((response)=>{
                 setUserList(response.data);
                 setLoadling(false);
-                setSearch("");
+                // setSearch("");
             })
         }else{
             setUserList([]);

@@ -27,11 +27,14 @@ const ComponentAddContainer = (props) => {
     const [componentShoppingCart, setComponentShoppingCart] = React.useState([]);
 
     const handleAdd = () => {
-        addItems(componentShoppingCart);
+        if(props.addItems != 'undefined'){
+            addItems(componentShoppingCart);
+        }
         handleClose();
     }
 
     const handleAddShoppingCart = (component) => {
+        console.log(component);
         setComponentShoppingCart([...componentShoppingCart, component])
     }
 
@@ -65,7 +68,9 @@ const ComponentAddContainer = (props) => {
                                             componentShoppingCart.map((_component, index)=>
                                             <ListItem key = {index}>
                                                 <ListItemIcon><LocalMallIcon/></ListItemIcon>
-                                                <ListItemText> {_component.title}</ListItemText>
+                                                <ListItemText> 
+                                                    {_component.title} {_component.pattern_title? _component.pattern_title : null}
+                                                </ListItemText>
                                                 <ListItemSecondaryAction>
                                                     <Tooltip title="Remove From Shopping Cart" placement="top-end">
                                                         <IconButton onClick ={(e)=>RemoveShoppingCart(index)} data-tour = "component_step_duplicate">
@@ -88,7 +93,10 @@ const ComponentAddContainer = (props) => {
                       
                     </Grid>
                     <Grid item xs = {12}>
-                        <ComponentAddView handleAddShoppingCart = {handleAddShoppingCart}/>
+                        <ComponentAddView 
+                            handleAddShoppingCart = {handleAddShoppingCart}
+                            module = {props.module}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>

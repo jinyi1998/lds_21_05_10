@@ -1,12 +1,17 @@
 import React from 'react';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import designItemContainer from '../../dashboard/container/designItemContainer';
+import TextField from '@material-ui/core/TextField';
+import DesignItemContainer from '../../dashboard/container/designItemContainer';
+
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+
 import Typography from '@material-ui/core/Typography';
 import {ContextStore} from '../container/usergroupContainer';
 import {AppContextStore} from '../../container/app';
@@ -20,13 +25,31 @@ const UsergroupDesign = (props)=>{
 
     const [courseList, setCourseList] = React.useState([]);
     const [usergroup, setUsergroup] = React.useState([]); 
+    const [ courseListOpts, setCourseListOpts ] =  React.useState([]);
+    const [ searchText, setSearchText ] = React.useState("");
+    const [ page, setPage ] = React.useState(0);
+    const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
     const { user } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore);
 
     //call api to get the data
-    async function fetchData() {
+    React.useEffect(() => {
+        reloadCourseList();
+        fetchUsergroupData();
+    }, []);
+
+    React.useEffect(()=>{
+        setCourseListOpts(courseList);
+    }, [courseList]);
+
+    React.useEffect(()=>{
+        onFilterCourseListOpts();
+    }, [searchText])
+
+
+    const reloadCourseList = () => {
         setLoadingOpen(true)
-        await apiCourseShowUsergroup(props.usergroupid)
+        apiCourseShowUsergroup(props.usergroupid)
         .then(response => {
             setCourseList(response.data);
             setLoadingOpen(false)
@@ -44,42 +67,95 @@ const UsergroupDesign = (props)=>{
         .catch(error => console.log(error));
     }
 
-    React.useEffect(() => {
-        fetchData();
-        fetchUsergroupData();
-    }, []);
+
+      //#region local function
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const onChangeSearchText = (event) => {
+        setSearchText(event.target.value);
+    }
+
+    const onFilterCourseListOpts = () => {
+        setLoadingOpen(true);
+        if(searchText.length > 0){
+            var temp = courseList.filter(_course => {
+
+                if(typeof _course.description != 'undefined' && typeof _course.unit_title != 'undefined'){
+                    return (_course.description.toUpperCase().indexOf(searchText.toUpperCase()) != -1
+                        || _course.unit_title.toUpperCase().indexOf(searchText.toUpperCase()) != -1) ;
+                }
+            })
+        
+            setCourseListOpts(temp);
+        }else{
+            setCourseListOpts(courseList);
+        } 
+        setLoadingOpen(false);
+    }
+    //#endregion
 
     return (
         <React.Fragment>
-            <Grid container spacing={4} justify="space-between">
-                <Grid item xs = {12}>
-                    <Typography variant="h6" color="inherit" noWrap>
+             <Grid container justify="space-between" spacing = {3}>
+                <Grid item xs = {4}>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap>
                         User Group Sharing Design Aera
                     </Typography>
                 </Grid>
                  
-                 
+                <Grid container item xs = {12} justify = {"flex-end"}>
+                    <TextField variant = {"outlined"} label = {"Search"} value = {searchText} onChange = {onChangeSearchText}/>
+                </Grid>
+
                 <Grid item xs = {12}>
                     <Paper>
-                        <List>
-                           {
-                               courseList.length == 0? 
-                                <ListItem>
-                                    no available design
-                                </ListItem>
-                                :
-                                courseList.map(_course => 
-                                    <DesigmItem 
+                    <Table
+                        aria-labelledby="tableTitle"
+                        size={'medium'}
+                        aria-label="enhanced table"
+                    >
+                        <TableHead/>
+
+                        <TableBody>
+                            {
+                                courseListOpts.length > 0?
+                                courseListOpts
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((_course ) => (
+                                    <DesignItemContainer 
                                         key ={_course.id} 
                                         courseData = {_course}
                                         usergroup = {usergroup}
-                                        enableDuplicate =  {_course.permission > 1}
-                                        enableShare = {false}
-                                        enableDelete = {false}
+                                        enableDuplicate = {_course.permission > 1}
+                                        enableShare = {_course.permission > 99}
+                                        enableDelete = {_course.permission > 3}
                                     />
-                                )
-                           }
-                        </List>
+                                ))
+                            :
+                                <TableRow hover>
+                                    <TableCell component="th" scope="row" >
+                                        No available design
+                                    </TableCell>
+                                </TableRow>
+                            }
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={courseListOpts.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
                     </Paper>
                 </Grid>
             </Grid>

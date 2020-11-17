@@ -102,35 +102,35 @@ const ComponentTemplateInstructionContainer = (props) => {
     
     return (
         <React.Fragment>
-            <Grid container>
-            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                    <RootRef rootRef={provided.innerRef}>
-                        <List style={getListStyle(snapshot.isDraggingOver)}>
-                        {   
-                            instructions.map( 
-                                (_instruction, index) => 
-                                <Draggable key={index} draggableId={index.toString()} index={index}>
-                                {(provided, snapshot) => (
-                                     <Grid item xs = {12} style ={{margin: 16}}>
-                                        <ComponentInstructionView 
-                                            provided = {provided} 
-                                            snapshot = {snapshot} 
-                                            instruction = {_instruction} 
-                                            component_id = {props.component_id} 
-                                            reloadInstructions = {reloadInstructions}/>
-                                    </Grid>
-                                )}
-                                </Draggable>
-                            )
-                        }
-                        {provided.placeholder}
-                        </List>
-                    </RootRef>
-                )}
-                </Droppable>
-            </DragDropContext>
+            <Grid container spacing = {4}>
+                <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                    <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <RootRef rootRef={provided.innerRef}>
+                            <Grid container item xs = {12} spacing = {4} style={getListStyle(snapshot.isDraggingOver)}>
+                            {   
+                                instructions.map( 
+                                    (_instruction, index) => 
+                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                    {(provided, snapshot) => (
+                                        <Grid item xs = {12} style ={{margin: 16}}>
+                                            <ComponentInstructionView 
+                                                provided = {provided} 
+                                                snapshot = {snapshot} 
+                                                instruction = {_instruction} 
+                                                component_id = {props.component_id} 
+                                                reloadInstructions = {reloadInstructions}/>
+                                        </Grid>
+                                    )}
+                                    </Draggable>
+                                )
+                            }
+                            {provided.placeholder}
+                            </Grid>
+                        </RootRef>
+                    )}
+                    </Droppable>
+                </DragDropContext>
                
                 <Grid container item xs ={12} justify = "flex-end">
                     <Button variant = "outlined" color = "primary" onClick = {onAddInstruction}>Add Instruction</Button>

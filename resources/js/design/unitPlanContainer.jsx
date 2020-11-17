@@ -12,7 +12,7 @@ import LessonPlan from './lesson/container/lessonPlanContainer';
 import DashBoardContainer from './dashboard/dashboardContainer';
 
 import {ContextStore} from '../container/designContainer'
-import ComponentPlanContainer from './componentPlanContainer';
+import ComponentPlanContainer from './learningComponent/container/componentPlanContainer';
 
 const useStyles = makeStyles(theme => ({
     root: {

@@ -75,8 +75,8 @@ const  useStyles = makeStyles(theme => ({
     color: '#fff',
   },
   normal: {
-    margin: 36,
-    maxWidth: `calc(100% - 72px)`,
+    margin: 24,
+    maxWidth: `calc(100% - 0px)`,
   }
 }));
 
@@ -127,6 +127,10 @@ const App = (props) => {
 
   const returnImgSrc = (image_url) => {
     if(typeof image_url == "string"){
+      if(image_url == ""){
+        return "/asset/image/data-not-found.png";
+      }
+      
       var temp = image_url;
 
       if( temp.substring(0, 1) == "/"){
@@ -320,7 +324,7 @@ const App = (props) => {
               <TopMenu user = {props.user}/>
           </Grid>
 
-            <Grid item style = {{width: 72}}>
+            <Grid item>
                 <SideMenu user = {props.user}/>
             </Grid>
             

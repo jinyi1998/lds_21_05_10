@@ -238,7 +238,7 @@ const ComponentInstructionView = (props) => {
 
     return (
         <React.Fragment>
-            <Paper style = {{padding: 16}}>
+            <Paper>
                 <Grid container item xs ={12}  {...getDraggable(provided, snapshot)}>
 
                     <Grid container item xs ={11}>

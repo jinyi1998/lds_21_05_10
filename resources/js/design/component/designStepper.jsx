@@ -25,7 +25,6 @@ const DesignStepper = (props) => {
     return (
         <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map( (label, index) => (
-                // console.log(clsx( index < 4  && {"pointer": "cursor"}))
                 <Step key={label} onClick = {()=>handleOnClick(index)} >
                     <StepLabel style = {{cursor: clsx( isClickable(index) && "Pointer", !isClickable(index) && "not-allowed")}}>
                         {label}

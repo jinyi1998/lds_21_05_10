@@ -45,12 +45,14 @@ const LessonAnalysisContainer = (props)=>{
         }else{
             return (
                 <React.Fragment>
-                    {displayTaskAessessmentWithComponent()}
-                    {displayLearningTimeChart()}
-                    {displayTaskTypeChart()}
-                    {displayTaskClassTypeChart()}
-                    {displayTaskClassSizeChart()}
-                    {displayTaskClassTargetChart()}
+                    <Grid container item xs ={12} spacing = {4}>
+                        {displayTaskAessessmentWithComponent()}
+                        {displayLearningTimeChart()}
+                        {displayTaskTypeChart()}
+                        {displayTaskClassTypeChart()}
+                        {displayTaskClassSizeChart()}
+                        {displayTaskClassTargetChart()}
+                    </Grid>
                 </React.Fragment>
             )
         }   
@@ -76,7 +78,7 @@ const LessonAnalysisContainer = (props)=>{
         
         }else{
             return (
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Lesson Tasks Time Distribution</h5>
                         <Pie data={data.tasks_time_by_task} />
@@ -91,7 +93,7 @@ const LessonAnalysisContainer = (props)=>{
         
         }else{
             return (
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                      <Paper className = {classes.paper}>
                         <h5>Lesson Task Number Distribution By Type</h5>
                         <Pie data={data.tasks_num_by_type} />
@@ -107,7 +109,7 @@ const LessonAnalysisContainer = (props)=>{
         
         }else{
             return (
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Lesson Task Number Distribution By Class Type</h5>
                         <Pie data={data.tasks_num_by_class_type} />
@@ -123,7 +125,7 @@ const LessonAnalysisContainer = (props)=>{
         
         }else{
             return (
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Lesson Task Number Distribution By Class Size</h5>
                         <Pie data={data.tasks_num_by_size} />
@@ -139,7 +141,7 @@ const LessonAnalysisContainer = (props)=>{
         
         }else{
             return (
-                <Grid item xs = {12} >
+                <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Lesson Task Number Distribution By Class Target</h5>
                         <Pie data={data.tasks_num_by_target} />
