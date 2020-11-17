@@ -15,7 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import CancelIcon from '@material-ui/icons/Cancel';
 
-import StemPractice from '../component/StemPractice';
+import StemPractice from '../component/stemPractice';
 import StemPracticeInstruction from '../component/stemPracticeInstruction';
 
 import QuestionHint from '../../../components/questionHint';
