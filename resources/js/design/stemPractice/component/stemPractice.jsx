@@ -103,7 +103,7 @@ const StemPractice = (props) => {
         <Grid container item xs ={12} justify = {"center"} 
             onMouseOver = {handleMouseOver}
             onMouseLeave = {() => {setIsMouseOver(false)}} 
-            style = {{maxWidth: 400}}
+            style = {{maxWidth: 400, height: 480}}
         >
           <Paper>
             {/* media */}
