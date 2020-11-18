@@ -29,26 +29,26 @@ const useStyles = makeStyles(theme => ({
 
   action: {
     backgroundColor: "#ffffff",
-    padding: "10%",
   },
 
   action_before: {
     opacity: 0,
     zIndex: 1,
-    display: "none"
+    display: "none",
+    height: "0px",
   },
 
   action_after: {
     position: "relative",
     opacity: 1,
     width: "100%",
-    height: "50px",
+    height: "100px",
     zIndex: 1,
   },
 
   info: {
     padding: "5%",
-    transition: "opacity 0.5s ease, background-color 0.5s ease, height 1.5s ease",
+    // transition: "opacity 0.5s ease, background-color 0.5s ease",
   },
 
   info_before: {
@@ -147,6 +147,8 @@ const StemPractice = (props) => {
             {/* action */}
             <Grid container item xs ={12} justify = {"center"}
               className={clsx(classes.action, isMouseOver && classes.action_after, !isMouseOver && classes.action_before)} 
+              alignItems="center"
+              justify="center"
             >
               
               <Grid container item xs = {6} 
