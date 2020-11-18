@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     action_before: {
         opacity: 0,
         zIndex: 1,
-        height: "0px",
+        display: "none",
     },
 
     action_after: {
@@ -63,6 +63,11 @@ const ComponentPatternSelectBox = (props) => {
         }
     } 
 
+    const handleDisableClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
     const handleMouseOver = () => {
         setIsMouseOver(true);
     }
@@ -71,10 +76,6 @@ const ComponentPatternSelectBox = (props) => {
         setIsMouseOver(false)
     }
 
-    React.useEffect(()=> {
-        console.log(props.selectPattern);
-    }, [props.selectPattern]) 
-
     return (
         <Grid item xs = {4} key ={index}>
             <ToggleButton 
@@ -82,6 +83,7 @@ const ComponentPatternSelectBox = (props) => {
                 key ={index} 
                 selected = {selectPattern == index} 
                 className = {classes.button} 
+                onClick = {handleDisableClick} 
                 onMouseOver = {handleMouseOver}
                 onMouseOut = {handleMouseOut}
             >

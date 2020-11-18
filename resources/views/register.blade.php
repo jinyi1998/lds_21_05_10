@@ -12,10 +12,20 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
+        <style>
+            .root {display: 'flex'}
+            .copyright {bottom: 0; width: 100%; text-align: center; position: fixed; background-color: #ffffff}
+        </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
            <div id="registerForm" data-errors = "{{ session('errors') }}"></div>
+        </div>
+
+        <div class="copyright">
+            © 2020 All rights reserved, CITE, HKU
+            <br />
+            LDS K-12 STEM Beta v{{Config::get('app.app_ver')}}
         </div>
     </body>
 </html>

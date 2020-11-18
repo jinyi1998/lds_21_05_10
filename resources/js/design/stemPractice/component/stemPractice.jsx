@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 
   hover_after: {
-    transition: "opacity 0.5s ease,  height 0.5s ease",
+    transition: "opacity 0.5s ease",
     content: ' ',
     opacity: 0.6,
     width: "100%",
@@ -29,15 +29,13 @@ const useStyles = makeStyles(theme => ({
 
   action: {
     backgroundColor: "#ffffff",
-    padding: "0px 30px 0px 30px",
-    transition: "opacity 0.5s ease, height 0.5s ease",
-   
+    padding: "10%",
   },
 
   action_before: {
     opacity: 0,
     zIndex: 1,
-    height: "0px",
+    display: "none"
   },
 
   action_after: {
@@ -50,11 +48,10 @@ const useStyles = makeStyles(theme => ({
 
   info: {
     padding: "5%",
-    transition: "opacity 0.5s ease, background-color 0.5s ease, height 0.5s ease",
+    transition: "opacity 0.5s ease, background-color 0.5s ease, height 1.5s ease",
   },
 
   info_before: {
-    // transition: "opacity 0.1s linear, background-color 0.1s linear",
     backgroundColor: "#fff",
     opacity: 1,
     zIndex: 1,
