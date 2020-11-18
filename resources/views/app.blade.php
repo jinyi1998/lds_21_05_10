@@ -18,7 +18,8 @@
 
         <!-- Styles -->
         <style>
-            .root {display: 'flex'},
+            .root {display: 'flex'}
+            .copyright {bottom: 0; text-align: center; position: relative;  }
         </style>
     </head>
     <body>
@@ -37,12 +38,16 @@
                     data-designtypeid = {{ isset($designtypeid)? $designtypeid : '-1' }}
                     data-patternbin_category_id = {{ isset($patternbin_category_id)? $patternbin_category_id : '-1' }}
                     >
-                    <!-- <?php print_r(session()->all()) ?> -->
                     </div>
                 </div>
             </div>
-        
+            <div class="copyright">
+                © 2020 All rights reserved, CITE, HKU
+                <br />
+                LDS K-12 STEM Beta v{{Config::get('app.app_ver')}}
+            </div>
         </div>
+       
     </body>
 </html>
 <script type="text/javascript" src="/js/app.js"> </script>

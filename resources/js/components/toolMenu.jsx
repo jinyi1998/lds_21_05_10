@@ -122,7 +122,7 @@ const ToolMenu = (props) => {
                 <MenuItem >
                     <FormControlLabel
                         control={<Switch checked = {displayTourguide} onChange={()=>{OnChnageTourGuide()}}/>}
-                        label="Turn On Design Studio Tutourial"
+                        label="Turn On Design Studio Tutorial"
                     />
                 </MenuItem>
                 {/* <MenuItem onClick={()=> OnCloseUserMenu('language')}>Language Setting</MenuItem> */}

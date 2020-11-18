@@ -61,13 +61,15 @@ const ComponentSelectContainer = (props ) => {
                                 var component_temp = response.data;
                                 component_temp.sequence = index + 1;
                                 component_temp.is_selected = false;
-                                setComponents(_prev => ([..._prev, component_temp].sort((a,b) => {return a.sequence - b.sequence})))
+                                return component_temp;
+                                // setComponents(_prev => ([..._prev, component_temp].sort((a,b) => {return a.sequence - b.sequence})))
                             }) 
                         );
                     })
 
-                    Promise.all(updates).then(()=>{
+                    Promise.all(updates).then((result)=>{
                         setLoadingOpen(false);
+                        setComponents(result.sort((a,b) => {return a.sequence - b.sequence}))
                     });
                 }
             })
