@@ -62,7 +62,7 @@ export default function ActionTool() {
         case 'export':
             apiFileCourseExport(course.id)
             .then(response => {
-              window.open('../file/downloadCourseJson/'+response.data, '_blank');         
+              window.open('/file/downloadCourseJson/'+response.data, '_blank');         
             });
             break;
         case 'print':
