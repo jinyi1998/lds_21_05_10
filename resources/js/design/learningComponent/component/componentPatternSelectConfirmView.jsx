@@ -9,8 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-
-
 import {AppContextStore} from '../../../container/app';
 import {ContextStore} from '../../../container/designContainer'
 
@@ -156,7 +154,7 @@ const ComponentPatternSelectConfirmView = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs = {12}>
-                                                    <Typography variant="caption" gutterBottom> {_component.patterns[0].title}</Typography>
+                                                    <Typography variant="caption" gutterBottom> {_component.patterns.length> 0? _component.patterns[0].title : null}</Typography>
                                                 </Grid>
                                         
                                         </Grid>

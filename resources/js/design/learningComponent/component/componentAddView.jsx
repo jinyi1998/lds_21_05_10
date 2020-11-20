@@ -101,12 +101,23 @@ const ComponentAddView = (props) => {
     }
 
     const onClickComponent = (component) => {
-        fetcComponentPatternOptsData(component.id)
-        setSelectComponent(component);
+   
         if(typeof props.module == "undefined" ||  props.module == "template"){
+            fetcComponentPatternOptsData(component.id)
+            setSelectComponent(component);
             handleAddShoppingCart(component);
         }else{
-            setStep(2);
+            apiLearningCompTempGetPatternOpts(component.id)
+            .then( response=>{
+                setSelectComponent(component);
+                setPatternOpts(response.data);
+                if(response.data.length > 0){
+                    setStep(2);
+                }else{
+                    handleAddShoppingCart(component);
+                }
+            })
+            .catch(error => console.log(error));
         }
     }
 
@@ -230,40 +241,61 @@ const ComponentAddView = (props) => {
     }
 
     const displayStep3 = () => {
-        return (
-            <React.Fragment>
-                 <GridList className={classes.gridList}>
-                        {patternOpts.map((_data, index)=>( 
-                            <Grid index xs = {4} key = {index}>
-                                <Button style= {{width: 300, margin: "5%"}} onClick = {() =>onClickPattern(_data.id)} variant="outlined">
-                                    <Grid container>
-                                        <Grid item xs ={12}>
-                                            <img src = { returnImgSrc(_data.media)
-                                            } className ={classes.media} />
-                                        </Grid>
-                                        <Grid item xs = {12}>
-                                            <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
-                                                {_data.title}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid  item xs = {12}>
-                                            <Typography variant="caption" display="block" gutterBottom color="textSecondary" style = {{textTransform: "initial"}}>
-                                                {
-                                                    _data.instructions?.length > 0?
-                                                    _data.instructions[0].description
-                                                    :
-                                                    null
-                                                }
-                                            </Typography>
-                                        </Grid>
+        switch(view){
+            default:
+            case 'list':
+                return(
+                    <React.Fragment>
+                        <List>
+                            {componentOpts.map((_data, index)=>{
+                                return(
+                                    <ListItem button key={_data.id} onClick = {() => onClickPattern(_data.od)} divider = {true}>
+                                        {_data.title}
+                                        <ListItemSecondaryAction> <AddShoppingCartIcon /> </ListItemSecondaryAction>
+                                    </ListItem>
+                                )
+                            })}
+                        </List>
+                        <Button onClick = {()=>{setStep(0)}} variant="contained" color="primary">Back to Component</Button>
+                    </React.Fragment>
+                )
+            case 'grid':
+                return (
+                    <React.Fragment>
+                         <GridList className={classes.gridList}>
+                                {patternOpts.map((_data, index)=>( 
+                                    <Grid index xs = {4} key = {index}>
+                                        <Button style= {{width: 300, margin: "5%"}} onClick = {() =>onClickPattern(_data.id)} variant="outlined">
+                                            <Grid container>
+                                                <Grid item xs ={12}>
+                                                    <img src = { returnImgSrc(_data.media)
+                                                    } className ={classes.media} />
+                                                </Grid>
+                                                <Grid item xs = {12}>
+                                                    <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                                                        {_data.title}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid  item xs = {12}>
+                                                    <Typography variant="caption" display="block" gutterBottom color="textSecondary" style = {{textTransform: "initial"}}>
+                                                        {
+                                                            _data.instructions?.length > 0?
+                                                            _data.instructions[0].description
+                                                            :
+                                                            null
+                                                        }
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                        </Button>
                                     </Grid>
-                                </Button>
-                            </Grid>
-                        ))}
-                    </GridList>  
-                    <Button onClick = {()=>{setStep(1)}} variant="contained" color="primary">Back to Component</Button> 
-            </React.Fragment>
-        )
+                                ))}
+                            </GridList>  
+                            <Button onClick = {()=>{setStep(1)}} variant="contained" color="primary">Back to Component</Button> 
+                    </React.Fragment>
+                )
+        }
+        
     }
 
     const displayStepContent = () => {

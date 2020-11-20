@@ -1394,31 +1394,29 @@ class LearningTaskController extends Controller
         //assessment
         if($request->has('component_id')){
             if($request->has('sequence')){
-                if( $task->componentid()->exists()) {
-                    $task->componentid()->update([
-                        'task_id' => $task->id,
-                        'component_id' => $request->component_id,
-                        'sequence' => $request->sequence,
-                        'created_by' => Auth::user()->id,
-                        'updated_by' => Auth::user()->id,
-                        'is_deleted' => 0
-                    ]);
-
+                $sequence =  $request->sequence;
+            }else{
+                if(ComponentTaskRelation::where('component_id', '=', $request->component_id)->where('task_id', '=', $task->id)->count() > 0){
+                    $sequence =   ComponentTaskRelation::where('component_id', '=', $request->component_id)->where('task_id', '=', $task->id)->first()->sequence;
                 }else{
-                    $task->componentid()->create([
-                        'task_id' => $task->id,
-                        'component_id' => $request->component_id,
-                        'sequence' => $request->sequence,
-                        'created_by' => Auth::user()->id,
-                        'updated_by' => Auth::user()->id,
-                        'is_deleted' => 0
-                    ]);
+                    $sequence =   ComponentTaskRelation::where('component_id', '=', $request->component_id)->count() + 1;
                 }
+               
+            }
+
+            if( $task->componentid()->exists()) {
+                $task->componentid()->update([
+                    'task_id' => $task->id,
+                    'component_id' => $request->component_id,
+                    'sequence' =>   $sequence,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                ]);
             }else{
                 $task->componentid()->create([
                     'task_id' => $task->id,
                     'component_id' => $request->component_id,
-                    'sequence' =>  ComponentTaskRelation::where('component_id', '=', $request->component_id)->count() + 1,
+                    'sequence' =>   $sequence,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
@@ -1430,14 +1428,19 @@ class LearningTaskController extends Controller
             if($request->has('sequence')){
               $sequence  =  $request->sequence;
             }else{
-               $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->count() + 1;
+                if( PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->where('task_id', '=', $task->id)->count() > 0){
+                    $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->where('task_id', '=', $task->id)->first()->sequence;
+                }else{
+                    $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->count() + 1;
+                }
+              
             }
+
             if( $task->patternid()->exists()) {
                 $task->patternid()->update([
                     'task_id' => $task->id,
                     'pattern_id' => $request->pattern_id,
                     'sequence' => $sequence,
-                    'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
                 ]);

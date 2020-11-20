@@ -6,12 +6,14 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import { Grid, Paper } from '@material-ui/core';
-import config from 'react-global-configuration';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import validator from 'validator';
@@ -338,7 +340,26 @@ const LearningOutcomeEditContainer = (props) => {
         return (
             <Grid item xs={12}>
                     <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
-                        <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
+                        <FormLabel>Outcome Type</FormLabel >
+                        <RadioGroup
+                            data-tour = "lo_edit_type"
+                            value = {learningOutcome.outcomeType}
+                            onChange = {outcomeTypeOnchange}
+                            disabled = {checked}
+                        >
+                            {Object.keys(learningTypeTemp).map(_key=> 
+                                    (
+                                        <FormControlLabel 
+                                        key={learningTypeTemp[_key].id} 
+                                        checked = {learningTypeTemp[_key].value == learningOutcome.outcomeType}
+                                        value={learningTypeTemp[_key].value} 
+                                        control={<Radio />} 
+                                        label={learningTypeTemp[_key].description} />
+                                    )
+                            )}
+                        </RadioGroup>
+
+                        {/* <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
                         <Select
                         labelId="demo-simple-select-required-label"
                         id="demo-simple-select-required"
@@ -358,7 +379,7 @@ const LearningOutcomeEditContainer = (props) => {
                                         {learningTypeTemp[_key].description}
                                 </MenuItem>)
                             )}
-                        </Select>
+                        </Select> */}
                         <FormHelperText>
                             <React.Fragment>
                             {error['outcomeType'] ==""? "Required": error['outcomeType']}

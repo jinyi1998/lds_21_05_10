@@ -91,10 +91,10 @@ const LearningTaskContainer = (props) => {
             validated = false;
         }
     
-        if(validator.isEmpty(taskData.description.toString())){
-            tempError["description"] = "Please enter the description";
-            validated = false;
-        }
+        // if(validator.isEmpty(taskData.description.toString())){
+        //     tempError["description"] = "Please enter the description";
+        //     validated = false;
+        // }
     
         if(!validator.isInt(taskData.time.toString(), {min: 0, max: 999})){
             tempError["time"] = "Please enter the time";
@@ -234,7 +234,7 @@ const LearningTaskContainer = (props) => {
             //load the default learning outcomes by api request
             refreshCourse();
             setLoadingOpen(false);
-            displayMsg("success", "Learning Task Duplicated");
+            displayMsg("success", "Learning Task Deleted");
         })
         .catch(error => {
             displayMsg("error", "Some Errors Occured");

@@ -98,7 +98,7 @@ const DesignInfo = (props) => {
       validated = false;
     }
 
-    if(!validator.isInt(courseData.no_of_lesson.toString(), {min: 1, max: 100})){
+    if(!validator.isInt(parseInt(courseData.no_of_lesson).toString(), {min: 1, max: 100})){
        tempError["no_of_lesson"] = "Please enter the number of lessons between 1 and 100";
       //  setError({...error, no_of_lesson: "error"})
        validated = false;
@@ -141,7 +141,7 @@ const DesignInfo = (props) => {
 
   const onSave = () => {
     
-    if(course.no_of_lesson > courseData.no_of_lesson){
+    if(parseInt(course.no_of_lesson) > parseInt(courseData.no_of_lesson)){
       setLessonWarning(true);
     }else{
       if(validate()){
@@ -165,9 +165,9 @@ const DesignInfo = (props) => {
 
     if(course.lessons.length > 0){
       // already init-ed the lesson
-      if(course.no_of_lesson > courseData.no_of_lesson){
+      if(parseInt(course.no_of_lesson) > parseInt(courseData.no_of_lesson)){
         //del lesson
-        for(var i = courseData.no_of_lesson; i < course.no_of_lesson; i++){
+        for(var i = parseInt(courseData.no_of_lesson); i < parseInt(course.no_of_lesson); i++){
         
           await apiLessonDelete(course.lessons[i].id).then(response => {
             setLoadingOpen(false)
@@ -175,9 +175,9 @@ const DesignInfo = (props) => {
           .catch(error => console.log(error));
         }
 
-      }else if(course.no_of_lesson < courseData.no_of_lesson){
+      }else if(parseInt(course.no_of_lesson) < parseInt(courseData.no_of_lesson)){
         //add new lesson 
-        for(var i = course.no_of_lesson; i < courseData.no_of_lesson; i++){
+        for(var i = parseInt(course.no_of_lesson); i < parseInt(courseData.no_of_lesson); i++){
           let int_i = parseInt(i);
 
           await apiLessonCreate( {
@@ -193,8 +193,8 @@ const DesignInfo = (props) => {
         }
       }
       
-      for(var i = 0; i < courseData.no_of_lesson; i++){
-        let int_i = parseInt(i);
+      // update existing lesson time
+      for(var i = 0; i < parseInt(course.no_of_lesson); i++){
         if(course.lessons[i].time == lesson_time){
           continue;
         }
@@ -213,7 +213,7 @@ const DesignInfo = (props) => {
       await apiCourseClearLesson(course.id);
           
       // init the lesson with input no of lesson
-        for(var i = 0; i<courseData.no_of_lesson; i++){
+        for(var i = 0; i<parseInt(courseData.no_of_lesson); i++){
           
           await apiLessonCreate( {
             "time": lesson_time,
@@ -232,7 +232,7 @@ const DesignInfo = (props) => {
       "course_id": course.id,
       "unit_title": courseData.unit_title,
       "level": courseData.level,
-      "no_of_lesson": courseData.no_of_lesson,
+      "no_of_lesson": parseInt(courseData.no_of_lesson),
       "description": courseData.description,
       "subject": courseData.subject
     }).then(response => {
@@ -326,7 +326,7 @@ const DesignInfo = (props) => {
             name="no_of_lesson" 
             data-tour = "no_of_lesson"
             type="number"
-            value = {courseData.no_of_lesson}
+            value = {parseInt(courseData.no_of_lesson)}
             error = {! (error["no_of_lesson"]=="")}
             helperText= {! (error["no_of_lesson"]=="")? error["no_of_lesson"]:  ""}
             fullWidth 
