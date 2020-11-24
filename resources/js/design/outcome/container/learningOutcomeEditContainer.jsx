@@ -340,9 +340,9 @@ const LearningOutcomeEditContainer = (props) => {
         switch(type_id){
             default:
             case 1:
-                return "Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples."
+                return "Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically."
             case 2:
-                return " Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically."
+                return "Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples."
             case 3:
                 return "Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.";
         }
