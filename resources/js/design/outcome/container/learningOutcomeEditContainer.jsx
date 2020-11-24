@@ -336,11 +336,29 @@ const LearningOutcomeEditContainer = (props) => {
     
 
     //#region display related
+    const displayOutcomeHint = (type_id) => {
+        switch(type_id){
+            default:
+            case 1:
+                return "Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples."
+            case 2:
+                return " Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically."
+            case 3:
+                return "Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.";
+        }
+    }
+
     const displayOutcomeType = () => {
         return (
             <Grid item xs={12}>
                     <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
-                        <FormLabel>Outcome Type</FormLabel >
+                        <FormLabel>Outcome Type
+                            <QuestionHint title = {
+                                <React.Fragment>
+                                    There are three types of learning outcomes: disciplinary knowledge, disciplinary skills, and generic skills. 
+                                </React.Fragment>
+                            }/>
+                        </FormLabel >
                         <RadioGroup
                             data-tour = "lo_edit_type"
                             value = {learningOutcome.outcomeType}
@@ -349,12 +367,25 @@ const LearningOutcomeEditContainer = (props) => {
                         >
                             {Object.keys(learningTypeTemp).map(_key=> 
                                     (
+                                        <React.Fragment>
                                         <FormControlLabel 
-                                        key={learningTypeTemp[_key].id} 
-                                        checked = {learningTypeTemp[_key].value == learningOutcome.outcomeType}
-                                        value={learningTypeTemp[_key].value} 
-                                        control={<Radio />} 
-                                        label={learningTypeTemp[_key].description} />
+                                            key={learningTypeTemp[_key].id} 
+                                            checked = {learningTypeTemp[_key].value == learningOutcome.outcomeType}
+                                            value={learningTypeTemp[_key].value} 
+                                            control={<Radio />} 
+                                            label={
+                                                <React.Fragment>
+                                                        {learningTypeTemp[_key].description}
+                                                        <QuestionHint title = {
+                                                            <React.Fragment>
+                                                                {displayOutcomeHint(learningTypeTemp[_key].id)}
+                                                            </React.Fragment>
+                                                        }/>
+                                                </React.Fragment>
+                                             
+                                            } />
+                                              
+                                        </React.Fragment>
                                     )
                             )}
                         </RadioGroup>
@@ -383,17 +414,6 @@ const LearningOutcomeEditContainer = (props) => {
                         <FormHelperText>
                             <React.Fragment>
                             {error['outcomeType'] ==""? "Required": error['outcomeType']}
-                            <QuestionHint title = {
-                                <React.Fragment>
-                                    There are three types of learning outcomes: disciplinary knowledge, disciplinary skills, and generic skills. 
-                                    <br/>
-                                    Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples.   
-                                    <br/>
-                                    Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically. 
-                                    <br/>
-                                    Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning. 
-                                </React.Fragment>
-                            }/>
                             </React.Fragment>
                         </FormHelperText>
                     </FormControl>

@@ -114,7 +114,7 @@ const DesignItemContainer = (props) => {
                 </TableCell>
                 <TableCell component="th" scope="row"  onClick={onClickDesign}>
                     <ListItemText 
-                    primary={courseData.unit_title+" - "+courseData.description}  
+                    primary={courseData.unit_title}  
                     secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school + " || " + "Progress: " + displayProgress() } />
                 </TableCell>
                 <TableCell component="th">

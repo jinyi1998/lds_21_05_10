@@ -100,7 +100,13 @@ const LearningTaskMainContainer = (props) => {
                     <Grid container spacing = {2}>
                     {
                         patterns.length > 0? 
-                        patterns.map( _pattern =>   <LearningPatternContainer componentID = {props.component_id} patternData = {_pattern}/>)
+                            patterns.map( (_pattern, index) =>   
+                                <LearningPatternContainer 
+                                    componentID = {props.component_id} 
+                                    patternData = {_pattern}
+                                    key = {index}
+                                />
+                            )
                         :
                         <Grid container item xs = {12} justify = {"center"}>
                             <Typography variant="caption" display="block" gutterBottom>

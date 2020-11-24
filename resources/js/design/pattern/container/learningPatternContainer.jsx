@@ -108,9 +108,9 @@ const LearningPatternContainer = (props) => {
     //#endregion
     return (
         <React.Fragment>
-            <Accordion  data-tour = "component_pattern_view">
+            <Accordion  data-tour = "component_pattern_view"  defaultExpanded = {true}>
                 <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon />}
                 >
                     <Grid container>
                         <Grid item xs >

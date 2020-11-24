@@ -261,8 +261,10 @@ class LearningComponentController extends Controller
 
         $component = Component::with([
             'tasks', 
-            'patterns'
+            'patterns',
+            'outcomes'
         ])->find($component->id);
+
         return $component;
     }
 

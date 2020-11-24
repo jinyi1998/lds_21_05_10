@@ -180,6 +180,8 @@ const ComponentContainer = (props)=>{
     async function duplicateComponent(id){
       var tempcomponent = await fetchlearningComponent(id);
       tempcomponent.course_id = course.id;
+      tempcomponent.tasks.map(_tasks => delete _tasks['assessmentid']);
+      tempcomponent.patterns.map( _pattern => _pattern.tasks.map(_tasks => delete['assessmentid']));
       fetchAddLearningComponent(tempcomponent);
       setAnchorEl(null);
     } 
