@@ -505,6 +505,15 @@ const Design = (props) => {
               </Grid>
           </React.Fragment>
         )
+
+        case 'dashboard':
+          return(
+            <React.Fragment>
+                <Grid container item xs>
+                  <DashBoardContainer />
+                </Grid>
+            </React.Fragment>
+          )
     }
   }
 
@@ -559,7 +568,9 @@ const Design = (props) => {
       case 'dashboard':
         return(
           <React.Fragment>
-            <DashBoardContainer />
+              <Grid item xs>
+                <DashBoardContainer />
+              </Grid>
           </React.Fragment>
         )
       case 'finish':

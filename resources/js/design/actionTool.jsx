@@ -44,7 +44,7 @@ const actions = [
 export default function ActionTool() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const { course, activeStage, setActiveStage, activeStep, setActiveStep } = React.useContext(ContextStore);
+  const { course, activeStage, setActiveStage, setActivePage } = React.useContext(ContextStore);
 
   const handleClose = () => {
     setOpen(false);
@@ -71,10 +71,12 @@ export default function ActionTool() {
         case 'share':
             break;
         case 'designstudio':
-            setActiveStage('');
+            setActiveStage('designStage');
+            setActivePage('componentPlan');
             break;
         case 'dashboard':
             setActiveStage('dashboard');
+            // setActivePage('dashboard');
             break;
     }
   }
