@@ -560,7 +560,7 @@ const Design = (props) => {
       case 'courseinfo':
         return(
           <React.Fragment>
-           <Grid item xs  style={{maxHeight: '100%', overflow: 'auto'}}>
+           <Grid item xs  style={{maxHeight: '100%'}}>
               <DesignInfo handleBack = {()=>{}} handleNext = {()=>{}} isStep = {false}/>
             </Grid>
           </React.Fragment>

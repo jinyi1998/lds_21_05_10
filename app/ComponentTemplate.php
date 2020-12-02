@@ -23,7 +23,7 @@ class ComponentTemplate extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'pattern_id' //LearningPatternTemplate pattern id
-        )->with(['tasks']);
+        )->with(['tasks', 'tags']);
     }
 
     public function tasks(){

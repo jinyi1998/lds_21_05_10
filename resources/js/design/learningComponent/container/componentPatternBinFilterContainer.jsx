@@ -111,12 +111,15 @@ const ComponentPatternBinFilterContainer = (props) => {
     const onFilterBySearchText = () => {
         setLoadingOpen(true);
         if(typeof props.originalPatterns != 'undefined' && typeof props.patternOpts != 'undefined' && typeof props.setPatternOpts != 'undefined'){
-            var temp = JSON.parse(JSON.stringify(props.patternOpts));
+            var temp = JSON.parse(JSON.stringify(props.originalPatterns));
             temp = temp.filter(_pattern => {
                 if(typeof _pattern.title == "undefined"){
                     return false;
                 }
                 if(_pattern.title.toUpperCase().indexOf(searchText.toUpperCase()) > -1){
+                    return true;
+                }
+                if(_pattern.tags.filter( _tags => _tags.name.toUpperCase().indexOf(searchText.toUpperCase()) > -1 ).length > 0){
                     return true;
                 }
                 return false;

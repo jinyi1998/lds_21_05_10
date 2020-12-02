@@ -51,4 +51,21 @@ class LearningPatternTemplate extends Model
         );
     }
 
+    public function tagsid(){
+        return $this->hasMany(
+            'App\PatternTempTagsRelation',
+            'pattern_id'
+        )->where('is_deleted', 0);
+    }
+    public function tags(){
+        return $this->hasManyThrough(
+            'App\Tags',
+            'App\PatternTempTagsRelation',
+            'pattern_id', //ComponentPatternTemplateRelation compoent id
+            'id', // LearningPatternTemplate id
+            'id', // component_template id
+            'tags_id' //LearningPatternTemplate pattern id
+        )->select(['name']);
+    }
+
 }

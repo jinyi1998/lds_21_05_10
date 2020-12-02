@@ -11,6 +11,7 @@ use App\Component;
 use App\LearningOutcome;
 use App\LearningTask;
 use App\Lesson;
+use App\Tags;
 use Auth;
 
 
@@ -19,7 +20,7 @@ class CourseController extends Controller
     public function index()
     {
         $course_arr = [];
-        $courses = Course::with(['createdby','usergroupid'])->orderBy('is_pin', 'desc')->get();
+        $courses = Course::with(['createdby','usergroupid', 'tags'])->orderBy('is_pin', 'desc')->get();
         foreach($courses as $index => $_course){
             $_course['permission'] = $this->getCurrentUserCoursePermission($_course->id);
             if( $_course['permission'] > 0){
@@ -65,7 +66,7 @@ class CourseController extends Controller
     public function show($id)
     {
         //
-        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid', 'createdby'])->find($id);
+        $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid', 'createdby', 'tags'])->find($id);
         $course['permission'] = $this->getCurrentUserCoursePermission($course->id);
         return response()->json($course);
     }
@@ -148,10 +149,37 @@ class CourseController extends Controller
                 ]);
             }
         }
+
         $course->updated_by =  Auth::user()->id;
         $course->is_deleted = 0;
         $course->updated_at = now();
         $course->save();
+
+        if($request->has('tags')){
+            $course->tagsid()->delete();
+            foreach($request->tags as $_tag){
+                if(Tags::where('name', $_tag)->count() > 0){ // if tags existed
+                    $tag = Tags::where('name', $_tag)->first();
+                }else{
+                    $tag = new Tags();
+                    $tag->name = $_tag;
+                    $tag->created_by = Auth::user()->id;
+                    $tag->updated_by = Auth::user()->id;
+
+                    $tag->created_at = now();
+                    $tag->updated_at = now();
+                    $tag->save();
+                    //create new one
+                }
+                //create relation
+                $course->tagsid()->create([
+                    'course_id' => $course->id,
+                    'tags_id' => $tag->id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ]);
+            }
+        }
 
         return $course;
     }

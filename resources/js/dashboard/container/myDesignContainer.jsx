@@ -101,7 +101,9 @@ const MyDesignContainer = (props)=>{
 
                 if(typeof _course.description != 'undefined' && typeof _course.unit_title != 'undefined'){
                     return (_course.description.toUpperCase().indexOf(searchText.toUpperCase()) != -1
-                        || _course.unit_title.toUpperCase().indexOf(searchText.toUpperCase()) != -1) ;
+                        || _course.unit_title.toUpperCase().indexOf(searchText.toUpperCase()) != -1
+                        || _course.tags.filter(x => x.name.toUpperCase().indexOf(searchText.toUpperCase()) != -1).length > 0
+                    ) ;
                 }
             })
            

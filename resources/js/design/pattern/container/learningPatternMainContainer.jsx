@@ -16,7 +16,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import LearningPatternEditView from '../component/learningPatternEditView';
 import LearningPatternContainer from './learningPatternContainer';
-
+import ComponentPatternSelectBox from '../../learningComponent/component/componentPatternSelectBox';
+import LearningTaskView from '../../task/component/learningTaskView';
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
@@ -32,8 +33,10 @@ const LearningTaskMainContainer = (props) => {
 
     const [patterns, setPatterns] = React.useState([]);
     const [editPatternOpen, setEditPatternOpen] = React.useState(false);
+    const [ isDisplayPatternOpen, setIsDisplayPatternOpen ] = React.useState(false);
     const [patternTempOpts, setPatternTempOpts] = React.useState([]);
     const [patternTempID, setPatternTempID] = React.useState(-1);
+    const [ selectDisplayPattern, setSelectDisplayPattern ] = React.useState(-1);
 
     React.useEffect(()=>{
         setPatterns(props.patternsData);
@@ -86,6 +89,67 @@ const LearningTaskMainContainer = (props) => {
         setPatternTempID(-1);
 
     }
+
+    const handleOnClick = (e, index) => {
+        e.preventDefault();
+        setSelectDisplayPattern(index);
+        setIsDisplayPatternOpen(true);
+    }
+
+    const handleOnSelect = (e, index) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(patternTempOpts[index].id != patternTempID){
+            setPatternTempID(patternTempOpts[index].id);
+        }
+    }
+
+    const displayDisplay = () => {
+        if(!(selectDisplayPattern == -1 || patternTempOpts.length == 0 || typeof patternTempOpts[selectDisplayPattern] == 'undefined')){
+            return (
+                <React.Fragment>
+                    <DialogContent>
+                        <Grid container alignItems="flex-start">
+                            <Grid container item xs = {12}>
+                                <Typography variant="h6" gutterBottom>Pattern: {patternTempOpts[selectDisplayPattern].title}</Typography>
+                            </Grid>
+
+                            <Grid container item xs = {8}>
+                                <Grid item xs ={12}> <Typography variant="h6" gutterBottom> Tasks</Typography></Grid>
+                                {patternTempOpts[selectDisplayPattern].tasks.map((_task, index)=>{
+                                    return(
+                                        <Grid item xs ={12} key = {index}>
+                                            <LearningTaskView 
+                                                taskID = {_task.id} 
+                                                taskData = {_task} 
+                                                key = {index}
+                                                editBtn = {false}
+                                                duplicateBtn = {false}
+                                                deleteBtn = {false}
+                                            />
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+
+                    <DialogActions>
+                            <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setIsDisplayPatternOpen(false)}>Cancel</Button>
+                            <Button  
+                                variant = {"outlined"} 
+                                color = {"primary"} 
+                                onClick = {(e)=> {handleOnSelect(e, selectDisplayPattern); setIsDisplayPatternOpen(false);}}>Select</Button>
+                    </DialogActions>
+                </React.Fragment>
+            );
+        }else{
+            return (
+                null
+            );
+        }
+    }
     //#endregion
 
     return (
@@ -126,13 +190,26 @@ const LearningTaskMainContainer = (props) => {
                 </AccordionDetails>
             </Accordion>
 
-            <Dialog open={editPatternOpen} onClose={onCloseLoadPattern} maxWidth = "md" style = {{minHeight: 400}}>
-                <DialogTitle id="form-dialog-title">Edit Learning Pattern</DialogTitle>
+            <Dialog open={editPatternOpen} onClose={onCloseLoadPattern} maxWidth = "lg" style = {{minHeight: 400}}>
                 <DialogContent>
-                    <LearningPatternEditView 
-                        patternTempOpts = {patternTempOpts}
-                        setPatternTempID = {setPatternTempID}
-                    />
+                    <Grid container>
+                    {
+                         patternTempOpts.map((_patternOpt, index)=>{
+                            return(
+                                <Grid item xs = {6}>
+                                     <ComponentPatternSelectBox 
+                                            index = {index}
+                                            _patternOpt = {_patternOpt}
+                                            selectPattern = {patternTempOpts.findIndex( x => x.id == patternTempID)}
+                                            handleOnClick = {handleOnClick}
+                                            handleOnSelect = {handleOnSelect}
+                                        />
+                                </Grid>
+                             
+                            );
+                        })
+                    }
+                    </Grid>
                 </DialogContent>
 
                 <DialogActions>
@@ -144,6 +221,12 @@ const LearningTaskMainContainer = (props) => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog open={isDisplayPatternOpen} onClose={()=>setIsDisplayPatternOpen(false)} maxWidth="lg">
+                {displayDisplay()}
+            </Dialog>
+
+            
         </React.Fragment>
        
     )

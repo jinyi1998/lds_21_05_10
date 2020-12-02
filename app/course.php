@@ -116,4 +116,21 @@ class Course extends Model
             'course_id'
         )->select(['usergroup_id', 'course_id']);
     }
+
+    public function tagsid(){
+        return $this->hasMany(
+            'App\CourseTagsRelation',
+            'course_id'
+        )->where('is_deleted', 0);
+    }
+    public function tags(){
+        return $this->hasManyThrough(
+            'App\Tags',
+            'App\CourseTagsRelation',
+            'course_id', //ComponentPatternTemplateRelation compoent id
+            'id', // LearningPatternTemplate id
+            'id', // component_template id
+            'tags_id' //LearningPatternTemplate pattern id
+        );
+    }
 }

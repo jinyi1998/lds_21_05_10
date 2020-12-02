@@ -8,8 +8,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-
 import validator from 'validator';
+import ChipInput from 'material-ui-chip-input'
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -51,6 +51,7 @@ const DesignInfo = (props) => {
   , [])
 
   const [ courseData, setCourseData ] = React.useState(course);
+  const [ tags, setTags ] = React.useState(course.tags.map( _tag => _tag.name));
   const [ lesson_time, setLessonTime ] = React.useState(0);
   const [ lessonWarning, setLessonWarning ] = React.useState(false);
 
@@ -234,7 +235,8 @@ const DesignInfo = (props) => {
       "level": courseData.level,
       "no_of_lesson": parseInt(courseData.no_of_lesson),
       "description": courseData.description,
-      "subject": courseData.subject
+      "subject": courseData.subject,
+      'tags': tags
     }).then(response => {
       dispatch({
         type: "INIT_COURSE",
@@ -243,6 +245,18 @@ const DesignInfo = (props) => {
       setLoadingOpen(false)
     }) .catch(error => console.log(error));
 }
+
+
+  const handleAddChip = (chip) => {
+    setTags([...tags, chip]);
+  }
+  
+  const handleDeleteChip = (chip, index) => {
+    // var tags = tags.splice(index, 1)
+    var tags_temp = JSON.parse(JSON.stringify(tags));
+    tags_temp.splice(index, 1);
+    setTags(tags_temp);
+  }
 
   const {handleNext, handleBack, isStep} =  props;
 
@@ -335,7 +349,6 @@ const DesignInfo = (props) => {
             onChange={onChange} />
         </Grid>
 
-
         <Grid item xs={6} md={6}>
           <InputLabel>
             Time Per Lesson
@@ -351,9 +364,7 @@ const DesignInfo = (props) => {
             InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
             onChange={onChange} />
         </Grid>
-
-    
-        
+            
         <Grid item xs={12} md={12}>
           <InputLabel>
             Description
@@ -379,7 +390,18 @@ const DesignInfo = (props) => {
             fullWidth 
             rows={5}
             onChange={onChange}/>
-          
+        </Grid>
+
+        <Grid item xs = {12}>
+          <InputLabel>
+            Tags
+          </InputLabel>
+          <ChipInput
+              value={tags}
+              onAdd={(chip) => handleAddChip(chip)}
+              onDelete={(chip, index) => handleDeleteChip(chip, index)}
+              fullWidth
+          />
         </Grid>
       </Grid>
       

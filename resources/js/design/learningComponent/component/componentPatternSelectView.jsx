@@ -266,13 +266,16 @@ const ComponentPatternSelectView = (props) => {
                         :
                         patternOpts.map((_patternOpt, index)=>{
                             return(
-                              <ComponentPatternSelectBox 
-                                index = {index}
-                                _patternOpt = {_patternOpt}
-                                selectPattern = {selectPattern}
-                                handleOnClick = {handleOnClick}
-                                handleOnSelect = {handleOnSelect}
-                              />
+                                <Grid container item xs = {4}>
+                                      <ComponentPatternSelectBox 
+                                            index = {index}
+                                            _patternOpt = {_patternOpt}
+                                            selectPattern = {selectPattern}
+                                            handleOnClick = {handleOnClick}
+                                            handleOnSelect = {handleOnSelect}
+                                        />
+                                </Grid>
+                            
                             );
                         })
                     }

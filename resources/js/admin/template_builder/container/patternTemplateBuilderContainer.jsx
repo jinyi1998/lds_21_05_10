@@ -10,12 +10,14 @@ import TaskTemplateBuilderContainer from './taskTemplateBuilderContainer';
 import TextField from '@material-ui/core/TextField';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import InputLabel from '@material-ui/core/InputLabel';
+ 
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import ImageUploader from "react-images-upload";
+import ChipInput from 'material-ui-chip-input'
 
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import CloseIcon from '@material-ui/icons/Close';;
@@ -45,6 +47,7 @@ const PatternTemplateBuilderContainer = (props) => {
         media: ""
     });
     const [ pictures, setPictures] = React.useState("");
+    const [ tags, setTags] = React.useState([]);
     const [ isEditPic, setIsEditPic ] = React.useState(false);
 
     const [ displayMode, setDisplayMode ] = React.useState('edit');
@@ -110,6 +113,7 @@ const PatternTemplateBuilderContainer = (props) => {
         apiLearningPattTempGet(props.pattern_id).then(
             (response) => {
                 setPatternTemplate(response.data);
+                setTags(response.data.tags.map(_tag => _tag.name));
                 setLoadingOpen(false)
             }
         )
@@ -127,7 +131,8 @@ const PatternTemplateBuilderContainer = (props) => {
 
         //avoid adding new tasks
         delete temp['tasks'];
-        apiLearningPattTempPut(patternTemplate).then(
+        temp['tags'] = tags;
+        apiLearningPattTempPut(temp).then(
             ()=>{
                 reloadPattern();
                 setIsEditTitle(false);
@@ -158,6 +163,18 @@ const PatternTemplateBuilderContainer = (props) => {
         )
     }
 
+    const handleAddChip = (chip) => {
+        setTags([...tags, chip]);
+      }
+      
+    const handleDeleteChip = (chip, index) => {
+    // var tags = tags.splice(index, 1)
+    var tags_temp = JSON.parse(JSON.stringify(tags));
+    tags_temp.splice(index, 1);
+    setTags(tags_temp);
+    }
+    
+
     const diplayEditView = () => {
         return (
             <Paper style = {{padding: 16}}>
@@ -169,6 +186,7 @@ const PatternTemplateBuilderContainer = (props) => {
                         <Grid container justify="center" alignItems="center">
                             <Grid item xs ={10}>
                                 <Typography variant="h5">{patternTemplate.title}</Typography>
+                                <Typography variant="subtitle">{tags.map( _tag => "#" + _tag + " ")}</Typography>
                             </Grid>
                             <Grid item xs ={2}>
                                 <IconButton
@@ -195,10 +213,28 @@ const PatternTemplateBuilderContainer = (props) => {
                         </Grid>
                         :
                         <Grid container  justify="center" alignItems="center">
-                            <Grid item xs ={10}>
-                                <TextField label="Pattern Title" variant="filled" fullWidth value = {patternTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
+                            <Grid container item xs spacing = {4}>
+                                <Grid item xs = {12}>
+                                    <InputLabel>
+                                        Pattern Title
+                                    </InputLabel>
+                                    <TextField 
+                                        variant="filled" 
+                                        fullWidth value = {patternTemplate.title} onChange = {(event)=>onChangeTitle(event)}/>
+                                </Grid>
+                                <Grid item xs = {12}>
+                                    <InputLabel>
+                                        Tags
+                                    </InputLabel>
+                                    <ChipInput
+                                        value={tags}
+                                        onAdd={(chip) => handleAddChip(chip)}
+                                        onDelete={(chip, index) => handleDeleteChip(chip, index)}
+                                        fullWidth
+                                    />
+                                    </Grid>
                             </Grid>
-                            <Grid item xs ={2}>
+                            <Grid container item xs ={2} justify="center" alignItems="center">
                                 <IconButton color = "primary" onClick = {onClickRename}>
                                     <DoneIcon/>
                                 </IconButton>

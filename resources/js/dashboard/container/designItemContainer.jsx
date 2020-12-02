@@ -8,7 +8,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShareIcon from '@material-ui/icons/Share';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import LocalPlayIcon from '@material-ui/icons/LocalPlay';
-
+import Grid from '@material-ui/core/Grid';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
@@ -113,6 +113,9 @@ const DesignItemContainer = (props) => {
                     {courseData.is_pin? <LocalPlayIcon /> : <DashboardIcon /> }
                 </TableCell>
                 <TableCell component="th" scope="row"  onClick={onClickDesign}>
+                    <Grid container>
+
+                    </Grid>
                     <ListItemText 
                     primary={courseData.unit_title}  
                     secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school + " || " + "Progress: " + displayProgress() } />

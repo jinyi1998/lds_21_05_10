@@ -78,7 +78,7 @@ const LearningOutcomeUnit = (props)=>{
                             outcome.outcomeType == 3?
                             null
                             :
-                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
+                            <Typography variant = {'subtitle2'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
                                 outcome.STEMType == ""?
                                     "N/A"
                                     :
@@ -86,7 +86,7 @@ const LearningOutcomeUnit = (props)=>{
                             } )  </Typography>
                         }
                       
-                        <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
+                        <Typography variant = {'subtitle2'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
                         {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
                     </React.Fragment>
                   

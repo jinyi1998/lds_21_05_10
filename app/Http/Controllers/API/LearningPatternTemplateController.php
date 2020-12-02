@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\LearningPatternTemplate;
+use App\Tags;
 use Auth;
 use Intervention\Image\Facades\Image as Image;
 
@@ -18,7 +19,7 @@ class LearningPatternTemplateController extends Controller
     public function index()
     {
         //
-        $patterns = LearningPatternTemplate::with(['componentsid', 'updatedby', 'createdby'])->get();
+        $patterns = LearningPatternTemplate::with(['componentsid', 'updatedby', 'createdby', 'tags'])->get();
         return response()->json($patterns);
     }
 
@@ -45,7 +46,7 @@ class LearningPatternTemplateController extends Controller
     public function show($id)
     {
         //
-        $pattern = LearningPatternTemplate::with('tasks')->find($id);
+        $pattern = LearningPatternTemplate::with('tasks', 'tags')->find($id);
         return response()->json($pattern);
     }
 
@@ -105,7 +106,7 @@ class LearningPatternTemplateController extends Controller
                 'is_deleted' => 0
             ]);
         }
-
+        
         if($request->has('tasks')){
             foreach( $request->tasks as $_task){
                 $request_task = new \Illuminate\Http\Request($_task);
@@ -120,6 +121,31 @@ class LearningPatternTemplateController extends Controller
             }
         }
 
+        if($request->has('tags')){
+            $pattern->tagsid()->delete();
+            foreach($request->tags as $_tag){
+                if(Tags::where('name', $_tag)->count() > 0){ // if tags existed
+                    $tag = Tags::where('name', $_tag)->first();
+                }else{
+                    $tag = new Tags();
+                    $tag->name = $_tag;
+                    $tag->created_by = Auth::user()->id;
+                    $tag->updated_by = Auth::user()->id;
+
+                    $tag->created_at = now();
+                    $tag->updated_at = now();
+                    $tag->save();
+                    //create new one
+                }
+                //create relation
+                $pattern->tagsid()->create([
+                    'pattern_id' => $pattern->id,
+                    'tags_id' => $tag->id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ]);
+            }
+        }
         return $pattern;
     }
 

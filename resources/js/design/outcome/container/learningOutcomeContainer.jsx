@@ -37,6 +37,7 @@ import {
     apiLearningOutcomePost, apiLearningOutcomeCoursePut,
     
 } from "../../../api.js"
+import { set } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -81,6 +82,7 @@ const LearningOutcomeContainer = (props)=>{
 
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
 
+    const [ expanded, setExpanded ] = React.useState(true);
     const [learningOutcomeID, setLearningOutcomeID] = React.useState(-1);
     const [learningOutcome, setLearningOutcome] = React.useState({
         level: -1,
@@ -529,10 +531,19 @@ const LearningOutcomeContainer = (props)=>{
         width: '100%'
     });
 
+    const handloeOnAccordionChange = (event, expanded) => {
+        if(modeLevel == "course"){
+            // do nothing
+            event.preventDefault();
+        }else{
+            setExpanded(expanded);
+        }
+    }
+
     return (
         <React.Fragment>
 
-            <Accordion defaultExpanded	={true}>
+            <Accordion expanded	={expanded} onChange = {handloeOnAccordionChange}>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 className = {classes.AccordionSummary}
@@ -552,19 +563,19 @@ const LearningOutcomeContainer = (props)=>{
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container>
-                        <Grid item xs= {12}>
-                        {modeLevel == "course"? 
-                            <InstructionBox 
-                                title="Unit Level Learning Outcomes" 
-                                content= "Please define the learning outcomes for your unit" 
-                            />
-                            :
-                            <InstructionBox 
-                                title="Component Level Learning Outcomes" 
-                                content= "Please define the learning outcomes for your component" 
-                            />
-                        }
-                        </Grid> 
+                        {/* <Grid item xs= {12}>
+                            {modeLevel == "course"? 
+                                <InstructionBox 
+                                    title="Unit Level Learning Outcomes" 
+                                    content= "Please define the learning outcomes for your unit" 
+                                />
+                                :
+                                <InstructionBox 
+                                    title="Component Level Learning Outcomes" 
+                                    content= "Please define the learning outcomes for your component" 
+                                />
+                            }
+                        </Grid>  */}
                         <Grid item xs={12}>
                             {displayLearningOutcomes()}
 

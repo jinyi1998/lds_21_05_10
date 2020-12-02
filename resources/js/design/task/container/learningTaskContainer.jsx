@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import {ContextStore} from '../../../container/designContainer';
 import {AppContextStore} from '../../../container/app';
 
@@ -423,7 +422,7 @@ const LearningTaskContainer = (props) => {
                                                 onEditearningTask = {onEditearningTask}
                                                 duplicateLearningTask = {duplicateLearningTask}
                                                 deleteLearningTask = {deleteLearningTask}
-                                                key = {_task.id}
+                                                key = {index}
                                                 enableDrag = {enableDrag}
                                                 editBtn = {enableEdit}
                                                 duplicateBtn = {enableDuplicate}

@@ -15,7 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     button: {
-        maxWidth: 400, margin: "5%"
+        maxWidth: 400, 
+        margin: "5%",  
     },
     media: {
         height: 200,
@@ -77,7 +78,7 @@ const ComponentPatternSelectBox = (props) => {
     }
 
     return (
-        <Grid item xs = {4} key ={index}>
+        <Grid item key ={index}>
             <ToggleButton 
                 variant="outlined" 
                 key ={index} 
