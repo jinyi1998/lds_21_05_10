@@ -113,6 +113,9 @@ class DesignTypeController extends Controller
         if($request->has('hint')){
             $designType->hint = $request->hint;
         }
+        if($request->has('is_deleted')){
+            $designType->is_deleted = $request->is_deleted;
+        }
 
         if($designType->id > 0){
 

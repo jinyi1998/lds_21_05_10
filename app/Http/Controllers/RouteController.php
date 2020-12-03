@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 use App\Http\Controllers\API\CourseController;
+use App\Http\Controllers\API\DesignTypeController;
 use App\Http\Controllers\API\LearningPatternTemplateController;
 use App\Http\Controllers\API\LearningComponentTemplateController;
 
@@ -108,7 +109,12 @@ class RouteController extends Controller
         $designTypeController = new DesignTypeController();
 
         $request_designtype = new \Illuminate\Http\Request();
-        $request_designtype['title'] = "New Design Type";
+        $request_designtype['name'] = "New Design Type";
+        $request_designtype['description'] = "";
+        $request_designtype['hint'] = "";
+        $request_designtype['media'] = ""; 
+        $request_designtype['is_deleted'] = 0;
+
         $designtype = $designTypeController->store($request_designtype)->getData();
 
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_design_type_builder', 'designtypeid' => $designtype->id]);

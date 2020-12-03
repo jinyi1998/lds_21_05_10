@@ -3,13 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use DesignTypeComponentTemplateRelation;
 
 class DesignType extends Model
 {
     //
     protected $table = 'design_type';
     protected $primaryKey = 'id';
+    protected $fillable = ['name', 'description', 'hint', 'media','created_by', 'updated_by', 'is_deleted'];
     public $timestamps = true;
 
     public function componentsid(){

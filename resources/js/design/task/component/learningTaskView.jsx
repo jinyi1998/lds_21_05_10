@@ -160,7 +160,7 @@ const LearningTaskView = (props) => {
     }
 
     const onClickDuplicate = () => {
-        if(typeof taskData.patternid.pattern_id != 'undefined'){
+        if(typeof taskData.patternid　!= 'undefined' && typeof taskData.patternid.pattern_id != 'undefined'){
            //duplicate in pattern, skip the copy to dialog 
            duplicateLearningTask();
         }else{

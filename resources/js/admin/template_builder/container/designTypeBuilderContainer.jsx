@@ -154,7 +154,7 @@ const DesignTypeBuilderContainer = (props) => {
     }
 
     const handleFinish = () => {
-        window.location.href = "../design_type";
+        window.location.href = "/admin/design_type";
     }
 
     const handleTabChange = (event, newValue) => {
