@@ -198,7 +198,7 @@ class LearningTaskTemplateController extends Controller
                 $task->toolid()->save($test);
             }
         }
-        return $request;
+        return $task;
     }
 
 
