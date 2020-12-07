@@ -105,8 +105,8 @@ const DesignInfo = (props) => {
        validated = false;
     }
 
-    if(!validator.isInt(lesson_time.toString(), {min: 0, max: 120})){
-      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 120";
+    if(!validator.isInt(lesson_time.toString(), {min: 0, max: 240})){
+      tempError["lesson_time"] = "Please enter the time of lessons between 1 and 240";
      //  setError({...error, no_of_lesson: "error"})
       validated = false;
    }

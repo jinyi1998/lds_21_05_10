@@ -106,17 +106,19 @@ class LearningPatternTemplateController extends Controller
                 'is_deleted' => 0
             ]);
         }
-        
-        if($request->has('tasks')){
+
+        if($request->has('tasks')){ //for duplicate task only
             foreach( $request->tasks as $_task){
                 $request_task = new \Illuminate\Http\Request($_task);
                 $task = LearningTaskTemplateController::save(new \App\LearningTaskTemplate(), $request_task);
+                $sequence = $pattern->tasksid()->count() + 1;
                 $pattern->tasksid()->create([
                     'pattern_id' => $pattern->id,
                     'task_id' => $task->id,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
-                    'is_deleted' => 0
+                    'is_deleted' => 0,
+                    'sequence' => $sequence
                 ]);
             }
         }

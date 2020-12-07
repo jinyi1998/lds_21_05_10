@@ -72,7 +72,7 @@ const TaskTemplateView = (props) => {
     const classes = useStyles();
     // const { setLoadingOpen } = React.useContext(AppContextStore);
     const {options, taskTypeColor } = React.useContext(AppContextStore);
-    const {provided, snapshot, index, onEditearningTask, onDeleteTask, onDuplicateTask, lastestindex} = props;
+    const {provided, snapshot, index, onEditearningTask, onDeleteTask, onDuplicateTask} = props;
 
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
@@ -106,7 +106,7 @@ const TaskTemplateView = (props) => {
 
     React.useEffect(()=> {
         setTask(props.task);
-    }, [props])
+    }, [props.task])
 
     const getDraggable = (provided, snapshot) => {
         if(typeof provided == 'undefined'){
@@ -136,10 +136,17 @@ const TaskTemplateView = (props) => {
     }
 
     const onClickDuplicate = () => {
-        var temp = task;
-        temp.pattern_id = task.patternid.pattern_id;
-        temp.sequence = lastestindex;
-        onDuplicateTask(task);
+        var temp = JSON.parse(JSON.stringify(task));
+        if(typeof task.componentid != 'undefined' && typeof task.componentid.component_id != 'undefined'){
+            temp.component_id = task.componentid.component_id;
+        }
+        if(typeof task.patternid != 'undefined' && typeof task.patternid.pattern_id != 'undefined'){
+            temp.pattern_id = task.patternid.pattern_id;
+        }
+        
+        // temp.pattern_id = task.patternid.pattern_id;
+        // temp.sequence = lastestindex;
+        onDuplicateTask(temp);
     }
 
     const onClickDelete = () => {

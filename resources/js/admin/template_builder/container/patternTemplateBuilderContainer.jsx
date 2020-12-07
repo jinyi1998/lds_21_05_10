@@ -132,6 +132,7 @@ const PatternTemplateBuilderContainer = (props) => {
         //avoid adding new tasks
         delete temp['tasks'];
         temp['tags'] = tags;
+
         apiLearningPattTempPut(temp).then(
             ()=>{
                 reloadPattern();
@@ -149,8 +150,9 @@ const PatternTemplateBuilderContainer = (props) => {
 
     const addPatternTemplate = () => {
         apiLearningPattTempPost(patternTemplate).then(
-            ()=>{
+            (result)=>{
                 window.location.href = "../pattern_template";
+                // console.log(result.data)
             }
         )
     }

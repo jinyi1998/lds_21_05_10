@@ -73,7 +73,7 @@ const DesignTypeViewListContainer = (props) => {
                 </Grid>
                  
                 <Grid item xs = {4} >
-                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "designstudio"} }>
+                    <Button variant="contained" color="primary" onClick={ () => {window.location.href = "./design_type_builder"} }>
                         Add new design type
                     </Button>
                 </Grid>
