@@ -61,6 +61,7 @@ class LearningComponentController extends Controller
             'patterns',
             'outcomes',
             'outcomeid',
+            'patterntaskid',
         ])->find($id);
         return  response()->json($component);
     }

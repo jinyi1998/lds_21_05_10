@@ -31,11 +31,11 @@ const LearningTaskMainContainer = (props) => {
     const {course, refreshCourse } = React.useContext(ContextStore);
     const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
 
-    const [patterns, setPatterns] = React.useState([]);
-    const [editPatternOpen, setEditPatternOpen] = React.useState(false);
+    const [ patterns, setPatterns] = React.useState([]);
+    const [ editPatternOpen, setEditPatternOpen] = React.useState(false);
     const [ isDisplayPatternOpen, setIsDisplayPatternOpen ] = React.useState(false);
-    const [patternTempOpts, setPatternTempOpts] = React.useState([]);
-    const [patternTempID, setPatternTempID] = React.useState(-1);
+    const [ patternTempOpts, setPatternTempOpts] = React.useState([]);
+    const [ patternTempID, setPatternTempID] = React.useState(-1);
     const [ selectDisplayPattern, setSelectDisplayPattern ] = React.useState(-1);
 
     React.useEffect(()=>{
@@ -105,7 +105,7 @@ const LearningTaskMainContainer = (props) => {
         }
     }
 
-    const displayDisplay = () => {
+    const displayPatternDetail = () => {
         if(!(selectDisplayPattern == -1 || patternTempOpts.length == 0 || typeof patternTempOpts[selectDisplayPattern] == 'undefined')){
             return (
                 <React.Fragment>
@@ -223,7 +223,7 @@ const LearningTaskMainContainer = (props) => {
             </Dialog>
 
             <Dialog open={isDisplayPatternOpen} onClose={()=>setIsDisplayPatternOpen(false)} maxWidth="lg">
-                {displayDisplay()}
+                {displayPatternDetail()}
             </Dialog>
 
             

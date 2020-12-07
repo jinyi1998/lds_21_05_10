@@ -8,6 +8,8 @@ use App\LearningPattern;
 use App\LearningTask;
 use App\PatternTaskRelation;
 use App\ComponentPatternRelation;
+use App\ComponentPatternTaskRelation;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 
@@ -36,7 +38,7 @@ class LearningPatternController extends Controller
         //
         $pattern = new LearningPattern;
         $pattern = LearningPatternController::save($pattern, $request);
-        return response("success");
+        return response()->json($pattern);
     }
 
     /**
@@ -69,14 +71,22 @@ class LearningPatternController extends Controller
 
     public static function save(LearningPattern $pattern, Request $request){
 
-        $pattern->title = $request->title;
-        $pattern->created_by = Auth::user()->id;
+        if($request->has('title')){
+            $pattern->title = $request->title;
+        }
+
+        if($pattern->id > 0){
+
+        }else{
+            $pattern->created_by = Auth::user()->id;
+            $pattern->created_at = now();
+        }
+
         $pattern->updated_by = Auth::user()->id;
         $pattern->is_deleted = 0;
-        $pattern->created_at = now();
         $pattern->updated_at = now();
         $pattern->save();
-        //  return response()->json($pattern);
+
         //tasks
         if($request->has('tasks')){
             $pattern->tasks()->delete();
@@ -105,13 +115,25 @@ class LearningPatternController extends Controller
         }
 
         if($request->has('component_id')){
-            $pattern->componentid()->create([
-                'pattern_id' => $pattern->id,
-                'component_id' => $request->component_id,
-                'created_by' => Auth::user()->id,
-                'updated_by' => Auth::user()->id,
-                'is_deleted' => 0
-            ]);
+            if($pattern->componentid()->exists()){
+                if($request->has('sequence')){
+                    $pattern->componentid()->update([
+                        'sequence'=> $request->sequence,
+                        'updated_by' => Auth::user()->id,
+                        'updated_at' => now()
+                    ]);
+                }
+            }else{
+                $sequence = ComponentPatternTaskRelation::where('component_id', $request->component_id)->max('sequence');
+                $pattern->componentid()->create([
+                    'pattern_id' => $pattern->id,
+                    'component_id' => $request->component_id,
+                    'sequence'=> $sequence + 1,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                ]);
+            }
         }
         $pattern->save();
         return $pattern;

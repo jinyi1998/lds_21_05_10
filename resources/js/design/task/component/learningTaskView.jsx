@@ -52,11 +52,11 @@ const useStyles = makeStyles(theme => ({
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
-        margin: 16
+        margin: 2
     },
     contentGrid: {
         textAlign: "left",
-        minWidth: '150px'
+        // minWidth: '150px'
     },
     chips: {
         display: 'flex',
@@ -160,7 +160,7 @@ const LearningTaskView = (props) => {
     }
 
     const onClickDuplicate = () => {
-        if(typeof taskData.patternid.pattern_id != 'undefined'){
+        if(typeof taskData.patternid != 'undefined' && typeof taskData.patternid.pattern_id != 'undefined'){
            //duplicate in pattern, skip the copy to dialog 
            duplicateLearningTask();
         }else{
@@ -181,62 +181,33 @@ const LearningTaskView = (props) => {
 
     const displayView = () => {
         return (
-            <Grid item container spacing={2} xs={12} style = {{"width": "100%"}} 
+            <Grid item container spacing={1} xs={12} style = {{"width": "100%"}} 
                {...getDraggable(provided, snapshot)}
             >
-                <Grid container item xs={1} height="100%">
+                <Grid container item xs={1} height="100%" justify="space-between" alignContent = "center">
                     {typeof provided == 'undefined' || !props.enableDrag?    
                         null
                     :
-                        <Grid item xs ={4} container  justify="flex-start" alignItems="center">
+                        <Grid container item xs ={8} justify="flex-start" alignContent = "center">
                             <DragHandleIcon />
                         </Grid>
                     }
                  
-                    <Grid item xs ={8} container  justify="flex-end" alignItems="center">
-                        <div style={taskTypeColor(task.type)}/>
+                    <Grid item xs ={4} style={taskTypeColor(task.type)}>
+                        {/* <div style={taskTypeColor(task.type)}/> */}
                     </Grid>
 
                 </Grid>
 
                 
                 <Grid container item xs>
-                    <Grid item xs={9} className={classes.contentGrid}>
+                    <Grid item xs={12} className={classes.contentGrid}>
                         <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
                             {task.title}
                         </Typography>
                     </Grid>
                    
-                    <Grid item xs={3} className={classes.contentGrid}>
-                        {
-                            editBtn == true?
-                                <IconButton onClick={()=>onClickEdit()}>
-                                    <EditIcon />
-                                </IconButton>
-                                :
-                                null
-                        }
-
-                        {
-                            duplicateBtn == true?
-                                <IconButton onClick={()=> {onClickDuplicate()}}>
-                                    <FileCopyIcon />
-                                </IconButton>
-                                :
-                                null
-                        }
-
-                        {      
-                            deleteBtn == true?
-                                <IconButton onClick={()=> {setDelDialogOpen(true)}}>
-                                    <DeleteIcon />
-                                </IconButton>
-                                :
-                                null
-                        }       
-                       
-                    </Grid>
-                   
+                  
                     <Grid item xs={12} className={classes.contentGrid} data-tour="component_task_type">
                         {taskTypeOpts.find(x => x.id == task.type)?.description } 
                     </Grid>
@@ -252,7 +223,7 @@ const LearningTaskView = (props) => {
                        )}
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_time">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_time">
                         <Tooltip title="Task Time" aria-label="time">
                             <AccessTimeIcon />
                         </Tooltip>
@@ -260,14 +231,14 @@ const LearningTaskView = (props) => {
                       
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classtype">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_classtype">
                         <Tooltip title="Class Type" aria-label="classtype">
                             <RoomIcon /> 
                         </Tooltip>
                         {classTypeOtps.find(x => x.id == task.class_type)?.description}
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classtarget">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_classtarget">
                         <Tooltip title="Class Target" aria-label="classtarget">
                             <GpsNotFixedIcon /> 
                         </Tooltip>
@@ -275,21 +246,21 @@ const LearningTaskView = (props) => {
                      
                     </Grid>
 
-                    <Grid item xs={3} className={classes.contentGrid} data-tour="component_task_classsize">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_classsize">
                         <Tooltip title="Class Size" aria-label="classsize">
                             <GroupIcon /> 
                         </Tooltip>
                         {taskClassSizeOpts.find(x => x.id == task.size)?.description } 
                     </Grid>
 
-                    <Grid item xs={6} className={classes.contentGrid} data-tour="component_task_resource">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_resource">
                         <Tooltip title="Resource" aria-label="classtarget">
                             <AssignmentIcon />
                         </Tooltip>  
                         {task.resourceid.length == 0? "N/A" : task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                     </Grid>
 
-                    <Grid item xs={6} className={classes.contentGrid} data-tour = "component_task_eresource">
+                    <Grid item xs={4} className={classes.contentGrid} data-tour = "component_task_eresource">
                         <Tooltip title="E-Learning Tools" aria-label="classtarget">
                             <ImportantDevicesIcon /> 
                         </Tooltip>  
@@ -303,6 +274,40 @@ const LearningTaskView = (props) => {
                     </Grid>
 
                 </Grid>
+                <Grid container item xs = {3} spacing = {2}>
+                    <Grid item xs={4} className={classes.contentGrid} >
+                        {
+                            editBtn == true?
+                                <IconButton onClick={()=>onClickEdit()} size="small">
+                                    <EditIcon />
+                                </IconButton>
+                                :
+                                null
+                        }
+                    </Grid>
+                    
+                    <Grid item xs={4} className={classes.contentGrid} >
+                        {
+                            duplicateBtn == true?
+                                <IconButton onClick={()=> {onClickDuplicate()}} size="small">
+                                    <FileCopyIcon />
+                                </IconButton>
+                                :
+                                null
+                        }
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid} >
+                        {      
+                            deleteBtn == true?
+                                <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
+                                    <DeleteIcon />
+                                </IconButton>
+                                :
+                                null
+                        }      
+                    </Grid>
+                </Grid>
             </Grid>
         );
     }
@@ -310,7 +315,7 @@ const LearningTaskView = (props) => {
     return (
     <Paper className={classes.paper}>
         <Grid container 
-        spacing={2} 
+        spacing={1} 
         direction="row"
         justify="center"
 

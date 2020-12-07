@@ -18,7 +18,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 import LearningTaskContainer from '../../task/container/learningTaskContainer';
 
@@ -57,12 +57,15 @@ const LearningPatternContainer = (props) => {
     const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
     const { component } = React.useContext(ComponentContext);
 
+    const {provided, snapshot, index} = props;
+
     const classes = useStyles();
     
     const [pattern, setPattern] = React.useState(props.patternData);
     const [ isEdit, setIsEdit ] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
+    const enablePatternDrag = props.enableDrag;
     const enableDrag = course.permission > 2;
     const enableDuplicate = course.permission > 2;
 
@@ -74,6 +77,37 @@ const LearningPatternContainer = (props) => {
 
 
     //#region local function
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+      
+        ...(isDragging && {
+          background: "rgb(235,235,235)"
+        }),
+        width: "calc(100% - 4px)"
+    });
+    
+    const getDraggable = (provided, snapshot) => {
+        if(typeof provided == 'undefined'){
+            return (
+               null
+            );
+        }else{
+            return (
+                {
+                    // styles we need to apply on draggables
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    style: getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style,
+                    )
+                }
+            );
+        }
+    }
+
     const onEditPattern = () => {
 
     }
@@ -108,15 +142,23 @@ const LearningPatternContainer = (props) => {
     //#endregion
     return (
         <React.Fragment>
-            <Accordion  data-tour = "component_pattern_view"  defaultExpanded = {true}>
+            <Accordion  data-tour = "component_pattern_view"  {...getDraggable(provided, snapshot)} > 
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                 >
                     <Grid container>
+                        {typeof provided == 'undefined' || !enablePatternDrag?    
+                            null
+                        :
+                            <Grid item xs ={1} container  justify="flex-start" alignItems="center">
+                                <DragHandleIcon />
+                            </Grid>
+                        }
                         <Grid item xs >
                             <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>   {pattern.title}</Typography>
                         </Grid>
-                        {   canEdit ? 
+                        {   
+                            canEdit ? 
                             <Grid item xs = {2}>
                                 <React.Fragment>
                                     <IconButton

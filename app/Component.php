@@ -41,12 +41,12 @@ class Component extends Model
     public function patterns(){
         return $this->hasManyThrough(
             'App\LearningPattern',
-            'App\ComponentPatternRelation',
+            'App\ComponentPatternTaskRelation',
             'component_id', 
             'id', 
             'id', 
             'pattern_id' 
-        )->with(['tasks']);
+        )->with(['tasks'])->orderBy('component_pattern_task_relation.sequence');
     }
 
     public function outcomeid(){
@@ -77,13 +77,20 @@ class Component extends Model
     public function tasks(){
         return $this->hasManyThrough(
             'App\LearningTask',
-            'App\ComponentTaskRelation',
+            'App\ComponentPatternTaskRelation',
             'component_id', //middle retioan table local id
             'id', // target table target id
             'id', // local table local id
             'task_id' //middle relation table target id
-        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('component_task_relational.sequence');
+        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('component_pattern_task_relation.sequence');
     }
+    public function patterntaskid(){
+        return $this->hasMany(
+            'App\ComponentPatternTaskRelation',
+            'component_id'
+        )->where('is_deleted', 0)->select(['task_id','component_id', 'pattern_id', 'sequence'])->orderBy('sequence');
+    } 
+
 
     public function courseid(){
         return $this->belongsTo('App\CourseComponentRelation', 'id', 'component_id');

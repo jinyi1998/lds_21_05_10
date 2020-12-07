@@ -161,17 +161,19 @@ const LearningTaskContainer = (props) => {
     }
 
     const handleTaskRequest = (task) => {
+        var temp = JSON.parse(JSON.stringify(task))
+
         if(typeof component_id != 'undefined'){
-            task['component_id'] = component_id;
+            temp['component_id'] = component_id;
 
         }else if(typeof pattern_id != 'undefined'){
-            task['pattern_id'] = pattern_id;
+            temp['pattern_id'] = pattern_id;
         }
 
         if(task.id == -1){
-            task['sequence'] = tasksData.length;
+            temp['sequence'] = tasksData.length;
         }
-        return task;
+        return temp;
     }
 
     async function updateComponentTaskLessonRelation(component_task_relation){
@@ -186,7 +188,6 @@ const LearningTaskContainer = (props) => {
 
     async function duplicateLearningTask(task, duplicateTo) {
         setLoadingOpen(true);
-
         if(typeof component_id != 'undefined'){
             if(duplicateTo != -1){
                 var json = task;
@@ -205,7 +206,7 @@ const LearningTaskContainer = (props) => {
                     displayMsg("error", "Some Errors Occured");
                 })
             }
-        }else if(typeof pattern_id != 'undefined') {
+        }else if(typeof pattern_id != 'undefined' && pattern_id > 0) {
             var temp_task = JSON.parse(JSON.stringify(task));
             temp_task['pattern_id'] = pattern_id;
             delete temp_task.sequence;
@@ -220,10 +221,7 @@ const LearningTaskContainer = (props) => {
                 console.log(error);
                 displayMsg("error", "Some Errors Occured");
             })
-        }
-
-
-    
+        }    
     }
 
     async function deleteLearningTask(task) {

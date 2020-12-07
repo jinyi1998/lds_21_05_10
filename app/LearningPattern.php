@@ -47,13 +47,13 @@ class LearningPattern extends Model
     }
 
     public function componentid(){
-        return $this->belongsTo('App\ComponentPatternRelation', 'id', 'pattern_id');
+        return $this->belongsTo('App\ComponentPatternTaskRelation', 'id', 'pattern_id');
     }
 
     public function component(){
         return $this->hasOneThrough(
             'App\Component',
-            'App\ComponentPatternRelation',
+            'App\ComponentPatternTaskRelation',
             'pattern_id', 
             'id',
             'id', 

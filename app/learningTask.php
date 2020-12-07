@@ -82,7 +82,7 @@ class LearningTask extends Model
     public function component(){
         return $this->hasOneThrough(
             'App\Component',
-            'App\ComponentTaskRelation',
+            'App\ComponentPatternTaskRelation',
             'task_id', 
             'id',
             'id', 
@@ -91,7 +91,7 @@ class LearningTask extends Model
     }
 
     public function componentid(){
-        return $this->belongsTo('App\ComponentTaskRelation', 'id','task_id');
+        return $this->belongsTo('App\ComponentPatternTaskRelation', 'id','task_id');
     }
 
   

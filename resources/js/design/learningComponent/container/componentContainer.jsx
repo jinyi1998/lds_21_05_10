@@ -22,6 +22,7 @@ import LearningTaskContainer from '../../task/container/learningTaskContainer';
 import LearningTaskMainContainer from '../../task/container/learningTaskMainContainer';
 import LearningPatternContainer from '../../pattern/container/learningPatternContainer';
 import LearningPatternMainContainer from '../../pattern/container/learningPatternMainContainer';
+import ComponentPatternTaskContainer from '../container/componentPatternTaskContainer';
 
 import ComponentFloatDashboardContainer from './componentFloatDashboardContainer';
 
@@ -329,13 +330,16 @@ const ComponentContainer = (props)=>{
                   </Grid>
 
                   <Grid container item xs = {7} spacing={2} alignContent = {"flex-start"}>
-                    <Grid item xs = {12}>
-                          {/* <LearningPatternContainer componentID = {component.id} patternData = {component.patterns[0]}/> */}
+                    {/* <Grid item xs = {12}>
                           <LearningPatternMainContainer component_id = {component.id} patternsData = {component.patterns} /> 
                     </Grid>
 
                     <Grid item xs = {12}>
                         <LearningTaskMainContainer component_id = {component.id} tasksData = {component.tasks}/>
+                    </Grid> */}
+
+                    <Grid item xs = {12}>
+                      <ComponentPatternTaskContainer component = {component} />
                     </Grid>
                   </Grid>
 
