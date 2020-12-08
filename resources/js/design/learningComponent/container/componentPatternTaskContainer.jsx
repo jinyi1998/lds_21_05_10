@@ -202,6 +202,7 @@ const ComponentPatternTaskContainer = (props) =>{
 
 
     //#region pattern
+    const [ onOpenPattern, setOpenPattern] = React.useState(-1);
     const [ editPatternOpen, setEditPatternOpen] = React.useState(false);
     const [ isDisplayPatternOpen, setIsDisplayPatternOpen ] = React.useState(false);
     const [ patternTempOpts, setPatternTempOpts] = React.useState([]);
@@ -455,16 +456,22 @@ const ComponentPatternTaskContainer = (props) =>{
                                                     {
                                                         if(typeof _patterntaskid.pattern_id != 'undefined' && _patterntaskid.pattern_id != null){
                                                             return(
-                                                                <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                                                <Draggable 
+                                                                    key={index} 
+                                                                    draggableId={index.toString()} 
+                                                                    index={index} 
+                                                                    isDragDisabled = {!(enableDrag && onOpenPattern != _patterntaskid.pattern_id)}>
                                                                 {(provided, snapshot) => (
                                                                     <Grid container item xs style = {{margin : 2}} >
                                                                         <LearningPatternContainer 
                                                                             provided = {provided} 
                                                                             snapshot = {snapshot} 
-                                                                            enableDrag = {enableDrag}
+                                                                            enableDrag = {enableDrag && onOpenPattern != _patterntaskid.pattern_id}
                                                                             componentID = {component.id} 
                                                                             patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
                                                                             key = {index}
+                                                                            onOpenPattern = {onOpenPattern}
+                                                                            setOpenPattern = {setOpenPattern}
                                                                         />
                                                                     </Grid>
                                                                 )}

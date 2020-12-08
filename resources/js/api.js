@@ -374,7 +374,7 @@ import config from 'react-global-configuration';
     export const apiLearningPatternList = data => learningPatternRequest.get('/');
     export const apiLearningPatternGet = data => learningPatternRequest.get(`/${data}`);
     export const apiLearningPatternPost = data => learningPatternRequest.post('/', JSON.stringify(data));
-    export const apiLearningPatternPut = data => learningPatternRequest.put(`/${data.pattern_id}`, JSON.stringify(data));
+    export const apiLearningPatternPut = data => learningPatternRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningPatternDelete = data => learningPatternRequest.delete(`/${data}`);
     export const apiLearningPatternUnlock = data => learningPatternRequest.put(`/unlockPattern/${data.id}`, JSON.stringify(data))
     //#endregion

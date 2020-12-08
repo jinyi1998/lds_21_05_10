@@ -19,11 +19,6 @@ use Illuminate\Http\Request;
 
 Route::resource('opts', 'API\LearningTaskOptsController');
 
-//Course Controller
-// Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
-// Route::resource('course', 'API\CourseController');
-
-
 //File System
 Route::post('file/json', 'API\FileSystemController@json');
 Route::get('file/exportCourseJson/{id}', 'API\FileSystemController@exportCourseJson');
@@ -156,7 +151,6 @@ Route::resource('test', 'API\TestController');
 
 Route::delete('course/clearCourseComponent/{id}', 'API\CourseController@clearCourseComponent');
 Route::delete('course/clearCourseLesson/{id}', 'API\CourseController@clearCourseLesson');
-Route::get('course/getDesignTypeTemp', 'API\CourseController@getDesignTypeTemp');
 Route::get('course/showAll', 'API\CourseController@showAll');
 Route::get('course/showUsergroup/{id}', 'API\CourseController@showUsergroup');
 Route::post('file/courseImport', 'API\CourseController@importCourse');

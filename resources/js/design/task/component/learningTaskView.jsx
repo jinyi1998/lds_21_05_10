@@ -79,7 +79,7 @@ const LearningTaskView = (props) => {
     
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
-    const [duplicateTo, setDuplicateTo] = React.useState( -1);
+    const [duplicateTo, setDuplicateTo] = React.useState(taskData.componentid? taskData.componentid.component_id : -1);
     const {editBtn, duplicateBtn, deleteBtn, dragAble} = props;
     const {provided, snapshot, index} = props;
 
@@ -343,16 +343,13 @@ const LearningTaskView = (props) => {
                 </DialogActions>
         </Dialog>
 
-        <Dialog open={duplicateDialogOpen} onClose={()=>{setDuplicateDialogOpen(false)}}>
-                <DialogTitle id="form-dialog-title">Duplicate Learning Task</DialogTitle>
+        <Dialog open={duplicateDialogOpen} onClose={()=>{setDuplicateDialogOpen(false)}} maxWidth = {"md"}>
+                <DialogTitle>Duplicate Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Please select the component you wanna duplicate to.
                     </DialogContentText>
                     <Select value = {duplicateTo} onChange = {(event) => setDuplicateTo(event.target.value)} fullWidth>
-                        <MenuItem value = {-1} disabled> 
-                            Duplicate to component
-                        </MenuItem>
                         {course.components.map(_component => 
                             <MenuItem value = {_component.id} key = {_component.id}> 
                                 {_component.title}

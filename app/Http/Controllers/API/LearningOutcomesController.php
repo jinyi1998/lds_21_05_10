@@ -197,14 +197,14 @@ class LearningOutcomesController extends Controller
         //
         return response()->json([
             [
-                'id' => 1,
-                'description' => 'Disciplinary Skills',
-                'value' => 1
-            ],
-            [
                 'id' => 2,
                 'description' => 'Disciplinary Knowledge',
                 'value' => 2
+            ],
+            [
+                'id' => 1,
+                'description' => 'Disciplinary Skills',
+                'value' => 1
             ],
             [
                 'id' => 3,

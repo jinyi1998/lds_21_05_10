@@ -398,27 +398,6 @@ class CourseController extends Controller
         return response()->json($course);
     }
 
-    public function getDesignTypeTemp(){
-        return response()->json([
-            [
-                'id' => 1,
-                'hint' => 'engineering design approach guides you...',
-                'description'=> "using engineering design practice to guide the learing task 
-                sequence design by adopting the self-directed learning approach",
-                'media'=> "/asset/image/ED.png",
-                'name'=> "Engineering Design SDL",
-            ],
-            [
-                'id' => 2,
-                'hint' => 'Scientific investigation practice design approach guides you...',
-                'description'=> "using Scientific investigation practice to guide the 
-                learing task sequence design by adopting the self-directed learning approach",
-                'media'=> "/asset/image/SI.png",
-                'name'=> "Scientific Investigation SDL",
-            ],
-        ]);
-    }
-
     public function importCourse( Request $request){
         //save course
         $course = new Course();
