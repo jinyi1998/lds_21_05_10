@@ -194,6 +194,10 @@ class RouteController extends Controller
     public function admin_tasktype_opts(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_tasktype_opts']);
     }
+
+    public function admin_moodlemod(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_moodlemod']);
+    }
     #endregion
 
 

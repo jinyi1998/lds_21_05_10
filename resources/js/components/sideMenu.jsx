@@ -115,6 +115,7 @@ const useStyles = makeStyles(theme => ({
       case 'admin_resource_opts':
       case 'admin_elearningtool_opts':
       case 'admin_tasktype_opts':
+      case 'admin_moodlemod':
         return 'admin_site_management';
     }
   }

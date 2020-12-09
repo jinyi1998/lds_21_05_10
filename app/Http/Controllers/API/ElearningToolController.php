@@ -46,6 +46,8 @@ class ElearningToolController extends Controller
     public function show($id)
     {
         //
+        $elearningToolOpts = ElearningtoolOpts::with(['moodlemodid', 'moodlemod'])->find($id);
+        return response()->json($elearningToolOpts);
     }
 
     /**
@@ -90,6 +92,27 @@ class ElearningToolController extends Controller
         $elearningToolOpts->is_deleted = 0;
 
         $elearningToolOpts->save();
+
+        if($request->has('moodlemod_id')){
+            if( $elearningToolOpts->moodlemodid()->exists()){
+                $elearningToolOpts->moodlemodid()->update([
+                    'tool_id' => $elearningToolOpts->id,
+                    'moodle_mod_id' => $request->moodlemod_id,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => now()
+                ]);
+            }else{
+                $elearningToolOpts->moodlemodid()->create([
+                    'tool_id' => $elearningToolOpts->id,
+                    'moodle_mod_id' => $request->moodlemod_id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        }
+
 
         return $elearningToolOpts;
     }

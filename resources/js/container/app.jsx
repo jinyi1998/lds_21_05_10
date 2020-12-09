@@ -41,6 +41,7 @@ import ClassTypeOptsContainer from '../admin/sitemanagement/container/classTypeO
 import ELearningToolsOptsContainer from '../admin/sitemanagement/container/elearningToolsOptsContainer';
 import ResourceOptsContainer from '../admin/sitemanagement/container/resourceOptsContainer';
 import TaskTypeOptsContainer from '../admin/sitemanagement/container/taskTypeOptsContainer';
+import MoodleModContainer from '../admin/sitemanagement/container/moodleModContainer';
 //#endregion
 
 import {
@@ -302,6 +303,8 @@ const App = (props) => {
         return <ELearningToolsOptsContainer />;
       case 'admin_tasktype_opts':
         return <TaskTypeOptsContainer />;
+      case 'admin_moodlemod':
+        return <MoodleModContainer />;
     }
   }
 

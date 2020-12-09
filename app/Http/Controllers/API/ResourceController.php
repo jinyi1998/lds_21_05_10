@@ -44,6 +44,8 @@ class ResourceController extends Controller
     public function show($id)
     {
         //
+        $resourceOpts = ResourceOpts::with(['moodlemodid', 'moodlemod'])->find($id);
+        return response()->json($resourceOpts);
     }
 
     /**
@@ -89,6 +91,27 @@ class ResourceController extends Controller
         $resourceOpts->is_deleted = 0;
 
         $resourceOpts->save();
+
+
+        if($request->has('moodlemod_id')){
+            if( $resourceOpts->moodlemodid()->exists()){
+                $resourceOpts->moodlemodid()->update([
+                    'resource_id' => $resourceOpts->id,
+                    'moodle_mod_id' => $request->moodlemod_id,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => now()
+                ]);
+            }else{
+                $resourceOpts->moodlemodid()->create([
+                    'resource_id' => $resourceOpts->id,
+                    'moodle_mod_id' => $request->moodlemod_id,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        }
 
         return $resourceOpts;
     }

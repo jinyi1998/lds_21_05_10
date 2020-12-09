@@ -175,6 +175,7 @@ Route::resource('classType', 'API\ClassTypeController');
 Route::resource('taskType', 'API\TaskTypeController');
 Route::resource('resource', 'API\ResourceController');
 Route::resource('elearningTool', 'API\ElearningToolController');
+Route::resource('moodleMod', 'API\MoodleModController');
 
 Route::get('user/search/{id}', 'API\UserController@searchUser');
 Route::get('user/getUserMgmtDashboard', 'API\UserController@getUserMgmtDashboard');

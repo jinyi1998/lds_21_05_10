@@ -407,50 +407,10 @@ const Design = (props) => {
         setActiveStage('designStage');
         setActivePage('componentPlan');
         break;
-        // return (
-        //   <React.Fragment>
-
-        //     <UnitPlanContainer/>
-        //      <div className={classes.buttons}>
-        //       {activeStep !== 0 &&(
-        //             <Button
-        //             variant="contained"
-        //             color="primary"
-        //             onClick={handleNext}
-        //             className={classes.button}
-        //             data-tour = "next"
-        //           >
-        //             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        //           </Button>
-        //       )}
-        //     </div>
-        //   </React.Fragment>
-        // )
       
       case 5:
         setActiveStage('finish');
         break;
-        // return (
-        //   <React.Fragment>
-        //      <PrintableContainer isPrint = {false} courseid = {courseID}/>
-        //      {activeStep !== 0 && (
-        //         <Button onClick={handleBack} className={classes.button}>
-        //           Back
-        //         </Button>
-        //       )}
-        //      {activeStep !== 0 &&(
-        //             <Button
-        //             variant="contained"
-        //             color="primary"
-        //             onClick={handleNext}
-        //             className={classes.button}
-        //             data-tour = "next"
-        //           >
-        //             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-        //           </Button>
-        //       )}
-        //   </React.Fragment>
-        // )
       default:
         return <div> Some Error Occur </div>;
     }

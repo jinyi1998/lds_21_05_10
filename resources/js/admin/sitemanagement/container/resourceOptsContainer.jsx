@@ -14,6 +14,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -24,18 +29,22 @@ import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import {AppContextStore} from '../../../container/app';
-import { apiResourceOptsList, apiResourceOptsPost, apiResourceOptsPut} from '../../../api';
+import { 
+    apiMoodleModList,
+    apiResourceOptsList, apiResourceOptsGet, apiResourceOptsPost, apiResourceOptsPut} from '../../../api';
 
 const ResourceOptsContainer = () => {
     const { setLoadingOpen } = React.useContext(AppContextStore);
 
     const [ resourceOpts, setResourceOpts ] = React.useState([]);
+    const [ moodleMods, setMoodleMods ] = React.useState([]);
     const [ isEditOpen, setIsEditOpen ] = React.useState(false);
     const [ page, setPage ] = React.useState(0);
     const [ rowsPerPage, setRowsPerPage ] = React.useState(5);
     const [ editOpt, setEditOpt] = React.useState({
         id: -1,
-        description: ""
+        description: "",
+        moodlemod_id: -1,
     })
 
     const reloadResourceOpts = () => {
@@ -46,8 +55,17 @@ const ResourceOptsContainer = () => {
         })
     }
 
+    const reloadMoodleMod = () => {
+        setLoadingOpen(true)
+        apiMoodleModList().then((response) => {
+            setMoodleMods(response.data);
+            setLoadingOpen(false);
+        })
+    }
+
     React.useEffect(()=>{
         reloadResourceOpts();
+        reloadMoodleMod();
     }, [])
 
     //#region local action
@@ -55,6 +73,13 @@ const ResourceOptsContainer = () => {
         setEditOpt({
             ...editOpt,
             "description": event.target.value
+        })
+    }
+
+    const handleOnMoodleModChange = (event) => {
+        setEditOpt({
+            ...editOpt,
+            "moodlemod_id": event.target.value
         })
     }
 
@@ -86,11 +111,18 @@ const ResourceOptsContainer = () => {
         if(id == -1){
             setEditOpt({
                 id: -1,
-                description: ""
+                description: "",
+                moodlemod_id: -1
             });
         }else{
-            var temp = resourceOpts.find(x => x.id == id);
-            setEditOpt(temp);
+            apiResourceOptsGet(id).then((response)=>{
+
+                setEditOpt({
+                    id: id,
+                    description: response.data.description,
+                    moodlemod_id: response.data.moodlemodid? response.data.moodlemodid.moodle_mod_id : -1
+                });
+            })
         }
         
         setIsEditOpen(true);
@@ -167,7 +199,29 @@ const ResourceOptsContainer = () => {
             <Dialog onClose={onCloseEditDialog} open={isEditOpen}  maxWidth = "md">
                 <DialogTitle> {editOpt.id == -1? "Add Resource Option " : "Edit Resource Option"}</DialogTitle>
                 <DialogContent style = {{minWidth: 600}}>
-                     <TextField label = "Description" value = {editOpt.description} onChange = {handleOnChange} fullWidth/>
+                    <Grid container>
+                        <Grid item xs = {12}>
+                            <TextField label = "Description" value = {editOpt.description} onChange = {handleOnChange} fullWidth/>
+                        </Grid>
+                        <Grid item xs = {12}>
+                            <FormControl fullWidth>
+                                <InputLabel>Moodle Mapping</InputLabel>
+                                <Select
+                                    value={editOpt.moodlemod_id}
+                                    onChange={handleOnMoodleModChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value={-1}>Not yet map to any moodle mod</MenuItem>
+                                    {
+                                        moodleMods.map(_moodleMod => 
+                                            <MenuItem value={_moodleMod.id}>{_moodleMod.name}</MenuItem>
+                                        )
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                 
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onCloseEditDialog} color="secondary" variant="contained">

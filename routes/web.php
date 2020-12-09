@@ -48,6 +48,7 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('resource_opts', '\App\Http\Controllers\RouteController@admin_resource_opts');
     Route::get('elearningtool_opts', '\App\Http\Controllers\RouteController@admin_elearningtool_opts');
     Route::get('tasktype_opts', '\App\Http\Controllers\RouteController@admin_tasktype_opts');
+    Route::get('moodlemod', '\App\Http\Controllers\RouteController@admin_moodlemod');
     #endregion
    
 

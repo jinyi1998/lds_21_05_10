@@ -390,6 +390,21 @@ import config from 'react-global-configuration';
     export const apiOptionsList = data => optionsRequest.get(`/`);
     //#endregion
 
+    //#region moodle mod
+    const moodleModRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/moodleMod',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiMoodleModList = data => moodleModRequest.get(`/`);
+    export const apiMoodleModGet = data => moodleModRequest.get(`/${data}`);
+    export const apiMoodleModPost = data => moodleModRequest.post('/', JSON.stringify(data));
+    export const apiMoodleModPut = data => moodleModRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiMoodleModDelete = data => moodleModRequest.delete(`/${data.id}`);
+    //#endregion
+
 
     //#region class size opts
      const classSizeOptsRequest = axios.create({

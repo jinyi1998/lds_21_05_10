@@ -10,6 +10,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Paper from '@material-ui/core/Paper';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -447,6 +448,16 @@ const LearningOutcomeContainer = (props)=>{
             return (
                 <React.Fragment>
                     <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                        {
+                            enableAdd?
+                            <Grid container item xs = {12}  alignItems="center" justify="center">
+                                <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button" >
+                                    Add Learning Outcome
+                                </Button>
+                            </Grid>
+                            :
+                            null
+                        }
                         {course.outcomes.map(
                             (_ulo, index )=>
                             (
@@ -489,12 +500,6 @@ const LearningOutcomeContainer = (props)=>{
                                 null
                             )
                         )}
-                        {
-                            enableAdd?
-                            <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button">Add Learning Outcome</Button>
-                            :
-                            null
-                        }
                     </Grid>
                  
                     {/* <Button onClick={()=> setLearningOutcomeSelectOpen(true)} variant="contained" color="secondary">Select Learning Outcome From Unit Level</Button> */}
@@ -531,70 +536,29 @@ const LearningOutcomeContainer = (props)=>{
         width: '100%'
     });
 
-    const handloeOnAccordionChange = (event, expanded) => {
-        if(modeLevel == "course"){
-            // do nothing
-            event.preventDefault();
-        }else{
-            setExpanded(expanded);
-        }
-    }
 
     return (
         <React.Fragment>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Paper>
+                        {displayLearningOutcomes()}
+                    </Paper>
+                </Grid>
+            </Grid>
 
-            <Accordion expanded	={expanded} onChange = {handloeOnAccordionChange}>
-                <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                className = {classes.AccordionSummary}
-                >
-                    <div>{modeLevel == "course"? 
-                        <Typography variant="subtitle1" gutterBottom>
-                            Unit Level Learning Outcomes
-                            <QuestionHint title="Unit Level Learning Outcomes is the overall learning outcomes for the whole unit(course)"/> 
-                        </Typography>
-                        : 
-                        <Typography variant="subtitle1" gutterBottom>
-                            Component Level Learning Outcomes
-                            <QuestionHint title="Specifiable learning outcomes that can be achieved and assessed in this curriculum component. "/> 
-                        </Typography>}
-                    </div>
-                    
-                </AccordionSummary>
-                <AccordionDetails>
-                    <Grid container>
-                        {/* <Grid item xs= {12}>
-                            {modeLevel == "course"? 
-                                <InstructionBox 
-                                    title="Unit Level Learning Outcomes" 
-                                    content= "Please define the learning outcomes for your unit" 
-                                />
-                                :
-                                <InstructionBox 
-                                    title="Component Level Learning Outcomes" 
-                                    content= "Please define the learning outcomes for your component" 
-                                />
-                            }
-                        </Grid>  */}
-                        <Grid item xs={12}>
-                            {displayLearningOutcomes()}
+            <Dialog open={learningOutcomeOpen} onClose={closeAddLearningOutcome} onEntered = {onEnterLearningOutcome} maxWidth = {"md"}>
+                {displayLearningOutcomeEdit()}
+            </Dialog>
 
-                        </Grid>
-                    </Grid>
-                </AccordionDetails>
-                
-                <Dialog open={learningOutcomeOpen} onClose={closeAddLearningOutcome} onEntered = {onEnterLearningOutcome} maxWidth = {"md"}>
-                    {displayLearningOutcomeEdit()}
-                </Dialog>
+            <Dialog open={learningOutcomeSelectOpen} onClose={()=> setLearningOutcomeSelectOpen(false)} maxWidth = {"md"}>
+                {displayLearningOutcomeSelect()}
+            </Dialog>
 
-                <Dialog open={learningOutcomeSelectOpen} onClose={()=> setLearningOutcomeSelectOpen(false)} maxWidth = {"md"}>
-                    {displayLearningOutcomeSelect()}
-                </Dialog>
-
-                <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
-                    {displayDelLearningOutcomeDialog()}
-                </Dialog>
-        </Accordion>
+            <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
+                {displayDelLearningOutcomeDialog()}
+            </Dialog>
+            
       </React.Fragment>
     );
 }

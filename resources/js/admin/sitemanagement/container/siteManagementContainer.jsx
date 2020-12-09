@@ -9,6 +9,7 @@ import RoomIcon from '@material-ui/icons/Room';
 import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -182,6 +183,32 @@ const SiteManagement = () => {
         );
     }
 
+    const displayMoodleMod = () => {
+        return (
+            <Button 
+            className = {classes.button}
+            variant="outlined" 
+            onClick={ (event)=>{window.location.href = "moodlemod"}}  
+            >
+                <Grid container>
+                    <Grid item xs ={12}>
+                        <WhatshotIcon  className = {classes.media}/>
+                    </Grid>
+                    <Grid item xs = {12}>
+                        <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                            Moodle Mod
+                        </Typography>
+                    </Grid>
+                    <Grid  item xs = {12}>
+                        <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                            Edit the default Moodle Mod Mapping Options Here
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Button>
+        );
+    }
+
     return (
         <React.Fragment>
             <Grid container spacing = {4}>
@@ -208,6 +235,11 @@ const SiteManagement = () => {
                 <Grid container item xs ={3} justify="center">
                     {displayELearningTool()}
                 </Grid>
+
+                <Grid container item xs ={3} justify="center">
+                    {displayMoodleMod()}
+                </Grid>
+                
             </Grid>
         </React.Fragment>
     );
