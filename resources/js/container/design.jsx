@@ -39,10 +39,7 @@ import {AppContextStore} from '../container/app';
 
 import {
   apiCourseUpdate, apiCourseClearComponent,
-  apiLearningCompTempGet, apiLearningCompTempPost,
-  apiLearningCompPost,
-  apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
-  apiLearningOutcomeTempGet,
+  apiLearningOutcomePost, 
   apiDesignTypeGet,
 } 
 from '../api.js';
@@ -224,10 +221,12 @@ const Design = (props) => {
     updateCourse();
     apiDesignTypeGet(course.designType).then(
       response => {
+        console.log( response.data.outcomes);
         //outcome
         response.data.outcomes.map((_outcome) => {
           var _outcome_temp = _outcome;
-          _outcome_temp.course_id = course.id
+          _outcome_temp.course_id = course.id;
+          _outcome_temp.stemtypes_id = _outcome.stemtypesid.map(x=>x.stem_type_id);
           updates.push( importOutcomeTemplateToCourse(_outcome_temp) );
         })
       }
@@ -266,7 +265,6 @@ const Design = (props) => {
   React.useEffect(() => {
 
       if(course.designType != "" && course.designType != null){
-        // fetchlearningTypeTempData();
         clearCourseComponent();
         fetchInitDataWithDesignType().then(()=>{
           handleNext();

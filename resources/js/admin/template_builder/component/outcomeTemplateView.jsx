@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,19 +18,35 @@ import {AppContextStore} from '../../../container/app';
 
 const OutcomeTemplateView = (props) => {
     const { setLoadingOpen, options } = React.useContext(AppContextStore);
-    const [outcome, setOutcome] = React.useState({
-        "outcomeType": -1,
-        "STEMType": "",
-        "level": -1,
-        "id": -1,
-        "description": ""
-    });
-    const learningTypeTemp = options.learningOutcomeType;
+    const loinit = {
+        level: -1,
+        outcomeType: -1,
+        STEMType: "",
+        description: "",
+        isCourseLevel: true,
+        unit_outcome_id: -1,
+        slo_outcome: [],
+        stemtypesid: []
+    }
+    const [outcome, setOutcome] = React.useState(loinit);
     const enableEdit = true;
     const enableDelete = true;
 
-    React.useEffect(()=>{setOutcome(props.outcome);}, [props.outcome])
+    const [slo, setSlo] = React.useState([]);
+    React.useEffect(()=>{
+        setOutcome(props.outcome);
+    }, [props.outcome])
 
+
+    React.useEffect(()=>{
+        if(typeof props.component_id != 'undefined'){
+            var temp = outcome.slo_outcome.filter(_outcome => _outcome.componentid.filter(_componentid => _componentid.component_id == props.component_id).length > 0);
+            setSlo(temp);
+        }else{
+            setSlo(outcome.slo_outcome);
+        }
+    }, [outcome]);
+    
     return (
         <React.Fragment>
             <ListItem
@@ -41,10 +57,6 @@ const OutcomeTemplateView = (props) => {
                 <ListItemText
                     primary={
                         <React.Fragment>
-                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_type">
-                                { learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description}
-                                </Typography>
-                            - 
                             <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
                                 {outcome.description}
                                 </Typography>
@@ -56,16 +68,18 @@ const OutcomeTemplateView = (props) => {
                                 outcome.outcomeType == 3?
                                 null
                                 :
-                                <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
-                                    outcome.STEMType == ""?
-                                        "N/A"
+                                <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
+                                        outcome.stemtypesid.length > 0?
+                                       
+                                        outcome.stemtypesid.map( x => options.STEMTypeOpts.find( _opts => x.stem_type_id == _opts.id).name).join(',')
                                         :
-                                        outcome.STEMType
+                                        "N/A"
                                 } )  </Typography>
                             }
                         
-                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
-                            {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
+                            <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> 
+                                Bloom Taxonomy Level: {options.bloomLvlOpts.find( x => x.id == outcome.bloom_id)?.name }  
+                            </Typography>
                         </React.Fragment>
                     } 
                 />
@@ -94,6 +108,24 @@ const OutcomeTemplateView = (props) => {
                 
                 </ListItemSecondaryAction>
             </ListItem>
+
+            <Grid container>
+            {
+                slo?.map(
+                    _slo =>
+                    <Grid container item xs = {12}key = {_slo.id}>
+                        <Grid item xs = {1}>
+                        </Grid>
+
+                        <Grid item xs = {11}>
+                            <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                                {_slo.description}
+                            </Typography>
+                        </Grid> 
+                    </Grid>
+                )
+            }
+            </Grid>
         </React.Fragment>
     );
 }

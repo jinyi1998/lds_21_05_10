@@ -20,9 +20,9 @@ import validator from 'validator';
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app'
-
+import SLOContainer from './SLOContainer';
 import {
-    apiLearningOutcomeGetOutcomeLevel, apiLearningOutcomePost, apiLearningOutcomePut
+    apiLearningOutcomePost, apiLearningOutcomePut
 } from '../../../api.js';
 
 import QuestionHint from '../../../components/questionHint';
@@ -52,28 +52,24 @@ const useStyles = makeStyles(theme => ({
 const LearningOutcomeEditContainer = (props) => {
     const classes = useStyles();
     const handleClose = props.onClose;
-    const {handleOnSave, courseID, componentID, outcomeID} = props;
+    const { handleOnSave, componentID, outcomeID} = props;
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     const { course, refreshCourse } = React.useContext(ContextStore);
-    const [checked, setChecked] = React.useState(false);
+    const { options, setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
 
-
-    const [learningOutcome, setLearningOutcome] = React.useState({
-        level: "",
+    const loinit = {
+        level: -1,
         outcomeType: -1,
         STEMType: "",
         description: "",
         isCourseLevel: true,
-        unit_outcome_id: -1
-      });
+        unit_outcome_id: -1,
+        slo_outcome: []
+    }
+    const [learningOutcome, setLearningOutcome] = React.useState(loinit);
 
     const [step, setStep] = React.useState(0);
-    const [state, setState] = React.useState({
-        S: false,
-        T: false,
-        E: false,
-        M: false,
-      });
+    const [state, setState] = React.useState(initSTEMState);
     
 
     const [ error, setError] = React.useState({
@@ -85,108 +81,72 @@ const LearningOutcomeEditContainer = (props) => {
     });
 
     const [ autoString, setAutoString ] = React.useState([]);
+    const [ hasSLO, setHasSLO ] = React.useState(false);
 
-    const { options, setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
-    const learningTypeTemp = options.learningOutcomeType;
-
-    const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
-    
-    async function fetchlearningLevelTempData(selectLearningType) {
-        await apiLearningOutcomeGetOutcomeLevel(selectLearningType)
-        .then(response =>  {
-            setLearningLevelTemp(response.data);
-        })
-        .catch(error => console.log(error));
-    }
+    const outcomeTypes = options.outcomeTypeOpts;
+    const bloomLevelOpts = options.bloomLvlOpts;
+    const stemTypes = options.STEMTypeOpts;
 
     React.useEffect(()=>{
         if(outcomeID == -1){
-            setLearningOutcome({
-                level: -1,
-                outcomeType: -1,
-                STEMType: "",
-                description: "",
-                isCourseLevel: true,
-                unit_outcome_id: -1
-            });
-        }else if(componentID != -1 && typeof componentID != "undefined"){
-            setLearningOutcome({
-                ...props.learningOutcome,
-                unit_outcome_id: props.learningOutcome.unit_outcomeid.unit_outcomeid
-            });
+            //new
+            setLearningOutcome(loinit);
         }else{
+            //update
             setLearningOutcome({
                 ...props.learningOutcome,
             });
+            if(props.learningOutcome.slo_outcome.length > 0){
+                setHasSLO(true);
+            }
         }
     }, [outcomeID]);
 
     React.useEffect(()=>{
-        var STEMArr = learningOutcome.STEMType.replace(" ","").split(",");
-        var tempState = {
-            S: false,
-            T: false,
-            E: false,
-            M: false,
-          }
+        var STEMArr = learningOutcome.stemtypesid? learningOutcome.stemtypesid.map( _stem => _stem.stem_type_id) : [];
+        var tempState = {};
+        stemTypes.map( _stem => {
+            {
+                tempState[_stem.id]= false
+            }
+        });
+
         STEMArr.map(
             _x => 
-            {
-                switch(_x){
-                    case "S":
-                        tempState["S"] = true;
-                        break;
-                    case "T":
-                        tempState["T"] = true;
-                        break;
-                    case "E":
-                        tempState["E"] = true;
-                        break;
-                    case "M":
-                        tempState["M"] = true;
-                        break;
-                }
+            { 
+                tempState[_x] = true;
             }
         )
         setState(tempState)
     }, [learningOutcome.STEMType]);
 
     React.useEffect(() => {
-        var selectLearningType = -1
-        Object.keys(learningTypeTemp).map( 
-            _key => {
-                if(learningTypeTemp[_key].value == learningOutcome.outcomeType){
-                    selectLearningType = learningTypeTemp[_key].id;
-                }
-        });
-        fetchlearningLevelTempData(selectLearningType);
-    }, [learningOutcome.outcomeType]);
-
-    React.useEffect(() => {
         handleChange();
     }, [learningOutcome]);
 
     React.useEffect(()=>{
-        var clo = course.outcomes.find(x=> x.id == learningOutcome.unit_outcome_id);
-        if(typeof clo != 'undefined'){
-            setLearningOutcome({
-                ...clo,
-                isCourseLevel: false,
-                unit_outcome_id: clo.id
-             });
-        }
-      
-    }, [checked]);
-
-    React.useEffect(()=>{
-        var temp = learningLevelTemp.find(x => x.description == learningOutcome.level)? learningLevelTemp.find(x => x.description == learningOutcome.level).value : [];
+        var temp = bloomLevelOpts.find(x => x.id == learningOutcome.bloom_id)? 
+            bloomLevelOpts.find(x => x.id == learningOutcome.bloom_id).verbs.map(x => x.name) 
+            : 
+            [];
         temp = temp.filter(x => x.toLocaleUpperCase().indexOf(learningOutcome.description.toLocaleUpperCase()) != -1);
         setAutoString(temp)
     }, [learningOutcome.level, learningOutcome.description])
+
     //#region action related
+    const initSTEMState = () => {
+        var tempState = {};
+        stemTypes.map( _stem => {
+            {
+                tempState[_stem.id]= false
+            }
+        });
+        return tempState;
+    }
+
     const handleChange = () => {
         var stepCount = 0;
-        if(learningOutcome.level != -1){
+        if(learningOutcome.bloom_id != -1){
             // tourNextStep();
             stepCount++;
         }
@@ -197,29 +157,24 @@ const LearningOutcomeEditContainer = (props) => {
         setStep(stepCount);
     }
 
-    const handleSTEMChange = name => event => {
-        setState({ ...state, [name]: event.target.checked });
+    const handleSTEMChange = id => event => {
+        setState({ ...state, [id]: event.target.checked });
     };
+
+    const handleHasSLOChange = event => {
+        setHasSLO(event.target.checked);
+    }
 
     const outcomeTypeOnchange = event => {
         tourNextStep();
         setLearningOutcome({...learningOutcome, 
             outcomeType: event.target.value, 
-            // level: "", 
-            // description: ""
         })
     }
 
-    // const outcomeLevelOnchange = event => {
-    //     setLearningOutcome({...learningOutcome, 
-    //         level: event.target.value, 
-    //         // description: learningLevelTemp.find(x => x.value == event.target.value).description
-    //         description: event.target.value
-    //     });
-    // }
     const outcomeLevelOnchange = event => {
         setLearningOutcome({...learningOutcome, 
-            level: event.target.value, 
+            bloom_id: event.target.value, 
         });
     }
 
@@ -227,35 +182,27 @@ const LearningOutcomeEditContainer = (props) => {
         setLearningOutcome({...learningOutcome, description:value});
     }
 
-    const unitOutcomeChange = event => {
-        setLearningOutcome({...learningOutcome, 
-            unit_outcome_id: event.target.value, 
-        });
-    }
-
     const outcomeSave = event => {
         //binding of STEM Type to learningOutcome like object 
         const tmpSTEMType = [];
-        if(learningOutcome.outcomeType == "Generic Skills"){
+        if(learningOutcome.outcomeType == 3){
 
         }else{
-            state.S == true ? tmpSTEMType.push("S") : null;
-            state.T == true ? tmpSTEMType.push("T") : null;
-            state.E == true ? tmpSTEMType.push("E") : null;
-            state.M == true ? tmpSTEMType.push("M") : null;
+            Object.keys(state).map(
+                _key => {
+                    state[_key]?  tmpSTEMType.push(_key) : null;
+                }
+            )
         }
         //sync the record to root state
 
-        var json = learningOutcome;
-        json["STEMType"] = tmpSTEMType.join(" ,");
+        var json = JSON.parse(JSON.stringify(learningOutcome));
+
+        json["stemtypes_id"] = tmpSTEMType;
         json["outcome_id"] = outcomeID;
-        if(componentID != -1 && typeof componentID != "undefined"){
-            json["component_id"] = componentID;
-            json["isCourseLevel"] = false;
-        }else if(courseID != -1 || typeof componentID == "undefined"){
-            json["isCourseLevel"] = true;
-            json["course_id"] = courseID;
-        }
+        json["isCourseLevel"] = true;
+        json["course_id"] = course.id;
+       
 
         setLoadingOpen(true);
         if(outcomeID == -1){
@@ -296,6 +243,29 @@ const LearningOutcomeEditContainer = (props) => {
         }
     }
 
+    const handleSLOSave = (slo, mode = "edit") => {
+
+        var temp = JSON.parse(JSON.stringify(learningOutcome.slo_outcome))
+        var index = temp.findIndex(_slo => _slo.id == slo.id);
+        var del = index > -1? 1 : 0;
+        if(index > -1  && mode == "edit"){
+            temp.splice(index, del, slo);
+        }else{
+            temp.push(slo);
+        }
+        setLearningOutcome({...learningOutcome, slo_outcome: temp});
+    }
+
+
+    const handleSLODelete = (slo) => {
+        var temp = JSON.parse(JSON.stringify(learningOutcome.slo_outcome))
+        var index = temp.findIndex(_slo => _slo.id == slo.id && _slo.description == slo.description);
+        var del = index > -1? 1 : 0;
+       
+        temp.splice(index, del);
+        setLearningOutcome({...learningOutcome, slo_outcome: temp});
+    }
+
     const validate = () => {
         var validated = true;
         var tempError = {
@@ -320,14 +290,6 @@ const LearningOutcomeEditContainer = (props) => {
             tempError["description"] = "Please enter the description";
             validated = false;
         }
-        
-        if(componentID != -1 && typeof componentID != "undefined"){
-            if(learningOutcome.unit_outcome_id == -1){
-                tempError["unit_outcome_id"] = "Please enter the parent ulo";
-                validated = false;
-            }
-        }
-    
     
         setError(tempError);
         return validated;
@@ -336,81 +298,37 @@ const LearningOutcomeEditContainer = (props) => {
     
 
     //#region display related
-    const displayOutcomeHint = (type_id) => {
-        switch(type_id){
-            default:
-            case 1:
-                return "Disciplinary skills focus on using learning materials or concepts in a new context. For example, predict the effect of a change in a variable for the experiment., or formulate hypotheses based upon the analysis. Or evaluate the design artefacts critically."
-            case 2:
-                return "Disciplinary knowledge focuses on memorization, recall, interpretation of information and meaning. For example, define technical terms by giving properties. Explain scientific principles by giving examples."
-            case 3:
-                return "Generic skills are often referred as 21st century skills, including communication, collaboration, critical thinking, creativity, problem solving, and self-directed learning.";
-        }
-    }
-
     const displayOutcomeType = () => {
         return (
             <Grid item xs={12}>
                     <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
-                        <FormLabel>Outcome Type
-                            <QuestionHint title = {
-                                <React.Fragment>
-                                    There are three types of learning outcomes: disciplinary knowledge, disciplinary skills, and generic skills. 
-                                </React.Fragment>
-                            }/>
+                        <FormLabel>
+                            What do you think are the most important knowledge, skills, or generic skills in the unit that you are teaching?
                         </FormLabel >
                         <RadioGroup
                             data-tour = "lo_edit_type"
                             value = {learningOutcome.outcomeType}
                             onChange = {outcomeTypeOnchange}
-                            disabled = {checked}
+                            row
                         >
-                            {Object.keys(learningTypeTemp).map(_key=> 
-                                    (
-                                        <React.Fragment>
-                                        <FormControlLabel 
-                                            key={learningTypeTemp[_key].id} 
-                                            checked = {learningTypeTemp[_key].value == learningOutcome.outcomeType}
-                                            value={learningTypeTemp[_key].value} 
-                                            control={<Radio />} 
-                                            label={
-                                                <React.Fragment>
-                                                        {learningTypeTemp[_key].description}
-                                                        <QuestionHint title = {
-                                                            <React.Fragment>
-                                                                {displayOutcomeHint(learningTypeTemp[_key].id)}
-                                                            </React.Fragment>
-                                                        }/>
-                                                </React.Fragment>
-                                             
-                                            } />
-                                              
-                                        </React.Fragment>
-                                    )
-                            )}
+                            {
+                                outcomeTypes.map(_outcomeType => 
+                                    <FormControlLabel 
+                                        key={_outcomeType.id} 
+                                        checked = {_outcomeType.id == learningOutcome.outcomeType}
+                                        value={_outcomeType.id} 
+                                        control={<Radio />} 
+                                        label={
+                                            <React.Fragment>
+                                                    {_outcomeType.name}
+                                                    <QuestionHint title = {_outcomeType.hint}/>
+                                            </React.Fragment>
+                                        }
+                                    />
+                                )
+                            }
                         </RadioGroup>
 
-                        {/* <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-required-label"
-                        id="demo-simple-select-required"
-                        data-tour = "lo_edit_type"
-                        className={classes.selectEmpty}
-                        value = {learningOutcome.outcomeType}
-                        onChange = {outcomeTypeOnchange}
-                        disabled = {checked}
-                        >
-                            <MenuItem value={-1} disabled>
-                                <em>Outcome Type</em>
-                            </MenuItem>
-                            {Object.keys(learningTypeTemp).map(_key=> 
-                                (<MenuItem 
-                                    value={learningTypeTemp[_key].value} 
-                                    key={learningTypeTemp[_key].id}>
-                                        {learningTypeTemp[_key].description}
-                                </MenuItem>)
-                            )}
-                        </Select> */}
                         <FormHelperText>
                             <React.Fragment>
                             {error['outcomeType'] ==""? "Required": error['outcomeType']}
@@ -429,27 +347,27 @@ const LearningOutcomeEditContainer = (props) => {
                     <Grid item xs={12}>
                         <FormControl required className={classes.formControl} fullWidth>
                             <InputLabel id="levels-label">
-                                Bloom Taxonomy Level
+                                Which level do you want to focus on for this learning outcome 
                             </InputLabel>
                             <Select
-                            labelId="levels-label"
-                            id="levels"
-                            data-tour = "lo_edit_level"
-                            className={classes.selectEmpty}
-                            value = {learningOutcome.level}
-                            onChange = {outcomeLevelOnchange}
-                            disabled = {checked}
-                            error = {error['level']!=""}
+                                labelId="levels-label"
+                                id="levels"
+                                data-tour = "lo_edit_level"
+                                className={classes.selectEmpty}
+                                value = {learningOutcome.bloom_id}
+                                onChange = {outcomeLevelOnchange}
+                                error = {error['level']!=""}
                             >
                                 <MenuItem value='' disabled>
                                     <em>Levels</em>
                                 </MenuItem>
                                 {
-                                    learningLevelTemp.map(_learningLevelTemp=> 
+                                    bloomLevelOpts.map(_bloomLevel=> 
                                         (<MenuItem 
-                                            value={_learningLevelTemp.description} 
-                                            key={_learningLevelTemp.id}>
-                                                {_learningLevelTemp.description}
+                                            value={_bloomLevel.id} 
+                                            key={_bloomLevel.id}
+                                        >
+                                            {_bloomLevel.name}
                                         </MenuItem>)
                                     )
                                 }
@@ -474,139 +392,30 @@ const LearningOutcomeEditContainer = (props) => {
         }  
     }
 
-    const displayParentUnitOutcome = () => {
-        if(step > 0 && componentID != -1 && typeof componentID != "undefined"){
-            return (
-                <React.Fragment>
-
-                    <Grid item xs={8}>
-                        <FormControl required className={classes.formControl} fullWidth>
-                            <InputLabel id="unit-label">Unit Level Learning Outcome</InputLabel>
-                            <Select
-                            labelId="unit-label"
-                            id="unit"
-                            data-tour = "lo_edit_unit"
-                            className={classes.selectEmpty}
-                            value = {learningOutcome.unit_outcome_id}
-                            onChange = {unitOutcomeChange}
-                            disabled = {checked}
-                            error = {error['unit_outcome_id']!=""}
-                            >
-                                <MenuItem value={-1} disabled>
-                                    <em>Unit Level Learning Outcomes</em>
-                                </MenuItem>
-                                {
-                                    course.outcomes.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType)?.length > 0? 
-                                        course.outcomes.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType).map(ulo=> 
-                                        (<MenuItem 
-                                            value={ulo.id} 
-                                            key={ulo.id}>
-                                                {ulo.description}
-                                        </MenuItem>))
-                                        :
-                                        // <MenuItem value = ""  disabled>
-                                        //         No corresponding unit learning outcome.
-                                        // </MenuItem>
-                                        null
-                                }
-                            </Select> 
-                            <FormHelperText>
-                                <React.Fragment>
-                                    <QuestionHint title = {
-                                        <React.Fragment>
-                                            You need to associate this newly added learning outcomes to one of the unit level learning outcomes you set in the previous step.
-                                        </React.Fragment>} 
-                                    />
-                                    {error['unit_outcome_id']==""? "Required": error['unit_outcome_id']}
-                                </React.Fragment>
-                            
-                            </FormHelperText>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.checkedB}
-                                onChange={()=> setChecked(!checked)}
-                                color="primary"
-                            />
-                            }
-                            label = 
-                            {
-                                <React.Fragment>
-                                    Same As Unit Level Outcome
-                                     <QuestionHint title = {
-                                        <React.Fragment>
-                                           You may wish check this box if the unit learning outcomes cannot be divided into several component learning outcomes.
-                                        </React.Fragment>} 
-                                    />
-                                </React.Fragment>
-                            }
-                        />
-                    </Grid>
-                </React.Fragment>
-            )
-        }  
-    }
-
     const displaySTEMOpts = () => {
         if(step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2) ){
             return (
                 <Grid item xs={12} data-tour = "lo_edit_STEM">
+                    <InputLabel id="stem-type-label">
+                        Which discipline do you want to focus on for this learning outcome?
+                    </InputLabel>
                     <FormGroup row>
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.S}
-                                onChange={handleSTEMChange('S')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Science"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.T}
-                                onChange={handleSTEMChange('T')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Technology"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.E}
-                                onChange={handleSTEMChange('E')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Engineering"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.M}
-                                onChange={handleSTEMChange('M')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Mathametics"
-                        />
+                        {
+                            stemTypes.map(
+                                _stemTypes => 
+                                <FormControlLabel
+                                    key = {_stemTypes.id}
+                                    control={
+                                        <Checkbox
+                                            checked={state[_stemTypes.id]}
+                                            onChange={handleSTEMChange(_stemTypes.id)}
+                                            color="primary"
+                                        />
+                                    }
+                                    label={_stemTypes.name}
+                                />
+                            )
+                        }
                     </FormGroup>
             </Grid>
             );
@@ -618,6 +427,9 @@ const LearningOutcomeEditContainer = (props) => {
            
             return (
                 <Grid item xs={12} data-tour = "lo_edit_description">
+                        <InputLabel id="description-label">
+                            How do you describe the details of the learning outcome?
+                        </InputLabel>
                         <Autocomplete
                             freeSolo
                             includeInputInList
@@ -632,26 +444,67 @@ const LearningOutcomeEditContainer = (props) => {
                                     {...params}
                                     label="Description of the outcome"
                                     variant="outlined"
-                                    disabled = {checked}
                                     fullWidth
                                     error = {error['description']!=""}
                                     helperText={error['description'] == ""? "Required": error['description']}
                                 />
                             )}
                         />
-{/*  
-                    <TextField 
-                         required
-                         id="outlined-required"
-                         label="Description of the outcome"
-                         variant="outlined"
-                         autoComplete = {autoString}
-                         value =  {learningOutcome.description}
-                         onChange = {outcomeDescchange}
-                         autoFocus
-                         fullWidth/> */}
                 </Grid>
             );
+        }
+    }
+
+    const displaySLO = () => {
+        if(step > 1){
+            return(
+                <React.Fragment>
+                    {
+                        <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={hasSLO}
+                                // onChange={handleSTEMChange(_stemTypes.id)}
+                                onChange={handleHasSLOChange}
+                                color="primary"
+                            />
+                        }
+                        label={"Do you want to create sub learning outcome(s), for this learning outcome?"}
+                        />
+                    }
+                    {
+                        hasSLO?
+                        <React.Fragment>
+                        {learningOutcome.slo_outcome?.map( _slo => 
+                            <React.Fragment>
+                                <SLOContainer 
+                                    slo = {_slo} 
+                                    handleSLOSave = {handleSLOSave}
+                                    handleSLODelete = {handleSLODelete}
+                                    component_id = {componentID}
+                                />
+                            </React.Fragment>
+                        )}
+                        <SLOContainer 
+                            slo = {{
+                                id: -1, 
+                                description: "",
+                                bloom_id: learningOutcome.bloom_id,
+                                outcomeType: learningOutcome.outcomeType,
+                                STEMType: ""
+                            }} 
+                            uloid = {learningOutcome.id}
+                            component_id = {componentID}
+                            handleSLOSave = {handleSLOSave}
+                            handleSLODelete = {handleSLODelete}
+                        />
+                        </React.Fragment>
+                        :
+                        null
+
+                    }
+                </React.Fragment>
+            )
         }
     }
     //#endregion
@@ -666,12 +519,12 @@ const LearningOutcomeEditContainer = (props) => {
                 <Grid item xs={12}>
                     <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
                 </Grid>
+
                 {displayOutcomeType()}
-                {displayParentUnitOutcome()}
                 {displayOutcomeLevel()}
                 {displaySTEMOpts()}
                 {displayOutcomeDes()}
-                
+                {displaySLO()}
                 <Grid item xs={12}>
                     <Button variant="contained" color="primary" color="primary" onClick={onClickSave} fullWidth> 
                         save

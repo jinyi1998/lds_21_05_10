@@ -104,10 +104,13 @@ const ComponentSelectContainer = (props ) => {
         var updates = [];
         setLoadingOpen(true);
         components.map((component)=>{
-            component.component_template_id = component.id;
-            component.course_id = course.id;
+            var request = JSON.parse(JSON.stringify(component));
+            request.component_template_id = component.id;
+            request.course_id = course.id;
+            delete request.outcomes;
+            request.outcomes_id = handleComponentOutcomeMapping(component.outcomes);
             updates.push(
-                apiLearningCompPost(component)
+                apiLearningCompPost(request)
             );
         })
         Promise.all(updates).then(()=>{
@@ -115,6 +118,29 @@ const ComponentSelectContainer = (props ) => {
             refreshCourse();
             props.handleNext();
         });
+    }
+
+    const handleComponentOutcomeMapping = (clos) => {
+        var outcome_id = [];
+        course.outcomes.map((_outcome) => {
+            //ulo
+            clos.map(_clo => {
+                if(_clo.id == _outcome.template_id){
+                    outcome_id.push({"outcome_id":_outcome.id});
+                }
+            });
+
+            //sub-lo
+            _outcome.slo_outcome.map((_slo) => {
+                clos.map(_clo => {
+                    if(_clo.id == _slo.template_id){
+                        outcome_id.push({"outcome_id":_slo.id});
+                    }
+                });
+            })
+        })
+
+        return outcome_id;
     }
 
     const onAddComponent = (components_add) => {

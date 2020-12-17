@@ -147,56 +147,73 @@ class LearningComponentController extends Controller
 
         $component->save();
 
+
+        // outcomes relation
+        if($request->has('outcomes_id')){
+            //clear all learning outcomes for this component
+            $component->outcomeid()->delete();
+            foreach($request->outcomes_id as $_outcome_id){
+                $sequence = $component->outcomeid()->count();
+                $component->outcomeid()->create([
+                    "component_id" => $component->id,
+                    "outcome_id" => $_outcome_id['outcome_id'],
+                    "sequence" => $sequence,
+                    "is_deleted" => false,
+                    "created_by" => Auth::user()->id,
+                    "updated_by" => Auth::user()->id
+                ]);
+            }
+        }
         // outcomes
         $outcome_asso = [];
         if($request->has('outcomes')){
-            foreach($request->outcomes as $_outcome){
-                $_outcome['component_id'] =  $component->id;
-                //
+            // foreach($request->outcomes as $_outcome){
+            //     $_outcome['component_id'] =  $component->id;
+            //     //
 
-                if($request->has('course_id') && isset($_outcome['unit_outcomeid_temp'])  && $_outcome['unit_outcomeid_temp'] != null ){
-                    // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
-                    $count = DB::table('course_outcome_relation') 
-                    ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-                    ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
-                    ->where('course_outcome_relation.course_id', '=', $request->course_id)
-                    ->count();
+            //     if($request->has('course_id') && isset($_outcome['unit_outcomeid_temp'])  && $_outcome['unit_outcomeid_temp'] != null ){
+            //         // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
+            //         $count = DB::table('course_outcome_relation') 
+            //         ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
+            //         ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
+            //         ->where('course_outcome_relation.course_id', '=', $request->course_id)
+            //         ->count();
 
-                    if($count > 0){
-                        $uloid = DB::table('course_outcome_relation') 
-                        ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-                        ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
-                        ->where('course_outcome_relation.course_id', '=', $request->course_id)
-                        ->select('learningoutcome.id as outcome_id')->limit(1)->get();
+            //         if($count > 0){
+            //             $uloid = DB::table('course_outcome_relation') 
+            //             ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
+            //             ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
+            //             ->where('course_outcome_relation.course_id', '=', $request->course_id)
+            //             ->select('learningoutcome.id as outcome_id')->limit(1)->get();
     
-                        $uloid = json_decode($uloid, true);
+            //             $uloid = json_decode($uloid, true);
                         
-                        $_outcome['unit_outcome_id'] =  $uloid[0]['outcome_id'];
-                    }else{
-                        $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcome_id'])->get();
-                        $new_unit_outcome = json_decode($new_unit_outcome, true);
-                        $new_unit_outcome[0]['course_id'] = $request->course_id;
-                        $new_unit_outcome[0]['template_id'] = $new_unit_outcome[0]['id'];
-                        $request_new_unit_outcome = new \Illuminate\Http\Request($new_unit_outcome[0]);
-                        $new_unit_outcome = LearningOutcomesController::store($request_new_unit_outcome)->getContent();
-                        $new_unit_outcome = json_decode($new_unit_outcome);
+            //             $_outcome['unit_outcome_id'] =  $uloid[0]['outcome_id'];
+            //         }else{
+            //             $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcome_id'])->get();
+            //             $new_unit_outcome = json_decode($new_unit_outcome, true);
+            //             $new_unit_outcome[0]['course_id'] = $request->course_id;
+            //             $new_unit_outcome[0]['template_id'] = $new_unit_outcome[0]['id'];
+            //             $request_new_unit_outcome = new \Illuminate\Http\Request($new_unit_outcome[0]);
+            //             $new_unit_outcome = LearningOutcomesController::store($request_new_unit_outcome)->getContent();
+            //             $new_unit_outcome = json_decode($new_unit_outcome);
 
-                        $_outcome['unit_outcome_id'] =  $new_unit_outcome->id;
-                    }
+            //             $_outcome['unit_outcome_id'] =  $new_unit_outcome->id;
+            //         }
 
                  
-                }else if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
-                    // do nothing
-                    $_outcome['unit_outcome_id'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
-                }
+            //     }else if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
+            //         // do nothing
+            //         $_outcome['unit_outcome_id'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
+            //     }
 
-                $request_outcome = new \Illuminate\Http\Request($_outcome);
-                $outcome = LearningOutcomesController::store($request_outcome)->getContent();
-                $outcome = json_decode($outcome);
-                $temp["outcome_template_id"] = $_outcome['id'];
-                $temp["outcome_id"] = $outcome->id;
-                array_push($outcome_asso, $temp);
-            }
+            //     $request_outcome = new \Illuminate\Http\Request($_outcome);
+            //     $outcome = LearningOutcomesController::store($request_outcome)->getContent();
+            //     $outcome = json_decode($outcome);
+            //     $temp["outcome_template_id"] = $_outcome['id'];
+            //     $temp["outcome_id"] = $outcome->id;
+            //     array_push($outcome_asso, $temp);
+            // }
         }
 
         // pattern

@@ -81,7 +81,7 @@ class Course extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'outcome_id' //LearningPatternTemplate pattern id
-        )->orderBy('course_outcome_relation.sequence');
+        )->orderBy('course_outcome_relation.sequence')->with(['slo_outcome', 'stemtypesid']);
     }
 
     public function outcomeid(){

@@ -92,6 +92,7 @@ const ComponentTemplateBuilderContainer = (props) => {
     const [ anchorEl, setAnchorEl ] = React.useState(null);
     const [ isEditTitle, setIsEditTitle ] = React.useState(false);
     const [ tab, setTab ] = React.useState(0);
+    const [ step, setStep ] = React.useState(0);
 
     const [ componentTemplate, setComponentTemplate] = React.useState({
        tasks: [],
@@ -101,10 +102,17 @@ const ComponentTemplateBuilderContainer = (props) => {
            outcomes: []
        }
     });
+    const [ outcomes, setOutcome] = React.useState([]);
 
     React.useEffect(()=> {
         reFreshComponent();
     },[])
+
+    React.useEffect(()=>{
+        if(componentTemplate.designtype.id > 0){
+            setStep(1);
+        }
+    }, [componentTemplate.designtype])
 
     //#region local action
     const onClickRename = () => {
@@ -135,6 +143,7 @@ const ComponentTemplateBuilderContainer = (props) => {
         setLoadingOpen(true);
         apiLearningCompTempGet(props.component_id).then((response)=>{
             setComponentTemplate(response.data);
+            setOutcome(response.data.outcomes.filter(x => x.isCourseLevel));
             setLoadingOpen(false);
         })
     }
@@ -212,10 +221,8 @@ const ComponentTemplateBuilderContainer = (props) => {
       };
     
 
-
-    const displayBasicView = () => {
+    const displayDesignType = () => {
         return (
-        <React.Fragment>
             <Grid item xs = {12}>
                 <Paper className ={classes.paper}> 
                     <Grid container alignItems="flex-start" justify="flex-end" direction="row">
@@ -229,7 +236,11 @@ const ComponentTemplateBuilderContainer = (props) => {
                     </Grid>
                 </Paper>
             </Grid>
-            
+        );
+    }
+
+    const displayLO = () => {
+        return (
             <Grid item xs = {12}>
                 <Paper className ={classes.paper}> 
                     <Grid container alignItems="flex-start" justify="flex-end" direction="row">
@@ -238,8 +249,9 @@ const ComponentTemplateBuilderContainer = (props) => {
                         </Grid>
                         <Grid container item xs ={12} >
                         <OutcomeBuilderContainer 
-                                outcomes = {componentTemplate.outcomes} 
-                                unit_outcomes_opts = {componentTemplate.designtype? componentTemplate.designtype.outcomes : []}
+                                outcomes = {outcomes} 
+                                designtype_id = {componentTemplate.designtype? componentTemplate.designtype.id : -1}
+                                designtype_outcomes = {componentTemplate.designtype.outcomes}
                                 component_id = {componentTemplate.id}
                                 onFinish = {onOutcomeFinish}
                             />
@@ -248,7 +260,11 @@ const ComponentTemplateBuilderContainer = (props) => {
                     </Grid>
                 </Paper>
             </Grid>
+        );
+    }
 
+    const displayPattern = () => {
+        return (
             <Grid item xs = {12}>
                 <Paper className ={classes.paper}> 
                     <Grid container alignItems="flex-start" justify="flex-end" direction="row">
@@ -287,27 +303,50 @@ const ComponentTemplateBuilderContainer = (props) => {
                     </Grid>
                 </Paper>
             </Grid>
+        );
+    }
 
+    const displayTask = () => {
+        return (
             <Grid item xs = {12}>
-            <Paper className ={classes.paper}>
-                <Grid container>
-                    <Grid item xs={12}>
-                        Related Tasks
+                <Paper className ={classes.paper}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            Related Tasks
+                        </Grid>
+                        
+                        <Grid item xs ={12}>
+                            <TaskTemplateBuilderContainer 
+                                component_id = {componentTemplate.id} 
+                                tasksData = {componentTemplate.tasks} 
+                                mode = "edit"
+                                onFinish = {onTaskFinish}
+                            />
+                        </Grid>
                     </Grid>
-                    
-                    <Grid item xs ={12}>
-                        <TaskTemplateBuilderContainer 
-                            component_id = {componentTemplate.id} 
-                            tasksData = {componentTemplate.tasks} 
-                            mode = "edit"
-                            onFinish = {onTaskFinish}
-                        />
-                    </Grid>
-
+                </Paper>
+            </Grid>
+        );
+    }
+    const displayBasicView = () => {
+        return (
+        <React.Fragment>
+           
+            {displayDesignType()}
+        
+            { step > 0?
+               
+                <Grid container item xs = {12}>
+                    {displayLO()}
+                    {displayPattern()}
+                    {displayTask()}
                 </Grid>
-            
-            </Paper>
-        </Grid>
+                :
+                null
+            }
+          
+
+           
         </React.Fragment>
         )
     }

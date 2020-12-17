@@ -12,6 +12,9 @@ import FormGroup from '@material-ui/core/FormGroup';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import FormLabel from '@material-ui/core/FormLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -22,9 +25,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+
+import SLOTemplateBuilderContainer from '../container/SLOTemplateBuilderContainer';
 import {AppContextStore} from '../../../container/app';
 
-import {apiLearningOutcomeGetOutcomeLevel } from '../../../api';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -42,29 +46,22 @@ const useStyles = makeStyles(theme => ({
 
 const OutcomeTemplateEditView = (props) => {
     const classes = useStyles();
-    const [checked, setChecked] = React.useState(false);
-    
-    
-    const [learningOutcome, setLearningOutcome] = React.useState({
-        level: "",
+    const { options } = React.useContext(AppContextStore);
+
+    const loinit = {
+        level: -1,
         outcomeType: -1,
         STEMType: "",
         description: "",
         isCourseLevel: true,
-        unit_outcome_id: -1
-    });
-
-
-
-    const [step, setStep] = React.useState(0);
-    const [state, setState] = React.useState({
-        S: false,
-        T: false,
-        E: false,
-        M: false,
-        });
-    
-
+        unit_outcome_id: -1,
+        slo_outcome: []
+    }
+    const [learningOutcome, setLearningOutcome] = React.useState(loinit);
+    const [ step, setStep ] = React.useState(0);
+    const [ state, setState ] = React.useState(initSTEMState());
+    const [ autoString, setAutoString ] = React.useState([]);
+    const [ hasSLO, setHasSLO ] = React.useState(false);
     const [ error, setError] = React.useState({
         level: "",
         outcomeType: "",
@@ -73,16 +70,21 @@ const OutcomeTemplateEditView = (props) => {
         unit_outcome_id: ""
     });
 
-    const { options } = React.useContext(AppContextStore);
-    const learningTypeTemp = options.learningOutcomeType;
-    const [learningLevelTemp, setLearningLevelTemp] = React.useState([]);
 
+    const outcomeTypes = options.outcomeTypeOpts;
+    const bloomLevelOpts = options.bloomLvlOpts;
+    const stemTypes = options.STEMTypeOpts;
+
+    //#region React useEffect Related
     React.useEffect(()=>{
         if(typeof props.outcome != 'undefined'){
+            if(props.outcome.slo_outcome?.length > 0){
+                setHasSLO(true);
+            }
             if(typeof props.component_id != "undefined"){
                 setLearningOutcome({
                     ...props.outcome,
-                    unit_outcome_id: props.outcome.unit_outcomeid_temp.unit_outcome_id
+                    // unit_outcome_id: props.outcome.unit_outcomeid_temp.unit_outcome_id
                 });
             }else{
                 setLearningOutcome({
@@ -92,146 +94,142 @@ const OutcomeTemplateEditView = (props) => {
         }
     }, [props.outcome, props.component_id])
 
-    React.useEffect (()=>{console.log(learningOutcome); console.log(learningOutcome.unit_outcome_id)}, [learningOutcome])
-
-    React.useEffect(()=>{
-        var STEMArr = learningOutcome.STEMType.replace(" ","").split(",");
-        var tempState = {
-            S: false,
-            T: false,
-            E: false,
-            M: false,
-            }
-        STEMArr.map(
-            _x => 
-            {
-                switch(_x){
-                    case "S":
-                        tempState["S"] = true;
-                        break;
-                    case "T":
-                        tempState["T"] = true;
-                        break;
-                    case "E":
-                        tempState["E"] = true;
-                        break;
-                    case "M":
-                        tempState["M"] = true;
-                        break;
-                }
-            }
-        )
-        setState(tempState)
-    }, [learningOutcome.STEMType]);
-
-    React.useEffect(() => {
-        var selectLearningType = -1
-        Object.keys(learningTypeTemp).map( 
-            _key => {
-                if(learningTypeTemp[_key].value == learningOutcome.outcomeType){
-                    selectLearningType = learningTypeTemp[_key].id;
-                }
-        });
-        fetchlearningLevelTempData(selectLearningType);
-    }, [learningOutcome.outcomeType]);
+    // React.useEffect (()=>{
+    //     console.log(learningOutcome); 
+    //     console.log(stemTypes);
+    //     console.log(state);
+    // }, [learningOutcome])
 
     React.useEffect(() => {
         handleChange();
     }, [learningOutcome]);
 
     React.useEffect(()=>{
-        
-        var clo_ori = props.unitOutcomeOpts.find(x=> x.id == learningOutcome.unit_outcome_id);
-        if(typeof clo_ori != 'undefined'){
-            var clo = JSON.parse(JSON.stringify(clo_ori));
-            delete clo.id;
-            setLearningOutcome({
-                ...clo,
-                id: learningOutcome.id,
-                isCourseLevel: false,
-                unit_outcome_id: learningOutcome.unit_outcome_id
-                // unit_outcome_id: learningOutcome.unit_outcome_id
-                });
-        }
-        
-    }, [checked]);
+        var temp = bloomLevelOpts.find(x => x.id == learningOutcome.bloom_id)? 
+            bloomLevelOpts.find(x => x.id == learningOutcome.bloom_id).verbs.map(x => x.name) 
+            : 
+            [];
+        temp = temp.filter(x => x.toLocaleUpperCase().indexOf(learningOutcome.description.toLocaleUpperCase()) != -1);
+        setAutoString(temp)
+    }, [learningOutcome.level, learningOutcome.description])
 
-    async function fetchlearningLevelTempData(selectLearningType) {
-        await apiLearningOutcomeGetOutcomeLevel(selectLearningType)
-        .then(response =>  {
-            setLearningLevelTemp(response.data);
-        })
-        .catch(error => console.log(error));
-    }
+    React.useEffect(()=>{
+        var STEMArr = learningOutcome.stemtypesid? learningOutcome.stemtypesid.map( _stem => _stem.stem_type_id) : [];
+        var tempState = {};
+        stemTypes.map( _stem => {
+            {
+                tempState[_stem.id]= false
+            }
+        });
+
+        STEMArr.map(
+            _x => 
+            { 
+                tempState[_x] = true;
+            }
+        )
+        setState(tempState)
+    }, [learningOutcome.STEMType]);
+    //#endregion
 
     //#region action related
+
+    function initSTEMState (){
+        var tempState = {};
+        options.STEMTypeOpts.map( _stem => {
+            {
+                tempState[_stem.id]= false
+            }
+        });
+        
+        return tempState;
+    }
+
     const handleChange = () => {
         var stepCount = 0;
-        if(learningOutcome.level != -1){
+        if(learningOutcome.bloom_id != -1){
+            // tourNextStep();
             stepCount++;
         }
         if(learningOutcome.outcomeType != -1){
+            // tourNextStep();
             stepCount++;
         }
         setStep(stepCount);
     }
 
-    const handleSTEMChange = name => event => {
-        setState({ ...state, [name]: event.target.checked });
+    const handleSTEMChange = id => event => {
+        setState({ ...state, [id]: event.target.checked });
     };
+
+    const handleHasSLOChange = event => {
+        setHasSLO(event.target.checked);
+    }
+
+
+    const handleSLOSave = (slo, mode = "edit") => {
+
+        var temp = JSON.parse(JSON.stringify(learningOutcome.slo_outcome))
+        var index = temp.findIndex(_slo => _slo.id == slo.id);
+        var del = index > -1? 1 : 0;
+        if(index > -1  && mode == "edit"){
+            temp.splice(index, del, slo);
+        }else{
+            temp.push(slo);
+        }
+        setLearningOutcome({...learningOutcome, slo_outcome: temp});
+    }
+
+
+    const handleSLODelete = (slo) => {
+        var temp = JSON.parse(JSON.stringify(learningOutcome.slo_outcome))
+        var index = temp.findIndex(_slo => _slo.id == slo.id && _slo.description == slo.description);
+        var del = index > -1? 1 : 0;
+       
+        temp.splice(index, del);
+        setLearningOutcome({...learningOutcome, slo_outcome: temp});
+    }
+
 
     const outcomeTypeOnchange = event => {
         setLearningOutcome({...learningOutcome, 
             outcomeType: event.target.value, 
-            level: "", 
-            description: ""
         })
     }
 
     const outcomeLevelOnchange = event => {
         setLearningOutcome({...learningOutcome, 
-            level: event.target.value, 
+            bloom_id: event.target.value, 
         });
     }
 
     const outcomeDescchange = value => {
-    
         setLearningOutcome({...learningOutcome, description:value});
-    }
-
-    const unitOutcomeChange = event => {
-        setLearningOutcome({
-            ...learningOutcome, 
-            unit_outcome_id: event.target.value, 
-        });
     }
 
     const outcomeSave = event => {
         //binding of STEM Type to learningOutcome like object 
-        if(validate()){
-            const tmpSTEMType = [];
-            if(learningOutcome.outcomeType == "Generic Skills"){
-    
-            }else{
-                state.S == true ? tmpSTEMType.push("S") : null;
-                state.T == true ? tmpSTEMType.push("T") : null;
-                state.E == true ? tmpSTEMType.push("E") : null;
-                state.M == true ? tmpSTEMType.push("M") : null;
-            }
-    
-            var outcome = learningOutcome;
-            outcome["STEMType"] = tmpSTEMType.join(" ,");
-            outcome["outcome_id"] = learningOutcome.id;
-            if(typeof props.component_id != "undefined"){
-                outcome["component_id"] = props.component_id;
-                outcome["isCourseLevel"] = false;
-            }else if(typeof props.designtype_id != "undefined"){
-                outcome["isCourseLevel"] = true;
-                outcome["designtype_id"] = props.designtype_id ;
-                // json["course_id"] = courseID;
-            }
-            props.onSaveOutcome(outcome)
+        const tmpSTEMType = [];
+        if(learningOutcome.outcomeType == 3){
+
+        }else{
+            Object.keys(state).map(
+                _key => {
+                    state[_key]?  tmpSTEMType.push(_key) : null;
+                }
+            )
         }
+
+        var outcome = JSON.parse(JSON.stringify(learningOutcome));
+        // outcome["STEMType"] = tmpSTEMType.join(" ,");
+        outcome["stemtypes_id"] = tmpSTEMType;
+        outcome["id"] = learningOutcome.id;
+        outcome["isCourseLevel"] = true;
+        if(typeof props.designtype_id != "undefined"){
+            outcome["designtype_id"] = props.designtype_id ;
+            // json["course_id"] = courseID;
+        }
+        props.onSaveOutcome(outcome)
     }
 
     const validate = () => {
@@ -258,14 +256,6 @@ const OutcomeTemplateEditView = (props) => {
             tempError["description"] = "Please enter the description";
             validated = false;
         }
-        
-        // if(componentID != -1 && typeof componentID != "undefined"){
-        //     if(learningOutcome.unit_outcome_id == -1){
-        //         tempError["unit_outcome_id"] = "Please enter the parent ulo";
-        //         validated = false;
-        //     }
-        // }
-    
     
         setError(tempError);
         return validated;
@@ -277,31 +267,39 @@ const OutcomeTemplateEditView = (props) => {
     const displayOutcomeType = () => {
         return (
             <Grid item xs={12}>
-                    <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
-                        <InputLabel id="demo-simple-select-required-label">Outcome Type</InputLabel>
-                        <Select
-                            className={classes.selectEmpty}
-                            value = {learningOutcome.outcomeType}
-                            onChange = {outcomeTypeOnchange}
-                            disabled = {checked}
-                        >
-                            <MenuItem value={-1} disabled>
-                                <em>Outcome Type</em>
-                            </MenuItem>
-                            {Object.keys(learningTypeTemp).map(_key=> 
-                                (<MenuItem 
-                                    value={learningTypeTemp[_key].value} 
-                                    key={learningTypeTemp[_key].id}>
-                                        {learningTypeTemp[_key].description}
-                                </MenuItem>)
-                            )}
-                        </Select>
-                        <FormHelperText>
-                            <React.Fragment>
-                            {error['outcomeType'] ==""? "Required": error['outcomeType']}
-                            </React.Fragment>
-                        </FormHelperText>
-                    </FormControl>
+                <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
+                    <FormLabel>
+                        What do you think are the most important knowledge, skills, or generic skills in the unit that you are teaching?
+                    </FormLabel >
+                    <RadioGroup
+                        data-tour = "lo_edit_type"
+                        value = {learningOutcome.outcomeType}
+                        onChange = {outcomeTypeOnchange}
+                        row
+                    >
+                        {
+                            outcomeTypes.map(_outcomeType => 
+                                <FormControlLabel 
+                                    key={_outcomeType.id} 
+                                    checked = {_outcomeType.id == learningOutcome.outcomeType}
+                                    value={_outcomeType.id} 
+                                    control={<Radio />} 
+                                    label={
+                                        <React.Fragment>
+                                                {_outcomeType.name}
+                                        </React.Fragment>
+                                    }
+                                />
+                            )
+                        }
+                    </RadioGroup>
+
+                    <FormHelperText>
+                        <React.Fragment>
+                        {error['outcomeType'] ==""? "Required": error['outcomeType']}
+                        </React.Fragment>
+                    </FormHelperText>
+                </FormControl>
             </Grid>
         )
     }
@@ -314,32 +312,32 @@ const OutcomeTemplateEditView = (props) => {
                     <Grid item xs={12}>
                         <FormControl required className={classes.formControl} fullWidth>
                             <InputLabel id="levels-label">
-                                Bloom Taxonomy Level
+                                Which level do you want to focus on for this learning outcome 
                             </InputLabel>
                             <Select
-                            labelId="levels-label"
-                            id="levels"
-                            data-tour = "lo_edit_level"
-                            className={classes.selectEmpty}
-                            value = {learningOutcome.level}
-                            onChange = {outcomeLevelOnchange}
-                            disabled = {checked}
-                            error = {error['level']!=""}
+                                labelId="levels-label"
+                                id="levels"
+                                data-tour = "lo_edit_level"
+                                className={classes.selectEmpty}
+                                value = {learningOutcome.bloom_id}
+                                onChange = {outcomeLevelOnchange}
+                                error = {error['level']!=""}
                             >
                                 <MenuItem value='' disabled>
                                     <em>Levels</em>
                                 </MenuItem>
                                 {
-                                    learningLevelTemp.map(_learningLevelTemp=> 
+                                    bloomLevelOpts.map(_bloomLevel=> 
                                         (<MenuItem 
-                                            value={_learningLevelTemp.description} 
-                                            key={_learningLevelTemp.id}>
-                                                {_learningLevelTemp.description}
+                                            value={_bloomLevel.id} 
+                                            key={_bloomLevel.id}
+                                        >
+                                            {_bloomLevel.name}
                                         </MenuItem>)
                                     )
                                 }
                             </Select> 
-                            
+                           
                             <FormHelperText>
                                 <React.Fragment>
                                 {error['level'] == "" ? "Required" : error['level']}
@@ -352,122 +350,30 @@ const OutcomeTemplateEditView = (props) => {
         }  
     }
 
-    const displayParentUnitOutcome = () => {
-        if(step > 0 && typeof props.component_id != "undefined"){
-            return (
-                <React.Fragment>
-
-                    <Grid item xs={8}>
-                        <FormControl required className={classes.formControl} fullWidth>
-                            <InputLabel id="unit-label">Unit Level Learning Outcome</InputLabel>
-                            <Select
-                            labelId="unit-label"
-                            id="unit"
-                            data-tour = "lo_edit_unit"
-                            className={classes.selectEmpty}
-                            value = {learningOutcome.unit_outcome_id}
-                            onChange = {unitOutcomeChange}
-                            disabled = {checked}
-                            error = {error['unit_outcome_id']!=""}
-                            >
-                                <MenuItem value={-1} disabled>
-                                    <em>Unit Level Learning Outcomes</em>
-                                </MenuItem>
-                                {
-                                    props.unitOutcomeOpts.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType)?.length > 0? 
-                                        props.unitOutcomeOpts.filter(ulo => ulo.outcomeType == learningOutcome.outcomeType).map(ulo=> 
-                                        (<MenuItem 
-                                            value={ulo.id} 
-                                            key={ulo.id}>
-                                                {ulo.description}
-                                        </MenuItem>))
-                                        :
-                                        <MenuItem value = ""  disabled>
-                                                No corresponding unit learning outcome.
-                                        </MenuItem>
-                                }
-                            </Select> 
-                            <FormHelperText>
-                                <React.Fragment>
-                                    {error['unit_outcome_id']==""? "Required": error['unit_outcome_id']}
-                                </React.Fragment>
-                            
-                            </FormHelperText>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={4}>
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.checkedB}
-                                onChange={()=> setChecked(!checked)}
-                                color="primary"
-                            />
-                            }
-                        />
-                    </Grid>
-                </React.Fragment>
-            )
-        }  
-    }
-
     const displaySTEMOpts = () => {
         if(step > 1 && (learningOutcome.outcomeType == 1 || learningOutcome.outcomeType == 2) ){
             return (
                 <Grid item xs={12} data-tour = "lo_edit_STEM">
+                    <InputLabel id="stem-type-label">
+                        Which discipline do you want to focus on for this learning outcome?
+                    </InputLabel>
                     <FormGroup row>
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.S}
-                                onChange={handleSTEMChange('S')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Science"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.T}
-                                onChange={handleSTEMChange('T')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Technology"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.E}
-                                onChange={handleSTEMChange('E')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Engineering"
-                        />
-
-                        <FormControlLabel
-                            control={
-                            <Checkbox
-                                checked={state.M}
-                                onChange={handleSTEMChange('M')}
-                                value="checkedB"
-                                color="primary"
-                                disabled = {checked}
-                            />
-                            }
-                            label="Mathametics"
-                        />
+                        {
+                            stemTypes.map(
+                                _stemTypes => 
+                                <FormControlLabel
+                                    key = {_stemTypes.id}
+                                    control={
+                                        <Checkbox
+                                            checked={state[_stemTypes.id]}
+                                            onChange={handleSTEMChange(_stemTypes.id)}
+                                            color="primary"
+                                        />
+                                    }
+                                    label={_stemTypes.name}
+                                />
+                            )
+                        }
                     </FormGroup>
             </Grid>
             );
@@ -476,7 +382,7 @@ const OutcomeTemplateEditView = (props) => {
 
     const displayOutcomeDes = () => {
         if(step > 1){
-            var autoString = learningLevelTemp.find(x => x.description == learningOutcome.level)? learningLevelTemp.find(x => x.description == learningOutcome.level).value : [];
+            // var autoString = bloomLvlOpts.find(x => x.description == learningOutcome.level)? bloomLvlOpts.find(x => x.description == learningOutcome.level).value : [];
             return (
                 <Grid item xs={12} data-tour = "lo_edit_description">
                         <Autocomplete
@@ -492,7 +398,6 @@ const OutcomeTemplateEditView = (props) => {
                                     {...params}
                                     label="Description of the outcome"
                                     variant="outlined"
-                                    disabled = {checked}
                                     fullWidth
                                     error = {error['description']!=""}
                                     helperText={error['description'] == ""? "Required": error['description']}
@@ -501,6 +406,62 @@ const OutcomeTemplateEditView = (props) => {
                         />
                 </Grid>
             );
+        }
+    }
+
+    const displaySLO = () => {
+        if(step > 1){
+            return(
+                <React.Fragment>
+                    {
+                        <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={hasSLO}
+                                // onChange={handleSTEMChange(_stemTypes.id)}
+                                onChange={handleHasSLOChange}
+                                color="primary"
+                            />
+                        }
+                        label={"Do you want to create sub learning outcome(s), for this learning outcome?"}
+                        />
+                    }
+                    {
+                        hasSLO?
+                        <React.Fragment>
+                        {learningOutcome.slo_outcome?.map( _slo => 
+                            <React.Fragment>
+                                {/* { _slo.description} */}
+                                <SLOTemplateBuilderContainer 
+                                    slo = {_slo} 
+                                    component_id = {props.component_id}
+                                    handleSLOSave = {handleSLOSave}
+                                    handleSLODelete = {handleSLODelete}
+                                />
+                            </React.Fragment>
+                        )}
+                        <SLOTemplateBuilderContainer 
+                            slo = {{
+                                id: -1, 
+                                description: "",
+                                bloom_id: learningOutcome.bloom_id,
+                                outcomeType: learningOutcome.outcomeType,
+                                STEMType: ""
+                            }} 
+                            component_id = {props.component_id}
+                            handleSLOSave = {handleSLOSave}
+                            handleSLODelete = {handleSLODelete}
+                        />
+                        </React.Fragment>
+                        :
+                        null
+
+                    }
+                </React.Fragment>
+
+// handleSLOSave = {handleSLOSave}
+// handleSLODelete = {handleSLODelete}
+            )
         }
     }
     //#endregion
@@ -517,10 +478,10 @@ const OutcomeTemplateEditView = (props) => {
                             <h5>Add learning outcomes that specify what learners will be able to do after this unit.</h5>
                         </Grid>
                         {displayOutcomeType()}
-                        {displayParentUnitOutcome()}
                         {displayOutcomeLevel()}
                         {displaySTEMOpts()}
                         {displayOutcomeDes()}
+                        {displaySLO()}
                     </Grid>
                 </DialogContent>
         

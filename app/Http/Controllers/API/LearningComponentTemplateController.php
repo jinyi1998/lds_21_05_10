@@ -135,6 +135,22 @@ class LearningComponentTemplateController extends Controller
         if($request->has('outcomes')){
         }
 
+        if($request->has('outcomes_id')){
+            //clear all learning outcomes for this component
+            $component->outcomeid()->delete();
+            foreach($request->outcomes_id as $_outcome_id){
+                $sequence = $component->outcomeid()->count();
+                $component->outcomeid()->create([
+                    "component_id" => $component->id,
+                    "outcome_id" => $_outcome_id['outcome_id'],
+                    "sequence" => $sequence,
+                    "is_deleted" => false,
+                    "created_by" => Auth::user()->id,
+                    "updated_by" => Auth::user()->id
+                ]);
+            }
+        }
+
         // pattern
         if($request->has('patterns') && isset($request->patterns[0])){
             $_pattern =  $request->patterns[0];

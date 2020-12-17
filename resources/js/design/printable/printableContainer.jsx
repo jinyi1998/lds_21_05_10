@@ -4,8 +4,7 @@ import html2canvas from 'html2canvas';
 // import jsPDF from 'jspdf';  
 
 import {apiCourseGet,
-    apiOptionsList, apiDesignTypeList, apiLearningTaskGetPatternOpts, 
-    apiLearningOutcomeGetOutcomeType
+    apiOptionsList, apiLearningTaskGetPatternOpts, 
 } from '../../api';
 
 import PrintableContent from './printableContent';
@@ -74,29 +73,6 @@ const PrintableContainer = (props) => {
         }
     }
 
-    async function fetchDesignTypeData() {
-
-        await apiDesignTypeList().then(response => {
-            setOptions(optionsInit=> ({
-                ...optionsInit,
-                "designType": response.data
-            }))
-        })
-    }
-    
-    async function fetchlearningTypeTempData() {
-
-        apiLearningOutcomeGetOutcomeType()
-        .then(response => {
-            setOptions(optionsInit=> ({
-                ...optionsInit,
-                "learningOutcomeType": response.data,
-                "learningTypeTemp": response.data
-            }))
-        }).catch(error => console.log(error));
-
-    }
-
     async function fetchlearningPatternOptsData() {
         await apiLearningTaskGetPatternOpts().then(
             response => {
@@ -113,12 +89,16 @@ const PrintableContainer = (props) => {
         await apiOptionsList().then(response=>{
             setOptions(optionsInit=> ({
                 ...optionsInit,
+                "designType": response.data.designType,
                 "taskType": response.data.learningTasktypeOpts,
                 "taskClassType": response.data.classTypeOpts,
                 "taskSize": response.data.classSizeOpts,
                 "taskTarget": response.data.classTargetOpts,
                 "taskResource": response.data.resourceOpts,
                 "taskElearingResource": response.data.elearningtoolOpts,
+                "bloomLvlOpts": response.data.bloomLvlOpts,
+                "outcomeTypeOpts": response.data.outcomeTypeOpts,
+                "STEMTypeOpts": response.data.STEMTypeOpts
             }))
             setTaskTypeColorValue(response.data.learningTasktypeOpts)
         })
@@ -130,8 +110,6 @@ const PrintableContainer = (props) => {
     async function InitDesignOption() {
 
         await fetchlearningOptsData();
-        await fetchDesignTypeData();
-        await fetchlearningTypeTempData();
         await fetchlearningPatternOptsData();
     }
 

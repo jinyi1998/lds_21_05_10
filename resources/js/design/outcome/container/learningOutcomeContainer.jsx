@@ -23,9 +23,9 @@ import Grid from '@material-ui/core/Grid';
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
-import LearningOutcomeAddFromSelect from '../learningOutcomeAddFromSelect';
 import LearningOutcomeUnit from '../component/learningOutcomeUnit';
 import LearningOutcomeEditContainer from './learningOutcomeEditContainer';
+import LearningOutcomeSelectContainer from './learningOutcomeSelectContainer';
 import InstructionBox from '../../../components/instructionBox';
 
 import QuestionHint from '../../../components/questionHint';
@@ -38,18 +38,12 @@ import {
     apiLearningOutcomePost, apiLearningOutcomeCoursePut,
     
 } from "../../../api.js"
-import { set } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
-    list: {
-      width: '100%',
-    },
     AccordionSummary: {
-      backgroundColor: "#91bbff"
+      backgroundColor: theme.palette.primary.dark,
+      color: 'white'
     },
-    appBar: {
-        position: 'relative',
-      },
   }));
 
 
@@ -75,32 +69,39 @@ const LearningOutcomeContainer = (props)=>{
             tourSetMode('ulo');
         }
     }, [modeLevel])
+
+    React.useEffect(()=>{
+        var temp = [];
+        if(modeLevel == "course"){
+            temp = course.outcomes;
+        }else{
+            temp = course.outcomes.filter(_outcome => _outcome.componentid.filter(_componentid => _componentid.component_id == component.id).length > 0);
+        }
+        setOutcomes(temp);
+    }, [modeLevel, course])
     
-    
-    // const [ ulo, setUlo ] = React.useState([]); 
+    const [outcomes, setOutcomes] = React.useState([]);
+
     const [learningOutcomeOpen, setLearningOutcomeOpen] = React.useState(false);
-    const [learningOutcomeSelectOpen, setLearningOutcomeSelectOpen] = React.useState(false);
 
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
+    const [selectDialogOpen, setSelectDialogOpen] = React.useState(false);
 
-    const [ expanded, setExpanded ] = React.useState(true);
     const [learningOutcomeID, setLearningOutcomeID] = React.useState(-1);
     const [learningOutcome, setLearningOutcome] = React.useState({
         level: -1,
         outcomeType: -1,
         STEMType: "",
         description: "",
-        isCourseLevel: true
+        isCourseLevel: true,
+        bloom_id: -1
     });
 
-
-    // React.useEffect(()=>{
-    // }, [course.outcome])
     const enableAdd = course.permission > 2; 
     const enableEdit = course.permission > 2; 
     const enableDrag = course.permission > 2; 
-    const enableDelete = course.permission > 2; 
-    const enableDuplicate =  course.permission > 2; 
+    const enableDelete = (course.permission > 2 &&  modeLevel == "course"); 
+    const enableDuplicate =  (course.permission > 2 &&  modeLevel == "course"); 
     
 
 
@@ -138,7 +139,6 @@ const LearningOutcomeContainer = (props)=>{
     }
 
     const onDelOutcomes = () =>{
-        
         //close the dialog
         deleteLearningOutcome();
         setDelDialogOpen(false);
@@ -162,7 +162,7 @@ const LearningOutcomeContainer = (props)=>{
         var updates = [];
 
         //sync the data to root state
-        var tempOutcomes =  JSON.parse(JSON.stringify(course.outcomes.sort( (a,b) => a.outcomeType - b.outcomeType).sort((a,b) => a.sequence - b.sequence)));
+        var tempOutcomes =  JSON.parse(JSON.stringify(outcomes.sort( (a,b) => a.outcomeType - b.outcomeType).sort((a,b) => a.sequence - b.sequence)));
         tempOutcomes.map((_outcome, index)=> {
             if(_outcome.courseid.sequence == null){
                 tempOutcomes[index].courseid.sequence = index + 1;
@@ -282,6 +282,14 @@ const LearningOutcomeContainer = (props)=>{
             })
         }
     }
+
+    const onClickSelectOutcome = () => {
+        setSelectDialogOpen(true);
+    }
+
+    const onCloseSelectOutcome = () => {
+        setSelectDialogOpen(false);
+    }
     //#endregion
 
     //#region Data Request Related 
@@ -360,48 +368,35 @@ const LearningOutcomeContainer = (props)=>{
         }
     }
 
-    const displayLearningOutcomeSelect = () => {
-        if(modeLevel == "course"){
-            return (<React.Fragment></React.Fragment>);
-        }else{
-            return (
-                <LearningOutcomeAddFromSelect 
-                    componentID = {component.id} 
-                    onClose={()=> setLearningOutcomeSelectOpen(false)} 
-                    handleOnSave={handleOnSave} 
-                />
-            )
-        } 
-    }
-
     const displayLearningOutcomes = () => {
-        if(modeLevel == "course"){
-            return (
-                <Grid container alignItems="flex-start" justify="flex-end" direction="row">
-                    {
-                        options.learningOutcomeType.map(_lo_type => 
-                            <Grid container item xs = {12}>
-                                <Grid container item xs = {12}>
-                                    <ListSubheader color ="primary">
-                                        {_lo_type.description}
-                                    </ListSubheader>
-                                </Grid>
+        return (
+            <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                {   
+                    outcomes.filter(lo => lo.isCourseLevel == true).length > 0?
+                    options.outcomeTypeOpts.map( (_lo_type, index) => 
 
-                                <Grid container item xs = {12}>
-                                {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).length > 0?
-                               
-                                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                                        <Droppable droppableId="droppable">
-                                        {(provided, snapshot) => (
-                                            <RootRef rootRef={provided.innerRef}>
-                                            <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view">
-                                            {
-                                                course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).sort((a,b)=> a.sequence - b.sequence).map(
-                                                (_outcome, index )=>
-                                                    (
-                                                        <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
-                                                        {(provided, snapshot) => (
-                                                            <LearningOutcomeUnit 
+                        <Accordion defaultExpanded = {true} style = {{width: '100%'} } key = {index}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                className = {classes.AccordionSummary}
+                            >
+                                {_lo_type.name}
+                            </AccordionSummary>
+
+                            <AccordionDetails>
+                            {outcomes.filter(lo => lo.outcomeType == _lo_type.id).filter(lo => lo.isCourseLevel == true).length > 0?
+                                <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                                    <Droppable droppableId="droppable">
+                                    {(provided, snapshot) => (
+                                        <RootRef rootRef={provided.innerRef}>
+                                        <List style={getListStyle(snapshot.isDraggingOver)} data-tour ="ulo_display_view">
+                                        {
+                                            outcomes.filter(lo => lo.outcomeType == _lo_type.id).sort((a,b)=> a.sequence - b.sequence).map(
+                                            (_outcome, index )=>
+                                                (
+                                                    <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
+                                                    {(provided, snapshot) => (
+                                                        <LearningOutcomeUnit 
                                                             learningOutcome = {_outcome}
                                                             key={index} 
                                                             provided = {provided} 
@@ -414,98 +409,65 @@ const LearningOutcomeContainer = (props)=>{
                                                             enableDuplicate = {enableDuplicate}
                                                             enableDelete = {enableDelete}
                                                             index = {index}/> 
-                                                        )}
-                                                        </Draggable>
-                                                    )
+                                                    )}
+                                                    </Draggable>
                                                 )
-                                            }
-                                            {provided.placeholder}
-                                            </List>
-                                            </RootRef>
-                                        )}
-                                        </Droppable>
-                                    </DragDropContext>
-                                
+                                            )
+                                        }
+                                        {provided.placeholder}
+                                        </List>
+                                        </RootRef>
+                                    )}
+                                    </Droppable>
+                                </DragDropContext>
                                 :
                                 <ListItem>
-                                    <ListItemText primary = {"There is no outcome under this learning outcome type"} />
+                                    <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                                        {"There is no outcome under this learning outcome type"}
+                                    </Typography>
                                 </ListItem>
                                 }
-                                </Grid>
-                            </Grid>
-                        )
-                    }
-                    {
-                        enableAdd? 
-                        <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
-                        :
-                        null
-                    }
-                </Grid>
-            )
-        }else{
-            //component learning outcome
-            return (
-                <React.Fragment>
-                    <Grid container alignItems="flex-start" justify="flex-end" direction="row">
-                        {
-                            enableAdd?
-                            <Grid container item xs = {12}  alignItems="center" justify="center">
-                                <Button onClick={addLearningOutcome} variant="contained" color="primary"  data-tour="clo_add_button" >
-                                    Add Learning Outcome
-                                </Button>
-                            </Grid>
-                            :
-                            null
-                        }
-                        {course.outcomes.map(
-                            (_ulo, index )=>
-                            (
-                                component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).length > 0 ? 
-                                    <DragDropContext onDragEnd={(result) => onDragEnd(result)} key = {index}>
-                                            <Droppable droppableId="droppable">
-                                            {(provided, snapshot) => (
-                                                <RootRef rootRef={provided.innerRef}>
-                                                <List style={getListStyle(snapshot.isDraggingOver)} data-tour = "clo_display_view" style = {{width: "100%"}}>
-                                                    <ListSubheader color ="primary" data-tour = "clo_ulo_header">Unit Level Learning Outcome: {_ulo.description}</ListSubheader>
-                                                    {component.outcomes.filter(clo => clo.unit_outcomeid != null).filter( clo => clo.unit_outcomeid.unit_outcomeid == _ulo.id).map(
-                                                        (_outcome, index )=>
-                                                        (
-                                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!(enableDrag)}>
-                                                            {(provided, snapshot) => (
-                                                                <LearningOutcomeUnit 
-                                                                learningOutcome = {_outcome}
-                                                                key={index} 
-                                                                provided = {provided} 
-                                                                snapshot = {snapshot} 
-                                                                component = {component} 
-                                                                onOpenDelDialog = {onOpenDelDialog} 
-                                                                onOpenEditDialog = {editLearningOutcome}
-                                                                onDuplicateOutcome = {onDuplicateOutcome}
-                                                                enableEdit = {enableEdit}
-                                                                enableDuplicate = {enableDuplicate}
-                                                                enableDelete = {enableDelete}
-                                                                index = {index}/> 
-                                                            )}
-                                                            </Draggable>
-                                                        )
-                                                    )}
-                                                    {provided.placeholder}
-                                                </List>
-                                                </RootRef>
-                                    )}
-                                        </Droppable>
-                                    </DragDropContext>
-                                :
-                                null
-                            )
-                        )}
+
+                            </AccordionDetails>
+                        </Accordion>
+                        
+                    )
+                    :
+                    <Grid container spacing = {2}>
+                        <Grid item xs = {12}>
+                            <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                {"What intended learning outcomes do you want to achieve by designing this component"}
+                            </Typography>
+                        </Grid>
+                       
+                        <Grid item xs = {12}>
+                            <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                {"Add the pre-design unit-level learning outcomes step 2 and link to the tasks with assessment"}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs ={12}>
+                            <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                {"Design Tips: One learning outcome can be archieved by several tasks. \
+                                You might also specify the unit-level outcome into several \
+                                sup-learning outcomes to indicate how students fulfil the outcome step by step."}
+                            </Typography>
+                        </Grid>
                     </Grid>
-                 
-                    {/* <Button onClick={()=> setLearningOutcomeSelectOpen(true)} variant="contained" color="secondary">Select Learning Outcome From Unit Level</Button> */}
-                </React.Fragment>
-            )
-        }
+                }
+                {
+                    enableAdd? 
+                        
+                            modeLevel == "course"?
+                            <Button onClick={addLearningOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                            :
+                            <Button onClick={onClickSelectOutcome} variant="contained" color="primary" data-tour="ulo_add_button">Add Learning Outcome</Button>
+                        
+                    :
+                    null
+                }
+            </Grid>
+        )
     }
 
     const displayDelLearningOutcomeDialog = () => {
@@ -529,6 +491,17 @@ const LearningOutcomeContainer = (props)=>{
             </React.Fragment>
         )
     }
+
+    const displayComponentSelectDialog = () => {
+        if(typeof component != "undefined"){
+            return (
+                <LearningOutcomeSelectContainer 
+                    component_id = {component.id}
+                    onClose={onCloseSelectOutcome}
+                />
+            );
+        }
+    }
     //#endregion
 
     const getListStyle = isDraggingOver => ({
@@ -551,12 +524,12 @@ const LearningOutcomeContainer = (props)=>{
                 {displayLearningOutcomeEdit()}
             </Dialog>
 
-            <Dialog open={learningOutcomeSelectOpen} onClose={()=> setLearningOutcomeSelectOpen(false)} maxWidth = {"md"}>
-                {displayLearningOutcomeSelect()}
-            </Dialog>
-
             <Dialog open={delDialogOpen} onClose={()=>{setDelDialogOpen(false)}}>
                 {displayDelLearningOutcomeDialog()}
+            </Dialog>
+
+            <Dialog open={selectDialogOpen} onClose={onCloseSelectOutcome} maxWidth = {"md"}>
+                {displayComponentSelectDialog()}
             </Dialog>
             
       </React.Fragment>

@@ -113,23 +113,43 @@ class LearningOutcomesController extends Controller
         $outcome->description = $request->description;
         $outcome->STEMType = $request->STEMType;
         $outcome->isCourseLevel = $request->isCourseLevel;
+
+        if($request->has('bloom_id')){
+            $outcome->bloom_id = $request->bloom_id;
+        }
         $outcome->created_by = Auth::user()->id;
         $outcome->updated_by = Auth::user()->id;
         $outcome->is_deleted = 0;
         $outcome->created_at = now();
         $outcome->updated_at = now();
-
+        
         if($request->has('template_id')){
             $outcome->template_id = $request->template_id;
         }
 
         $outcome->save();
 
+        if($request->has('stemtypes_id')){
+            $outcome->stemtypesid()->delete();
+            foreach($request->stemtypes_id as $_stemid){
+                $outcome->stemtypesid()->create([
+                    'outcome_id' => $outcome->id,
+                    'stem_type_id' => $_stemid,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0,
+                ]);
+            }
+        }
+
+        if($request->has('del_component_id')){
+            $outcome->componentid()->where('component_id', $request->del_component_id)->delete();
+        }
+        
         if($request->has('component_id')){
             $sequence = DB::table('component_outcome_relational')->where('component_id', $request->component_id)->count();
             if( $outcome->componentid()->exists()){
                 $outcome->componentid()->update([
-                    // 'id' =>  $outcome->componentid()->get()->id,
                     'outcome_id' => $outcome->id,
                     'component_id' => $request->component_id,
                     'created_by' => Auth::user()->id,
@@ -148,6 +168,53 @@ class LearningOutcomesController extends Controller
                 ]);
             }
        
+        }
+
+        if($request->has('slo_outcome')){
+            // delete
+            $existing = $outcome->slo_outcome_id()->get();
+            foreach($existing as $_eslo){
+                $check = true;
+
+                if(!isset($_eslo->component_outcomeid)){
+                    continue;   
+                }
+
+                foreach($request->slo_outcome as $_slo){
+                    if($_slo['id']  == $_eslo->component_outcomeid){
+                        $check = false;
+                    }
+                }
+
+               if($check){
+                 $outcome->slo_outcome_id()->where('component_outcomeid', $_eslo->component_outcomeid)->delete();
+               }
+            }
+
+            foreach($request->slo_outcome as $_slo){
+                if( $_slo['id'] > 0){
+                   
+                    $request_slo = new \Illuminate\Http\Request( $_slo);
+                    $request_slo['stemtypes_id'] = $request->stemtypes_id;
+                    $request_slo['unit_outcome_id'] = $outcome->id;
+
+                    $new_slo = LearningOutcome::find($_slo['id']);
+                    if( !isset( $new_slo)){
+                        //load from template
+                        $new_slo = new LearningOutcome();
+                        $request_slo['template_id'] = $_slo['id'];
+                    }
+                    $slo_outcome = LearningOutcomesController::save($new_slo, $request_slo);            
+                    //update
+                }else{
+                    //create
+                    $new_slo = new LearningOutcome();
+                    $request_slo = new \Illuminate\Http\Request( $_slo);
+                    $request_slo['stemtypes_id'] = $request->stemtypes_id;
+                    $request_slo['unit_outcome_id'] = $outcome->id;
+                    $slo_outcome = LearningOutcomesController::save($new_slo, $request_slo);
+                }
+            }
         }
 
         if($request->has('unit_outcome_id')){
@@ -192,90 +259,4 @@ class LearningOutcomesController extends Controller
         return $outcome;
     }
 
-
-    public function getOutcomeType(){
-        //
-        return response()->json([
-            [
-                'id' => 2,
-                'description' => 'Disciplinary Knowledge',
-                'value' => 2
-            ],
-            [
-                'id' => 1,
-                'description' => 'Disciplinary Skills',
-                'value' => 1
-            ],
-            [
-                'id' => 3,
-                'description' => 'Generic Skills',
-                'value' => 3
-            ],
-           
-        ]);
-    }
-
-    public function getOutcomeLevel($id = 1){
-
-
-        return response()->json([
-            [
-                'id' => 1,
-                'description' => 'Remember',
-                'value' => ['Recall', 'Relate', 'Recognize', 'Memorize', 'Repeat', 'Record', 'List']                
-            ],
-            [
-                'id' => 2,
-                'description' => 'Comprehend',
-                'value' => ['Estimate', 'Discuss', 'Describe', 'Recognize', 'Explain', 'Express', 'Identify']                
-            ],
-            [
-                'id' => 3,
-                'description' => 'Apply',
-                'value' => ['Interpret', 'Apply', 'Emply', 'Use', 'Demonstrate', 'Dramatize', 'Practice', 'Illustrate', 'Operate', 'Schedule', 'Shop', 'Sketch']
-            ],
-            [
-                'id' => 4,
-                'description' => 'Analyze',
-                'value' => ['Distinguish', 'Analyze', 'Differentiate', 'Appraise', 'Calculate', 'Experiment', 'Test'
-                , 'Compare', 'Contrast', 'Criticize', 'Diagram', 'Inspect', 'Debate', 'Inventory', 'Question', 'Relate']
-            ],
-            [
-                'id' => 5,
-                'description' => 'Evaluation',
-                'value' => ['Judge', 'Appraise', 'Rate', 'Evaluate', 'Compare', 'Revise', 'Score', 'Select', 'Choose', 'Assess estimate', 'Measure']
-            ],
-            [
-                'id' => 6,
-                'description' => 'Create',
-                'value' => ['Compose Plan', 'Propose', 'Design', 'Formulate', 'Arrange', 'Collect', 'Construct', 'Create', 'Set up', 'Organize', 'Manage', 'Prepare']
-            ],
-        ]);
-    }
-
-    public function getSTEMType(){
-        return response()->json([
-            '1' => [
-                'id' => 1,
-                'description' => 'Science',
-                'value' => 'S'
-            ],
-            '2' => [
-                'id' => 2,
-                'description' => 'Technology',
-                'value' => 'T'
-            ],
-            '3' => [
-                'id' => 3,
-                'description' => 'Engineering',
-                'value' => 'E'
-            ],
-            '4' => [
-                'id' => 3,
-                'description' => 'Mathametics',
-                'value' => 'M'
-            ],
-           
-        ]);
-    }
 }

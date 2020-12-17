@@ -123,13 +123,10 @@ import config from 'react-global-configuration';
     export const apiLearningOutcomeList = data => learningOutcomeRequest.get('/', JSON.stringify(data));
     export const apiLearningOutcomeGet = data => learningOutcomeRequest.get(`/${data}`);
     export const apiLearningOutcomePost = data => learningOutcomeRequest.post('/', JSON.stringify(data));
-    export const apiLearningOutcomePut = data => learningOutcomeRequest.put(`/${data.outcome_id}`, JSON.stringify(data));
+    export const apiLearningOutcomePut = data => learningOutcomeRequest.put(`/${data.id}`, JSON.stringify(data));
     export const apiLearningOutcomeDelete = data => learningOutcomeRequest.delete(`/${data}`);
 
-    export const apiLearningOutcomeGetOutcomeType = data => learningOutcomeRequest.get('/getOutcomeType');
-    export const apiLearningOutcomeGetOutcomeLevel = data => learningOutcomeRequest.get(`/getOutcomeLevel/${data}`);
     export const apiLearningOutcomeDeletComponentRelation = data => learningOutcomeRequest.delete(`/destroyComponentRelation/${data.outcome_id}/${data.component_id}`);
-    // export const apiLearningOutcomeGetSTEMType = data => learningOutcomeRequest.get('/');
     //#endregion learningoutcome api
 
     //#region learningoutcome component api

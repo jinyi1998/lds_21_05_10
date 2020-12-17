@@ -37,6 +37,13 @@ class ComponentTemplate extends Model
         )->with(['assessmentid', 'toolid', 'resourceid', 'componentid'])->orderBy('sequence');
     }
 
+    public function outcomeid(){
+        return $this->hasMany(
+            'App\ComponentOutcomeTemplateRelation',
+            'component_id'
+        )->where('is_deleted', 0)->orderBy('component_outcome_template_relation.sequence')->select(['id','outcome_id','component_id', 'sequence']);
+    } 
+
     public function outcomes(){
         return $this->hasManyThrough(
             'App\LearningOutcomeTemplate',
@@ -45,7 +52,7 @@ class ComponentTemplate extends Model
             'id', // target table target id
             'id', // local table local id
             'outcome_id' //middle relation table target id
-        )->with(['unit_outcomeid_temp']);
+        )->with(['unit_outcomeid_temp', 'stemtypesid', 'slo_outcome', 'componentid']);
     }
 
     public function designtypeid(){

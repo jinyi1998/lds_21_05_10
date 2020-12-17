@@ -45,9 +45,6 @@ import MoodleModContainer from '../admin/sitemanagement/container/moodleModConta
 //#endregion
 
 import {
-  apiCourseDelete, apiCourseCreate, apiCourseUpdate, apiCourseGet,
-  apiLearningOutcomePost, apiLearningOutcomeGetOutcomeType, apiLearningOutcomeGetOutcomeLevel,
-  apiLearningOutcomeTempGet,
   apiDesignTypeList, apiDesignTypeGet,
   apiOptionsList,
   apiLearningTaskGetPatternOpts,
@@ -98,14 +95,15 @@ const App = (props) => {
 
   const [optionsInit, setOptions] = React.useState({
     designType: [],
-    learningOutcomeType: [],
-    learningPatternOpts: [],
     taskType: [],
     taskClassType: [],
     taskSize: [],
     taskTarget: [],
     taskResource: [],
     taskElearingResource: [],
+    bloomLvlOpts: [],
+    outcomeTypeOpts: [],
+    STEMTypeOpts: []
 });
   const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
@@ -179,38 +177,22 @@ const App = (props) => {
     })
   }
 
-  async function fetchlearningTypeTempData() {
-
-    return apiLearningOutcomeGetOutcomeType()
-      .then(response => {
-          return {
-            "learningOutcomeType": response.data,
-            "learningTypeTemp": response.data
-          }
-      }).catch(error => console.log(error));
-
-  }
-
-  async function fetchlearningPatternOptsData() {
-      return apiLearningTaskGetPatternOpts().then(
-          response => {
-              return { "learningPatternOpts": response.data};
-          }
-      )
-  }
-
   async function fetchlearningOptsData() {
 
       return apiOptionsList().then(response=>{
 
           setTaskTypeColorValue(response.data.learningTasktypeOpts)
           return {
+            "designType": response.data.designType,
             "taskType": response.data.learningTasktypeOpts,
             "taskClassType": response.data.classTypeOpts,
             "taskSize": response.data.classSizeOpts,
             "taskTarget": response.data.classTargetOpts,
             "taskResource": response.data.resourceOpts,
             "taskElearingResource": response.data.elearningtoolOpts,
+            "bloomLvlOpts": response.data.bloomLvlOpts,
+            "outcomeTypeOpts": response.data.outcomeTypeOpts,
+            "STEMTypeOpts": response.data.STEMTypeOpts
           }
       })
       .catch(error => console.log(error));
@@ -222,9 +204,6 @@ const App = (props) => {
     setLoadingOpen(true)
     var updates = [];
     updates.push(fetchlearningOptsData());
-    updates.push(fetchDesignTypeData());
-    updates.push(fetchlearningTypeTempData());
-    updates.push(fetchlearningPatternOptsData());
 
     Promise.all(updates).then((response)=>{
       var temp = {};

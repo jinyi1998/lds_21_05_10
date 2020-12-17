@@ -27,7 +27,7 @@ class DesignType extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'outcome_id' //LearningPatternTemplate pattern id
-        )->select(['learningoutcome_template.*','learningoutcome_template.id as template_id']);
+        )->select(['learningoutcome_template.*','learningoutcome_template.id as template_id'])->with(['stemtypesid', 'slo_outcome', 'componentid']);
     }
 
     public function components(){

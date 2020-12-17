@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::resource('opts', 'API\LearningTaskOptsController');
+Route::resource('opts', 'API\AppOptsController');
 
 //File System
 Route::post('file/json', 'API\FileSystemController@json');
@@ -26,9 +26,7 @@ Route::get('file', 'API\FileSystemController@index');
 
 //Learning Outcome
 
-Route::get('learningOutcome/getOutcomeType', 'API\LearningOutcomesController@getOutcomeType');
-// Route::get('learningOutcome/getLearningOutcomeByComponentTemp/{id}', 'API\LearningOutcomesController@getLearningOutcomeByComponentTemp');
-Route::get('learningOutcome/getOutcomeLevel/{id}', 'API\LearningOutcomesController@getOutcomeLevel');
+
 // Route::get('learningOutcome/getDefaultOutcomeByLearningType/{id}', 'API\LearningOutcomesController@getDefaultOutcomeByLearningType');
 Route::delete('learningOutcome/destroyComponentRelation/{outcome_id}/{component_id}', 'API\LearningOutcomesController@destroyComponentRelation');
 Route::resource('learningOutcome', 'API\LearningOutcomesController');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -16,15 +16,13 @@ import {AppContextStore} from '../../../container/app';
 
 const LearningOutcomeUnit = (props)=>{
     
-    const { setLoadingOpen, options } = React.useContext(AppContextStore);
-    const {learningOutcomeID} = props;
-    const {enableEdit, enableDuplicate, enableDelete} = props;
+    const { setLoadingOpen, options } = React.useContext(AppContextStore); 
+    const { enableEdit, enableDuplicate, enableDelete} = props;
     const { onOpenEditDialog, onOpenDelDialog, index } = props;
-    const {provided, snapshot} = props;
-
-    const learningTypeTemp = options.learningOutcomeType;
+    const { provided, snapshot } = props;
 
     const [outcome, setOutcome] = React.useState(props.learningOutcome);
+    const [slo, setSlo] = React.useState([]);
 
     const getItemStyle = (isDragging, draggableStyle) => ({
         // styles we need to apply on draggables
@@ -39,6 +37,15 @@ const LearningOutcomeUnit = (props)=>{
         setOutcome(props.learningOutcome);
     }, [props.learningOutcome]);
 
+    React.useEffect(()=>{
+        if(typeof props.component != 'undefined'){
+            var temp = outcome.slo_outcome.filter(_outcome => _outcome.componentid.filter(_componentid => _componentid.component_id == props.component.id).length > 0);
+            setSlo(temp);
+        }else{
+            setSlo(outcome.slo_outcome);
+        }
+    }, [outcome]);
+
     const onDuplicateOutcome = (outcome) =>{
         if(typeof props.onDuplicateOutcome == 'undefined'){
             console.log('error occur');
@@ -46,80 +53,103 @@ const LearningOutcomeUnit = (props)=>{
             props.onDuplicateOutcome(outcome)
         }
     }
+
     return (
-        <ListItem
-        key = {outcome.id}
-        ContainerComponent="li"
-        ContainerProps={{ ref: provided.innerRef }}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-        style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-        )}>
-            <ListItemIcon>
-                <DragHandleIcon />
-            </ListItemIcon>
-            <ListItemText
-                primary={
-                    <React.Fragment>
-                          {/* <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_type">
-                              { learningTypeTemp.find(x => x.id == outcome.outcomeType)?.description}
+        <React.Fragment>
+               {/* LO */}
+              <ListItem
+                key = {outcome.id}
+                ContainerComponent="li"
+                ContainerProps={{ ref: provided.innerRef }}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                style={getItemStyle(
+                    snapshot.isDragging,
+                    provided.draggableProps.style
+            )}>
+                <ListItemIcon>
+                    <DragHandleIcon />
+                </ListItemIcon>
+                <ListItemText
+                    primary={
+                        <React.Fragment>
+                            <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                                {outcome.description}
+                                </Typography>
+                        </React.Fragment>
+                    }
+                    secondary={ 
+                        <React.Fragment>
+                            {
+                                outcome.outcomeType == 3?
+                                null
+                                :
+                                <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
+                                        outcome.stemtypesid.length > 0?
+                                       
+                                        outcome.stemtypesid.map( x => options.STEMTypeOpts.find( _opts => x.stem_type_id == _opts.id).name).join(',')
+                                        :
+                                        "N/A"
+                                } )  </Typography>
+                            }
+                        
+                            <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> 
+                                Bloom Taxonomy Level: {options.bloomLvlOpts.find( x => x.id == outcome.bloom_id)?.name }  
                             </Typography>
-                           -  */}
-                           <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
-                               {outcome.description}
+                        </React.Fragment>
+                    } 
+                />
+                <ListItemSecondaryAction>
+                    {
+                        enableEdit?
+                        <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
+                            <EditIcon />
+                        </IconButton>
+                        :
+                        null
+                    }
+                    {/* {
+                        enableDuplicate?
+                        <IconButton edge="end" aria-label="edit" onClick = {()=> onDuplicateOutcome(outcome)} data-tour = "">
+                            <FileCopyIcon />
+                        </IconButton>
+                        :
+                        null
+                    } */}
+                    {
+                        enableDelete?
+                        <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
+                            <DeleteIcon />
+                        </IconButton>
+                        :
+                        null
+                    }
+                
+                </ListItemSecondaryAction>
+            </ListItem>
+
+            {/* SLO */}
+            <Grid container>
+            {
+                slo.map(
+                    _slo =>
+                    <Grid container item xs = {12}key = {_slo.id}>
+                        <Grid item xs = {1}>
+                        </Grid>
+
+                        <Grid item xs = {11}>
+                            <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                                {_slo.description}
                             </Typography>
-                    </React.Fragment>
-                }
-                secondary={ 
-                    <React.Fragment>
-                        {
-                            outcome.outcomeType == 3?
-                            null
-                            :
-                            <Typography variant = {'subtitle2'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
-                                outcome.STEMType == ""?
-                                    "N/A"
-                                    :
-                                    outcome.STEMType
-                            } )  </Typography>
-                        }
-                      
-                        <Typography variant = {'subtitle2'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> Bloom Taxonomy Level: {outcome.level}   </Typography>
-                        {/* <Typography component={'span'} display="inline" color = "textSecondary">{(outcome.isCourseLevel)? "Unit LO": ""}</Typography> */}
-                    </React.Fragment>
-                  
-                } 
-            />
-            <ListItemSecondaryAction>
-                {
-                    enableEdit?
-                    <IconButton edge="end" aria-label="edit" onClick = {()=> onOpenEditDialog(outcome)} data-tour = "lo_edit">
-                        <EditIcon />
-                    </IconButton>
-                    :
-                    null
-                }
-                {
-                    enableDuplicate?
-                    <IconButton edge="end" aria-label="edit" onClick = {()=> onDuplicateOutcome(outcome)} data-tour = "">
-                        <FileCopyIcon />
-                    </IconButton>
-                    :
-                    null
-                }
-                {
-                    enableDelete?
-                    <IconButton edge="end" aria-label="delete" onClick = {()=> onOpenDelDialog(outcome)} data-tour ="lo_delete">
-                        <DeleteIcon />
-                    </IconButton>
-                    :
-                    null
-                }
-               
-            </ListItemSecondaryAction>
-        </ListItem>
+                        </Grid> 
+                    </Grid>
+                )
+            }
+            </Grid>
+            
+            
+        </React.Fragment>
+      
     );
 }
 export default LearningOutcomeUnit;
