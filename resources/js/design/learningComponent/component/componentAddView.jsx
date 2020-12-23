@@ -247,9 +247,9 @@ const ComponentAddView = (props) => {
                 return(
                     <React.Fragment>
                         <List>
-                            {componentOpts.map((_data, index)=>{
+                            {patternOpts.map((_data, index)=>{
                                 return(
-                                    <ListItem button key={_data.id} onClick = {() => onClickPattern(_data.od)} divider = {true}>
+                                    <ListItem button key={_data.id} onClick = {() => onClickPattern(_data.id)} divider = {true}>
                                         {_data.title}
                                         <ListItemSecondaryAction> <AddShoppingCartIcon /> </ListItemSecondaryAction>
                                     </ListItem>

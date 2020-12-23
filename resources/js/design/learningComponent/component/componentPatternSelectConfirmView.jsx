@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 
 import {AppContextStore} from '../../../container/app';
 import {ContextStore} from '../../../container/designContainer'
@@ -112,11 +111,11 @@ const ComponentPatternSelectConfirmView = (props) => {
                         </Grid>
 
                         <Grid container item xs = {12}>
-                            { options.learningOutcomeType?.map(_lo_type => 
-                                <Grid container item xs = {12}>
+                            { options.outcomeTypeOpts?.map((_lo_type, index) => 
+                                <Grid container item xs = {12} key = {index}>
                                     <Paper style = {{width: '100%', padding: 16}}>
                                         <Grid container item xs = {12}>
-                                            <Typography variant="subtitle1" gutterBottom> {_lo_type.description} </Typography>
+                                            <Typography variant="subtitle1" gutterBottom> {_lo_type.name} </Typography>
                                         </Grid>
 
                                         <Grid container item xs = {12}>

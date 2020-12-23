@@ -14,7 +14,9 @@ import InstructionBox from '../../../components/instructionBox';
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-import { apiLearningCompPost, apiLearningCompTempGet, apiLearningCompPut } from '../../../api.js';
+import { apiLearningCompPost, apiLearningCompTempGet, apiLearningCompPut,
+apiCourseGet, 
+apiLearningOutcomePost} from '../../../api.js';
 
 
 const useStyles = makeStyles(theme => ({
@@ -66,15 +68,128 @@ const ComponentPlanContainer = (props)  => {
             if(typeof _component.pattern_id !== 'undefined'){
               tempcomponent.patterns = tempcomponent.patterns.filter(x => x.id == _component.pattern_id)
             }
-            updates.push(apiLearningCompPost(tempcomponent));
+            var lo_add = handleComponentOutcomeAdd(tempcomponent.outcomes);
+            if(lo_add.length > 0){
+              return Promise.resolve(handleComponentWithLO(tempcomponent, lo_add));
+            }else{
+              //normal handling => no addition lo need to be adde
+              if(typeof tempcomponent.outcomes !== 'undefined'){
+                // 
+                tempcomponent.outcomes_id = handleComponentOutcomeMapping(tempcomponent.outcomes);
+              }
+              return Promise.resolve(apiLearningCompPost(tempcomponent));
+            }  
           }
         ));
       })
-      Promise.all(updates).then(()=>{
-          refreshCourse();
-          setLoadingOpen(false);
-          displayMsg("success", "Learning Components Added")
+
+      Promise.all(updates).then((rs)=>{
+        return Promise.all(
+          rs
+        ).then(
+          () => {
+            refreshCourse();
+            setLoadingOpen(false);
+            displayMsg("success", "Learning Components Added")
+          }
+        );
       });
+  }
+
+  const handleComponentWithLO = (tempcomponent, lo_add) => {
+    var add_request = [];
+    lo_add.map(_lo => {
+      if(tempcomponent.outcomes.filter( x => x.id == _lo  && x.isCourseLevel).length > 0 ){
+          var outcome = tempcomponent.outcomes.find( x => x.id == _lo && x.isCourseLevel);
+          // handle lo/ slo
+          if(typeof outcome.slo_outcome != 'undefined'){
+            outcome.slo_outcome = outcome.slo_outcome.filter( x => lo_add.indexOf(x.id) > -1);
+          }
+      
+          outcome['template_id'] = outcome.id;
+          outcome['course_id'] = course.id;
+          add_request.push(apiLearningOutcomePost(outcome));
+      }
+    })
+    // re-map added lo to component
+    return Promise.all(add_request).then(()=>{
+      // console.log('lo')
+      return apiCourseGet(course.id);
+    }).then((rs) => {
+      var outcome_id = [];
+      rs.data.outcomes.map((_outcome) => {
+          //ulo
+          tempcomponent.outcomes.map(_clo => {
+              if(_clo.id == _outcome.template_id){
+                  outcome_id.push({"outcome_id":_outcome.id});
+              }
+          });
+  
+          //sub-lo
+          _outcome.slo_outcome.map((_slo) => {
+            tempcomponent.outcomes.map(_clo => {
+                  if(_clo.id == _slo.template_id){
+                      outcome_id.push({"outcome_id":_slo.id});
+                  }
+              });
+          })
+      })
+      tempcomponent.outcomes_id = outcome_id;
+      return apiLearningCompPost(tempcomponent);
+    }).then(()=>{
+      // console.log('co');
+    });
+  }
+
+  const handleComponentOutcomeAdd = (clos) => {
+    var outcome_id = [];
+
+    clos.map(_clo => {
+      var add = true;
+      course.outcomes.map((_outcome) => {
+        //ulo
+        if(_clo.id == _outcome.template_id){
+          add = false;
+        }
+        // //slo
+        // _outcome.slo_outcome.map((_slo) => {
+        //   if(_clo.id == _slo.template_id){
+        //     add = false;
+        //   }
+        // })
+      });
+
+      if(add){
+        outcome_id.push(_clo.id)
+      }
+    })
+
+    console.log(outcome_id);
+    console.log(clos);
+    return outcome_id;
+  }
+
+  const handleComponentOutcomeMapping = (clos) => {
+    var outcome_id = [];
+    course.outcomes.map((_outcome) => {
+        //ulo
+        clos.map(_clo => {
+            if(_clo.id == _outcome.template_id){
+                outcome_id.push({"outcome_id":_outcome.id});
+            }
+        });
+
+        //sub-lo
+        _outcome.slo_outcome.map((_slo) => {
+            clos.map(_clo => {
+                if(_clo.id == _slo.template_id){
+                    outcome_id.push({"outcome_id":_slo.id});
+                }
+            });
+        })
+    })
+
+    return outcome_id;
   }
 
   const onDragEnd = (result) => {

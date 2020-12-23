@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import GridListTile from '@material-ui/core/GridListTile';
+
 import {AppContextStore} from '../../../container/app';
 
 const useStyles = makeStyles(theme => ({
@@ -69,8 +71,19 @@ const useStyles = makeStyles(theme => ({
 const StemPractice = (props) => {
 
     const classes = useStyles();
-    const { designBoxData } = props;
     const { returnImgSrc } = React.useContext(AppContextStore);
+    const [designBoxData, setDesignBoxData] = React.useState({
+      ...props.designBoxData,
+    });
+
+    React.useEffect(()=>{
+      var src = returnImgSrc(props.designBoxData.media);
+      setDesignBoxData({
+        ...props.designBoxData,
+        media: src
+      })
+    },[props.designBoxData])
+    
 
     const [ isMouseOver, setIsMouseOver ] = React.useState(false);
     
@@ -94,16 +107,16 @@ const StemPractice = (props) => {
     }
 
     return (
-      <Grid container 
+      <GridListTile>
+              <Grid container 
         justify = {"center"} 
         style= {{
-          width: "30%",
-          padding: "5% 0 5% 0"
+          padding: "10% 5%"
       }}>
         <Grid container item xs ={12} justify = {"center"} 
             onMouseOver = {handleMouseOver}
             onMouseLeave = {() => {setIsMouseOver(false)}} 
-            style = {{maxWidth: 400, height: 480}}
+            style = {{width: 400, height: 480}}
         >
           <Paper>
             {/* media */}
@@ -115,7 +128,7 @@ const StemPractice = (props) => {
             data-tour = {"designtype_action_" +  designBoxData.id}
           >
             <Grid item xs ={12}>
-                <img src = {returnImgSrc(designBoxData.media)} className ={classes.media} />
+                <img src = {designBoxData.media} className ={classes.media} />
             </Grid>
           </Grid>
             {/* info */}
@@ -180,6 +193,8 @@ const StemPractice = (props) => {
           </Paper>
         </Grid>
       </Grid>
+      </GridListTile>
+
   
       );
 }

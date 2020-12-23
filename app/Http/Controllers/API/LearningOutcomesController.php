@@ -131,15 +131,18 @@ class LearningOutcomesController extends Controller
 
         if($request->has('stemtypes_id')){
             $outcome->stemtypesid()->delete();
-            foreach($request->stemtypes_id as $_stemid){
-                $outcome->stemtypesid()->create([
-                    'outcome_id' => $outcome->id,
-                    'stem_type_id' => $_stemid,
-                    'created_by' => Auth::user()->id,
-                    'updated_by' => Auth::user()->id,
-                    'is_deleted' => 0,
-                ]);
+            if(isset($request->stemtypes_id)){
+                foreach($request->stemtypes_id as $_stemid){
+                    $outcome->stemtypesid()->create([
+                        'outcome_id' => $outcome->id,
+                        'stem_type_id' => $_stemid,
+                        'created_by' => Auth::user()->id,
+                        'updated_by' => Auth::user()->id,
+                        'is_deleted' => 0,
+                    ]);
+                }
             }
+          
         }
 
         if($request->has('del_component_id')){

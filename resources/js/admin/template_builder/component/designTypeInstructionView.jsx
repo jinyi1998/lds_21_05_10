@@ -22,7 +22,7 @@ const DesignTypeInstructionView = (props) => {
 
     const [ instruction, setInstruction] = React.useState({
         id: -1,
-        media: "no_img",
+        media: "",
         title: "",
         description: "",
         designtype_id: -1
@@ -32,7 +32,11 @@ const DesignTypeInstructionView = (props) => {
     const [ pictures, setPictures ] = React.useState("");
 
     React.useEffect(()=>{
-        setInstruction(props.instruction);
+        var src = returnImgSrc(props.instruction.media);
+        setInstruction({
+            ...props.instruction,
+            media: src
+        });
     },[props.instruction])
 
     //#region local action
@@ -151,7 +155,7 @@ const DesignTypeInstructionView = (props) => {
         return (
             <React.Fragment>
                  <Grid container item xs = {12} justify = "center">
-                    <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
+                    <img src = {instruction.media} style = {{width: 400}}/>
                 </Grid>
 
                 <Grid item xs = {12}>
@@ -194,7 +198,7 @@ const DesignTypeInstructionView = (props) => {
                     </React.Fragment>
                     :
                     <React.Fragment>
-                         <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
+                         <img src = {instruction.media} style = {{width: 400}}/>
                          <IconButton onClick = {onClickEditPic}><EditIcon/></IconButton>
                     </React.Fragment>
                     }

@@ -25,7 +25,7 @@ const Task = (props) => {
 
     return (
         <React.Fragment>
-             <Grid item container  xs={12} spacing={4}  style = {{pageBreakInside: "avoid"}}>
+             <Grid item container  xs={12} style = {{pageBreakInside: "avoid"}}>
                 <Grid item xs={1} height="100%">
                     <div style={taskTypeColor(task.type)}>
                     </div>
@@ -103,11 +103,40 @@ const Lesson = (props) => {
 
                     {
                         lesson.tasks.length > 0?
-                        lesson.tasks.map(task => {
-                            return (
-                                <Task task = {task} key = {task.id}/>
-                            )
-                        })
+                        <Grid container item xs = {12}>
+                            <Grid item xs ={12}>
+                                <Typography>Pre-Class</Typography>
+                                {
+                                    lesson.tasks.filter(_task => _task.lessonid.lessontype == 1).map(task => {
+                                        return (
+                                            <Task task = {task} key = {task.id}/>
+                                        )
+                                    })
+                                }
+                            </Grid>
+
+                            <Grid item xs ={12}>
+                                <Typography>In-Class</Typography>
+                                {
+                                    lesson.tasks.filter(_task => _task.lessonid.lessontype == 2).map(task => {
+                                        return (
+                                            <Task task = {task} key = {task.id}/>
+                                        )
+                                    })
+                                }
+                            </Grid>
+
+                            <Grid item xs ={12}>
+                                <Typography>Post-Class</Typography>
+                                {
+                                    lesson.tasks.filter(_task => _task.lessonid.lessontype == 3).map(task => {
+                                        return (
+                                            <Task task = {task} key = {task.id}/>
+                                        )
+                                    })
+                                }
+                            </Grid>
+                        </Grid>
                         :
                         <Grid item xs = {12} >
                             <Typography variant = "subtitle1" color = "textPrimary" gutterBottom> No task in this lesson </Typography>  

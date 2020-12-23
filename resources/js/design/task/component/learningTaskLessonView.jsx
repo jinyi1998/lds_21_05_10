@@ -54,10 +54,8 @@ const useStyles = makeStyles(theme => ({
       flexGrow: 1,
     },
     paper: {
-        padding: theme.spacing(2),
         textAlign: 'center',
         width: '100%',
-        margin: '16px'
     },
     contentGrid: {
         textAlign: "left"

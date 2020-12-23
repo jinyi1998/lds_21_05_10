@@ -19,7 +19,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
-import { apiDesignTypeGet, apiLearningCompTempGet, apiLearningCompPost, apiLearningPattTempGet } from '../../../api';
+import { apiDesignTypeGet, apiLearningCompTempGet, apiLearningCompPost, apiLearningOutcomePost, apiCourseGet } from '../../../api';
 import { result } from 'lodash';
 
 
@@ -107,18 +107,98 @@ const ComponentSelectContainer = (props ) => {
             var request = JSON.parse(JSON.stringify(component));
             request.component_template_id = component.id;
             request.course_id = course.id;
-            delete request.outcomes;
             request.outcomes_id = handleComponentOutcomeMapping(component.outcomes);
-            updates.push(
-                apiLearningCompPost(request)
-            );
-        })
-        Promise.all(updates).then(()=>{
-            setLoadingOpen(false);
-            refreshCourse();
-            props.handleNext();
+
+            var lo_add = handleComponentOutcomeAdd(request.outcomes);
+            if(lo_add.length > 0){
+                updates.push(Promise.resolve(handleComponentWithLO(request, lo_add)));
+            }else{
+              //normal handling => no addition lo need to be adde
+              if(typeof request.outcomes !== 'undefined'){
+                request.outcomes_id = handleComponentOutcomeMapping(request.outcomes);
+              }
+              updates.push(Promise.resolve(apiLearningCompPost(request)));
+            }
+        });
+        Promise.all(updates).then((rs)=>{
+            Promise.all(rs).then(()=>{
+                setLoadingOpen(false);
+                refreshCourse();
+                props.handleNext();
+            })
         });
     }
+
+    const handleComponentWithLO = (tempcomponent, lo_add) => {
+        // addition lo need to be added
+
+            // add lo
+        var add_request = [];
+        lo_add.map(_lo => {
+            if(tempcomponent.outcomes.filter( x => x.id == _lo  && x.isCourseLevel).length > 0 ){
+                var outcome = tempcomponent.outcomes.find( x => x.id == _lo && x.isCourseLevel);
+                // handle lo/ slo
+                if(typeof outcome.slo_outcome != 'undefined'){
+                    outcome.slo_outcome = outcome.slo_outcome.filter( x => lo_add.indexOf(x.id) > -1);
+                }
+            
+                outcome['template_id'] = outcome.id;
+                outcome['course_id'] = course.id;
+                add_request.push(apiLearningOutcomePost(outcome));
+            }
+        })
+
+            // re-map added lo to component
+        return Promise.all(add_request).then(()=>{
+            return apiCourseGet(course.id)
+        }).then((rs)=>{
+            var outcome_id = [];
+            rs.data.outcomes.map((_outcome) => {
+                //ulo
+                tempcomponent.outcomes.map(_clo => {
+                    if(_clo.id == _outcome.template_id){
+                        outcome_id.push({"outcome_id":_outcome.id});
+                    }
+                });
+        
+                //sub-lo
+                _outcome.slo_outcome.map((_slo) => {
+                    tempcomponent.outcomes.map(_clo => {
+                        if(_clo.id == _slo.template_id){
+                            outcome_id.push({"outcome_id":_slo.id});
+                        }
+                    });
+                })
+            })
+            tempcomponent.outcomes_id = outcome_id;
+            return apiLearningCompPost(tempcomponent);
+        })
+    }
+
+    const handleComponentOutcomeAdd = (clos) => {
+        var outcome_id = [];
+    
+        clos.map(_clo => {
+          var add = true;
+          course.outcomes.map((_outcome) => {
+            //ulo
+            if(_clo.id == _outcome.template_id){
+              add = false;
+            }
+            //slo
+            _outcome.slo_outcome.map((_slo) => {
+              if(_clo.id == _slo.template_id){
+                add = false;
+              }
+            })
+          });
+    
+          if(add){
+            outcome_id.push(_clo.id)
+          }
+        })
+        return outcome_id;
+      }
 
     const handleComponentOutcomeMapping = (clos) => {
         var outcome_id = [];

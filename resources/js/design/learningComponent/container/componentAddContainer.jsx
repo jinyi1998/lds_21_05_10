@@ -34,7 +34,6 @@ const ComponentAddContainer = (props) => {
     }
 
     const handleAddShoppingCart = (component) => {
-        console.log(component);
         setComponentShoppingCart([...componentShoppingCart, component])
     }
 

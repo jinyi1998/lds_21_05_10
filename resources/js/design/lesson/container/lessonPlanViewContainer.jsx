@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
 
 import LessonPlanView from '../component/lessonPlanView';
 import LessonPlanTaskSelect from '../component/lessonPlanTaskSelect';
@@ -91,8 +91,12 @@ const LessonPlanViewContainer = (props) => {
 
     return (
         <Grid container data-tour = "lesson_view">
-            <LessonPlanView 
+            <Grid item xs = {12}>
+                <Typography variant = {"subtitle1"}> {lesson.title}</Typography>
+            </Grid>
+             <LessonPlanView 
                 lesson = {lesson}
+                lessontype = {1}
                 canEdit = {canEdit}
                 setEditMode = {setEditMode}
                 refreshLesson = {refreshLesson}
@@ -101,6 +105,39 @@ const LessonPlanViewContainer = (props) => {
                 updateLearningTask = {updateLearningTask}
                 updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
             />
+
+            <LessonPlanView 
+                lesson = {lesson}
+                lessontype = {2}
+                canEdit = {canEdit}
+                setEditMode = {setEditMode}
+                refreshLesson = {refreshLesson}
+                enableDrag = {enableDrag}
+                enableEdit = {enableEdit}
+                updateLearningTask = {updateLearningTask}
+                updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
+            />
+
+            <LessonPlanView 
+                lesson = {lesson}
+                lessontype = {3}
+                canEdit = {canEdit}
+                setEditMode = {setEditMode}
+                refreshLesson = {refreshLesson}
+                enableDrag = {enableDrag}
+                enableEdit = {enableEdit}
+                updateLearningTask = {updateLearningTask}
+                updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
+            />
+
+            {canEdit == true && enableEdit ? 
+                <Grid item xs ={12}>
+                    <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)} data-tour = "lesson_lesson_select">
+                        Edit
+                    </Button>
+                </Grid> 
+                : null
+            }
 
              <Dialog open={editMode} 
                 onClose={() => {setEditMode(false)}} 

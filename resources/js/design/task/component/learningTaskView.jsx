@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
       flexGrow: 1,
     },
     paper: {
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
         textAlign: 'center',
         margin: 2
     },
@@ -194,17 +194,53 @@ const LearningTaskView = (props) => {
                     }
                  
                     <Grid item xs ={4} style={taskTypeColor(task.type)}>
-                        {/* <div style={taskTypeColor(task.type)}/> */}
                     </Grid>
 
                 </Grid>
 
                 
                 <Grid container item xs>
-                    <Grid item xs={12} className={classes.contentGrid}>
-                        <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
-                            {task.title}
-                        </Typography>
+                    <Grid container item xs={12} className={classes.contentGrid}>
+                        <Grid item xs>
+                            <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}} data-tour = "component_task_title">
+                                {task.title}
+                            </Typography>
+                        </Grid>
+
+                        <Grid container item xs = {3} spacing = {1}>
+                            <Grid item xs={4} className={classes.contentGrid} >
+                                {
+                                    editBtn == true?
+                                        <IconButton onClick={()=>onClickEdit()} size="small">
+                                            <EditIcon />
+                                        </IconButton>
+                                        :
+                                        null
+                                }
+                            </Grid>
+                            
+                            <Grid item xs={4} className={classes.contentGrid} >
+                                {
+                                    duplicateBtn == true?
+                                        <IconButton onClick={()=> {onClickDuplicate()}} size="small">
+                                            <FileCopyIcon />
+                                        </IconButton>
+                                        :
+                                        null
+                                }
+                            </Grid>
+
+                            <Grid item xs={4} className={classes.contentGrid} >
+                                {      
+                                    deleteBtn == true?
+                                        <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        :
+                                        null
+                                }      
+                            </Grid>
+                        </Grid>
                     </Grid>
                    
                   
@@ -268,45 +304,11 @@ const LearningTaskView = (props) => {
                     </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid} data-tour ="component_task_description">
-                        <Typography color = "textSecondary" gutterBottom>
+                        <Typography color = "textSecondary" gutterBottom variant = {"caption"}>
                             {task.description}
                         </Typography>
                     </Grid>
 
-                </Grid>
-                <Grid container item xs = {3} spacing = {2}>
-                    <Grid item xs={4} className={classes.contentGrid} >
-                        {
-                            editBtn == true?
-                                <IconButton onClick={()=>onClickEdit()} size="small">
-                                    <EditIcon />
-                                </IconButton>
-                                :
-                                null
-                        }
-                    </Grid>
-                    
-                    <Grid item xs={4} className={classes.contentGrid} >
-                        {
-                            duplicateBtn == true?
-                                <IconButton onClick={()=> {onClickDuplicate()}} size="small">
-                                    <FileCopyIcon />
-                                </IconButton>
-                                :
-                                null
-                        }
-                    </Grid>
-
-                    <Grid item xs={4} className={classes.contentGrid} >
-                        {      
-                            deleteBtn == true?
-                                <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
-                                    <DeleteIcon />
-                                </IconButton>
-                                :
-                                null
-                        }      
-                    </Grid>
                 </Grid>
             </Grid>
         );

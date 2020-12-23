@@ -287,6 +287,15 @@ const LearningTaskEditView = (props) => {
 
 
     const displayAssessment = () => {
+        // const outcomes =  course.outcomes.filter(_outcome => _outcome.isCourseLevel == true && component.outcomeid.map( x => x.outcome_id).includes(_outcome.id));
+        const outcomes =   course.outcomes.concat( 
+            course.outcomes.flatMap( 
+                x => x.slo_outcome.flatMap(
+                    (_slo, index) => _slo
+                )
+            )
+        ).filter(_outcome => component.outcomeid.map( x => x.outcome_id).includes(_outcome.id));
+
         if(hasAssessment){
             return (
                 <Grid item xs={12} className={classes.contentGrid}>
@@ -305,7 +314,11 @@ const LearningTaskEditView = (props) => {
                         renderValue={selected => (
                             <div className={classes.chips}>
                             {selected.map(value => (
-                                <Chip key={value} label={component.outcomes.find(x=> x.id == value).description} className={classes.chip}  style={{whiteSpace: 'normal' }} />
+                                <Chip key={value} label={
+                                    outcomes.find(x=> x.id == value).description
+                                } 
+                                    className={classes.chip}  
+                                    style={{whiteSpace: 'normal' }} />
                             ))}
                             </div>
                         )}
@@ -314,25 +327,13 @@ const LearningTaskEditView = (props) => {
                         <ListSubheader>
                             Component LO
                         </ListSubheader>
-                        {component.outcomes.filter(_outcome => _outcome.isCourseLevel == false).map(_outcome => (
-                            <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
-                              {_outcome.description}
-                          </MenuItem>
-                        ))}
-
-                        {/* <ListSubheader>
-                            Unit LO
-                        </ListSubheader>
-                        {component.outcomes.filter(_outcome => _outcome.isCourseLevel == true).map(_outcome => (
-                            <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
-                              {_outcome.description}
-                          </MenuItem>
-                        ))} */}
-                    {/* {componentData.learningOutcomes.map((_learningOutcome, index) => (                             
-                        <MenuItem key={_learningOutcome} value= {course.learningOutcomes.find(x=> x.id == _learningOutcome).id}>
-                            {course.learningOutcomes.find(x=> x.id == _learningOutcome).description}
-                        </MenuItem>
-                    ))} */}
+                        {
+                            outcomes.map(_outcome => ( 
+                                <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
+                                    {_outcome.description}
+                                </MenuItem>   
+                            ))
+                        }
                     </Select>
                 </FormControl>
             </Grid>

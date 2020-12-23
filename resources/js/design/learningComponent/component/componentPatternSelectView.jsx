@@ -152,7 +152,7 @@ const ComponentPatternSelectView = (props) => {
                                     {component.outcomes.map((_outcome, index)=> 
                                     <Grid container item xs = {12} key = {index}>  
                                         <Grid item xs ={12}>
-                                            <Typography display="inline" variant="subtitle1" gutterBottom>{options.learningOutcomeType.find(x => x.id == _outcome.outcomeType).description} </Typography> 
+                                            <Typography display="inline" variant="subtitle1" gutterBottom>{options.outcomeTypeOpts.find(x => x.id == _outcome.outcomeType).name} </Typography> 
 
                                             <Typography display="inline" variant="body2" gutterBottom> - {_outcome.description} </Typography>
                                         </Grid>
@@ -266,7 +266,7 @@ const ComponentPatternSelectView = (props) => {
                         :
                         patternOpts.map((_patternOpt, index)=>{
                             return(
-                                <Grid container item xs = {4}>
+                                <Grid container item xs = {4} key = {index}>
                                       <ComponentPatternSelectBox 
                                             index = {index}
                                             _patternOpt = {_patternOpt}

@@ -93,7 +93,7 @@ const LearningOutcomeSelectContainer = (props) => {
                 lo.push(LOcheck[_lo_id])
             }
         })
-        console.log(lo);
+        
         var request = {};
         request['id'] = props.component_id;
         request['outcomes_id'] = lo;
@@ -132,7 +132,7 @@ const LearningOutcomeSelectContainer = (props) => {
                     </Grid>
                     {
                         _outcome.slo_outcome.map((_slo, index) => 
-                            <Grid container item xs = {12} key = {zIndex}>
+                            <Grid container item xs = {12} key = {index}>
                                 <Grid item xs = {1}>
                                 </Grid>
 

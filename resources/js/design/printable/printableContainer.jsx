@@ -43,15 +43,16 @@ const PrintableContainer = (props) => {
     });
 
     const [optionsInit, setOptions] = React.useState({
-        designType: [],
-        learningOutcomeType: [],
-        learningPatternOpts: [],
-        taskType: [],
-        taskClassType: [],
-        taskSize: [],
-        taskTarget: [],
-        taskResource: [],
-        taskElearingResource: [],
+        "designType": [],
+        "taskType": [],
+        "taskClassType": [],
+        "taskSize": [],
+        "taskTarget": [],
+        "taskResource": [],
+        "taskElearingResource": [],
+        "bloomLvlOpts": [],
+        "outcomeTypeOpts": [],
+        "STEMTypeOpts": []
     });
 
     const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});

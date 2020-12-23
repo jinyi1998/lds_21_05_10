@@ -18,7 +18,6 @@ import { apiDesignTypePut, apiDesignTypeUploadImg } from '../../../api';
 const DesignTypeBuilderBasicInfoView = (props) =>{
     const { designType, refreshDesignType } = React.useContext(DesignTypeBuilderContextStore);
     const { setLoadingOpen, returnImgSrc } = React.useContext(AppContextStore);
-
     const [ pictures, setPictures] = React.useState("");
     const [ isEditPic, setIsEditPic ] = React.useState(false);
     const [ designTypeInfo, setDesignTypeInfo ] = React.useState({
@@ -30,12 +29,13 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
 
     React.useEffect(()=>{
         setLoadingOpen(true);
+        var scr = returnImgSrc(designType.media)
         setDesignTypeInfo({
             id: designType.id,
             name: designType.name,
             description: designType.description,
             hint: designType.hint,
-            media: designType.media
+            media: scr
         })
         setLoadingOpen(false)
     }, [designType]);
@@ -133,7 +133,7 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
                         </React.Fragment>
                         :
                         <React.Fragment>
-                             <img src = {returnImgSrc(designTypeInfo.media)} style = {{maxWidth: 400}}/>
+                             <img src = {designTypeInfo.media} style = {{maxWidth: 400}}/>
                              {/* <Button  variant="contained" color="primary" onClick = {onEditPic}>
                                 Edit Picture
                             </Button> */}

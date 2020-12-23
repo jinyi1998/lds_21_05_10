@@ -31,8 +31,9 @@ const LessonPlanTaskSelect = (props) => {
     const { setLoadingOpen } = React.useContext(AppContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     // const {lesson} = props;
+    const [lessontype, setLessontype] = React.useState(2);
     const [lesson, setLesson] = React.useState(props.lesson);
-    const [stage, setStage] = React.useState(1);
+    const [stage, setStage] = React.useState(0);
     const [selectedComponentID, setSelectedComponentID] = React.useState(-1);
     const [taskOpts, setTaskOpts] = React.useState([]);
     const [checkBoxState, setCheckBoxState] =  React.useState({});
@@ -41,7 +42,7 @@ const LessonPlanTaskSelect = (props) => {
 
     React.useEffect(()=>{
         if(lesson.id != props.lesson.id){
-            setStage(1);
+            setStage(0);
             setEditMode(false);
         }
         setLesson(props.lesson);
@@ -68,7 +69,8 @@ const LessonPlanTaskSelect = (props) => {
                 var temp = {
                     "lesson_id": lesson.id,
                     "task_id": task_id,
-                    "sequence": lesson.tasks.length + i 
+                    "sequence": lesson.tasks.length + i,
+                    
                 };
                 task_arr.push(temp);
                 i++;
@@ -77,7 +79,8 @@ const LessonPlanTaskSelect = (props) => {
 
         var json = {
             tasks_id: task_arr,
-            lesson_id: lesson.id
+            lesson_id: lesson.id,
+            lessontype: lessontype
         }
 
         updateLesson(json);
@@ -98,8 +101,10 @@ const LessonPlanTaskSelect = (props) => {
             );
             var checkBoxStateTmp = {};
             //get the init data
-            lesson.tasksid.map(_taskid => {
-                checkBoxStateTmp[_taskid.task_id] = true;
+            lesson.tasks.map(_task => {
+                if(_task.lessonid.lessontype == lessontype){
+                    checkBoxStateTmp[_task.id] = true;
+                }   
             })
             task.map(_task => {
                 // checkBoxStateTmp[_task.id] = false;
@@ -121,9 +126,34 @@ const LessonPlanTaskSelect = (props) => {
         props.updateLesson(lesson);
     }
 
+    const onSelectLessonType = (value) => {
+        setLessontype(value);
+        setStage(1);
+    }
+
     const displayEditContent = () => {
         switch(stage){
             default:
+            case 0:
+                return(
+                    <Grid container>
+                        <Grid item xs = {12}>
+                            <Button variant="outlined" color="primary" fullWidth onClick =  {()=>{onSelectLessonType(1)}} value = {1}>
+                                Pre-Class
+                            </Button>
+                        </Grid>
+                        <Grid item xs = {12}>
+                        <Button variant="outlined" color="primary" fullWidth onClick =  {()=>{onSelectLessonType(2)}} value = {2}>
+                                In-Class
+                            </Button>
+                        </Grid>
+                        <Grid item xs = {12}>
+                            <Button variant="outlined" color="primary" fullWidth onClick = {()=>{onSelectLessonType(3)}} value = {3}>
+                                Post-Class
+                            </Button>
+                        </Grid>
+                    </Grid>
+                )
             case 1:
                     return (
                         <Grid container>
@@ -159,7 +189,7 @@ const LessonPlanTaskSelect = (props) => {
             case 2:
                 var filter = course.lessons.map(_lesson => {
                     if(lesson.id == _lesson.id ){
-                        return [];
+                        return _lesson.tasks.filter(_task => _task.lessonid.lessontype != lessontype).map(_task => {return _task.id});
                     }else{
                         return _lesson.tasks.map(_task => {return _task.id})
                     }

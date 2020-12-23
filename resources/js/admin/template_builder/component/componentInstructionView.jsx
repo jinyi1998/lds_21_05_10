@@ -32,12 +32,17 @@ const ComponentInstructionView = (props) => {
         description: "",
         component_id: -1
     });
+
     const [ isEdit, setIsEdit ]= React.useState(false);
     const [ isEditPic, setIsEditPic ] = React.useState(false);
     const [ pictures, setPictures ] = React.useState("");
 
     React.useEffect(()=>{
-        setInstruction(props.instruction);
+        var src = returnImgSrc(props.instruction.media)
+        setInstruction({
+            ...props.instruction,
+            media: src
+        });
         setLoadingOpen(false);
     }, [props.instruction])
 
@@ -173,7 +178,7 @@ const ComponentInstructionView = (props) => {
         return (
             <React.Fragment>
                  <Grid container item xs = {12} justify = "center">
-                    <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
+                    <img src = {instruction.media} style = {{width: 400}}/>
                 </Grid>
 
                 <Grid item xs = {12}>
@@ -216,7 +221,7 @@ const ComponentInstructionView = (props) => {
                     </React.Fragment>
                     :
                     <React.Fragment>
-                         <img src = {returnImgSrc(instruction.media)} style = {{width: 400}}/>
+                         <img src = {instruction.media} style = {{width: 400}}/>
                          <IconButton onClick = {onClickEditPic}><EditIcon/></IconButton>
                     </React.Fragment>
                     }

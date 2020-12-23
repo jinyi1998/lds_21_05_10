@@ -88,7 +88,7 @@ const StemPracticeInstruction = (props) => {
         } else{
             return (
                 <div style = {{backgroundColor: "#FFFFFF"}}>
-                    <img alt="" src={returnImgSrc("no")} />
+                    <img alt="" src={returnImgSrc("")} />
                     <div className="legend">
                     <h5>{"No instruction"}</h5>
                     <p style = {{textTransform: "initial"}}>

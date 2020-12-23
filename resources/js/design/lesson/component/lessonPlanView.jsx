@@ -21,6 +21,7 @@ import LearningTaskLessonView from '../../task/component/learningTaskLessonView'
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app'
+import { Typography } from '@material-ui/core';
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightgrey' : '',
@@ -35,6 +36,7 @@ const LessonPlanView = (props) => {
     const {refreshCourse } = React.useContext(ContextStore);
     const { setLoadingOpen } = React.useContext(AppContextStore); 
 
+    const lessontype = props.lessontype? props.lessontype : 2;
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
 
     const [ taskData, setTaskData] = React.useState({});
@@ -136,14 +138,16 @@ const LessonPlanView = (props) => {
 
         var sourceTask = {
           id: tempTasks[result.source.index].lessonid.id,
-          sequence: tempTasks[result.destination.index].lessonid.sequence
+          sequence: tempTasks[result.destination.index].lessonid.sequence,
+          lessontype: lessontype
         }
 
         if(result.source.index < result.destination.index){
           for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
             let tempTask = {
               id : tempTasks[i].lessonid.id,
-              sequence: tempTasks[i].lessonid.sequence - 1
+              sequence: tempTasks[i].lessonid.sequence - 1,
+              lessontype: lessontype
             }
             // console.log(tempTask);
             updates.push( updateLearningTaskLessonRelation(tempTask) );
@@ -153,7 +157,8 @@ const LessonPlanView = (props) => {
           for(var i = result.destination.index; i < result.source.index; i++){
             let tempTask = {
               id : tempTasks[i].lessonid.id,
-              sequence: tempTasks[i].lessonid.sequence + 1
+              sequence: tempTasks[i].lessonid.sequence + 1,
+              lessontype: lessontype
             }
             // console.log(tempTask);
             updates.push( updateLearningTaskLessonRelation(tempTask) );
@@ -181,12 +186,23 @@ const LessonPlanView = (props) => {
 
     const totalTime = () => {
         var time = 0;
-        lesson.tasks.map( _task => 
+        lesson.tasks.filter(_task => _task.lessonid.lessontype== lessontype).map( _task => 
             time += parseInt(_task.time)
         );
         return time;
     } 
 
+    const displayLessonType = () => {
+        switch (lessontype){
+            case 1:
+                return <Typography variant = {"subtitle2"}> Pre-Class</Typography>
+            case 2:
+                return <Typography variant = {"subtitle2"} > In-Class</Typography>
+            case 3:
+                return <Typography variant = {"subtitle2"}> Post-Class</Typography>
+        }
+            
+    }
 
     return (
         <Grid container>
@@ -194,13 +210,18 @@ const LessonPlanView = (props) => {
             <Grid container spacing={4}>
 
                 <Grid item xs ={12}>
-                    <b>{lesson.title}</b>
+                    {displayLessonType()}
                 </Grid>
 
                 <Grid item xs ={12}>
-                    Targeted Learning Time: {lesson.time} min(s)
-                    <br />
-                    Estimated Learning Time: {totalTime()} min(s)
+                    {
+                        lessontype == 2?
+                        <Typography variant = {"caption"}>Targeted Learning Time: {lesson.time} min(s)</Typography>
+                        :
+                        null
+                    }
+                     <Typography variant = {"caption"}>  Estimated Learning Time: {totalTime()} min(s)</Typography>
+                  
                 </Grid>
                 
                 <Grid item xs ={12}>
@@ -211,8 +232,8 @@ const LessonPlanView = (props) => {
                             <RootRef rootRef={provided.innerRef}>
                                 <List style={getListStyle(snapshot.isDraggingOver)}>
                                 {   
-                                    lesson.tasks.length > 0 ?
-                                        lesson.tasks.map(
+                                    lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype).length > 0 ?
+                                        lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype).map(
                                             (_task, index) => 
                                             <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
                                                 {(provided, snapshot) => (
@@ -242,15 +263,6 @@ const LessonPlanView = (props) => {
                         </Droppable>
                     </DragDropContext>
                  </Grid>
-
-                {canEdit == true && enableEdit ? 
-                    <Grid item xs ={12}>
-                        <Button variant="contained" color="primary" fullWidth onClick = {()=> setEditMode(true)} data-tour = "lesson_lesson_select">
-                            Edit
-                        </Button>
-                    </Grid> 
-                    : null
-                }
             </Grid>
 
             <Dialog open={openTaskEdit} onClose={() => setOpenTaskEdit(false)} aria-labelledby="form-dialog-title" maxWidth = {"md"}>

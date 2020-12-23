@@ -59,7 +59,6 @@ class LearningComponentController extends Controller
         $component = Component::with([
             'tasks', 
             'patterns',
-            'outcomes',
             'outcomeid',
             'patterntaskid',
         ])->find($id);
@@ -164,58 +163,6 @@ class LearningComponentController extends Controller
                 ]);
             }
         }
-        // outcomes
-        $outcome_asso = [];
-        if($request->has('outcomes')){
-            // foreach($request->outcomes as $_outcome){
-            //     $_outcome['component_id'] =  $component->id;
-            //     //
-
-            //     if($request->has('course_id') && isset($_outcome['unit_outcomeid_temp'])  && $_outcome['unit_outcomeid_temp'] != null ){
-            //         // $_outcome['unit_outcome_id'] =  $_outcome['unit_outcome_id']->;
-            //         $count = DB::table('course_outcome_relation') 
-            //         ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-            //         ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
-            //         ->where('course_outcome_relation.course_id', '=', $request->course_id)
-            //         ->count();
-
-            //         if($count > 0){
-            //             $uloid = DB::table('course_outcome_relation') 
-            //             ->join('learningoutcome', 'learningoutcome.id', '=', 'course_outcome_relation.outcome_id')
-            //             ->where('learningoutcome.template_id', '=', $_outcome['unit_outcomeid_temp']['unit_outcome_id'])
-            //             ->where('course_outcome_relation.course_id', '=', $request->course_id)
-            //             ->select('learningoutcome.id as outcome_id')->limit(1)->get();
-    
-            //             $uloid = json_decode($uloid, true);
-                        
-            //             $_outcome['unit_outcome_id'] =  $uloid[0]['outcome_id'];
-            //         }else{
-            //             $new_unit_outcome = LearningOutcomeTemplate::where('id',  $_outcome['unit_outcomeid_temp']['unit_outcome_id'])->get();
-            //             $new_unit_outcome = json_decode($new_unit_outcome, true);
-            //             $new_unit_outcome[0]['course_id'] = $request->course_id;
-            //             $new_unit_outcome[0]['template_id'] = $new_unit_outcome[0]['id'];
-            //             $request_new_unit_outcome = new \Illuminate\Http\Request($new_unit_outcome[0]);
-            //             $new_unit_outcome = LearningOutcomesController::store($request_new_unit_outcome)->getContent();
-            //             $new_unit_outcome = json_decode($new_unit_outcome);
-
-            //             $_outcome['unit_outcome_id'] =  $new_unit_outcome->id;
-            //         }
-
-                 
-            //     }else if($request->has('course_id') && isset($_outcome['unit_outcomeid'])  && $_outcome['unit_outcomeid'] != null ){
-            //         // do nothing
-            //         $_outcome['unit_outcome_id'] =  $_outcome['unit_outcomeid']['unit_outcomeid'];
-            //     }
-
-            //     $request_outcome = new \Illuminate\Http\Request($_outcome);
-            //     $outcome = LearningOutcomesController::store($request_outcome)->getContent();
-            //     $outcome = json_decode($outcome);
-            //     $temp["outcome_template_id"] = $_outcome['id'];
-            //     $temp["outcome_id"] = $outcome->id;
-            //     array_push($outcome_asso, $temp);
-            // }
-        }
-
         // pattern
         if($request->has('patterns') && isset($request->patterns[0])){
             $_pattern =  $request->patterns[0];
@@ -223,27 +170,9 @@ class LearningComponentController extends Controller
             foreach(  $_pattern['tasks'] as $key => $_task){
                 $_task['sequence'] = $key;
                 $_pattern['tasks'][$key]['sequence'] = $key + 1;
-
-                foreach($outcome_asso as $_outcome_asso){
-                    if(!isset($_task['assessmentid'])){
-                        continue;
-                    }
-                   foreach($_task['assessmentid'] as $assessment_key => $_assessment){
-                        if($_task['assessmentid'][$assessment_key]['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
-                            $_pattern['tasks'][$key]['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
-                            // return $_assessment;
-                        }
-                   }
-                }
             }
             $request_pattern = new \Illuminate\Http\Request( $_pattern);
             LearningPatternController::store($request_pattern);
-
-            // foreach($request->patterns as $_pattern){
-            //     $_pattern['component_id'] =  $component->id;
-            //     $request_pattern = new \Illuminate\Http\Request($_pattern);
-            //     LearningPatternController::store($request_pattern);
-            // }
         }
        
         //tasks
@@ -251,18 +180,9 @@ class LearningComponentController extends Controller
             foreach($request->tasks as $key => $_task){
                 $_task['component_id'] =  $component->id;
                 $_task['sequence'] = $key + 1;
-
-                // foreach($outcome_asso as $_outcome_asso){
-                //     foreach($_task['assessmentid'] as $assessment_key => $_assessment){
-                //         if($_assessment['learningoutcome_id'] == $_outcome_asso['outcome_template_id']){
-                //             $_task['assessmentid'][$assessment_key]['learningoutcome_id'] = $_outcome_asso['outcome_id'];
-                //         }
-                //     }
-                // }
                 
                 $request_task = new \Illuminate\Http\Request($_task);
                 LearningTaskController::store($request_task);
-                 //add to component task relation
             }
         }
 

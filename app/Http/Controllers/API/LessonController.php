@@ -102,14 +102,19 @@ class LessonController extends Controller
         $lesson->updated_by = Auth::user()->id;
         $lesson->save();
         
-        if($request->has('tasks_id')){
-            $lesson->tasksid()->delete();
+        if($request->has('tasks_id') && $request->has('lessontype')){
+            $lessontype = $request->lessontype;
+          
+            $lesson->tasksid()->where('lessontype', $lessontype)->delete();
 
             foreach($request->tasks_id as $_task){
+                $starttime = isset($_task['starttime'])? $_task['starttime'] : 0;
                 $lesson->tasksid()->create([
                     'task_id' => $_task["task_id"],
                     'sequence'=> $_task["sequence"],
                     'lesson_id' => $lesson->id,
+                    'lessontype' => $lessontype,
+                    'starttime' => $starttime,
                     'created_by' => Auth::user()->id,
                     'updated_by' => Auth::user()->id,
                     'is_deleted' => 0
