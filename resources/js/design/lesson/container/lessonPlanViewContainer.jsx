@@ -92,7 +92,7 @@ const LessonPlanViewContainer = (props) => {
     return (
         <Grid container data-tour = "lesson_view">
             <Grid item xs = {12}>
-                <Typography variant = {"subtitle1"}> {lesson.title}</Typography>
+                <Typography variant = {"h6"}> {lesson.title}</Typography>
             </Grid>
              <LessonPlanView 
                 lesson = {lesson}

@@ -458,9 +458,9 @@ class CourseController extends Controller
             $_component['course_id'] = $course->id;
 
             $_component['outcomes_id'] = [];
-            foreach($_component['outcomes'] as $index => $_outcome){
-                if(isset($outcomeMapping[$_outcome['id']]) && isset($_outcome['id'])){
-                    array_push($_component['outcomes_id'], ["outcome_id" => $outcomeMapping[$_outcome['id']]] );
+            foreach($_component['outcomeid'] as $index => $_outcome){
+                if( isset($_outcome['outcome_id']) && isset($outcomeMapping[$_outcome['outcome_id']]) ){
+                    array_push($_component['outcomes_id'], ["outcome_id" => $outcomeMapping[$_outcome['outcome_id']]] );
                 }
             }
             // mapping with new unit new outcome

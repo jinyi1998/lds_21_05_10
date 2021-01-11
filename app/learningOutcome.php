@@ -68,10 +68,21 @@ class LearningOutcome extends Model
             'id', // target table target id
             'id', // local table local id
             'component_outcomeid' //middle relation table target id
-        );
+        )->with(['tasks']);
     }
 
     public function stemtypesid(){
         return $this->hasMany('App\LearningOutcomeSTEMRelation', 'outcome_id');
+    }
+
+    public function tasks(){
+        return $this->hasManyThrough(
+            'App\LearningTask',
+            'App\TaskAssessmentRelation',
+            'learningoutcome_id', //middle retioan table local id
+            'id', // target table target id
+            'id', // local table local id
+            'learningtask_id' //middle relation table target id
+        )->with(['componentid', 'patternid']);
     }
 }

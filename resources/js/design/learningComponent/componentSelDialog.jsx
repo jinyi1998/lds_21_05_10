@@ -48,7 +48,7 @@ const ComponentSelDialog = (props) => {
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true} onEntered = {props.onEnteredDialog}>
             <DialogTitle id="form-dialog-title"> Add Curruculum Component</DialogTitle>
             <DialogContent>
-                <Grid conatiner>
+                <Grid container>
                     <Grid container item xs = {12}>
                         <Grid item xs ={12}>
                             <Typography variant = "h6">Shopping Cart</Typography>

@@ -16,7 +16,7 @@ class AddColumnLessonTaskRelationStarttime extends Migration
         //
         Schema::table('lesson_task_relation', function($table)
         {
-            $table->smallInteger('starttime')->nullable();
+            $table->bigInteger('starttime')->nullable();
         });
     }
 

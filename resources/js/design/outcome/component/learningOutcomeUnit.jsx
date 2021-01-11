@@ -12,6 +12,7 @@ import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
+import LearningOutcomeAssessmentView from './learningOutcomeAssessmentView';
 import {AppContextStore} from '../../../container/app';
 
 const LearningOutcomeUnit = (props)=>{
@@ -75,7 +76,24 @@ const LearningOutcomeUnit = (props)=>{
                         <React.Fragment>
                             <Typography component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
                                 {outcome.description}
-                                </Typography>
+                            </Typography>
+                            <LearningOutcomeAssessmentView 
+                                tasks = {outcome.tasks?.filter(
+                                    _task => {
+                                        if(typeof props.component == "undefined"){
+                                            return false;
+                                        }
+                                        if(_task.componentid?.component_id == props.component.id){
+                                            return true;
+                                        }else if(_task.patternid?.componentid?.component_id == props.component.id){
+                                            return true;
+                                        }else{
+                                            return false;
+                                        }
+                                    }
+                                )}
+                                isShow = {typeof props.component != "undefined"}
+                            />
                         </React.Fragment>
                     }
                     secondary={ 
@@ -137,11 +155,32 @@ const LearningOutcomeUnit = (props)=>{
                         <Grid item xs = {1}>
                         </Grid>
 
-                        <Grid item xs = {11}>
+                        <Grid item xs = {10}>
                             <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
                                 {_slo.description}
                             </Typography>
+                            
                         </Grid> 
+
+                        <Grid item xs = {1}>
+                            <LearningOutcomeAssessmentView 
+                                tasks = {_slo.tasks?.filter(
+                                    _task => {
+                                        if(typeof props.component == "undefined"){
+                                            return false;
+                                        }
+                                        if(_task.componentid?.component_id == props.component.id){
+                                            return true;
+                                        }else if(_task.patternid?.componentid?.component_id == props.component.id){
+                                            return true;
+                                        }else{
+                                            return false;
+                                        }
+                                    }
+                                )}
+                                isShow = {typeof props.component != "undefined"}
+                            />
+                        </Grid>
                     </Grid>
                 )
             }

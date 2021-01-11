@@ -142,7 +142,7 @@ class LearningTaskController extends Controller
                 if(ComponentPatternTaskRelation::where('component_id', '=', $request->component_id)->where('task_id', '=', $task->id)->count() > 0){
                     $sequence =   ComponentPatternTaskRelation::where('component_id', '=', $request->component_id)->where('task_id', '=', $task->id)->first()->sequence;
                 }else{
-                    $sequence =   ComponentPatternTaskRelation::where('component_id', '=', $request->component_id)->count() + 1;
+                    $sequence =   ComponentPatternTaskRelation::where('component_id', '=', $request->component_id)->max('sequence') + 1;
                 }
                
             }
@@ -174,7 +174,7 @@ class LearningTaskController extends Controller
                 if( PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->where('task_id', '=', $task->id)->count() > 0){
                     $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->where('task_id', '=', $task->id)->first()->sequence;
                 }else{
-                    $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->count() + 1;
+                    $sequence = PatternTaskRelation::where('pattern_id', '=', $request->pattern_id)->max('sequence') + 1;
                 }
               
             }

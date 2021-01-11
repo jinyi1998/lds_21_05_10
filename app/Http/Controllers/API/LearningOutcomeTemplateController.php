@@ -78,6 +78,12 @@ class LearningOutcomeTemplateController extends Controller
         if($outcome->unit_outcomeid_temp()->exists()){
             $outcome->unit_outcomeid_temp()->delete();
         }
+
+        if($outcome->slo_outcome()->exists()){
+            $outcome->slo_outcome()->delete();
+        }
+
+        $outcome->delete();
     }
 
     public static function save(LearningOutcomeTemplate $outcome, Request $request){
@@ -107,9 +113,9 @@ class LearningOutcomeTemplateController extends Controller
             $outcome->isCourseLevel = $request->isCourseLevel;
         }
 
-        if($request->has('template_id')){
-            $outcome->template_id = $request->template_id;
-        }
+        // if($request->has('template_id')){
+        //     $outcome->template_id = $request->template_id;
+        // }
 
         $outcome->created_by = Auth::user()->id;
         $outcome->updated_by = Auth::user()->id;
@@ -166,7 +172,7 @@ class LearningOutcomeTemplateController extends Controller
         if($request->has('slo_outcome')){
             // delete slo outcome
             $existing = $outcome->slo_outcome_id()->get();
-            foreach((array)$existing as $_eslo){
+            foreach($existing as $_eslo){
 
                 if(!isset($_eslo->component_outcome_id)){
                     continue;   

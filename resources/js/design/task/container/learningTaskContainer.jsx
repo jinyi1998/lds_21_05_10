@@ -170,9 +170,9 @@ const LearningTaskContainer = (props) => {
             temp['pattern_id'] = pattern_id;
         }
 
-        if(task.id == -1){
-            temp['sequence'] = tasksData.length;
-        }
+        // if(task.id == -1){
+        //     temp['sequence'] = tasksData.length;
+        // }
         return temp;
     }
 

@@ -19,8 +19,7 @@ class MigrateUnitOutcomeComponentOutcomeTemplateData extends Migration
         foreach($clo as $_clo){
 
             $ulo =  DB::table('unit_outcome_component_outcome_template_relation')->where('component_outcome_id', $_clo->outcome_id)->get();
-            print_r($_clo);
-            print_r($ulo);
+            
             if(isset($ulo)){
                 foreach($ulo as $_ulo){
                     if(!DB::table('component_outcome_template_relation')->where('outcome_id', $_ulo->unit_outcome_id)->where('component_id', $_clo->component_id)->exists()){

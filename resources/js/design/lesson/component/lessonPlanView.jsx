@@ -195,11 +195,11 @@ const LessonPlanView = (props) => {
     const displayLessonType = () => {
         switch (lessontype){
             case 1:
-                return <Typography variant = {"subtitle2"}> Pre-Class</Typography>
+                return <Typography variant = {"subtitle1"}> Pre-Class</Typography>
             case 2:
-                return <Typography variant = {"subtitle2"} > In-Class</Typography>
+                return <Typography variant = {"subtitle1"} > In-Class</Typography>
             case 3:
-                return <Typography variant = {"subtitle2"}> Post-Class</Typography>
+                return <Typography variant = {"subtitle1"}> Post-Class</Typography>
         }
             
     }
@@ -213,14 +213,27 @@ const LessonPlanView = (props) => {
                     {displayLessonType()}
                 </Grid>
 
-                <Grid item xs ={12}>
+                <Grid container item xs ={12}>
+                    <Grid item xs = {12}>
                     {
                         lessontype == 2?
                         <Typography variant = {"caption"}>Targeted Learning Time: {lesson.time} min(s)</Typography>
                         :
                         null
                     }
-                     <Typography variant = {"caption"}>  Estimated Learning Time: {totalTime()} min(s)</Typography>
+                    </Grid>
+
+                    <Grid item xs ={12}>
+                    {
+                        lesson.time >= totalTime()?
+                        <Typography variant = {"caption"} style = {{color: "blue"}}>  Estimated Learning Time: {totalTime()} min(s)</Typography>
+                        :
+                        <Typography variant = {"caption"} style = {{color: "red"}}>  Estimated Learning Time: {totalTime()} min(s)</Typography>
+                    }
+
+                    </Grid>
+                  
+                     {/* <Typography variant = {"caption"}>  Estimated Learning Time: {totalTime()} min(s)</Typography> */}
                   
                 </Grid>
                 
@@ -252,8 +265,10 @@ const LessonPlanView = (props) => {
                                             </Draggable>
                                         )
                                         : 
-                                        <Grid item xs ={12}>    
+                                        <Grid container item xs ={12} justify = {"center"}>    
+                                          <Typography variant = {"subtitle2"} style = {{color: "red"}}> 
                                             No Learning Task In This Lesson
+                                          </Typography>
                                         </Grid> 
                                     }
                                     {provided.placeholder}

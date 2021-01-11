@@ -45,7 +45,7 @@ class LearningOutcomesController extends Controller
     public function show($id)
     {
         //
-        $outcome = LearningOutcome::with(['componentid'])->find($id);
+        $outcome = LearningOutcome::with(['componentid', 'tasks'])->find($id);
         return response()->json($outcome);
     }
 

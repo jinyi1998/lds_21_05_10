@@ -105,7 +105,7 @@ class AppOptsController extends Controller
     }
 
     public function getOutcomeType(){
-        return App\OutcomeType::where('is_deleted', 0)->get();
+        return App\OutcomeType::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getSTEMType(){

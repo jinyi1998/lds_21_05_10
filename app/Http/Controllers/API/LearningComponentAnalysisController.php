@@ -43,10 +43,10 @@ class LearningComponentAnalysisController extends Controller
 
         $pattern_task = DB::table('learningtask')
             ->join('pattern_task_relational', 'pattern_task_relational.task_id', '=', 'learningtask.id')
-            ->join('component_pattern_relational', 'pattern_task_relational.pattern_id', '=', 'component_pattern_relational.pattern_id')
+            ->join('component_pattern_task_relation', 'pattern_task_relational.pattern_id', '=', 'component_pattern_task_relation.pattern_id')
             ->leftJoin('lesson_task_relation', 'lesson_task_relation.task_id', '=', 'learningtask.id')
             ->leftJoin('lesson', 'lesson_task_relation.lesson_id', '=', 'lesson.id')
-            ->where('component_pattern_relational.component_id', '=', $id)
+            ->where('component_pattern_task_relation.component_id', '=', $id)
             ->select('learningtask.title as task_title', 
             'learningtask.time as task_time', 
             'learningtask.type as task_type', 
@@ -57,10 +57,10 @@ class LearningComponentAnalysisController extends Controller
             'lesson.sequence as sequence' );
         
         $component_task = DB::table('learningtask')
-        ->join('component_task_relational', 'component_task_relational.task_id', '=', 'learningtask.id')
+        ->join('component_pattern_task_relation', 'component_pattern_task_relation.task_id', '=', 'learningtask.id')
         ->leftJoin('lesson_task_relation', 'lesson_task_relation.task_id', '=', 'learningtask.id')
         ->leftJoin('lesson', 'lesson_task_relation.lesson_id', '=', 'lesson.id')
-        ->where('component_task_relational.component_id', '=', $id)
+        ->where('component_pattern_task_relation.component_id', '=', $id)
         ->select('learningtask.title as task_title', 
         'learningtask.time as task_time', 
         'learningtask.type as task_type', 

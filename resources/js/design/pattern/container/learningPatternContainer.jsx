@@ -103,7 +103,7 @@ const LearningPatternContainer = (props) => {
 
     const onDuplicate = () => {
         setLoadingOpen(true);
-        console.log(duplicateTo);
+
         if(duplicateTo > 0){
             var pattern_temp = JSON.parse(JSON.stringify(pattern));
             pattern_temp['component_id'] = duplicateTo;

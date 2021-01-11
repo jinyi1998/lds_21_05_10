@@ -104,7 +104,7 @@ const LearningTaskEditView = (props) => {
             setResource(resourceData);
             if(showAssessment){
                 // var hasAssessment = (taskData.assessmentid?.length > 0)? true: false
-                setHasAssessment(taskData.has_assessment);
+                setHasAssessment(taskData.has_assessment? true : false);
                 var assessmentData = taskData.assessmentid.map( _assessment => {return _assessment.learningoutcome_id});
                 setAssessment(assessmentData);
             }   
@@ -324,9 +324,9 @@ const LearningTaskEditView = (props) => {
                         )}
                         MenuProps={MenuProps}
                     >
-                        <ListSubheader>
+                        {/* <ListSubheader>
                             Component LO
-                        </ListSubheader>
+                        </ListSubheader> */}
                         {
                             outcomes.map(_outcome => ( 
                                 <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>

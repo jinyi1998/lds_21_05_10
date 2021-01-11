@@ -11,4 +11,8 @@ class PatternTaskRelation extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
     protected $fillable = ['task_id', 'pattern_id', 'learningpattern_id', 'created_by', 'updated_by', 'is_deleted', 'sequence'];
+
+    public function componentid(){
+        return $this->belongsTo('App\ComponentPatternTaskRelation', 'pattern_id', 'id');
+    }
 }

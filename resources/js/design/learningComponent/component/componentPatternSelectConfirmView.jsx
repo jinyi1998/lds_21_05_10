@@ -14,7 +14,7 @@ import {ContextStore} from '../../../container/designContainer'
 const ComponentPatternSelectConfirmView = (props) => {
 
     const { course } = React.useContext(ContextStore);
-    const { options } = React.useContext(AppContextStore);
+    const { options, taskTypeColor} = React.useContext(AppContextStore);
 
 
     const importComponentTempToComponent = () => {
@@ -111,9 +111,10 @@ const ComponentPatternSelectConfirmView = (props) => {
                         </Grid>
 
                         <Grid container item xs = {12}>
+                            <Paper style = {{width: '100%', padding: 16}}>
                             { options.outcomeTypeOpts?.map((_lo_type, index) => 
                                 <Grid container item xs = {12} key = {index}>
-                                    <Paper style = {{width: '100%', padding: 16}}>
+                                   
                                         <Grid container item xs = {12}>
                                             <Typography variant="subtitle1" gutterBottom> {_lo_type.name} </Typography>
                                         </Grid>
@@ -121,18 +122,32 @@ const ComponentPatternSelectConfirmView = (props) => {
                                         <Grid container item xs = {12}>
                                         
                                                 {course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).length > 0?
-                                                    course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).map(_ulo => 
-                                                        <Typography variant="body2" gutterBottom> {_ulo.description} </Typography>
+                                                    course.outcomes.filter(lo => lo.outcomeType == _lo_type.id).map(
+                                                        _ulo => 
+                                                        <Grid container justify = {"flex-end"}>
+                                                            <Grid item xs = {12}>
+                                                                <Typography variant="caption" gutterBottom> {_ulo.description} </Typography>
+                                                            </Grid>
+                                                            {
+                                                                _ulo.slo_outcome?.map(_slo => 
+                                                                    <Grid item xs = {11}>
+                                                                        <Typography variant="caption" gutterBottom> {_slo.description} </Typography>
+                                                                    </Grid>
+                                                                )
+                                                            }
+                                                        </Grid>
+                                                        // <Typography variant="caption" gutterBottom> {_ulo.description} </Typography>
                                                     )
                                                     : 
-                                                    <Typography variant="body2" gutterBottom> No LO under this type </Typography>
+                                                    <Typography variant="caption" gutterBottom> No LO under this type </Typography>
                                                 }
                                         </Grid>
-                                    </Paper>
                                 </Grid>
                                 )
                             }
+                            </Paper>
                         </Grid>
+                        
                     </Grid>
 
 
@@ -153,13 +168,46 @@ const ComponentPatternSelectConfirmView = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs = {12}>
-                                                    <Typography variant="caption" gutterBottom> {_component.patterns.length> 0? _component.patterns[0].title : null}</Typography>
+                                                    <Grid container item xs = {12}> 
+                                                    {_component.patterns.length> 0? 
+                                                        <Grid container>
+                                                            <Grid item xs = {12}>
+                                                                <Typography variant="caption" gutterBottom>
+                                                                    {_component.patterns[0].title }
+                                                                </Typography>
+                                                            </Grid>
+                                                            
+                                                            {
+                                                                _component.patterns[0].tasks.length > 0?
+                                                                _component.patterns[0].tasks.map(_task => 
+                                                                    <Grid container>
+                                                                        <Grid item xs={1} height="100%">
+                                                                            <div style={taskTypeColor(_task.type)} /> 
+                                                                        </Grid>
+                                                                        <Grid item xs={11}>
+                                                                            <Typography variant="caption" gutterBottom style={{fontWeight: '600'}}>
+                                                                                {_task.title}
+                                                                            </Typography>
+                                                                        
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                    
+                                                                
+                                                                )
+                                                                :
+                                                                null
+                                                            }
+
+                                                        </Grid>
+                                                        
+                                                        : 
+                                                        null
+                                                    }
+                                                    </Grid>
                                                 </Grid>
-                                        
                                         </Grid>
                                     </Paper>
                                 </Grid>
-                               
                             )}
                         </Grid>
                     </Grid>

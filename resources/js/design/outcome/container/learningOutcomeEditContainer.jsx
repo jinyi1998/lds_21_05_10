@@ -105,7 +105,7 @@ const LearningOutcomeEditContainer = (props) => {
     React.useEffect(()=>{
         var STEMArr = learningOutcome.stemtypesid? learningOutcome.stemtypesid.map( _stem => _stem.stem_type_id) : [];
         var tempState = {};
-        stemTypes.map( _stem => {
+        STEMArr.map( _stem => {
             {
                 tempState[_stem.id]= false
             }
@@ -118,7 +118,7 @@ const LearningOutcomeEditContainer = (props) => {
             }
         )
         setState(tempState)
-    }, [learningOutcome.STEMType]);
+    }, [learningOutcome.stemtypesid]);
 
     React.useEffect(() => {
         handleChange();
@@ -131,7 +131,7 @@ const LearningOutcomeEditContainer = (props) => {
             [];
         temp = temp.filter(x => x.toLocaleUpperCase().indexOf(learningOutcome.description.toLocaleUpperCase()) != -1);
         setAutoString(temp)
-    }, [learningOutcome.level, learningOutcome.description])
+    }, [learningOutcome.bloom_id, learningOutcome.description])
 
     //#region action related
     const initSTEMState = () => {

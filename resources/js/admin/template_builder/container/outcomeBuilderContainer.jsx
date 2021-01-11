@@ -140,7 +140,8 @@ const OutcomeBuilderContainer = (props) => {
     const onDeleteOutcome = (outcome) => {
         apiLearningOutcomeTempDelete(outcome).then(
             ()=>{
-                window.location.reload();
+                // window.location.reload();
+                onFinishOutcome();
             }
         )
     }
