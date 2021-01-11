@@ -13,6 +13,6 @@ class PatternTaskRelation extends Model
     protected $fillable = ['task_id', 'pattern_id', 'learningpattern_id', 'created_by', 'updated_by', 'is_deleted', 'sequence'];
 
     public function componentid(){
-        return $this->belongsTo('App\ComponentPatternTaskRelation', 'pattern_id', 'id');
+        return $this->belongsTo('App\ComponentPatternTaskRelation', 'pattern_id', 'pattern_id');
     }
 }

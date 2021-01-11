@@ -76,7 +76,7 @@ class LearningTask extends Model
     }
 
     public function patternid(){
-        return $this->belongsTo('App\PatternTaskRelation', 'id','task_id')->with(['componentid:id,component_id']);
+        return $this->belongsTo('App\PatternTaskRelation', 'id','task_id')->with(['componentid:pattern_id,component_id']);
     }
 
     public function component(){
