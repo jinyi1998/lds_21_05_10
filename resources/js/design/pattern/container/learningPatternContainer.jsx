@@ -18,6 +18,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import EditIcon from '@material-ui/icons/Edit';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -49,6 +50,8 @@ const LearningPatternContainer = (props) => {
     const { component } = React.useContext(ComponentContext);
     const [ duplicateDialog, setDuplicateDialog ] = React.useState( false );
     const [ duplicateTo, setDuplicateTo ] = React.useState(component.id);
+    const [ moveDialog, setMoveDialog ] = React.useState( false );
+    const [ moveTo, setMoveTo ] = React.useState(component.id);
     const [ editPattern, setEditPattern ] = React.useState(false); //rename pattern
     const [ editPatternName, setEditPatternName ] = React.useState(props.patternData.title);
 
@@ -132,6 +135,38 @@ const LearningPatternContainer = (props) => {
         setDuplicateDialog(true);
     }
 
+    const onMoveTask = () => {
+        setLoadingOpen(true);
+
+        if(moveTo > 0){
+            var pattern_temp = JSON.parse(JSON.stringify(pattern));
+            pattern_temp['component_id'] = moveTo;
+            apiLearningPatternPost(pattern_temp).then((response)=>{
+                refreshCourse()
+                onDelete();
+                displayMsg('success', 'pattern moving');
+                onCloseMoveDialog();
+
+            }).catch(error => {
+                setLoadingOpen(false);
+                displayMsg('error', 'error when pattern moving ')
+                console.log(error);
+                onCloseMoveDialog();
+            })
+            
+        }else{
+            setLoadingOpen(false);
+            displayMsg('error', 'error when pattern moving ')
+            onCloseDuplicateDialog();
+        }
+        setAnchorEl(null);
+    }
+
+    const onClickMove = (e) => {
+        e.stopPropagation();
+        setMoveDialog(true);
+    }
+
     const onDelete = () => {
         setLoadingOpen(true);
         apiLearningPatternDelete(pattern.id).then(()=>{
@@ -146,12 +181,19 @@ const LearningPatternContainer = (props) => {
     }
 
     const onDuplicateChange = (e) => {
-        console.log(e.target.value)
         setDuplicateTo(e.target.value);
     }
 
     const onCloseDuplicateDialog = () => {
         setDuplicateDialog (false)
+    }
+
+    const onMoveChange = (e) => {
+        setMoveTo(e.target.value);
+    }
+
+    const onCloseMoveDialog = () => {
+        setMoveDialog (false)
     }
 
     const handleExpandChange = (event, isExpanded) => {
@@ -276,6 +318,14 @@ const LearningPatternContainer = (props) => {
                                                 </ListItemIcon>
                                                 Duplicate
                                             </MenuItem>
+
+                                            <MenuItem onClick={onClickMove}>
+                                                <ListItemIcon>
+                                                    <LocalShippingIcon/>
+                                                </ListItemIcon>
+                                                Move
+                                            </MenuItem>
+                                            
                                             <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
                                                 <ListItemIcon>
                                                     <DeleteIcon/>
@@ -299,10 +349,12 @@ const LearningPatternContainer = (props) => {
                         tasksData = {pattern.tasks} 
                         enableDrag = {enableDrag}
                         enableDuplicate = {enableDuplicate}
+                        enableMove = {false}
                     />
                 </AccordionDetails>
             </Accordion>
-
+            
+            {/* duplicate dialog */}
             <Dialog open={duplicateDialog} onClose={onCloseDuplicateDialog} maxWidth = "md" style = {{minHeight: 400}}>
                 <DialogTitle>
                     Duplicate Learning Pattern
@@ -334,6 +386,42 @@ const LearningPatternContainer = (props) => {
                         Cancel
                     </Button>
                     <Button variant="contained" color="primary" onClick={onDuplicate} >
+                        Save
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/* move dialog */}
+            <Dialog open={moveDialog} onClose={onCloseMoveDialog} maxWidth = "md" style = {{minHeight: 400}}>
+                <DialogTitle>
+                    Move Learning Pattern
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Please select the component you wanna move to.
+                    </DialogContentText>
+                    <Grid container item xs = {12}>
+                        <FormControl>
+                            <InputLabel>Duplicate To</InputLabel>
+                            <Select 
+                                value={moveTo}
+                                onChange={onMoveChange}
+                            >
+                                {
+                                    course.components.map( (_component,index) => 
+                                    <MenuItem value={_component.id} key = {index}>
+                                        {_component.title}
+                                    </MenuItem>)
+                                }
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={onCloseMoveDialog} >
+                        Cancel
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={onMoveTask} >
                         Save
                     </Button>
                 </DialogActions>

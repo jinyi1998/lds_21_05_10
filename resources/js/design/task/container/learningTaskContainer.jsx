@@ -53,6 +53,7 @@ const LearningTaskContainer = (props) => {
     const enableEdit = typeof props.enableEdit == 'undefined'? course.permission > 2 : props.enableEdit;
     const enableDelete = typeof props.enableDelete == 'undefined'? course.permission > 2 : props.enableDelete;
     const enableDuplicate = typeof props.enableDuplicate == 'undefined'? course.permission > 2 : props.enableDuplicate;
+    const enableMove = typeof props.enableDelete == 'undefined'? course.permission > 2 : props.enableMove;
 
 
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
@@ -169,10 +170,6 @@ const LearningTaskContainer = (props) => {
         }else if(typeof pattern_id != 'undefined'){
             temp['pattern_id'] = pattern_id;
         }
-
-        // if(task.id == -1){
-        //     temp['sequence'] = tasksData.length;
-        // }
         return temp;
     }
 
@@ -250,6 +247,31 @@ const LearningTaskContainer = (props) => {
     const onEditearningTask = (task) => {
         setTaskData(task)
         setOpenTaskEdit(true);
+    }
+
+    async function moveLearningTask(task, moveTo){
+        setLoadingOpen(true);
+        if(typeof component_id != 'undefined'){
+            if(moveTo != -1){
+                var temp_task = JSON.parse(JSON.stringify(task));
+                delete temp_task['pattern_id'];
+                temp_task['component_id'] = moveTo;
+                // temp_task['sequence'] = course.components.find(x => x.id == moveTo)? course.components.find(x => x.id == moveTo)?.tasks.length + 1 : 999;
+                
+                return await apiLearningTaskPost(temp_task)
+                .then(response => {
+                    //load the default learning outcomes by api request
+                    refreshCourse();
+                    setLoadingOpen(false);  
+                    deleteLearningTask(task)
+                    displayMsg("success", "Learning Task Moved"); 
+                })
+                .catch(error => {
+                    console.log(error);
+                    displayMsg("error", "Some Errors Occured");
+                })
+            }
+        }
     }
 
     const onAddLearningTask = () => {
@@ -420,10 +442,12 @@ const LearningTaskContainer = (props) => {
                                                 onEditearningTask = {onEditearningTask}
                                                 duplicateLearningTask = {duplicateLearningTask}
                                                 deleteLearningTask = {deleteLearningTask}
+                                                moveLearningTask = {moveLearningTask}
                                                 key = {index}
                                                 enableDrag = {enableDrag}
                                                 editBtn = {enableEdit}
                                                 duplicateBtn = {enableDuplicate}
+                                                moveBtn = {enableMove}
                                                 deleteBtn = {enableDelete}
                                                 lastestindex = {tasksData.length + 1}
                                             />

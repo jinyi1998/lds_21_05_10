@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
-const steps = ['STEM PRACTICE', 'COURSE/ CURRICULUM UNIT INFO', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
+const steps = ['STEM PRACTICE', 'COURSE/ CURRICULUM UNIT INFO', 'LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
 
 const PageMenu = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -104,7 +104,7 @@ const PageMenu = (props) => {
         onClose={()=> handleClose(activeStage)}
       >
         <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activeStage == "courseinfo"}>Course Information</MenuItem>
-        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activeStage == "learningOutcomes"}>Unit Level Learning Outcomes</MenuItem>
+        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activeStage == "learningOutcomes"}>Learning Outcomes</MenuItem>
         {/* <MenuItem onClick={() => handleClose("majorStep")}  selected = {activeStage == "majorStep"}>Curriculum Components</MenuItem> */}
         <CssBaseline />
         <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activeStage == "unitPlan"}>Curriculum Component Design</MenuItem>

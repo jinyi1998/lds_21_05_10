@@ -13,6 +13,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Tooltip from '@material-ui/core/Tooltip';
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 import {AppContextStore} from '../../../container/app';
 
@@ -29,7 +31,6 @@ const LearningOutcomeAssessmentView = (props) => {
 
     const [open, setOpen] = React.useState(false);
     const [tasks, setTasks ] = React.useState([]);
-    const [iconColor, setIconColor] = React.useState("default");
 
     React.useEffect( () => {
         if(typeof props.tasks != 'undefined'){
@@ -37,13 +38,6 @@ const LearningOutcomeAssessmentView = (props) => {
         }
     }, [props.tasks])
 
-    React.useEffect(()=>{
-        if(tasks.length > 0){
-            setIconColor("default")
-        }else{
-            setIconColor("secondary")
-        }
-    }, [tasks])
 
     const handleClose = () => {
         setOpen(false);
@@ -52,6 +46,22 @@ const LearningOutcomeAssessmentView = (props) => {
     const handleOpen = () => {
         setOpen(true);
     };
+
+    const displayIcon = () => {
+        if(tasks.length > 0){
+            return(   
+            <IconButton size = {"small"} color = {"inherit"} style = {{color: "green"}}>
+                <AssignmentTurnedInIcon />
+            </IconButton>
+            )
+        }else{
+            return(   
+            <IconButton size = {"small"} color = {"secondary"}>
+                <AssignmentLateIcon />
+            </IconButton>
+            )
+        }
+    }
 
     const displayLOAssessment = () => {
         return (
@@ -91,9 +101,7 @@ const LearningOutcomeAssessmentView = (props) => {
                 classes={{ tooltip: classes.customWidth }}
                 placement="right-end"
             >
-                <IconButton size = {"small"} color = {iconColor}>
-                    <AssessmentIcon />
-                </IconButton>
+               {displayIcon()}
             </Tooltip>
             :
             null

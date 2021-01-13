@@ -57,7 +57,8 @@ const ComponentPatternTaskContainer = (props) =>{
     const enableEdit = typeof props.enableEdit == 'undefined'? course.permission > 2 : props.enableEdit;
     const enableDelete = typeof props.enableDelete == 'undefined'? course.permission > 2 : props.enableDelete;
     const enableDuplicate = typeof props.enableDuplicate == 'undefined'? course.permission > 2 : props.enableDuplicate;
-
+    const enableMove = typeof props.enableMove == 'undefined'? course.permission > 2 : props.enableMove;
+    
 
     //#region task 
 
@@ -155,6 +156,31 @@ const ComponentPatternTaskContainer = (props) =>{
             hasAssessment: false,
         });
         setOpenTaskEdit(true);
+    }
+
+    async function moveLearningTask(task, moveTo){
+        setLoadingOpen(true);
+        if(moveTo != -1){
+            var temp_task = JSON.parse(JSON.stringify(task));
+            delete temp_task['pattern_id'];
+            delete temp_task['assessmentid'];
+            temp_task['component_id'] = moveTo;
+            // temp_task['sequence'] = course.components.find(x => x.id == moveTo)? course.components.find(x => x.id == moveTo)?.tasks.length + 1 : 999;
+            
+            return await apiLearningTaskPost(temp_task)
+            .then(response => {
+                //load the default learning outcomes by api request
+                refreshCourse();
+                setLoadingOpen(false);  
+                deleteLearningTask(task)
+                displayMsg("success", "Learning Task Moved"); 
+            })
+            .catch(error => {
+                console.log(error);
+                displayMsg("error", "Some Errors Occured");
+                setLoadingOpen(false);  
+            })
+        }
     }
 
     async function updateLearningTask() {
@@ -334,7 +360,6 @@ const ComponentPatternTaskContainer = (props) =>{
 
         //sync the data to root state
         var temp =  JSON.parse(JSON.stringify(component.patterntaskid));
-        console.log(temp)
 
         var source = {
           id: temp[result.source.index].pattern_id > 0? temp[result.source.index].pattern_id : temp[result.source.index].task_id,
@@ -490,11 +515,13 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                             onEditearningTask = {onEditearningTask}
                                                                             duplicateLearningTask = {duplicateLearningTask}
                                                                             deleteLearningTask = {deleteLearningTask}
+                                                                            moveLearningTask = {moveLearningTask}
                                                                             key = {index}
                                                                             enableDrag = {enableDrag}
                                                                             editBtn = {enableEdit}
                                                                             duplicateBtn = {enableDuplicate}
                                                                             deleteBtn = {enableDelete}
+                                                                            moveBtn = {enableMove}
                                                                             lastestindex = {1}
                                                                         />
                                                                     )}

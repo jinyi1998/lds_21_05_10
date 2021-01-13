@@ -117,6 +117,10 @@ class DesignTypeController extends Controller
             $designType->is_deleted = $request->is_deleted;
         }
 
+        if($request->has('is_activate')){
+            $designType->is_activate = $request->is_activate;
+        }
+
         if($designType->id > 0){
 
         }else{

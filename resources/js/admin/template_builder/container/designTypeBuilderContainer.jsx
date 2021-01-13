@@ -22,7 +22,12 @@ import {apiDesignTypeGet} from '../../../api';
 
 export const DesignTypeBuilderContextStore = React.createContext({
     designType: {
-        id: -1
+        id: -1,
+        is_activate: false,
+        name: "",
+        description: "",
+        hint: "",
+        media: "",
     },
     refreshDesignType: ()=>{}
 });
@@ -76,9 +81,14 @@ function a11yProps(index) {
 const DesignTypeBuilderContainer = (props) => {
     const [ designType, setDesignType ] = React.useState({
         id: -1,
+        is_activate: false,
+        name: "",
+        description: "",
+        hint: "",
+        media: "",
     });
     const [stepIndex, setStepIndex] = React.useState(1);
-    const steps = ["Basic Information", "Unit Level Learning Outcomes", "Cirriculum Components"];
+    const steps = ["Basic Information", "Learning Outcomes", "Cirriculum Components"];
     const [ tab, setTab ] = React.useState(0);
 
     React.useEffect(()=>{

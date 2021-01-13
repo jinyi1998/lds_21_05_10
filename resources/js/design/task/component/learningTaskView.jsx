@@ -25,7 +25,9 @@ import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Tooltip from '@material-ui/core/Tooltip';
+import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
@@ -80,7 +82,11 @@ const LearningTaskView = (props) => {
     const [delDialogOpen, setDelDialogOpen] = React.useState(false);
     const [duplicateDialogOpen, setDuplicateDialogOpen] = React.useState(false);
     const [duplicateTo, setDuplicateTo] = React.useState(taskData.componentid? taskData.componentid.component_id : -1);
-    const {editBtn, duplicateBtn, deleteBtn, dragAble} = props;
+
+    const [moveDialogOpen, setMoveDialogOpen] = React.useState(false);
+    const [moveTo, setMoveTo] = React.useState(taskData.componentid? taskData.componentid.component_id : -1);
+
+    const {editBtn, duplicateBtn, deleteBtn, moveBtn, dragAble} = props;
     const {provided, snapshot, index} = props;
 
     const [task, setTask] = React.useState({
@@ -135,6 +141,12 @@ const LearningTaskView = (props) => {
         setDuplicateDialogOpen(false); 
     }
 
+    async function moveLearningTask() {
+        // console.log(props);
+        props.moveLearningTask(task, moveTo);
+        setMoveDialogOpen(false); 
+    }
+
     async function deleteLearningTask() {
        props.deleteLearningTask(task);
     }
@@ -170,8 +182,16 @@ const LearningTaskView = (props) => {
     
     }
 
+    const onClickMove = () => {
+        setMoveDialogOpen(true);
+    }
+
     const onConfirmDuplicate = () => {
         duplicateLearningTask();
+    }
+
+    const onConfirmMove = () => {
+        moveLearningTask();
     }
 
     const onClickDelete = () => {
@@ -208,38 +228,49 @@ const LearningTaskView = (props) => {
                         </Grid>
 
                         <Grid container item xs = {3} spacing = {1}>
-                            <Grid item xs={4} className={classes.contentGrid} >
-                                {
-                                    editBtn == true?
-                                        <IconButton onClick={()=>onClickEdit()} size="small">
-                                            <EditIcon />
-                                        </IconButton>
-                                        :
-                                        null
-                                }
-                            </Grid>
-                            
-                            <Grid item xs={4} className={classes.contentGrid} >
-                                {
-                                    duplicateBtn == true?
-                                        <IconButton onClick={()=> {onClickDuplicate()}} size="small">
-                                            <FileCopyIcon />
-                                        </IconButton>
-                                        :
-                                        null
-                                }
-                            </Grid>
+                            {
+                                editBtn == true?
+                                <Grid item xs={3} className={classes.contentGrid} >
+                                     <IconButton onClick={()=>onClickEdit()} size="small">
+                                        <EditIcon />
+                                    </IconButton>
+                                </Grid>
+                                :
+                                null
+                            }
+                          
+                            {
+                                duplicateBtn == true?
+                                <Grid item xs={3} className={classes.contentGrid} >
+                                    <IconButton onClick={()=> {onClickDuplicate()}} size="small">
+                                        <FileCopyIcon />
+                                    </IconButton>
+                                </Grid>
+                                :
+                                null
+                            }  
 
-                            <Grid item xs={4} className={classes.contentGrid} >
-                                {      
-                                    deleteBtn == true?
-                                        <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
-                                            <DeleteIcon />
+                            {
+                                   moveBtn == true?
+                                    <Grid item xs={3} className={classes.contentGrid} >
+                                        <IconButton onClick={()=> {onClickMove()}} size="small">
+                                            <LocalShippingIcon />
                                         </IconButton>
-                                        :
-                                        null
-                                }      
-                            </Grid>
+                                    </Grid>
+                                    :
+                                    null
+                            }
+                         
+                            {
+                                deleteBtn == true?
+                                <Grid item xs={3} className={classes.contentGrid} >
+                                    <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+                                :
+                                null
+                            }
                         </Grid>
                     </Grid>
                    
@@ -291,7 +322,7 @@ const LearningTaskView = (props) => {
 
                     <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_resource">
                         <Tooltip title="Resource" aria-label="classtarget">
-                            <AssignmentIcon />
+                            <TrackChangesIcon />
                         </Tooltip>  
                         {task.resourceid.length == 0? "N/A" : task.resourceid.map(selected=> taskResouceOpts.find(x => x.id == selected.resource_id)?.description.concat(', '))}
                     </Grid>
@@ -368,6 +399,31 @@ const LearningTaskView = (props) => {
                     </Button>
                 </DialogActions>
         </Dialog>
+
+        <Dialog open={moveDialogOpen} onClose={()=>{setMoveDialogOpen(false)}} maxWidth = {"md"}>
+                <DialogTitle>Move Learning Task</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Please select the component you wanna move to.
+                    </DialogContentText>
+                    <Select value = {moveTo} onChange = {(event) => setMoveTo(event.target.value)} fullWidth>
+                        {course.components.map(_component => 
+                            <MenuItem value = {_component.id} key = {_component.id}> 
+                                {_component.title}
+                            </MenuItem>
+                        )}
+                    </Select>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>{setMoveDialogOpen(false)}} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={()=>{onConfirmMove()} } color="primary">
+                        Move
+                    </Button>
+                </DialogActions>
+        </Dialog>
+
     </Paper>
     );
 }

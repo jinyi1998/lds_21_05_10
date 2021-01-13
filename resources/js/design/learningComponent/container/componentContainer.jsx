@@ -234,6 +234,8 @@ const ComponentContainer = (props)=>{
             selectComIndex: props.selectComIndex,
             setSelectComIndex: props.setSelectComIndex
         }}>
+        
+
           <Accordion 
             expanded = {index == selectComIndex} 
             onChange = {handleChange()}
@@ -339,6 +341,8 @@ const ComponentContainer = (props)=>{
             </AccordionDetails>
           </Accordion>
           <ComponentFloatDashboardContainer />
+
+         
         </ComponentContext.Provider>
     );
   }

@@ -3,10 +3,16 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
-import CloseIcon from '@material-ui/icons/Close';;
+import CloseIcon from '@material-ui/icons/Close';
 
 import ImageUploader from "react-images-upload";
 
@@ -21,10 +27,11 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
     const [ pictures, setPictures] = React.useState("");
     const [ isEditPic, setIsEditPic ] = React.useState(false);
     const [ designTypeInfo, setDesignTypeInfo ] = React.useState({
+        is_activate: true,
         name: "",
         description: "",
         hint: "",
-        media: ""
+        media: "",
     }); 
 
     React.useEffect(()=>{
@@ -35,10 +42,15 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
             name: designType.name,
             description: designType.description,
             hint: designType.hint,
-            media: scr
+            media: scr,
+            is_activate: designType.is_activate? true: false
         })
         setLoadingOpen(false)
     }, [designType]);
+
+    // React.useEffect(()=>{
+    //     console.log(designTypeInfo);
+    // }, [designTypeInfo]);
 
     //#region local action
     const onSaveInfo = () => {
@@ -83,6 +95,9 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
                 break;
             case 'hint':
                 setDesignTypeInfo({...designTypeInfo, "hint": event.target.value});
+                break;
+            case 'is_activate':
+                setDesignTypeInfo({...designTypeInfo, "is_activate": value == "true"? true:false});
                 break;
         }
     }
@@ -144,6 +159,23 @@ const DesignTypeBuilderBasicInfoView = (props) =>{
                     }
                    
                    
+                </Grid>
+
+                <Grid item xs ={12}>
+                    <RadioGroup row aria-label="position" name="is_activate" defaultValue="top" value = {designTypeInfo.is_activate} onChange = {handleOnChange}>
+                        <FormControlLabel
+                            value= {true}
+                            control={<Radio color="primary" />}
+                            label="Activate"
+                            labelPlacement="start"
+                        />
+                        <FormControlLabel
+                            value= {false}
+                            control={<Radio color="primary" />}
+                            label="Deactivate"
+                            labelPlacement="start"
+                        />
+                    </RadioGroup>
                 </Grid>
 
                 <Grid item xs ={12}>

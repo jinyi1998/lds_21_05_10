@@ -20,10 +20,11 @@ import {apiComponentAnalysisList} from '../../../api';
 const useStyles = makeStyles((theme) => ({
     floatingBox: {
       zIndex: 500,
-      width: '20vw',
+      maxWidth: '40vw',
+      maxHeight: "30vh",
       position: 'fixed',
-      top: theme.spacing(40),
-      right: theme.spacing(2),
+      bottom: theme.spacing(2),
+      right: theme.spacing(14),
       opacity: 0.6,
     },
 }));
@@ -119,7 +120,7 @@ const ComponentFloatDashboardContainer = (props) => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container>
-                        <Grid item xs = {12}>
+                        <Grid item xs = {6}>
                             <Typography variant = "caption">Task type time distribution</Typography>
                             <Pie 
                                 data={tasks_time_by_task}
@@ -132,7 +133,7 @@ const ComponentFloatDashboardContainer = (props) => {
                             />
                         </Grid>
         
-                        <Grid item xs = {12}>
+                        <Grid item xs = {6}>
                             <Typography variant = "caption">Social Type</Typography>
                             <Pie 
                                 data={tasks_num_by_classtype}

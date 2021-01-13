@@ -179,7 +179,7 @@ const StemPracticeContainer = (props) => {
         </Grid>
         <Grid item xs = {12}>
           <GridList className={classes.gridList}>
-            {designType.map((_data, i) => (
+            {designType.filter(x => x.is_activate).map((_data, i) => (
                 <StemPractice designBoxData={_data} key={i} onSelectSTEMPractice={onSelectSTEMPractice} onClickMore = {onClickMore} />
             ))}
           </GridList>
