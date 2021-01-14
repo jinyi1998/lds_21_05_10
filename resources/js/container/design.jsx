@@ -24,7 +24,7 @@ import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 import ComponentPlanContainer from '../design/learningComponent/container/componentPlanContainer';
 import LessonPlan from '../design/lesson/container/lessonPlanContainer';
-
+import TimelineContainer from '../design/timeline/src/timelineContainer'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -176,7 +176,13 @@ const PageListMenu = (props) => {
         <ListItemText primary="Lesson Plan" />
       </ListItem>
 
-      
+      <ListItem
+        button
+        selected={activeStage === 'timeline'}
+        onClick={(event) => setActiveStage('timeline')}
+      >
+        <ListItemText primary="Timeline" />
+      </ListItem>
 
       <ListSubheader>Review Stage</ListSubheader>
         <ListItem
@@ -508,6 +514,17 @@ const Design = (props) => {
             </Grid>
           </Grid>
         );
+
+        case 'timeline':
+          return(
+           <Grid item xs>
+             <TimelineContainer/>
+             <Grid container item xs = {12} justify = {"flex-end"}>
+               <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('componentPlan')}> Back </Button>
+               <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('finish')}> Next </Button>
+             </Grid>
+           </Grid>
+         );
 
       case 'learningOutcomes':
         return( 
