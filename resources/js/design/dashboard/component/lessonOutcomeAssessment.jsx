@@ -38,6 +38,7 @@ const LessonOutcomeAssessment = (props)=>{
     const classes = useStyles();
     const {data} = props;
     const [taskID, setTaskID] = React.useState(-1);
+    console.log(data);
 
     const displayColor = (outcome_id) => {
         try{

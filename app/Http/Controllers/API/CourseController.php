@@ -509,9 +509,9 @@ class CourseController extends Controller
                 $taskAssessmentMapping[$_task_index]['id'] =  $taskMapping[$_task_index];
                 foreach($_task['assessmentid'] as $assessment_index => $_assessment){
                     foreach($_component['outcomes_id'] as $index_outcomes => $_outcomes){
-                        if( $_assessment['learningoutcome_id'] == $_outcomes['outcomes_id']){    
+                        if( $_assessment['learningoutcome_id'] == $_outcomes['outcome_id']){    
 
-                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomes_id'][$index_outcomes]['outcomes_id'];
+                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomes_id'][$index_outcomes]['outcome_id'];
                             $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningtask_id'] =  $taskMapping[$_task_index];
                         }
                     }
@@ -541,13 +541,14 @@ class CourseController extends Controller
         foreach($request->lessons as $_lesson){
             $_lesson_obj = new Lesson();
             $_lesson['course_id'] = $course->id;
+            $_lesson['lessontype'] = 2;
             foreach($_lesson['tasksid'] as $index => $_task){
                 if(isset($taskMapping[$_task['task_id']])){
                     $_lesson['tasks_id'][$index]['task_id'] = $taskMapping[$_task['task_id']];
                     $_lesson['tasks_id'][$index]['sequence'] = $index + 1;
                 }
             }
-            // return response()->json($_lesson);
+            // print_r($_lesson);
             $_lesson_request = new \Illuminate\Http\Request($_lesson);
             LessonController::save( $_lesson_obj, $_lesson_request);
         }

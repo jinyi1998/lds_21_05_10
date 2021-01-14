@@ -193,13 +193,26 @@ const LessonPlanView = (props) => {
     } 
 
     const displayLessonType = () => {
+        
         switch (lessontype){
             case 1:
-                return <Typography variant = {"subtitle1"}> Pre-Class</Typography>
+                return <Typography variant = {"subtitle1"}>{displayLessonTypeName()}</Typography>
             case 2:
-                return <Typography variant = {"subtitle1"} > In-Class</Typography>
+                return <Typography variant = {"subtitle1"}>{displayLessonTypeName()}</Typography>
             case 3:
-                return <Typography variant = {"subtitle1"}> Post-Class</Typography>
+                return <Typography variant = {"subtitle1"}>{displayLessonTypeName()}</Typography>
+        }
+            
+    }
+
+    const displayLessonTypeName = () => {
+        switch (lessontype){
+            case 1:
+                return "Pre-Class"
+            case 2:
+                return "In-Class"
+            case 3:
+                return "Post-Class"
         }
             
     }
@@ -267,7 +280,7 @@ const LessonPlanView = (props) => {
                                         : 
                                         <Grid container item xs ={12} justify = {"center"}>    
                                           <Typography variant = {"subtitle2"} style = {{color: "red"}}> 
-                                            No Learning Task In This Lesson
+                                            No Learning Task In {displayLessonTypeName()}
                                           </Typography>
                                         </Grid> 
                                     }

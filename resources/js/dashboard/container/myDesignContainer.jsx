@@ -52,7 +52,7 @@ const MyDesignContainer = (props)=>{
         setLoadingOpen(true)
         apiFileCourseImport(JSON.parse(event.target.result))
         .then(response => {
-            // window.location.reload(); 
+            window.location.reload(); 
         });
     };
 

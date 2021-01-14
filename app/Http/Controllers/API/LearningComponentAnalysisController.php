@@ -105,7 +105,18 @@ class LearningComponentAnalysisController extends Controller
             // ->select(DB::raw('distinct learningoutcome.*, if(learningtask_assessment.learningtask_id is null, 0, learningtask_assessment.learningtask_id) as learningtask_id'))
             ->get();
 
-       
+        foreach( $task_assessment as $index => $_task_assessment){
+            $check = true;
+            foreach($component_task as $_component_task){
+                if($_component_task->task_id == $_task_assessment->learningtask_id){
+                    $check = false;
+                    break;
+                }
+            }
+            if($check){
+                unset($task_assessment[$index]);
+            }
+        }
         
         //
         $tasks_time_by_type = [];

@@ -59,13 +59,13 @@ class LessonAnalysisController extends Controller
         ->leftJoin('learningoutcome', 'learningoutcome.id', '=', 'learningtask_assessment.learningoutcome_id')
         ->leftJoin('component_outcome_relational', 'learningoutcome.id', '=', 'component_outcome_relational.outcome_id')
         ->leftJoin('pattern_task_relational', 'learningtask.id', '=', 'pattern_task_relational.task_id')
-        ->leftJoin('component_pattern_relational', 'pattern_task_relational.pattern_id', '=', 'component_pattern_relational.pattern_id')
-        ->leftJoin('component_task_relational', 'learningtask.id', '=', 'component_task_relational.task_id')
+        ->leftJoin('component_pattern_task_relation', 'pattern_task_relational.pattern_id', '=', 'component_pattern_task_relation.pattern_id')
+        ->leftJoin('component_pattern_task_relation as 2', 'learningtask.id', '=', '2.task_id')
         // ->leftJoin('component', 'component.id', '=', 'component_task_relational.component_id')
         ->leftJoin('component', function($join)
         {
-            $join->orOn('component.id', '=', 'component_task_relational.component_id');
-            $join->orOn('component.id','=', 'component_pattern_relational.component_id');
+            $join->orOn('component.id', '=', 'component_pattern_task_relation.component_id');
+            $join->orOn('component.id','=', '2.component_id');
         })
         ->where('lesson.id', '=', $id)
         // ->groupBy('learningoutcome.id', 'learningoutcome.description', 'component.id')
