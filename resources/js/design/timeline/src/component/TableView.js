@@ -849,7 +849,7 @@ class TABLEVIEW extends React.Component {
             <React.Fragment>
                 {groups.map((group, index) => (
                     <div style={styles.leftItem} key={index}>
-                        <img style={styles.leftItemImage} src={`img/${group.img}`} />
+                        <img style={styles.leftItemImage} src={`${group.img}`} />
                         <div style={styles.leftItemName}>{group.name}</div>
                     </div>
                 ))}

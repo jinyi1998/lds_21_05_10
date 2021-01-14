@@ -71,10 +71,10 @@ const DATAAPI = {
     },
     getClassTargetOpt: () => {
         return [
-            { "name": 'Individual', "id":3, "img": '/asset/public/individual.png' },
-            { "name": 'Group', "id":2, "img": '/asset/public/group.png' },
-            { "name": 'Peer', "id":4, "img": "/asset/public/peer.png" },
-            { "name": 'Whole Class', "id":1, "img": "/asset/public/whole-class.png" }
+            { "name": 'Individual', "id":3, "img": '/asset/public/img/individual.png' },
+            { "name": 'Group', "id":2, "img": '/asset/public/img/group.png' },
+            { "name": 'Peer', "id":4, "img": "/asset/public/img/peer.png" },
+            { "name": 'Whole Class', "id":1, "img": "/asset/public/img/whole-class.png" }
         ]
     },
   
