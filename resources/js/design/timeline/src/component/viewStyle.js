@@ -13,12 +13,12 @@ const contentHeight = height - topHeight
 const viewStyle = {
     // positions for each view
     tableview: {
-        position:"fixed",
+        // position:"fixed",
         top: "50px",
         left:"50px"
     },
     lessonview: {
-        position:"fixed",
+        // position:"fixed",
         top: "650px",
         left:"50px",
         width: LessonWidth

@@ -179,7 +179,10 @@ const PageListMenu = (props) => {
       <ListItem
         button
         selected={activeStage === 'timeline'}
-        onClick={(event) => setActiveStage('timeline')}
+        onClick={(event) => window.open(
+          `/timeline/${props.course_id}`
+        ,'_blank'
+        )}
       >
         <ListItemText primary="Timeline" />
       </ListItem>
@@ -445,7 +448,7 @@ const Design = (props) => {
               <Grid container>
                
                 <Grid item xs ={2}>
-                  <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage}/> 
+                  <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage} course_id = {courseID}/> 
                 </Grid>
                 
                 <Grid item xs>

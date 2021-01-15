@@ -58,6 +58,11 @@ class RouteController extends Controller
         return redirect('designstudio/'.$course->id);
         // return view('app', ["courseid" => $course->id, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'designstudio']);
     }
+
+    public function timeline($id = -1){
+        // return view('mydesign', ['user'=> $user_temp]);
+        return view('app',  ["courseid" => $id, 'user'=> $this->getUserJson(), 'step' => 0, 'module' => 'timeline']);
+    }
    
     public function mydesign(){
         // return view('mydesign', ['user'=> $user_temp]);
