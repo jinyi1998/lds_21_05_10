@@ -109,7 +109,7 @@ const ComponentTemplateBuilderContainer = (props) => {
     },[])
 
     React.useEffect(()=>{
-        if(componentTemplate.designtype.id > 0){
+        if(componentTemplate.designtype?.id > 0){
             setStep(1);
         }
     }, [componentTemplate.designtype])
