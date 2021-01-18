@@ -508,10 +508,10 @@ class CourseController extends Controller
             foreach($taskAssessmentMapping as $_task_index => $_task){
                 $taskAssessmentMapping[$_task_index]['id'] =  $taskMapping[$_task_index];
                 foreach($_task['assessmentid'] as $assessment_index => $_assessment){
-                    foreach($_component['outcomes_id'] as $index_outcomes => $_outcomes){
+                    foreach($_component['outcomeid'] as $index_outcomes => $_outcomes){
                         if( $_assessment['learningoutcome_id'] == $_outcomes['outcome_id']){    
 
-                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomes_id'][$index_outcomes]['outcome_id'];
+                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomeid'][$index_outcomes]['outcome_id'];
                             $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningtask_id'] =  $taskMapping[$_task_index];
                         }
                     }

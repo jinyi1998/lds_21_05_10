@@ -200,7 +200,8 @@ class LearningComponentController extends Controller
         $component = Component::with([
             'tasks', 
             'patterns',
-            'outcomes'
+            'outcomes',
+            'outcomeid'
         ])->find($component->id);
 
         return $component;
