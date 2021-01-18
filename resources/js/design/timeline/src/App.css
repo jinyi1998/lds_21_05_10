@@ -16,6 +16,19 @@ body{
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 2px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -78,19 +91,6 @@ body{
 /*********************CSS FOR TABLE***************************/
 /*************************************************************/
 
-
-table{
-  text-align: center;
-  background: white;
-  margin-left: 228px;
-  margin-top: 20px;
-  margin-bottom: 60px;
-  width: 1000px;
-}
-td{
-  width: 120px;
-  font-size: 0.6em;
-}
 /**The first column**/
 /* td:first-child{
   width: 72px;
@@ -281,39 +281,6 @@ img{
   padding: 0;
 }
 /** 101 * 3 + 12 *2 = 303 + 24 = 327px**/
-.carousel{
-  overflow-y: hidden;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  height: 327px;
-  font-size: 0.6em;
-}
-.prev{
-  margin-top:24px;
-}
-a span{
-    display: block;
-    text-align: center;
-    color: #777;
-    text-decoration: none;
-    text-shadow: 0 0 1.2px #000;
-    font: 30px Arial;
-}
-li img{
-  padding-top:4%;
-  padding-left: 20%;
-  padding-right:20%;
-  height: 50%;
-  width: 60%;
-  margin:0;
-}
-li span{
-  color: black;
-  height: 45%;
-  width: 100%;
-}
-
-
 /*************************************************************/
 /****************CSS FOR BOTTOM LESSON LIST*******************/
 /*************************************************************/
@@ -382,15 +349,13 @@ li span{
 
 
 
-
-
 /*************************************************************/
 /****************CSS FOR RIGHT CLASS EDITION*******************/
 /*************************************************************/
 .taskEdition{
     position: fixed;
     right: 5px; 
-    top: 20px; 
+    top: 80px; 
      width: 430px; 
     border: 1.2px solid #ccc;
     padding-top: 12px;
@@ -402,7 +367,7 @@ li span{
 }
 .taskInfo{
   width: 420px;
-  height: 550px;
+  height: 520px;
   margin-bottom: 10px;
 }
 .leftInfo{
@@ -410,24 +375,17 @@ li span{
   padding-left:8px;
   margin-top:20px;
   width: 160px;
-  height: 520px;
+  height: 500px;
   /*height: 100%;*/
   border-left: 1.2px solid #aaa;
 }
 .rightInfo{
   float: left;
-  width:240px;
+  width: 240px;
   margin-top:20px;
   padding-left:18px;
-  height: 520px;
+  height: 500px;
   border-left:3px solid #e6ce77;
-}
-.inputDes, .inputDes2{
-  color: #999;
-  font-size: 0.7em;
-}
-.inputDes2{
-  color: black;
 }
 .taskEditiontitle1{
   font-weight: bold;
@@ -436,24 +394,9 @@ li span{
   font-size: 0.9em;
   color:#999;
   margin-top:12px;
-  /*margin-bottom: 12px;*/
-}
-.leftInfo div{
-  margin-bottom: 12px
-}
-
-.rightInfo div{
-  margin-bottom: 24px
-}
-.leftInfo input, .leftInfo select{
-  width: 84px;
-}
-.rightInfo input, .rightInfo select{
-  width: 180px;
 }
 .buttonG{
   text-align: center
-  /*float: right;*/
 }
 .buttonG button{
   margin-right: 24px;

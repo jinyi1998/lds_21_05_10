@@ -12,24 +12,21 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 
+/** define the styles of the taskEdition, including the width of the leftInfo and rightnfo **/
 const useStyles = makeStyles((theme) => ({
-	formControl: {
+	leftInfoStyle: {
 	    margin: theme.spacing(1),
+	    marginBottom: '24px',
 	    width: 130,
 	},
-	selectEmpty: {
-	    marginTop: theme.spacing(2),
-	 },
-}));
-const useStyles1 = makeStyles((theme) => ({
-	formControl: {
-	    margin: theme.spacing(1),
-	    width: 200,
+	rightInfoStyle: {
+		marginBottom:'48px',
+	    width: 210,
 	},
-	selectEmpty: {
-	    marginTop: theme.spacing(2),
-	 },
 }));
+
+
+/***define the style of multiple choice*****/
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -40,42 +37,20 @@ const MenuProps = {
 		},
 	},
 };
-const MenuPropsType = {
-	PaperProps: {
-		style: {
-			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-			width: 360,
-		},
-	},
+var style = {
+	marginLeft: '-100px'
 };
 
+/****Get the information of tools, resources, class type, size from the API******/
 const toolsName = DATAAPI.getelearningtoolOpts() 
 const resourcesName = DATAAPI.getresourceOpts()
 const typeName = DATAAPI.getlearningTasktypeOpts()
 const sizeOpts = DATAAPI.getclassSizeOpts()
-console.log('sizeOpts', sizeOpts)
 
-
-var style = {
-	marginLeft: '-100px'
-};
-var styleType = {
-	marginLeft: '-160px'
-};
-
-var styleText = {
-	width:130,
-	marginLeft: 10,
-};
-var styleRightText = {
-	width: 210,
-	marginLeft: 0
-}
 
 export default function TaskEdition(props){
 
 	const classes = useStyles();
-	const classes1 =useStyles1()
 	let choseTask = ((props.lessonList)[props.currentLessonIndex]["tasks"]).filter(item => item.id == props.currentTaskId)[0]
 	choseTask.allResourcedId = (choseTask.resourceid).map((resourceid) =>  resourceid.resource_id)
 	choseTask.allToolsId =(choseTask.toolid).map((toolid) =>  toolid.elearningtool_id)
@@ -83,18 +58,15 @@ export default function TaskEdition(props){
 		choseTask.displayName = ''
 	const [state, setState] = React.useState(choseTask);
 
+    /*** When change infomation, record it using the state****/
 	const handleChange = (event) => {
-		// console.log('choseTask', choseTask,state)
 	    const name = event.target.name;
 	    let value = event.target.value
-	    console.log('handleChange', name, value)
 	    setState({
 	      ...state,
 	      [name]: value,
 		});
-		// console.log('here', state)
 	};
-	
 
 	return (
       <div className="taskEdition">
@@ -102,20 +74,21 @@ export default function TaskEdition(props){
 	      <div className='taskEditiontitle2'> You may add new learning task for this component... </div>
 	      <div className='taskInfo'>
 	      	<div className='leftInfo'>
-	      		 
-	      		 <TextField
-	      		  required
-	      		  error
-	      		  inputProps={{ name: 'time',}}
-				  id='filled-mintues'
-		          label="Minutes"
-		          defaultValue={state.time}
-		          variant="filled"
-		          style={styleText}
-		          onChange={handleChange}
-		        />
+	      		
+	      		<FormControl variant="outlined" className={classes.leftInfoStyle}>
+		      		 <TextField
+		      		  required
+		      		  error
+		      		  inputProps={{ name: 'time',}}
+					  id='filled-mintues'
+			          label="Minutes"
+			          defaultValue={state.time}
+			          variant="filled"
+			          onChange={handleChange}
+			        />
+			    </FormControl>
 
-	      		<FormControl variant="outlined" className={classes.formControl}>
+	      		<FormControl variant="outlined" className={classes.leftInfoStyle}>
 			        <InputLabel htmlFor="class_type"> Class Type: </InputLabel>
 			        <Select
 							native
@@ -131,7 +104,7 @@ export default function TaskEdition(props){
 			        </Select>
 			     </FormControl>
 
-			     <FormControl variant="outlined" className={classes.formControl}>
+			     <FormControl variant="outlined" className={classes.leftInfoStyle}>
 			        <InputLabel htmlFor="target"> Class Target: </InputLabel>
 			        <Select
 							native
@@ -149,7 +122,7 @@ export default function TaskEdition(props){
 			        </Select>
 			     </FormControl>
 
-			    <FormControl variant="outlined" className={classes.formControl}>
+			    <FormControl variant="outlined" className={classes.leftInfoStyle}>
 			        <InputLabel htmlFor="size"> Size: </InputLabel>
 			        <Select
 							native
@@ -166,7 +139,7 @@ export default function TaskEdition(props){
 			        </Select>
 			     </FormControl>
 
-				<FormControl className={classes.formControl}>
+				<FormControl className={classes.leftInfoStyle}>
 					<InputLabel id="resources-label"> Resources: </InputLabel>
 					<Select
 							labelId="resources-label"
@@ -186,7 +159,7 @@ export default function TaskEdition(props){
 					</Select>
 				</FormControl> 
 
-				<FormControl className={classes.formControl}>
+				<FormControl className={classes.leftInfoStyle}>
 					<InputLabel id="tools-label"> Tools: </InputLabel>
 					<Select
 							labelId="tools-label"
@@ -209,9 +182,8 @@ export default function TaskEdition(props){
 	      	</div>
 
 	      	<div className='rightInfo'>
-	      		<FormControl className={classes1.formControl}>
+	      		<FormControl className={classes.rightInfoStyle}>
 					<InputLabel id="type-label"> Type: </InputLabel>
-
 					 <Select
 							native
 							error
@@ -226,55 +198,54 @@ export default function TaskEdition(props){
 					    	<option value={tasktype.id} key={tasktype.id}> {tasktype.description} </option> 
 						))}
 			        </Select>
-
 				</FormControl> 
 
-	      		<TextField
-	      		  id="filled-multiline-static"
-			      label="Multiline"
-			      multiline
-			      rows={3}
-	      		  required
-	      		  error
-	      		  inputProps={{ name: 'title',}}
-		          id="filled-title"
-		          label="Title"
-		          defaultValue={state.title}
-		          variant="filled"
-		          onChange={handleChange}
-		           style={styleRightText}
-		        />
+	      		<FormControl className={classes.rightInfoStyle}>
+		      		<TextField
+		      		  id="filled-multiline-static"
+				      label="Multiline"
+				      multiline
+				      rows={3}
+		      		  required
+		      		  error
+		      		  inputProps={{ name: 'title',}}
+			          id="filled-title"
+			          label="Title"
+			          defaultValue={state.title}
+			          variant="filled"
+			          onChange={handleChange}
+			        />
+			    </FormControl> 
 
-		        <TextField
-		          id="filled-multiline-static"
-			      label="Multiline"
-			      multiline
-			      rows={5}
-		          required
-		          error
-		          inputProps={{ name: 'description',}}
-		          id="filled-description"
-		          label="Description"
-		          defaultValue={state.description}
-		          variant="filled"
-		          onChange={handleChange}
-		           style={styleRightText}
+	      		<FormControl className={classes.rightInfoStyle}>
+			        <TextField
+			          id="filled-multiline-static"
+				      label="Multiline"
+				      multiline
+				      rows={5}
+			          required
+			          error
+			          inputProps={{ name: 'description',}}
+			          id="filled-description"
+			          label="Description"
+			          defaultValue={state.description}
+			          variant="filled"
+			          onChange={handleChange}
+			        />
+			    </FormControl> 
 
-		        />
-
-		        <TextField
-		          required
-		          inputProps={{ name: 'displayName',}}
-		          id="outlined-displayName"
-		          label="Display name(for timeline): "
-		          defaultValue={state.displayName}
-		          variant="outlined"
-		          error
-		           style={styleRightText}
-		          // helperText="Required. Not empty!"
-		          onChange={handleChange}
-		        />
-
+	      		<FormControl className={classes.rightInfoStyle}>
+			        <TextField
+			          required
+			          inputProps={{ name: 'displayName',}}
+			          id="outlined-displayName"
+			          label="Display name(for timeline): "
+			          defaultValue={state.displayName}
+			          variant="outlined"
+			          error
+			          onChange={handleChange}
+			        />
+			     </FormControl> 
 	      	</div>
 	      </div>
 

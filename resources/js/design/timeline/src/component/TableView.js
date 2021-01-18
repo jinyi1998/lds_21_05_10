@@ -3,13 +3,12 @@ import { DATAAPI } from '../api/api-server'
 import styles from './viewStyle.js'
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
-import Edit from '@material-ui/icons/Edit';
+
 
 // need to modify to achieve a good animation
 const zoomWidthChange = 35
 // judge whether the task is selected
 const selectedStyle = '2px solid rgb(240, 128, 128)'
-
 
 const maxWidth = 300
 const minWidth = 80
@@ -37,11 +36,10 @@ let unitWidthGap = [
     widthRangeInClass,
     widthRangeLesson
 ]
-let defaultTimeGap = 2 // 30min
 
-
-const grouidxToTarget = [3, 2, 4, 1] // ['Whole Class', 'Group', 'Individual', 'Peer', ]
-
+let defaultTimeGap = 1 // 30min
+// corresponding to ['Whole Class', 'Group', 'Individual', 'Peer', ]
+const grouidxToTarget = [3, 2, 4, 1] 
 
 class TABLEVIEW extends React.Component {
     constructor(props) {
@@ -55,6 +53,8 @@ class TABLEVIEW extends React.Component {
             unitWidth: styles.unit.width,
             showTimeGap: defaultTimeGap,
         }
+        this.defaultInClass = 0
+        this.defaultUnitWidth = 0
         this.dragTimeStartX = 0
         this.zoomTimeStartX = 0
         this.prevUnitWidth = styles.unit.width // judge whether happened a zoom operation just now
@@ -77,26 +77,64 @@ class TABLEVIEW extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0){
-            let atime = nextProps.currentLessonIndex * ONE_HOUR * 5
-            let st = (originTimeInMS - atime) / timeGap[defaultTimeGap] * styles.unit.width
+        if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0 && nextProps.currentLessonIndex!=this.props.currentLessonIndex){
+                let atime = nextProps.currentLessonIndex * nextProps.lessonList[0].time * ONE_MINUTE * 5;
+                let st = (originTimeInMS - atime) / timeGap[defaultTimeGap] * this.defaultUnitWidth; //styles.unit.width
 
-            this.setState({
-                showTimeGap: defaultTimeGap,
-                timeStart: st,
-                unitWidth: styles.unit.width
-            })
+                this.prevUnitWidth = this.defaultUnitWidth;
+                this.setState({
+                    showTimeGap: defaultTimeGap,
+                    timeStart: st,
+                    unitWidth: this.defaultUnitWidth
+                })
         }
+
         if(nextProps.lessonList){
-            let tmplesson = this.getLessons(nextProps.lessonList)
-            this.setState({
-                tasks: this.transformLesson2Task(nextProps.lessonList),
-                // lessonList: nextProps.lessonList, //nextProps.lessonList,
-                lessons: tmplesson
-            });
+            if(nextProps.currentLessonIndex == -1){
+                this.prevUnitWidth = widthRangeLesson[0];
+                // this.setState({
+                //     showTimeGap: 3,
+                //     timeStart: 0,
+                //     unitWidth: widthRangeLesson[0]
+                // })
+                let tmplesson = this.getLessons(nextProps.lessonList);
+                if(tmplesson.length > 0){
+                    let lessonDuration = tmplesson[0]['duration']? tmplesson[0]['duration']* tmplesson.length : 60;
+                    let unitCnt = lessonDuration / timeGap[3];
+                    let newUnitWidth = styles.right.width / unitCnt;
+                    this.setState({
+                        showTimeGap: 3,
+                        timeStart: 0,
+                        unitWidth: newUnitWidth,
+                    })
+                }
+            }else{
+                let tmplesson = this.getLessons(nextProps.lessonList);
+                if(tmplesson.length > 0){
+                    this.defaultInClass = tmplesson[0]['defaultInClass']? tmplesson[0]['defaultInClass'] : 60;
+                    let lessonDuration = tmplesson[0]["duration"];
+                    let unitCnt = lessonDuration / timeGap[defaultTimeGap];
+                    let newUnitWidth = styles.right.width / unitCnt;
+                    this.defaultUnitWidth = newUnitWidth
+                    this.setState({
+                        tasks: this.transformLesson2Task(nextProps.lessonList),
+                        // lessonList: nextProps.lessonList, //nextProps.lessonList,
+                        unitWidth: newUnitWidth,
+                        lessons: tmplesson
+                    });
+                }else{
+                    this.prevUnitWidth = widthRangeLesson[0];
+                    this.setState({
+                        showTimeGap: 3,
+                        timeStart: 0,
+                        unitWidth: widthRangeLesson[0]
+                    })
+                }   
+            }
         }
     }
 
+    /** transform all tasks in timeline format to the original format to write back to the database****/
     transformTask2Lesson(tasks){
         tasks.map((group, groupIdx)=>{
             group.map((task, taskIdx) => {
@@ -111,23 +149,22 @@ class TABLEVIEW extends React.Component {
         let lessonListtmp = Object.assign({}, this.props.lessonList)
         lessonListtmp =  Object.values(lessonListtmp)
 
-
+        // go through all tasks in the original lessonlist
         for(let lessoni=0; lessoni<this.props.lessonList.length; lessoni++){
             let currentLesson = this.props.lessonList[lessoni]
-            let maxEnd = 0
 
             for(let taski=0; taski < currentLesson.tasks.length; taski++){
-
                 let currentTask = currentLesson['tasks'][taski]
+                
                 // if this tasks in the transform tasks?
                 let index = AllTasks.findIndex(task => task['id'] === currentTask.id && task['lesson'] == lessoni)
 
-                
-                // the index of this tasks in the lessonlist
+                // the index of this tasks in the original lessonlist
                 let taskTmp = lessonListtmp[lessoni]['tasks']
                 let taskIdx = taskTmp.findIndex(currenttask => currenttask['id'] === currentTask.id)
                 taskIdx = parseInt(taskIdx)
 
+                // if not in the tranform tasks, means that this task is deleted
                 if(index == -1){
                     // delete task
                     taskTmp.splice(taskIdx, 1)
@@ -138,82 +175,73 @@ class TABLEVIEW extends React.Component {
                     tasksidTmp.splice(parseInt(taskidIdx), 1)
 
                     lessonListtmp[lessoni]["tasksid"] = tasksidTmp
-
                 }
                 else{
-                    // change time duration, target, and description(to start)
+                    // change time duration, target, starttime.....
                     taskTmp[taskIdx].time =  Math.floor(AllTasks[index].duration / 60000)
                     taskTmp[taskIdx].target = grouidxToTarget[AllTasks[index].groupid]
                     taskTmp[taskIdx]['lessonid']['starttime'] = AllTasks[index].startToLesson
-                    // to reoroder the tasks in lessonview
+                    if(AllTasks[index].classType=='inClass')
+                        taskTmp[taskIdx]['lessonid']['starttime'] -= 2 * this.defaultInClass
+                    if(AllTasks[index].classType=='postClass')
+                        taskTmp[taskIdx]['lessonid']['starttime'] -= 3 * this.defaultInClass
+                    
+                    // using startTolesson to reoroder the tasks in lessonview
                     taskTmp[taskIdx].startToLesson = AllTasks[index].startToLesson
                     taskTmp[taskIdx]['lessonid']['lessontype'] = AllTasks[index].classType=='preClass' ? 1 : (AllTasks[index].classType=='inClass' ? 2: 3)
-                
                 }
                 
                 lessonListtmp[lessoni]["tasks"] = taskTmp
-
             }
 
             let tasks_after =  Object.assign({}, lessonListtmp[lessoni].tasks)
-            // console.log('tasks_after', tasks_after)
-            // console.log(type(tasks_after))
             tasks_after =  Object.values(tasks_after)
+            // sort the tasks according to their start time,thus the tasks in the lessonView will change accrodingly
             tasks_after = tasks_after.sort(function(a, b){
-                // let a_toStartIndex = (a.description).indexOf('toStart:')
-                // let b_toStartIndex = (b.description).indexOf('toStart:')
-                // let a_startToLesson = (a.description).substr(a_toStartIndex + 8,)
-                // let b_startToLesson = (b.description).substr(b_toStartIndex + 8,)
-                // return parseInt(a_startToLesson) - parseInt(b_startToLesson)
                 return a.startToLesson - b.startToLesson
             });
-            // delete tasks_after.startToLesson 
             lessonListtmp[lessoni]["tasks"] = tasks_after
         }
-        // delete obj.hobby 
-        //  console.log('lessonListtmp',lessonListtmp)
          return lessonListtmp
-
-        // console.log(tasks)
-        /* 从 task list 还原到 lesson list */
-
+        /* recover lessonlist from task list */
     }
 
+    /** transform all tasks in orign format to the format that timeline required*****/
     transformLesson2Task(lessons){
     	let idvTasks = []
         let groupTasks = []
         let peerTasks = []
         let wholeTasks = []
-        // let lessons = DATAAPI.courseinfo["lessons"]
-        // console.log(lessons)
-    	let allTaskTime = 0
     	for(let lessoni = 0; lessoni < lessons.length; lessoni ++){
     		let tasks = lessons[lessoni].tasks
-    		let startToLesson = 0
-    		let maxEnd = 0
     		for (let taski = 0; taski < tasks.length; taski++){
     			let currentTask = tasks[taski]
 	            let groupid =  parseInt(currentTask.target)
 	            const taskOpt = DATAAPI.getTaskOptions(currentTask)
+                // startTime store the time to pre, in, or post
 	            let startToLesson = currentTask['lessonid']['starttime']
-                if(currentTask["lessonid"]["lessontype"] == 2 && startToLesson == 0)
-                    startToLesson += 2* 60 * DATAAPI.ONE_MINUTE
-                if(currentTask["lessonid"]["lessontype"] == 3 && startToLesson == 0)
-                    startToLesson += 3* 60 * DATAAPI.ONE_MINUTE
-	            let tool = taskOpt["tool"]
+                if(currentTask["lessonid"]["lessontype"] == 2 )
+                    startToLesson += 2 * this.defaultInClass
+                if(currentTask["lessonid"]["lessontype"] == 3 )
+                    startToLesson += 3 * this.defaultInClass
+                let tool = taskOpt["tool"];
+                let resource = taskOpt["tool"]
 	            let tableTask = {
 	            	id: currentTask.id,
 	            	lesson: lessoni,
 	            	startToLesson: startToLesson,
-	            	start: lessoni * 5 * 60 * DATAAPI.ONE_MINUTE + startToLesson,
+	            	start: lessoni * 5 * this.defaultInClass + startToLesson,
 	                group: DATAAPI.groupName[groupid - 1],
                     groupid: groupid -1,
 	                duration: currentTask.time * DATAAPI.ONE_MINUTE,
-	                tool: tool.length == 0? 'No Tools': ((taskOpt["tool"].map((tool)=> {return tool.description})).join('+')),
+                    tool: tool.length == 0? 'No Tools': ((taskOpt["tool"].map((tool)=> {return tool.description})).join('+')),
+                    resource: resource.length == 0? 'No Resources': ((taskOpt["resource"].map((rec)=> {return rec.description})).join('+')),
 	                desc: currentTask.title.length>0?currentTask.title:"No title",
-	                bgColor:  taskOpt["taskType"]["color"],
-                    resource: DATAAPI.getResourceIcon(currentTask),//'logo192.png',
-                    classType: currentTask["lessonid"]["lessontype"]==1?"preClass":(currentTask["lessonid"]["lessontype"]==2?"inClass":"postClass")
+                    bgColor:  taskOpt["taskType"]["color"],
+                    toolimgs: DATAAPI.getToolIcon(currentTask),//'logo192.png',
+                    resourceimgs: DATAAPI.getResourceIcon(currentTask),//'logo192.png',
+                    classType: currentTask["lessonid"]["lessontype"]==1?"preClass":(currentTask["lessonid"]["lessontype"]==2?"inClass":"postClass"),
+                    displayName: ('displayName' in currentTask)? currentTask.displayName: '', 
 	            }
 	            if(groupid == 3)
 	                idvTasks.push(tableTask)
@@ -230,11 +258,11 @@ class TABLEVIEW extends React.Component {
     }
 
     getLessons(lessons){
-        const ONE_SECOND = 1000;
-        const ONE_MINUTE = ONE_SECOND * 60;
-        const ONE_HOUR = ONE_MINUTE * 60;
-        const THREE_HOUR = ONE_HOUR * 3;
-        let defaultInClass = 60 * ONE_MINUTE
+        let lessonLength = 60
+        if(lessons[0]){
+            lessonLength = lessons[0]["time"]<10?60:lessons[0]["time"]
+        }
+        let defaultInClass = lessonLength * ONE_MINUTE
         // let unitCnt = defaultInClass * 5 / timeGap[defaultTimeGap]
         // let newUnitWidth = styles.right.width / unitCnt
         // allow the defaultInClass to be times of 10 or 15
@@ -267,6 +295,7 @@ class TABLEVIEW extends React.Component {
                 'postClass': 2 * defaultInClass,
                 'duration': defaultInClass * 5,
                 'allPrevLessonDuration': index * 5 * defaultInClass,
+                'defaultInClass': defaultInClass,
             }
         })
     }
@@ -283,8 +312,6 @@ class TABLEVIEW extends React.Component {
     dragTimeEnd = (e) => {
         document.onmousemove = null
         e.target.style.cursor = 'default'
-        // e.stopPropagation()
-        // console.log('drag time end:', e.currentTarget)
     }
 
     draggingTime = (e) => {
@@ -293,19 +320,11 @@ class TABLEVIEW extends React.Component {
         this.setState((prevState) => {
             // cannot drag time before the first lesson
             let newTimeStart = prevState.timeStart + (val - this.dragTimeStartX)
-            // newTimeStart = newTimeStart > 0 ? 0 : newTimeStart
-            // cannot drag time after the final lesson
-            // let finalLesson = this.state.lessons[this.state.lessons.length-1]
-            // let maxTimeStart = (originTimeInMS - (finalLesson.allPrevLessonDuration + finalLesson.duration)) / timeGap[this.state.showTimeGap] * this.state.unitWidth
-            // timeStart is negative
-            // newTimeStart = newTimeStart < maxTimeStart ? maxTimeStart : newTimeStart
-            // console.log('in dragging time:', newTimeStart, maxTimeStart, this.state.unitWidth)
             return ({
                 timeStart: newTimeStart,
             })
         })
         this.dragTimeStartX = val
-        // e.stopPropagation()
     }
 
     zoomTime = (e) => {
@@ -323,15 +342,18 @@ class TABLEVIEW extends React.Component {
                     newUnitWidth = unitWidthGap[newShowTimeGap][0] // change to minWidth of the upper state
                 }
                 let newTimeStart = (this.mouseOnTime - originTimeInMS) / timeGap[newShowTimeGap] * newUnitWidth - this.mouseOnTimeOffsetX
-                // console.log('newTimeStart:', newTimeStart)
-                // console.log('mouseOnTime:', new Date(this.mouseOnTime))
+
+                // console.log({
+                //     timeStart: -newTimeStart,
+                //     unitWidth: newUnitWidth,
+                //     showTimeGap: newShowTimeGap,
+                // });
                 return ({
                     timeStart: -newTimeStart,
                     unitWidth: newUnitWidth,
                     showTimeGap: newShowTimeGap,
                 })
             })
-            // console.log('zoom-in')
         } else {
             this.setState((prevState) => {
                 this.mouseOnTime = Math.floor((this.zoomTimeStartX - prevState.timeStart) / prevState.unitWidth) * gap + originTimeInMS
@@ -343,24 +365,25 @@ class TABLEVIEW extends React.Component {
                     newUnitWidth = unitWidthGap[newShowTimeGap][1] // change to maxWidth of the lower state
                 }
                 let newTimeStart = (this.mouseOnTime - originTimeInMS) / timeGap[newShowTimeGap] * newUnitWidth - this.mouseOnTimeOffsetX
-                // console.log('newShowTimeGap', newShowTimeGap)
-                // console.log('newTimeStart:', newTimeStart)
-                // console.log('mouseOnTime:', new Date(this.mouseOnTime))
+                // console.log({
+                //     timeStart: -newTimeStart,
+                //     unitWidth: newUnitWidth,
+                //     showTimeGap: newShowTimeGap,
+                // });
                 return ({
                     timeStart: -newTimeStart,
                     unitWidth: newUnitWidth,
                     showTimeGap: newShowTimeGap,
                 })
             })
-            // console.log('zoom-out')
         }
+        
 
     }
 
     // careful!!
     handleTaskSelection = (e) => {
         // if this click makes the task is selected, then handle delete and edit
-        console.log("handleTaskSelection",e.currentTarget.parentNode)
         if (e.currentTarget.parentNode.style.border !== selectedStyle) {
             e.currentTarget.parentNode.style.border = selectedStyle
             e.currentTarget.parentNode.nextElementSibling.style.display = 'inline'
@@ -495,15 +518,13 @@ class TABLEVIEW extends React.Component {
     }
 
     deleteTask = (groupIdx, taskIdx, e) => {
-        // const task_id = Number(e.currentTarget.parentNode.id.slice(4))
         let tmp = this.state.tasks
         /****************************** */
-        // this.transformTask2Lesson(tmp)
         let lesson = tmp[groupIdx][taskIdx].lesson
-
-        tmp[groupIdx].splice(taskIdx, 1)   
+        let classType = tmp[groupIdx][taskIdx]["classType"]=="preClass"?1:(tmp[groupIdx][taskIdx]["classType"]=="inClass"?2:3)
+        tmp[groupIdx].splice(taskIdx, 1)
         let transformLesson =  this.transformTask2Lesson(tmp)
-        this.props.changeLessonList(transformLesson, lesson, true)
+        this.props.changeLessonList(transformLesson, lesson, classType, true)
         /****************************** */
         this.setState({
             tasks: tmp
@@ -512,16 +533,14 @@ class TABLEVIEW extends React.Component {
     }
 
     callTaskEdit = (groupIdx, taskIdx, e) => {
-        console.log(groupIdx, taskIdx, e, this.state)
-        console.log("lesson:", this.state["tasks"][groupIdx][taskIdx])
+        // console.log(groupIdx, taskIdx, e, this.state)
+        // console.log("lesson:", this.state["tasks"][groupIdx][taskIdx])
         this.props.changeLessonIndex(this.state["tasks"][groupIdx][taskIdx]["lesson"])
         this.props.changeTaskIndex(this.state["tasks"][groupIdx][taskIdx]["id"])
         this.props.setShowEditionView(true)
     }
 
     dragTaskStart = (e) => {
-        // console.log('change group start', e.target)
-        // if (e.target.className.slice(0, 4) === 'task' && e.currentTarget.parentNode.style.border === selectedStyle){
         if (e.target.className.slice(0, 4) === 'task') {
             let task_id = Number(e.target.className.slice(4))
             let tmp = this.state.tasks
@@ -550,19 +569,14 @@ class TABLEVIEW extends React.Component {
         let taskIdx = Number(this.taskIdx)
         if(groupIdx !== -1 && taskIdx !== -1){
             /****************************** */
-            // this.transformTask2Lesson(tmp)
             let transformLesson =  this.transformTask2Lesson(tmp)
             this.props.changeLessonList(transformLesson, tmp[groupIdx][taskIdx])
             /****************************** */
-            // this.props.changeTaskDuration(groupIdx, taskIdx, tmp)
         }
-
-        
         document.onmousemove = null
         this.groupIdx = -1
         this.taskIdx = -1
         e.target.style.cursor = 'default'
-        // console.log('End:', e.clientX)
         e.stopPropagation()
     }
 
@@ -814,15 +828,21 @@ class TABLEVIEW extends React.Component {
                                             onMouseUp={this.dragTaskEnd}
                                         >
                                             <div className={`task${task.id}`} style={styles.tool}>
-                                                {task.tool}
+                                                {this.props.toolORresource=="tool"?task.tool:task.resource}
                                             </div>
-                                            <div className={`task${task.id}`} style={{ overflow: 'hidden' }}>
-                                                <img className={`task${task.id}`} style={styles.resource}
-                                                    src={task.resource}
-                                                    onMouseDown={(e) => e.preventDefault()} />
+                                            <div className={`task${task.id}`} style={{ overflow: 'hidden',display:'flex' }}>
+                                            {this.props.toolORresource=="tool"?task.toolimgs?.map(item => {
+                                                return (<img className={`task${task.id}`} style={styles.resource}
+                                                    src={item}
+                                                    onMouseDown={(e) => e.preventDefault()} />)
+                                            }):task.resourceimgs.map(item => {
+                                                return (<img className={`task${task.id}`} style={styles.resource}
+                                                    src={item}
+                                                    onMouseDown={(e) => e.preventDefault()} />)
+                                            })}
                                             </div>
                                             <div className={`task${task.id}`} style={desc}>
-                                                {task.desc}
+                                                {task.displayName==''?task.desc:task.displayName}
                                             </div>
                                         </div>
                                     </div>
@@ -861,7 +881,7 @@ class TABLEVIEW extends React.Component {
         return (
             <div ref="tableview" id='tablevis' style={styles.root}>
                 <div style={styles.viewName}>
-                    A detailed timeline layout for planning learning tasks and required tools and resources
+                    A detailed timeline layout for planning learning tasks and required tools and resourceimgs
                 </div>
                 <div id='timeTable' style={styles.timeTable}>
                     <div style={{display: 'flex'}}>

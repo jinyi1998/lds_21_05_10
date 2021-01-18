@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { DATAAPI } from '../api/api-server'
 import Popover from '@material-ui/core/Popover'
 import { List, ListItem, ListItemText, ListItemAvatar, Avatar, IconButton} from '@material-ui/core'
@@ -34,24 +34,26 @@ const styles = theme => ({
 // styles for Patterns and Tasks
 const useStyles = makeStyles((theme) => ({
     listPattern: {
-        flexDirection: 'column',
+        // flexDirection: 'column',
+        height: "160px",
         margin: '7px 0px',
         border: '1px solid',
+        // justifyContent: "center",
     },
-    listPatternAvatar: {
-        width: '140px',
-        height: '140px',
-    },
+    // listPatternAvatar: {
+    //     width: '140px',
+    //     height: '140px',
+    // },
     listItemText:{
         display: 'inline-block',
         width: '100%',
     },
-    listItemMultiline: {
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        wordBreak: 'break-all',
-    },
+    // listItemMultiline: {
+    //     overflow: 'hidden',
+    //     textOverflow: 'ellipsis',
+    //     whiteSpace: 'nowrap',
+    //     wordBreak: 'break-all',
+    // },
     pageUpDownButton: {
         border: '1px solid',
         padding: '5px',
@@ -116,9 +118,9 @@ function Patterns(props) {
                 if(index >= first && index < first + 3 ){
                     return (
                         <ListItem button key={index} classes={{ root: classes.listPattern }} onClick = {() => {props.onPatternNum(index)}}>
-                            <ListItemAvatar>
+                            {/* <ListItemAvatar>
                                 <Avatar variant="square" src="/logo512.png" classes={{ root: classes.listPatternAvatar }} />
-                            </ListItemAvatar>
+                            </ListItemAvatar> */}
                             <ListItemText classes={{ root: classes.listItemText, primary: classes.listItemMultiline }}
                                 primary={pattern['title'].replace(/.+?:\s/g, "")} />
                         </ListItem>
@@ -136,20 +138,20 @@ function Patterns(props) {
 
 // show the task selection view
 function Tasks(props) {
-    const allTasks = props.allTasks
+    const allTasks = props.allTasks['tasks']
     const count = allTasks.length
-    const initChecked = {}
-    allTasks.map((task) => { initChecked[task['id'].toString()] = false} )
+    let OBJLesson = {}
+    props.lessonList[props.currentLessonIndex]["tasks"].forEach(item => {
+        OBJLesson[item["id"]] = true
+    })
+    const allNotCheck = {}
+    allTasks.map((task) => { allNotCheck[task['id'].toString()] = false })
     const allChecked = {}
     allTasks.map((task) => { allChecked[task['id'].toString()] = true })
-
     // set view state
     const [first, setFirst] = useState(0)
-    const [checked, setChecked] = useState(initChecked)
-    // console.log('checked:', checked)
-
+    const [checked, setChecked] = useState(OBJLesson)
     const classes = useStyles()
-
     return (
         <React.Fragment>
             <Grid container spacing={0}>
@@ -170,7 +172,7 @@ function Tasks(props) {
                         disableRipple
                         icon={<CheckBoxOutlineBlankSharpIcon />}
                         checkedIcon={<CheckBoxSharpIcon />}
-                        onChange={() => { JSON.stringify(checked) === JSON.stringify(allChecked) ? setChecked(initChecked) : setChecked(allChecked) }} />
+                        onChange={(e) => { JSON.stringify(checked) === JSON.stringify(allChecked) ? setChecked(allNotCheck) : setChecked(allChecked)}} />
                 </Grid>
             </Grid>
 
@@ -188,7 +190,12 @@ function Tasks(props) {
                                         icon={<CheckBoxOutlineBlankSharpIcon />} 
                                         checkedIcon={<CheckBoxSharpIcon />}
                                         onChange={(event) => {
-                                            props.addExampleTask(task)
+                                            console.log(event.target, event.target.checked)
+                                            if(!event.target.checked){
+                                                props.removeLessonTaskById(event.target.name)
+                                            }else{
+                                                props.addExampleTask(task)
+                                            }
                                             setChecked({...checked, [event.target.name]: event.target.checked})
                                         }}/>
                                 </div>
@@ -290,7 +297,7 @@ class PatternView extends React.Component {
         }
         else{
             // return <Tasks allTasks={allPatterns[this.state.patternNum]['tasks']} onSwitchPattern={this.switchPattern} addExampleTask={this.props.addExampleTask} />
-            return <Tasks allTasks={allPatterns[this.state.patternNum]['patterns'][0]['tasks']} onSwitchPattern={this.switchPattern} addExampleTask={this.props.addExampleTask} />
+            return <Tasks removeLessonTaskById={this.props.removeLessonTaskById} showPatternView={this.props.showPatternView} lessonList={this.props.lessonList} currentLessonIndex={this.props.currentLessonIndex} allTasks={allPatterns[this.state.patternNum]['patterns'][0]} onSwitchPattern={this.switchPattern} addExampleTask={this.props.addExampleTask} />
         }
     }
     

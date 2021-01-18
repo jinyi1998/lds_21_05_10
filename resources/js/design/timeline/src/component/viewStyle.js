@@ -1,5 +1,5 @@
 const TableWidth = window.innerWidth - 350;
-const LessonWidth = window.innerWidth;
+const LessonWidth = window.innerWidth - 200;
 
 const width = TableWidth
 const timeTablePadding = 15
@@ -14,12 +14,12 @@ const viewStyle = {
     // positions for each view
     tableview: {
         // position:"fixed",
-        top: "50px",
+        top: "20px",
         left:"50px"
     },
     lessonview: {
         // position:"fixed",
-        top: "650px",
+        top: "630px",
         left:"50px",
         width: LessonWidth
     },
@@ -152,7 +152,9 @@ const viewStyle = {
         display: 'flex',
     },
     taskBorder: {
-        border: '1px solid black',
+        border: '1px solid #909192',
+        overflow: "hidden",
+        borderRadius: "5px",
     },
     taskContent: {
         display: 'flex',
@@ -160,7 +162,7 @@ const viewStyle = {
         justifyContent: 'space-between',
     },
     tool: {
-        backgroundColor: 'black',
+        backgroundColor: '#495057',
         textAlign: 'center',
         color: 'white',
         fontSize: '12px',

@@ -9,7 +9,7 @@ import {DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import IconButton from '@material-ui/core/IconButton';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
-// styles for PatternView
+// styles for Lesson View
 const styles = theme => ({
     listRoot: {
         width: '350px',
@@ -34,13 +34,11 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
       },
     paper: {
-        // padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
     iconRight: {
         textAlign: 'right',
-        // color: theme.palette.text.secondary,
     },
     choicePanel:{
         display:"inline-grid",
@@ -54,8 +52,7 @@ const getListStyle = isDraggingOver => ({
     overflowX: "auto",
     overflowY: "hidden",
     display: 'flex',
-    // padding: 5,
-    // overflow: 'auto',
+    paddingBottom: "5px",
 });
 
 const getItemStyle = (isDragging, draggableStyle, otherStyle) => ({
@@ -65,10 +62,11 @@ const getItemStyle = (isDragging, draggableStyle, otherStyle) => ({
     padding: 5,
     margin: `0 5px 0 0`,
     fontSize: '10px',
-    height: "40px",
-    minWidth: "240px",
+    height: "42px",
+    // minWidth: "240px",
     borderRadius: "5px",
-    maxWidth: "600px",
+    minWidth: "300px",
+    maxWidth: "300px",
     // change background colour if dragging
     // background: isDragging ? 'lightgreen' : 'grey',
     // styles we need to apply on draggables
@@ -76,6 +74,7 @@ const getItemStyle = (isDragging, draggableStyle, otherStyle) => ({
     ...otherStyle,
 });
 
+/* Lesson switch buttons */
 function LessonButtonGroup(props) {
     const classes = useStyles()
     const [currentlesson, setCurrentlesson] = useState(0)
@@ -102,6 +101,7 @@ function LessonButtonGroup(props) {
     )
 }
 
+/* Lesson Pre-In-Post buttons */
 function LessonPreInPostClass(props) {
     const classes = useStyles()
     const [showtaskPanel, setShowtaskPanel] = useState(-1)
@@ -148,6 +148,7 @@ function LessonPreInPostClass(props) {
     )
 } 
 
+/* Reorder function for drag items in draggable components */
 const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -155,8 +156,8 @@ const reorder = (list, startIndex, endIndex) => {
     return result;
 };
 
+/* Lesson task list with draggable components */
 function LessonTaskList(props){
-    const classes = useStyles()
     const [dragEndItems, setDragEndItems] = useState([])
     let v = props.currentTasks
     useEffect(() => {
@@ -164,7 +165,6 @@ function LessonTaskList(props){
              setDragEndItems(props.currentTasks)
         }
     }, [v])
- 
     return(
         <React.Fragment>
             <DragDropContext onDragEnd={(result) => {
@@ -190,6 +190,7 @@ function LessonTaskList(props){
                         const taskOpt = DATAAPI.getTaskOptions(item)
                         item.currentTaskId = index; 
                         return (<Draggable 
+                                    isDragDisabled={true}
                                     key={""+item.id} 
                                     draggableId={""+item.id} 
                                     index={index}>
@@ -218,6 +219,7 @@ function LessonTaskList(props){
     )
 }
 
+/* 3 types of task list in one lesson */
 function LessonTask(props){
     const classes = useStyles()
     let preclass = props.lessonList[props.currentLessonIndex]?props.lessonList[props.currentLessonIndex].tasks.filter(item => item["lessonid"]["lessontype"] == 1):[]
@@ -258,11 +260,11 @@ function AddTaskPanel(props){
                         color="primary"
                         onMouseDown={() => {props.setShowPatternView(true)}}
                     >Choose CC</Button>
-                    <Button
+                    {/* <Button
                         variant="contained"
                         color="primary"
                         onMouseDown={() => {props.addEmptyTask()}}
-                    >ADD Blank Task</Button>
+                    >ADD Blank Task</Button> */}
                 </ButtonGroup>
         </React.Fragment>
     )
@@ -273,9 +275,6 @@ class LESSONVIEW extends React.Component {
         super(props)
     }
     render() {
-        const classes = this.props.classes
-        const currentLessonIndex = this.props.currentLessonIndex
-        const currentTaskId = this.props.currentTaskId
         return (
             <React.Fragment>
                 <LessonButtonGroup lessonList={this.props.lessonList} 
@@ -292,7 +291,6 @@ class LESSONVIEW extends React.Component {
                     currentTaskId={this.props.currentTaskId}
                     taskChange={this.props.changeTaskIndex} >
                 </LessonTask>
-                {/* <div ref="lessonview"></div> */}
             </React.Fragment>)
     }
 }
