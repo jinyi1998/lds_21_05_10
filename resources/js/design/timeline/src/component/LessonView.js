@@ -85,10 +85,12 @@ function LessonButtonGroup(props) {
                 {props.lessonList.map((item, index) => {
                     return(
                     <Button 
+                            key = {index}
                             variant={index===currentlesson?"contained":"text"}
                             color="primary"
                             onClick={() => {props.lessonChange(index);setCurrentlesson(index);}}
-                            >Lesson {index+1}
+                            >
+                            Lesson {index+1}
                     </Button>)
                 })}
                 <Button
@@ -280,7 +282,30 @@ class LESSONVIEW extends React.Component {
                 <LessonButtonGroup lessonList={this.props.lessonList} 
                     currentLessonIndex={this.props.currentLessonIndex} 
                     lessonChange={this.props.changeLessonIndex}/>
-                <LessonPreInPostClass setShowPatternView={this.props.showPatternViewChange} 
+                {
+                     this.props.currentLessonIndex  != -1?
+                    <LessonPreInPostClass setShowPatternView={this.props.showPatternViewChange} 
+                        addEmptyTask={this.props.addEmptyTask}>
+                    </LessonPreInPostClass>
+                    :
+                    null
+                }
+
+                {
+                    this.props.currentLessonIndex != -1?
+                    <LessonTask 
+                        lessonList={this.props.lessonList} 
+                        currentLessonIndex={this.props.currentLessonIndex} 
+                        resetTaskOrder={this.props.resetTaskOrder} 
+                        setShowEditionView={this.props.setShowEditionView}
+                        currentTaskId={this.props.currentTaskId}
+                        taskChange={this.props.changeTaskIndex} >
+                    </LessonTask>
+                    :
+                    null
+                }
+
+                {/* <LessonPreInPostClass setShowPatternView={this.props.showPatternViewChange} 
                     addEmptyTask={this.props.addEmptyTask}>
                 </LessonPreInPostClass>
                 <LessonTask 
@@ -291,6 +316,8 @@ class LESSONVIEW extends React.Component {
                     currentTaskId={this.props.currentTaskId}
                     taskChange={this.props.changeTaskIndex} >
                 </LessonTask>
+                 */}
+               
             </React.Fragment>)
     }
 }

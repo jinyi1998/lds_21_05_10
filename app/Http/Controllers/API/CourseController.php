@@ -12,6 +12,7 @@ use App\LearningOutcome;
 use App\LearningTask;
 use App\Lesson;
 use App\Tags;
+use App\LessonTaskRelation;
 use Auth;
 
 
@@ -537,20 +538,42 @@ class CourseController extends Controller
         }
 
         //lesson
-        foreach($request->lessons as $_lesson){
+        $lessontask_allcation = [];
+        foreach($request->lessons as $lesson_index => $_lesson){
             $_lesson_obj = new Lesson();
             $_lesson['course_id'] = $course->id;
-            $_lesson['lessontype'] = 2;
+            // $_lesson['lessontype'] = 2;
             foreach($_lesson['tasksid'] as $index => $_task){
                 if(isset($taskMapping[$_task['task_id']])){
-                    $_lesson['tasks_id'][$index]['task_id'] = $taskMapping[$_task['task_id']];
-                    $_lesson['tasks_id'][$index]['sequence'] = $index + 1;
+                    array_push($lessontask_allcation, [
+                        "task_id" => $taskMapping[$_task['task_id']],
+                        "sequence" => $index + 1,
+                        "lesson_id" => $lesson_index,
+                        "lessontype" => $_task['lessontype'],
+                        "starttime" => $_task['starttime'],
+                    ]);
+                    // $_lesson['tasks_id'][$index]['task_id'] = $taskMapping[$_task['task_id']];
+                    // $_lesson['tasks_id'][$index]['sequence'] = $index + 1;
                 }
             }
             // print_r($_lesson);
             $_lesson_request = new \Illuminate\Http\Request($_lesson);
-            LessonController::save( $_lesson_obj, $_lesson_request);
+            $newLesson = LessonController::save( $_lesson_obj, $_lesson_request);
+
+            foreach($lessontask_allcation as $lessontask_allcation_index => $_lessontask_allcation){
+                if($lesson_index == $_lessontask_allcation['lesson_id']){
+                    //push the lesson id to actual lesson id
+                    $lessontask_allcation[$lessontask_allcation_index]['lesson_id'] = $newLesson->id;
+                }
+            }
         }
+
+        //lesson task allocation
+        foreach($lessontask_allcation as $lessontask_allcation_index => $_lessontask_allcation){
+            $_lesson_request = new \Illuminate\Http\Request($_lessontask_allcation);
+            $newLesson = LessonTaskRelationController::save( new LessonTaskRelation, $_lesson_request);
+        }
+
 
         // $course = Course::find($course->id);
         $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid'])->find($course->id);

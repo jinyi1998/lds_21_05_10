@@ -3,6 +3,7 @@ import { DATAAPI } from '../api/api-server'
 import styles from './viewStyle.js'
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
+import { countBy } from 'lodash';
 
 
 // need to modify to achieve a good animation
@@ -727,6 +728,8 @@ class TABLEVIEW extends React.Component {
                             // if (Math.floor(time / lessonDuration) === this.state.lessons.length - 1) {
                             //     unit.borderRight = '1px solid rgba(173, 203, 144, 0.4)'
                             // }
+                            let val = (time - originTimeInMS) / gap * this.state.unitWidth + this.state.timeStart
+                            unit.transform = `translate(${val}px, 0px)`
                             return (
                                 <div key={idx} style={unit}>Lesson {Math.floor(time / lessonDuration) + 1}</div>
                             )

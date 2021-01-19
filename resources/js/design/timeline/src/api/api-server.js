@@ -26,7 +26,7 @@ const DATAAPI = {
         });
         e.get().then((response)=>{
               DATAAPI.OPTS = response['data']
-              console.log( DATAAPI.OPTS );
+            //   console.log( DATAAPI.OPTS );
         }).catch(function (error) {
             console.log(error);
         });
@@ -156,7 +156,7 @@ const DATAAPI = {
         });
         e.get('/'+courseid).then((response)=>{
               DATAAPI.courseinfo = response['data']
-              console.log(DATAAPI.courseinfo, callback)
+            //   console.log(DATAAPI.courseinfo, callback)currentLessonIndex
               callback(DATAAPI.courseinfo["lessons"])
         }).catch(function (error) {
             console.log(error);
@@ -218,13 +218,13 @@ const DATAAPI = {
         });
         e.put('/' + task["id"], task).then((response)=>{
             // if(task["lessonid"]["id"] == -1){
-            DATAAPI.getLessonTaskRelationList(task, lessoinid)
+            DATAAPI.updateLessonTaskRelation(task, lessoinid)
         }).catch(function (error) {
             console.log(error);
         });
     }, 
     getLessonTaskRelationList: (task, lessonid) => {
-        console.log(task, lessonid, "--------")
+        // console.log(task, lessonid, "--------")
         const e = axios.create({
             baseURL:  DATAAPI.baseURL + '/lessonTaskRelation',
             headers: DATAAPI.headers
@@ -242,7 +242,7 @@ const DATAAPI = {
         const e = axios.create({
             baseURL:  DATAAPI.baseURL + '/lessonTaskRelation',
             headers: DATAAPI.headers
-        });火
+        });
         e.put('/' + task["lessonid"]["id"], obj)
             .then(function (response) {
                 console.log(response['data'])

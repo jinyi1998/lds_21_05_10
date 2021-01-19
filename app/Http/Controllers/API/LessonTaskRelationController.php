@@ -31,7 +31,7 @@ class LessonTaskRelationController extends Controller
     {
         //
         $relation = new LessonTaskRelation;
-        $relation = $this->save($relation, $request);
+        $relation = LessonTaskRelationController::save($relation, $request);
 
         return response()->json($relation);
     }
@@ -60,7 +60,7 @@ class LessonTaskRelationController extends Controller
     {
         //
         $relation = LessonTaskRelation::find($id);
-        $relation = $this->save($relation, $request);
+        $relation = LessonTaskRelationController::save($relation, $request);
         return response()->json($relation);
     }
 
@@ -75,7 +75,7 @@ class LessonTaskRelationController extends Controller
         //
     }
 
-    public function save(LessonTaskRelation $relation, Request $request){
+    public static function save(LessonTaskRelation $relation, Request $request){
         if($request->has('lesson_id')){
             $relation->lesson_id = $request->lesson_id;
         }
