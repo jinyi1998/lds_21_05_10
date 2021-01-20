@@ -145,7 +145,7 @@ const PageListMenu = (props) => {
         {/* <ListItemIcon>
           <InfoIcon />
         </ListItemIcon> */}
-        <ListItemText primary="Unit Level Learning Outcomes" />
+        <ListItemText primary="Learning Outcomes" />
       </ListItem>
 
       <ListSubheader>Design Stage</ListSubheader>
