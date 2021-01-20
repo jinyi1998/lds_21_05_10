@@ -127,8 +127,9 @@ const LessonPlanView = (props) => {
         var updates = [];
         setLoadingOpen(true);
 
+        let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
         //sync the data to root state
-        var tempTasks =  JSON.parse(JSON.stringify(lesson.tasks));
+        var tempTasks =  JSON.parse(JSON.stringify(lessontask));
 
         tempTasks.map((_task, index)=> {
             if(_task.lessonid.sequence == null){
@@ -238,7 +239,7 @@ const LessonPlanView = (props) => {
 
                     <Grid item xs ={12}>
                     {
-                        lesson.time >= totalTime()?
+                        lesson.time >= totalTime() || lessontype != 2?
                         <Typography variant = {"caption"} style = {{color: "blue"}}>  Estimated Learning Time: {totalTime()} min(s)</Typography>
                         :
                         <Typography variant = {"caption"} style = {{color: "red"}}>  Estimated Learning Time: {totalTime()} min(s)</Typography>

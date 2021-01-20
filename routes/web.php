@@ -24,6 +24,7 @@ Auth::routes();
 Route::post('api/user/changepassword', '\App\Http\Controllers\RouteController@changePassword');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/designstudio', '\App\Http\Controllers\RouteController@newdesignstudio');
+Route::get('/timeline/{id}', '\App\Http\Controllers\RouteController@timeline');
 Route::get('/designstudio/{id}', '\App\Http\Controllers\RouteController@designstudio');
 Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');
 // Route::get('/designstudio/{id}/{step}', '\App\Http\Controllers\RouteController@designstudio');

@@ -1,0 +1,407 @@
+.App {
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 2px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+#root {
+  /* width: 1500px; */
+  margin: auto;  
+  /* margin-top: 50px; */
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 120vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(12px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/*************************************************************/
+/**********************CSS FOR MENU**************************/
+/*************************************************************/
+.menuList{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.menuItem {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+/*************************************************************/
+/*********************CSS FOR TABLE***************************/
+/*************************************************************/
+
+/**The first column**/
+/* td:first-child{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+/*** The first Row for title **/
+.title{
+  height:48px;
+  font-size: 1.2em;
+}
+.secondRow{
+  height: 24px;
+  font-size: 1em;
+}
+.thirdRow{
+  height: 42px;
+}
+
+.beforeClass{
+  background: #dfedf7;
+}
+.inClass{
+   background: #cde3f6;
+}
+.afterClass{
+   background: #dfedf7;
+}
+
+
+.Edge{
+  border-right: 2.4px dotted #b6c99a;
+}
+
+.wholeFramework{
+  border: 18px solid #85a6ce
+
+}
+
+/**** Activity ***/
+.activity{
+  height: 96px;
+}
+.tools{
+  text-align: center;
+  background: black;
+  color: white;
+  height: 15%;
+  width: 100%;
+}
+.resources{
+  text-align: center;
+  width: 100%;
+  height: 70%;
+}
+img{
+  width: 100%;
+  height:100%;
+}
+.task{
+  text-align: center;
+  background: red;
+  color: black;
+  width: 100%;
+  height: 15%;
+}
+
+.iconOfType{
+  width: 100%;
+  height: 80%;
+}
+
+/** Circle **/
+.circleOfTime{
+  width:36px;
+  height:36px;
+  border-radius: 50%;
+  background: #8db464;
+  position:absolute;
+}
+.table-bordered {
+  border: none;
+  /* border: 1.2px solid #000; */
+}
+
+.table-condensed {
+  border-collapse: collapse;
+}
+
+.table tr {
+  padding: 0.24em;
+  border: none;
+  /* border: 1.2px solid #000; */
+}
+.table tr th{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+}
+
+/* .table tr td:nth-child(2){
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+.table .individual{
+  height: 125px;
+  border-top: 3px solid #b6c99a;
+}
+/* .table .individual td:first-child{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+.table .group{
+  height: 125px;
+  border-top: 3px solid #b6c99a;
+}
+/* .table .group td:first-child{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+.table .peer{
+  height: 125px;
+  border-top: 3px solid #b6c99a;
+}
+/* .table .peer td:first-child{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+.table .wholeClass{
+  height: 125px;
+  border-top: 3px solid #b6c99a;
+}
+/* .table .wholeClass td:first-child{
+  width: 72px;
+  border-right: 2.4px dotted black !important;
+} */
+
+.table tr td {
+  border-left: 1.2px solid #000;
+  border: none;
+  min-width: 7.8em;
+  min-height: 1.8em;
+  position: relative;
+}
+
+.table tr td div.activity {
+  /*position: absolute;*/
+  /*top: 0.4em;*/
+  /*left: 0.2em;*/
+}
+
+
+/*************************************************************/
+/****************CSS FOR LEFT CLASS EDITION*******************/
+/*************************************************************/
+.stage{
+    position: absolute;
+    top: 160px; 
+    text-align: center;
+    border: 1.2px solid #ccc;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background: white;
+    z-index: 100;
+}
+
+/*101 * 5 + 12 * 4 = 553*/
+.stage ul{
+  position: relative;
+  height: 553px;
+  list-style: none;
+  margin:  0;
+  padding: 0;
+  top: 0px;
+}
+/*101px each li*/
+.stage li{
+  width: 180px;
+  height: 96px;
+  border: 2.5px solid black;
+  margin-bottom: 12px;
+  float: top;
+  padding: 0;
+}
+/** 101 * 3 + 12 *2 = 303 + 24 = 327px**/
+/*************************************************************/
+/****************CSS FOR BOTTOM LESSON LIST*******************/
+/*************************************************************/
+.lessonList ul{
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+.lesson{
+  display: block;
+  float:left;
+  width: auto;
+  border: 1.2px solid black;
+  padding: 7.2px 12px;
+  margin: 9.6px;
+  background: white;
+}
+.lessonDetails{
+  width: 100%;
+  float: none
+}
+.lessonEdit{
+  width: 480px;
+  float: left;
+  margin-left:9.6px;
+  margin-right:9.6px;
+  text-align: center;
+  
+}
+.description{
+  border: 1.2px solid black;
+  background: #c7e8f9;
+  padding: 12px;
+}
+#add{
+  border: 1.2px solid #bbb;
+  font-size: 6em;
+  text-align: center;
+  vertical-align: center;
+  background: white;
+}
+
+/*add task*/
+.addTask{
+  top: 732px;
+  width: 156px;
+  border: 1.2px solid black;
+  position: absolute;
+  z-index: 120;
+  background: white;
+  left: 732px;
+}
+
+.addTask div{
+  padding-top: 12px;
+  width: 100%;
+  padding-bottom: 12px;
+  text-align: center;
+  /*font-size: 1.2em;*/
+}
+.CC, .Blank{
+   font-size: 0.9em;
+   color: #666;
+   border-top: 1.2px dotted #aaa;
+}
+
+
+
+/*************************************************************/
+/****************CSS FOR RIGHT CLASS EDITION*******************/
+/*************************************************************/
+.taskEdition{
+    position: fixed;
+    right: 5px; 
+    top: 80px; 
+     width: 430px; 
+    border: 1.2px solid #ccc;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background: white;
+    z-index: 100;
+}
+.taskInfo{
+  width: 420px;
+  height: 520px;
+  margin-bottom: 10px;
+}
+.leftInfo{
+  float: left;
+  padding-left:8px;
+  margin-top:20px;
+  width: 160px;
+  height: 500px;
+  /*height: 100%;*/
+  border-left: 1.2px solid #aaa;
+}
+.rightInfo{
+  float: left;
+  width: 240px;
+  margin-top:20px;
+  padding-left:18px;
+  height: 500px;
+  border-left:3px solid #e6ce77;
+}
+.taskEditiontitle1{
+  font-weight: bold;
+}
+.taskEditiontitle2{
+  font-size: 0.9em;
+  color:#999;
+  margin-top:12px;
+}
+.buttonG{
+  text-align: center
+}
+.buttonG button{
+  margin-right: 24px;
+}
+
+.dashed{
+  stroke-dasharray: 5,5; 
+}
+
+/*************************************************************/
+/****************CSS FOR Vis-Timeline*******************/
+/*************************************************************/
+.vis-item {
+  position: absolute;
+  color: #1A1A1A;
+  border-color: #97B0F8;
+  border-width: 1px;
+  /* background-color: #D5DDF6; */
+  display: inline-block;
+  z-index: 1;
+  /*overflow: hidden;*/
+}

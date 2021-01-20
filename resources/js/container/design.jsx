@@ -24,7 +24,7 @@ import PrintableContainer from '../design/printable/printableContainer';
 import DashBoardContainer from '../design/dashboard/dashboardContainer';
 import ComponentPlanContainer from '../design/learningComponent/container/componentPlanContainer';
 import LessonPlan from '../design/lesson/container/lessonPlanContainer';
-
+import TimelineContainer from '../design/timeline/src/timelineContainer'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -145,7 +145,7 @@ const PageListMenu = (props) => {
         {/* <ListItemIcon>
           <InfoIcon />
         </ListItemIcon> */}
-        <ListItemText primary="Unit Level Learning Outcomes" />
+        <ListItemText primary="Learning Outcomes" />
       </ListItem>
 
       <ListSubheader>Design Stage</ListSubheader>
@@ -176,7 +176,16 @@ const PageListMenu = (props) => {
         <ListItemText primary="Lesson Plan" />
       </ListItem>
 
-      
+      {/* <ListItem
+        button
+        selected={activeStage === 'timeline'}
+        onClick={(event) => window.open(
+          `/timeline/${props.course_id}`
+        ,'_blank'
+        )}
+      >
+        <ListItemText primary="Timeline" />
+      </ListItem> */}
 
       <ListSubheader>Review Stage</ListSubheader>
         <ListItem
@@ -439,7 +448,7 @@ const Design = (props) => {
               <Grid container>
                
                 <Grid item xs ={2}>
-                  <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage}/> 
+                  <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage} course_id = {courseID}/> 
                 </Grid>
                 
                 <Grid item xs>
@@ -508,6 +517,17 @@ const Design = (props) => {
             </Grid>
           </Grid>
         );
+
+        case 'timeline':
+          return(
+           <Grid item xs>
+             <TimelineContainer/>
+             <Grid container item xs = {12} justify = {"flex-end"}>
+               <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('componentPlan')}> Back </Button>
+               <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('finish')}> Next </Button>
+             </Grid>
+           </Grid>
+         );
 
       case 'learningOutcomes':
         return( 

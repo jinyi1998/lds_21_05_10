@@ -37,7 +37,7 @@ class Lesson extends Model
         return $this->hasMany(
             'App\LessonTaskRelation',
             'lesson_id'
-        )->where('is_deleted', 0)->select(['lesson_id','task_id']);
+        )->where('is_deleted', 0)->select(['lesson_id','task_id', 'lessontype', 'starttime']);
     }
 
     public function courseid(){

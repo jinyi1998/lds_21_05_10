@@ -130,13 +130,13 @@ class LearningTask extends Model
         return $this->hasMany(
             'App\TaskResourceRelation',
             'learningtask_id'
-        )->where('is_deleted', 0)->select(['learningtask_id','resource_id']);
+        )->where('is_deleted', 0)->select(['learningtask_id','resource_id'])->with(['moodlemod:moodle_mod_id,name_moodle']);
     }
 
     public function toolid(){
         return $this->hasMany(
             'App\TaskToolRelation',
             'learningtask_id'
-        )->where('is_deleted', 0)->select(['learningtask_id','elearningtool_id']);
+        )->where('is_deleted', 0)->select(['learningtask_id','elearningtool_id'])->with(['moodlemod:moodle_mod_id,name_moodle']);
     }
 }

@@ -19,6 +19,7 @@ import UsergroupContainer from '../usergroup/container/usergroupContainer';
 import UsergroupsListViewContainer from '../usergroup/container/usergroupsListViewContainer';
 import DashboardContainer from '../admin/dashboard/container/dashboardContainer';
 import UserMgmtContainer from '../admin/usersmanagement/container/usersMgmtContainer';
+import TimelineContainer from '../design/timeline/src/timelineContainer'
 
 //#region template management
 import TemplateBuilderContainer from '../admin/template_builder/container/templateBuilderContainer';
@@ -227,6 +228,8 @@ const App = (props) => {
       default:
         // return <DesignContainer courseID= {props.value} user = {props.user} step = {props.step}/>;
         break
+      case 'timeline':
+        return  <TimelineContainer/>;
       case 'designstudio':
           return <DesignContainer courseID= {props.course_id} user = {props.user} step = {props.step}/>;
       case 'mydesign':

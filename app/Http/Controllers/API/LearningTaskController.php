@@ -58,7 +58,7 @@ class LearningTaskController extends Controller
             'lessonid'
         ])->find($id);
        
-        return response()->json([$task, $test]);
+        return response()->json([$task]);
     }
 
     /**
