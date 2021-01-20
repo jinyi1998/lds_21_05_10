@@ -138,7 +138,7 @@ function Patterns(props) {
 
 // show the task selection view
 function Tasks(props) {
-    const allTasks = props.allTasks['tasks']
+    const allTasks = props.allTasks;
     const count = allTasks.length
     let OBJLesson = {}
     props.lessonList[props.currentLessonIndex]["tasks"].forEach(item => {
@@ -264,7 +264,33 @@ class PatternView extends React.Component {
             anchorEl: null,
             isPattern: true,
             patternNum: -1,
+            tasks: []
         }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot){
+
+        if(this.state.patternNum > -1 && this.props.currentLessonIndex > -1){
+            const component = DATAAPI.getComponents();
+            var task = component[this.state.patternNum]['patterns'].flatMap( x => x.tasks);
+            task = task.concat(component[this.state.patternNum]['tasks']);
+            //filter task in other lesson
+            var filter_lesson = this.props.lessonList.filter( (lesson, index) => index != this.props.currentLessonIndex).flatMap( x => x.tasks.flatMap( x => x.id));
+            var filter_lesson2 = this.props.lessonList[ this.props.currentLessonIndex].tasksid
+            .filter( _tasksid => _tasksid.lessontype != this.props.showPatternView )
+            .flatMap( x => x.task_id);
+            task = task.filter(_task => !filter_lesson.includes(_task.id) && !filter_lesson2.includes(_task.id));
+            if(this.state.patternNum != prevState.patternNum ){
+                this.setState({
+                    ...this.state,
+                    tasks: task
+                })
+            }
+           
+        }else{
+            return false;
+        }
+       
     }
 
     handleClick = (event) => {
@@ -272,7 +298,11 @@ class PatternView extends React.Component {
     }
 
     handleClose = () => {
-        this.setState({ anchorEl: null })
+
+        this.setState({ 
+            anchorEl: null, 
+            patternNum: -1 
+        })
         this.props.showPatternViewChange(false)
     }
 
@@ -297,7 +327,14 @@ class PatternView extends React.Component {
         }
         else{
             // return <Tasks allTasks={allPatterns[this.state.patternNum]['tasks']} onSwitchPattern={this.switchPattern} addExampleTask={this.props.addExampleTask} />
-            return <Tasks removeLessonTaskById={this.props.removeLessonTaskById} showPatternView={this.props.showPatternView} lessonList={this.props.lessonList} currentLessonIndex={this.props.currentLessonIndex} allTasks={allPatterns[this.state.patternNum]['patterns'][0]} onSwitchPattern={this.switchPattern} addExampleTask={this.props.addExampleTask} />
+            return <Tasks 
+                removeLessonTaskById={this.props.removeLessonTaskById} 
+                showPatternView={this.props.showPatternView} 
+                lessonList={this.props.lessonList} 
+                currentLessonIndex={this.props.currentLessonIndex} 
+                allTasks={this.state.tasks} 
+                onSwitchPattern={this.switchPattern} 
+                addExampleTask={this.props.addExampleTask} />
         }
     }
     

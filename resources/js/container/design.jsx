@@ -176,7 +176,7 @@ const PageListMenu = (props) => {
         <ListItemText primary="Lesson Plan" />
       </ListItem>
 
-      <ListItem
+      {/* <ListItem
         button
         selected={activeStage === 'timeline'}
         onClick={(event) => window.open(
@@ -185,7 +185,7 @@ const PageListMenu = (props) => {
         )}
       >
         <ListItemText primary="Timeline" />
-      </ListItem>
+      </ListItem> */}
 
       <ListSubheader>Review Stage</ListSubheader>
         <ListItem
