@@ -214,7 +214,7 @@ const ComponentContainer = (props)=>{
 
     async function fetchAddLearningComponent(component) {
       setLoadingOpen(true);
-      component.sequence = course.components.length + 1;
+      component.sequence = Math.max(...course.components.flatMap(x => x.sequence)) + 1;
       return await apiLearningCompPost(component)
       .then( () => {
         refreshCourse();

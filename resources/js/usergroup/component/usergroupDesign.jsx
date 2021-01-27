@@ -106,11 +106,11 @@ const UsergroupDesign = (props)=>{
              <Grid container justify="space-between" spacing = {3}>
                 <Grid item xs = {4}>
                     <Typography component="h1" variant="h6" color="inherit" noWrap>
-                        User Group Sharing Design Aera
+                        User Group Sharing Design Area
                     </Typography>
                 </Grid>
                  
-                <Grid container item xs = {12} justify = {"flex-end"}>
+                <Grid container item xs = {12} justify = {"flex-start"}>
                     <TextField variant = {"outlined"} label = {"Search"} value = {searchText} onChange = {onChangeSearchText}/>
                 </Grid>
 

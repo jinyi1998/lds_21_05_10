@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -25,13 +26,15 @@ import DashBoardContainer from '../design/dashboard/dashboardContainer';
 import ComponentPlanContainer from '../design/learningComponent/container/componentPlanContainer';
 import LessonPlan from '../design/lesson/container/lessonPlanContainer';
 import TimelineContainer from '../design/timeline/src/timelineContainer'
-import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import InfoIcon from '@material-ui/icons/Info';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import ExploreIcon from '@material-ui/icons/Explore';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
@@ -43,6 +46,9 @@ import {
   apiDesignTypeGet,
 } 
 from '../api.js';
+
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   gridList: {
@@ -71,135 +77,143 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     overflow: 'auto',
     minHeight: '100%',
-  }
+  },
+  toolbar: {
+    paddingRight: 0, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  drawerList: {
+  
+  },
+  drawerPaper: {
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    width: 0,
+  },
 }));
 
 // const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
 const steps = ['STEM PRACTICE', 'COURSE/ CURRICULUM UNIT INFO', 'LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
 
-const PageMenu = (props) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const {activeStage, setActiveStage} = props;
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (name) => {
-    if(name!=""){
-      setActiveStage(name);
-    }
-    setAnchorEl(null);
-  };
-
-  return (
-    <div>
-      <Button color = {"primary"} variant = {"contained"} aria-haspopup="true" onClick={handleClick} style = {{margin: 16}}>
-        <MenuIcon />
-      </Button>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={()=> handleClose(activeStage)}
-      >
-        <MenuItem onClick={() => handleClose("courseinfo")}  selected = {activeStage == "courseinfo"}>Course Information</MenuItem>
-        <MenuItem onClick={() => handleClose("learningOutcomes")} selected = {activeStage == "learningOutcomes"}>Learning Outcomes</MenuItem>
-        {/* <MenuItem onClick={() => handleClose("majorStep")}  selected = {activeStage == "majorStep"}>Curriculum Components</MenuItem> */}
-        <CssBaseline />
-        <MenuItem onClick={() => handleClose("unitPlan")}  selected = {activeStage == "unitPlan"}>Curriculum Component Design</MenuItem>
-        <CssBaseline />
-      
-        {/* <MenuItem onClick={() => handleClose("review")} selected = {activeStage == "review"}>Your Design</MenuItem> */}
-      </Menu>
-    </div>
-  );
-}
-
 const PageListMenu = (props) => {
   const {activeStage, setActiveStage} = props;
+  const [extended, setExtend] = React.useState(true);
+  const classes = useStyles();
 
   return (
-
-    <List component="nav" aria-label="main mailbox folders" style = {{ 
-      position: "sticky",
-      top: 72}}
+    <div
+      classes={
+        clsx(classes.drawerPaper, !extended && classes.drawerPaperClose)
+      }
+      style = {{
+        position: "sticky", 
+        top: "72px",
+        transition: "width 2s"
+      }}
     >
-      <ListSubheader>Course Overview</ListSubheader>
-      <ListItem
-        button
-        selected={activeStage === 'courseinfo'}
-        onClick={(event) => setActiveStage('courseinfo')}
-      >
-        {/* <ListItemIcon>
-          <InfoIcon />
-        </ListItemIcon> */}
-        <ListItemText primary="Course Information" />
-      </ListItem>
-
-      <ListItem
-        button
-        selected={activeStage === 'learningOutcomes'}
-        onClick={(event) => setActiveStage('learningOutcomes')}
-      >
-        {/* <ListItemIcon>
-          <InfoIcon />
-        </ListItemIcon> */}
-        <ListItemText primary="Learning Outcomes" />
-      </ListItem>
-
-      <ListSubheader>Design Stage</ListSubheader>
-      {/* <ListItem
-        button
-        selected={activeStage === 'unitPlan'}
-        onClick={(event) => setActiveStage('unitPlan')}
-      >
-        <ListItemIcon>
-          <ExploreIcon />
-        </ListItemIcon>
-        <ListItemText primary="Curriculum Component Design" />
-      </ListItem> */}
-
-      <ListItem
-        button
-        selected={activeStage === 'componentPlan'}
-        onClick={(event) => setActiveStage('componentPlan')}
-      >
-        <ListItemText primary="Curriculum Component Plan" />
-      </ListItem>
-
-      <ListItem
-        button
-        selected={activeStage === 'lessonPlan'}
-        onClick={(event) => setActiveStage('lessonPlan')}
-      >
-        <ListItemText primary="Lesson Plan" />
-      </ListItem>
-
-      {/* <ListItem
-        button
-        selected={activeStage === 'timeline'}
-        onClick={(event) => window.open(
-          `/timeline/${props.course_id}`
-        ,'_blank'
-        )}
-      >
-        <ListItemText primary="Timeline" />
-      </ListItem> */}
-
-      <ListSubheader>Review Stage</ListSubheader>
-        <ListItem
-          button
-          selected={activeStage === 'finish'}
-          onClick={(event) => setActiveStage('finish')}
-        >
-          {/* <ListItemIcon>
-            <ExploreIcon />
-          </ListItemIcon> */}
-          <ListItemText primary="Review" />
-        </ListItem>
-    </List>
-   
+      {
+        extended?
+        <React.Fragment>
+          <div className={classes.toolbarIcon}>
+              <IconButton onClick={() => {setExtend(false)}}>
+                  <ChevronLeftIcon />
+              </IconButton>
+          </div>
+          <List component="nav" aria-label="" className={classes.drawerList}>
+          <ListSubheader>Course Overview</ListSubheader>
+          <ListItem
+            button
+            selected={activeStage === 'courseinfo'}
+            onClick={(event) => setActiveStage('courseinfo')}
+          >
+            {/* <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon> */}
+            <ListItemText primary="Course Information" />
+          </ListItem>
+  
+          <ListItem
+            button
+            selected={activeStage === 'learningOutcomes'}
+            onClick={(event) => setActiveStage('learningOutcomes')}
+          >
+            {/* <ListItemIcon>
+              <InfoIcon />
+            </ListItemIcon> */}
+            <ListItemText primary="Learning Outcomes" />
+          </ListItem>
+  
+          <ListSubheader>Design Stage</ListSubheader>
+          {/* <ListItem
+            button
+            selected={activeStage === 'unitPlan'}
+            onClick={(event) => setActiveStage('unitPlan')}
+          >
+            <ListItemIcon>
+              <ExploreIcon />
+            </ListItemIcon>
+            <ListItemText primary="Curriculum Component Design" />
+          </ListItem> */}
+  
+          <ListItem
+            button
+            selected={activeStage === 'componentPlan'}
+            onClick={(event) => setActiveStage('componentPlan')}
+          >
+            <ListItemText primary="Curriculum Component Plan" />
+          </ListItem>
+  
+          <ListItem
+            button
+            selected={activeStage === 'lessonPlan'}
+            onClick={(event) => setActiveStage('lessonPlan')}
+          >
+            <ListItemText primary="Lesson Plan" />
+          </ListItem>
+  
+          {/* <ListItem
+            button
+            selected={activeStage === 'timeline'}
+            onClick={(event) => window.open(
+              `/timeline/${props.course_id}`
+            ,'_blank'
+            )}
+          >
+            <ListItemText primary="Timeline" />
+          </ListItem> */}
+  
+          <ListSubheader>Review Stage</ListSubheader>
+            <ListItem
+              button
+              selected={activeStage === 'finish'}
+              onClick={(event) => setActiveStage('finish')}
+            >
+              {/* <ListItemIcon>
+                <ExploreIcon />
+              </ListItemIcon> */}
+              <ListItemText primary="Review" />
+            </ListItem>
+        </List>
+        </React.Fragment>
+        :
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={() => {setExtend(true)}}>
+              <ChevronRightIcon />
+          </IconButton>
+        </div>
+      }
+     
+      
+    </div>
   );
 }
 
@@ -435,19 +449,12 @@ const Design = (props) => {
             </div>
           </React.Fragment>
         );
-      case 'majorStep':
-        return (
-          <React.Fragment>
-            <PageMenu  activeStage ={activeStage} setActiveStage ={setActiveStage}/>
-            <DesignComponentStep/>
-          </React.Fragment>
-          );
       case 'designStage':
         return(
           <React.Fragment>
               <Grid container>
                
-                <Grid item xs ={2}>
+                <Grid item>
                   <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage} course_id = {courseID}/> 
                 </Grid>
                 

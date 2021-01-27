@@ -251,6 +251,7 @@ const LearningOutcomeContainer = (props)=>{
 
         Promise.all(updates).then(() => {
             setLoadingOpen(false);
+            refreshCourse();
             displayMsg("success", "Outcomes Sequences Updated");
         }).catch(error => {
             setLoadingOpen(false);
@@ -332,11 +333,9 @@ const LearningOutcomeContainer = (props)=>{
     setLoadingOpen(true)
     if(modeLevel == "component"){
         await apiLearningOutcomeComponentPut(outcome_relation).then(
-            refreshCourse()
         ).catch(error => console.log(error));   
     }else{
         await apiLearningOutcomeCoursePut(outcome_relation).then(
-            refreshCourse()
         ).catch(error => console.log(error));   
     }
     

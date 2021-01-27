@@ -27,8 +27,6 @@ const generateHoverColor = (num) => {
 }
 
 
-
-
 const ComponentAnalysisContainer = ()=>{
     const { course } = React.useContext(ContextStore);
     const { options, taskTypeColor } = React.useContext (AppContextStore);
@@ -43,7 +41,9 @@ const ComponentAnalysisContainer = ()=>{
     })
 
     React.useEffect( ()=>{
-        fetchcomponentanalysis(component)
+        if(component > 0){
+            fetchcomponentanalysis(component)
+        }  
     }
     , [component])
 
@@ -51,7 +51,6 @@ const ComponentAnalysisContainer = ()=>{
     async function fetchcomponentanalysis(id) {
         await apiComponentAnalysisList(id)
         .then(response => {
-
             if( response.data["task_assessment"] == undefined){
                 setData({
                     task_assessment:  [],

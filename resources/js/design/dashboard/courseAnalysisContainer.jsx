@@ -63,7 +63,6 @@ const CourseAnalysisContainer = ()=>{
     }, []);
 
     async function fetchcourseanalysis() {
-        console.log(course);
         await apiCourseAnalysisList(course.id)
         .then(response => {
 

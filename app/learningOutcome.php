@@ -75,6 +75,10 @@ class LearningOutcome extends Model
         return $this->hasMany('App\LearningOutcomeSTEMRelation', 'outcome_id');
     }
 
+    public function assessmentid(){
+        return $this->hasMany('App\TaskAssessmentRelation', 'learningoutcome_id');
+    }
+
     public function tasks(){
         return $this->hasManyThrough(
             'App\LearningTask',

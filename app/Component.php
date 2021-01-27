@@ -53,7 +53,7 @@ class Component extends Model
         return $this->hasMany(
             'App\ComponentOutcomeRelation',
             'component_id'
-        )->where('is_deleted', 0)->orderBy('component_outcome_relational.sequence')->select(['id','outcome_id','component_id', 'sequence']);
+        )->where('is_deleted', 0)->orderBy('component_outcome_relational.sequence');
     } 
 
     public function outcomes(){

@@ -85,7 +85,7 @@ const PublicDesignContainer = (props)=>{
                 if(typeof _course.description != 'undefined' && typeof _course.unit_title != 'undefined'){
                     return (_course.description.toUpperCase().indexOf(searchText.toUpperCase()) != -1 
                     || _course.unit_title.toUpperCase().indexOf(searchText.toUpperCase()) != -1
-                    || _course.tags.filter(x => x.name.toUpperCase().indexOf(searchText.toUpperCase()) != -1).length > 0
+                    || _course.tags?.filter(x => x.name.toUpperCase().indexOf(searchText.toUpperCase()) != -1).length > 0
                     ) ;
                 }
             })
@@ -113,7 +113,7 @@ const PublicDesignContainer = (props)=>{
                     </Button>
                 </Grid>
 
-                <Grid container item = {12} justify = {"flex-end"}>
+                <Grid container item = {12} justify = {"flex-start"}>
                     <TextField variant = {"outlined"} label = {"Search"} value = {searchText} onChange = {onChangeSearchText}/>
                 </Grid>
 

@@ -87,8 +87,8 @@ class LearningComponentAnalysisController extends Controller
             $tasks_by_lesson['task'][$_task->task_id]['lesson_id'] = $_task->lesson_id;
         }
 
-
-        $task_assessment = DB::table('learningoutcome')
+        $task_assessment = [];
+        $task_assessment_temp = DB::table('learningoutcome')
             ->join('component_outcome_relational', 'learningoutcome.id', '=', 'component_outcome_relational.outcome_id')
             ->leftJoin('learningtask_assessment', 'learningoutcome.id', '=', 'learningtask_assessment.learningoutcome_id')
             ->leftJoin('learningtask', 'learningtask.id', '=', 'learningtask_assessment.learningtask_id')
@@ -105,7 +105,7 @@ class LearningComponentAnalysisController extends Controller
             // ->select(DB::raw('distinct learningoutcome.*, if(learningtask_assessment.learningtask_id is null, 0, learningtask_assessment.learningtask_id) as learningtask_id'))
             ->get();
 
-        foreach( $task_assessment as $index => $_task_assessment){
+        foreach( $task_assessment_temp as $index => $_task_assessment){
             $check = true;
             foreach($component_task as $_component_task){
                 if($_component_task->task_id == $_task_assessment->learningtask_id){
@@ -114,7 +114,9 @@ class LearningComponentAnalysisController extends Controller
                 }
             }
             if($check){
-                unset($task_assessment[$index]);
+                // unset($task_assessment[$index]);
+            }else{
+                array_push($task_assessment, $_task_assessment);
             }
         }
         

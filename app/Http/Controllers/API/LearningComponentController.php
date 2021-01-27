@@ -97,20 +97,6 @@ class LearningComponentController extends Controller
         return response()->json('success');
     }
     
-    public function getDefaultLearningComponentByDesignType2($id){
-        $data = [
-            "1" => [
-              1, 2, 3, 4, 5
-            ],
-            "2" => [
-               6, 7, 8, 9, 10
-            ],
-        ];
-
-        return response()->json(
-            $data[$id]
-        );
-    }
 
     public static function getPatternOpts($id){
         $component = Component::find($id);
@@ -150,13 +136,41 @@ class LearningComponentController extends Controller
         // outcomes relation
         if($request->has('outcomes_id')){
             //clear all learning outcomes for this component
-            $component->outcomeid()->delete();
+            $clo_arr = [];
             foreach($request->outcomes_id as $_outcome_id){
-                $sequence = $component->outcomeid()->count();
+                array_push($clo_arr, $_outcome_id['outcome_id']);
+            }
+
+            $lo = $component->outcomeid()->get();
+            foreach( $lo as $clo){
+                if(!in_array($clo->outcome_id, $clo_arr)){
+                    $relatedtask = \App\TaskAssessmentRelation::where('learningoutcome_id', $clo['outcome_id'])->select('learningtask_id')->get();
+                    foreach( $relatedtask as $_rtask){
+                        $task = \App\LearningTask::with(['componentid', 'patternid'])->find($_rtask->learningtask_id);
+        
+                        if(!isset($task->componentid)){
+                            //do nothing
+                        }elseif($task->componentid->component_id == $component->id){
+                            \App\TaskAssessmentRelation::where('learningoutcome_id', $clo['outcome_id'])->where('learningtask_id', $task->id)->delete();
+                        }
+                        if(!isset($task->patternid)){
+                            //do nothing
+                        }elseif($task->patternid->componentid->component_id == $component->id){
+                            \App\TaskAssessmentRelation::where('learningoutcome_id', $clo['outcome_id'])->where('learningtask_id', $task->id)->delete();
+                        }
+                    }   
+                }
+            }
+            $component->outcomeid()->delete();
+
+            foreach($request->outcomes_id as $_outcome_id){
+              
+                // update or delete existing outcome
+                $sequence = $component->outcomeid()->max('sequence');
                 $component->outcomeid()->create([
                     "component_id" => $component->id,
                     "outcome_id" => $_outcome_id['outcome_id'],
-                    "sequence" => $sequence,
+                    "sequence" => $sequence + 1,
                     "is_deleted" => false,
                     "created_by" => Auth::user()->id,
                     "updated_by" => Auth::user()->id
@@ -205,98 +219,5 @@ class LearningComponentController extends Controller
         ])->find($component->id);
 
         return $component;
-    }
-
-    public function getDefaultLearningComponentByDesignType($id){
-        $data = [
-            "1" => [
-                [
-                    'id' => 1,
-                    'title' => 'Identify problem through goal-setting',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 2,
-                    'title' => 'Ideate and design solution through self-planning ',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 3,
-                    'title' => 'Construct prototype through self-monitoring',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 4,
-                    'title' => 'Test performance of the product through self-evaluation',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 5,
-                    'title' => 'Optimize the product through revision',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-            ],
-            "2" => [
-                [
-                    'id' => 6,
-                    'title' => 'Formulate inquiry questions through goal setting',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 7,
-                    'title' => 'Research and Propose Hypothesis through goal setting',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 8,
-                    'title' => 'Design Experiment through self-planning',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 9,
-                    'title' => 'Conduct Experiment through self-monitoring',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-                [
-                    'id' => 10,
-                    'title' => 'Analyse Data and interpret results through self-evaluation and revision',
-                    'tasks' => [],
-                    'learningOutcomes' => [
-
-                    ],
-                ],
-            ],
-        ];
-
-        return response()->json(
-            $data[$id]
-        );
     }
 }

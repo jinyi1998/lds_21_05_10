@@ -12,4 +12,8 @@ class ComponentOutcomeRelation extends Model
     public $timestamps = true;
 
     protected $fillable = ['component_id', 'outcome_id', 'created_by', 'updated_by', 'is_deleted', 'sequence'];
+
+    public function assessmentid(){
+        return $this->hasMany('App\TaskAssessmentRelation', 'learningoutcome_id', 'outcome_id');
+    } 
 }

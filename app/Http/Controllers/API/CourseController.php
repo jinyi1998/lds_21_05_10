@@ -189,7 +189,7 @@ class CourseController extends Controller
     public function showAll()
     {
         $course_arr = [];
-        $courses = Course::with(['createdby','usergroupid'])->orderBy('is_pin', 'desc')->get();
+        $courses = Course::with(['createdby','usergroupid', 'tags'])->orderBy('is_pin', 'desc')->get();
         foreach($courses as $index => $_course){
             $_course['permission_arr'] = $this->getCoursePermission($_course->id);
             if( count($_course['permission_arr']['public_permission']) > 0){

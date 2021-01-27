@@ -188,7 +188,7 @@ const useStyles = makeStyles(theme => ({
           }}
           open={sideMenuOpen}
           style = {{position: "sticky", top: "72px"}}
-      >
+        >
           <div className={classes.toolbarIcon}>
               <IconButton onClick={() => {setSideMenuOpen(!sideMenuOpen)}}>
                   <ChevronLeftIcon />

@@ -146,12 +146,38 @@ class LearningOutcomesController extends Controller
         }
 
         if($request->has('del_component_id')){
+            // delete the assessment relation for the tasks in this component
+            $relatedtask = \App\TaskAssessmentRelation::where('learningoutcome_id', $outcome->id)->select('learningtask_id')->get();
+            foreach( $relatedtask as $_rtask){
+                $task = \App\LearningTask::with(['componentid', 'patternid'])->find($_rtask->learningtask_id);
+
+                if(!isset($task->componentid)){
+                    //do nothing
+                }elseif($task->componentid->component_id == $request->del_component_id){
+                    \App\TaskAssessmentRelation::where('learningoutcome_id', $outcome->id)->where('learningtask_id', $task->id)->delete();
+                }
+                if(!isset($task->patternid)){
+                    //do nothing
+                }elseif($task->patternid->componentid->component_id == $request->del_component_id){
+                    \App\TaskAssessmentRelation::where('learningoutcome_id', $outcome->id)->where('learningtask_id', $task->id)->delete();
+                }
+            }   
+
             $outcome->componentid()->where('component_id', $request->del_component_id)->delete();
         }
         
         if($request->has('component_id')){
-            $sequence = DB::table('component_outcome_relational')->where('component_id', $request->component_id)->count();
-            if( $outcome->componentid()->exists()){
+            $exist = DB::table('component_outcome_relational')
+            ->where('outcome_id',  $outcome->id)
+            ->where('component_id', $request->component_id)
+            ->count();
+            
+            $sequence = DB::table('component_outcome_relational')
+            ->where('component_id', $request->component_id)
+            ->max('sequence');
+
+
+            if( $exist > 0){
                 $outcome->componentid()->update([
                     'outcome_id' => $outcome->id,
                     'component_id' => $request->component_id,
@@ -190,6 +216,8 @@ class LearningOutcomesController extends Controller
                 }
 
                if($check){
+                // delete assessment related to this slo
+                 \App\TaskAssessmentRelation::where('learningoutcome_id', $_eslo->component_outcomeid)->delete();
                  $outcome->slo_outcome_id()->where('component_outcomeid', $_eslo->component_outcomeid)->delete();
                }
             }

@@ -78,7 +78,6 @@ const ComponentSelectContainer = (props ) => {
 
     const feedbackComponent = (component) => {
         // feedback function to edit component from children 
-        console.log(component)
         var components_temp = components;
         components_temp.find( x => x.id == component.id && x.sequence == component.sequence).patterns = component.patterns;
         components_temp.find( x => x.id == component.id && x.sequence == component.sequence).title = component.title;

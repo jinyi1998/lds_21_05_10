@@ -64,7 +64,8 @@ const ComponentPlanContainer = (props)  => {
             var tempcomponent = response.data;
             tempcomponent.component_template_id = _component.id;
             tempcomponent.course_id = course.id;
-            tempcomponent.sequence = index + course.components.length;
+            tempcomponent.sequence = 1 + index + Math.max(...course.components.flatMap(x => x.sequence));
+         
             if(typeof _component.pattern_id !== 'undefined'){
               tempcomponent.patterns = tempcomponent.patterns.filter(x => x.id == _component.pattern_id)
             }
@@ -164,8 +165,6 @@ const ComponentPlanContainer = (props)  => {
       }
     })
 
-    console.log(outcome_id);
-    console.log(clos);
     return outcome_id;
   }
 

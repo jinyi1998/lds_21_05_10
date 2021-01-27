@@ -36,17 +36,8 @@ Route::resource('courseOutcomeRelation', 'API\CourseOutcomeRelationController');
 Route::resource('componentOutcomeRelation', 'API\ComponentOutcomeRelationController');
 
 //Learning Component Controller
-// Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
-// 'API\LearningComponentController@getDefaultLearningComponentByDesignType');
-
-Route::get('learningComponent/getDefaultLearningComponentByDesignType2/{id}', 
-'API\LearningComponentController@getDefaultLearningComponentByDesignType2');
-
 Route::get('learningComponent/getPatternOpts/{id}', 
 'API\LearningComponentController@getPatternOpts');
-
-Route::get('learningComponent/getDefaultLearningComponentByDesignType/{id}', 
-'API\LearningComponentController@getDefaultLearningComponentByDesignType');
 
 Route::middleware('design_permission')->resource('learningComponent', 'API\LearningComponentController');
 
