@@ -33,7 +33,6 @@ const DesignItemContainer = (props) => {
 
     const {courseData, usergroup} = props;
     const { setLoadingOpen, displayMsg} = React.useContext(AppContextStore);
-    const updated_at = courseData.updated_at;
     const creator = courseData.createdby;
 
     const enableDuplicate = props.enableDuplicate? props.enableDuplicate : false;;
@@ -118,7 +117,7 @@ const DesignItemContainer = (props) => {
                     </Grid>
                     <ListItemText 
                     primary={courseData.unit_title}  
-                    secondary={"Update At:" + updated_at + " || " + "Created By: " + creator.name + "@" + creator.school + " || " + "Progress: " + displayProgress() } />
+                    secondary={"Created At:" + courseData.created_at + " || " + "Created By: " + creator.name + "@" + creator.school + " || " + "Progress: " + displayProgress() } />
                 </TableCell>
                 <TableCell component="th">
                     {

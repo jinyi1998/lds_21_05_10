@@ -95,75 +95,68 @@ const ComponentTaskLesson = (props)=>{
        return (
             <React.Fragment>
                 <List component="nav">
-                    { Object.keys(data.task).map( task_id => 
-                        {
-                          
-                            return (
-                                <Paper style = {{width: '100%', margin: 16}} key = {task_id}>
-                                    <Grid item container xs={12} key = {task_id}   onClick = {()=> setTaskID(task_id)} style = {{ cursor: "pointer"}}>
-                                        <Grid item xs={1} height="100%">
-                                            <div style={taskTypeColor(data.task[task_id].task_type)}>
-                                            </div>
+                    {
+                        Object.keys(data.task)?.map( task_id => 
+                            {
+                              
+                                return (
+                                    <Paper style = {{width: '100%', margin: 16}} key = {task_id}>
+                                        <Grid item container xs={12} key = {task_id}   onClick = {()=> setTaskID(task_id)} style = {{ cursor: "pointer"}}>
+                                            <Grid item xs={1} height="100%">
+                                                <div style={taskTypeColor(data.task[task_id].task_type)}>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={11} color = "textPrimary">
+                                                <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}}>
+                                                    {data.task[task_id].task_title} 
+                                                </Typography>
+                                                <Typography variant="subtitle2" gutterBottom color = "textSecondary">
+                                                    { options.taskType.find(x=> x.id == data.task[task_id].task_type)?.description}
+                                                </Typography>
+                                            </Grid>
+                                            
                                         </Grid>
-                                        <Grid item xs={11} color = "textPrimary">
-                                            <Typography variant="subtitle1" gutterBottom style={{fontWeight: '600'}}>
-                                                {data.task[task_id].task_title} 
-                                            </Typography>
-                                            <Typography variant="subtitle2" gutterBottom color = "textSecondary">
-                                                { options.taskType.find(x=> x.id == data.task[task_id].task_type)?.description}
-                                            </Typography>
-                                        </Grid>
-                                        
-                                    </Grid>
-                                </Paper>
-                                // <ListItem 
-                                //     alignItems="center"
-                                //     onClick = {()=> setTaskID(task_id)}
-                                //     button
-                                //     key = {task_id}
-                                // >
-                                //     <ListItemText
-                                //         primary = { "Learning Task #" + task_id}
-                                //         secondary = { data.task[task_id].task_title}
-                                //         key = {task_id}
-                                //     />
-                                //     </ListItem>
-                            )
-                        
-                        }
-                    )} 
+                                    </Paper>
+                                )
+                            }
+                        )
+                    } 
                 </List>
             </React.Fragment>
        )
     }
 
     return (
-        <Grid container item xs = {12} alignContent="center" alignItems ="center">
-            <Grid item xs = {5} >
-                Task
-            </Grid>
-            <Grid item xs = {2} >
+        typeof data.task == "object"?
+            <Grid container item xs = {12} alignContent="center" alignItems ="center">
                 
-            </Grid>
-            <Grid item xs = {5} >
-                Lesson
-            </Grid>
+                <Grid item xs = {5} >
+                    Task
+                </Grid>
+                <Grid item xs = {2} >
+                    
+                </Grid>
+                <Grid item xs = {5} >
+                    Lesson
+                </Grid>
 
-            <Grid item xs = {5} >
-                <List component="nav" >
-                    {displayTaskByComponent()}
-                </List>
-            </Grid>
-            <Grid item xs = {2} >
+                <Grid item xs = {5} >
+                    <List component="nav" >
+                        {displayTaskByComponent()}
+                    </List>
+                </Grid>
+                <Grid item xs = {2} >
+                    
+                </Grid>
+                <Grid item xs = {5} >
+                    <List component="nav" >
+                        {displayLessonAssessment()}
+                    </List>
                 
+                </Grid>
             </Grid>
-            <Grid item xs = {5} >
-                <List component="nav" >
-                    {displayLessonAssessment()}
-                </List>
-               
-            </Grid>
-        </Grid>             
+        :
+        null        
     );
 }
 

@@ -203,48 +203,51 @@ const ComponentPlanContainer = (props)  => {
     setLoadingOpen(true);
 
     //sync the data to root state
-      var tempComponents =  JSON.parse(JSON.stringify(course.components));
+    var tempComponents =  JSON.parse(JSON.stringify(course.components));
 
-      tempComponents.map((_component, index)=> {
-          if(_component.sequence == null){
-              tempComponents[index].sequence = index + 1;
-          }
-      });
-
-      var sourceComponent = {
-        id: tempComponents[result.source.index].id,
-        sequence: tempComponents[result.destination.index].sequence
-      }
-
-      if(result.source.index < result.destination.index){
-        for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
-          let tempComponent = {
-            id : tempComponents[i].id,
-            sequence: tempComponents[i].sequence - 1
-          }
-          updates.push( apiLearningCompPut(tempComponent) );
-      }
-      }else{
-
-        for(var i = result.destination.index; i < result.source.index; i++){
-          let tempComponent = {
-            id : tempComponents[i].id,
-            sequence: tempComponents[i].sequence + 1
-          }
-          updates.push ( apiLearningCompPut(tempComponent) );
+    tempComponents.map((_component, index)=> {
+        if(_component.sequence == null){
+            tempComponents[index].sequence = index + 1;
         }
+    });
+
+
+    var sourceComponent = {
+      id: tempComponents[result.source.index].id,
+      sequence: result.destination.index + 1
+    }
+
+    tempComponents.splice(result.source.index, 1);
+    
+    tempComponents.map((_component, index)=> {
+      if(index < result.destination.index){
+        // down
+        let tempComponent = {
+          id : _component.id,
+          sequence: index + 1
+        }
+        updates.push( apiLearningCompPut(tempComponent) );
+      }else{
+        // up
+        let tempComponent = {
+          id : _component.id,
+          sequence: index + 2
+        }
+        updates.push ( apiLearningCompPut(tempComponent) );
       }
-      updates.push( apiLearningCompPut(sourceComponent) );
+    });
 
-      Promise.all(updates).then(()=>{
-          setLoadingOpen(false);
-          displayMsg("success", "Learning Components Sequences Updated")
-          refreshCourse();
+    updates.push( apiLearningCompPut(sourceComponent) );
 
-      }).catch((error)=> {
-          console.log(error);
-          displayMsg("error", "Error Occured")
-      })
+    Promise.all(updates).then(()=>{
+        setLoadingOpen(false);
+        displayMsg("success", "Learning Components Sequences Updated")
+        refreshCourse();
+
+    }).catch((error)=> {
+        console.log(error);
+        displayMsg("error", "Error Occured")
+    })
   }
   
   return (

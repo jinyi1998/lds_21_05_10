@@ -83,9 +83,9 @@ export default function Welcome() {
             <Button variant="contained" color="primary" href="login" className={classes.btn}>
                 Log in
             </Button>
-            <Button variant="contained" color="primary" onClick={()=> window.open("https://drive.google.com/file/d/16FUJnWEORuR9a7rGuq9TItBCRKCPT06I/view", "_blank")} className={classes.btn}>
+            {/* <Button variant="contained" color="primary" onClick={()=> window.open("https://drive.google.com/file/d/16FUJnWEORuR9a7rGuq9TItBCRKCPT06I/view", "_blank")} className={classes.btn}>
                 Watch a demo
-            </Button>
+            </Button> */}
         </Grid> 
       </Grid>
     </Grid>

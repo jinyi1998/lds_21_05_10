@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Course;
 use App\Component;
 use App\ComponentTemplate;
 use App\LearningPatternTemplate;
@@ -90,11 +91,18 @@ class LearningComponentController extends Controller
     public function destroy($id)
     {
         //
-        $component = Component::find($id);
-
-        $component->delete();
-
-        return response()->json('success');
+        $component = Component::with(['courseid'])->find($id);
+        
+        $courseid = $component->courseid->course_id;
+        $component->delete();      
+        $course = Course::with(['components'])->find($courseid);
+        foreach($course->components as $index => $_component){
+            $component = Component::find($_component->id);
+            $component->sequence = $index + 1;
+            $component->save();
+        }
+        return response()->json("success");
+     
     }
     
 

@@ -54,7 +54,10 @@ class LearningComponentAnalysisController extends Controller
             'learningtask.id as task_id', 
             'lesson.title as lesson_title', 
             'lesson.id as lesson_id', 
-            'lesson.sequence as sequence' );
+            'lesson.sequence as sequence',
+            'component_pattern_task_relation.sequence as task_sequence',
+            'pattern_task_relational.sequence as pattern_task_sequence'
+         );
         
         $component_task = DB::table('learningtask')
         ->join('component_pattern_task_relation', 'component_pattern_task_relation.task_id', '=', 'learningtask.id')
@@ -68,9 +71,14 @@ class LearningComponentAnalysisController extends Controller
         'learningtask.id as task_id', 
         'lesson.title as lesson_title', 
         'lesson.id as lesson_id', 
-        'lesson.sequence as sequence' )
+        'lesson.sequence as sequence',
+        'component_pattern_task_relation.sequence as task_sequence',
+        'component_pattern_task_relation.sequence as pattern_task_sequence'
+        )
         ->union($pattern_task)
         ->orderBy('sequence')
+        ->orderBy('task_sequence')
+        ->orderBy('pattern_task_sequence')
         ->get();
 
         // return response()->json($component_task);
@@ -106,13 +114,25 @@ class LearningComponentAnalysisController extends Controller
             ->get();
 
         foreach( $task_assessment_temp as $index => $_task_assessment){
-            $check = true;
-            foreach($component_task as $_component_task){
-                if($_component_task->task_id == $_task_assessment->learningtask_id){
-                    $check = false;
-                    break;
+            $check = false;
+            $taskid_arr = explode(',', $_task_assessment->learningtask_id);
+            $task_concat = "";
+
+            foreach( $taskid_arr as $index => $_taskid_arr){
+                $checkcheck = false;
+                foreach($component_task as $_component_task){
+                    if($_component_task->task_id == $_taskid_arr){
+                        $checkcheck = true;
+                    }else{
+                    }
+                }
+                if(!$checkcheck){
+                    unset($taskid_arr[$index]);
                 }
             }
+            $task_concat = implode(",",$taskid_arr);
+           
+            $_task_assessment->learningtask_id = $task_concat;
             if($check){
                 // unset($task_assessment[$index]);
             }else{
@@ -128,29 +148,30 @@ class LearningComponentAnalysisController extends Controller
 
         $tasks_num_by_classtarget = [];
 
-        if(isset($component['patterns'][0]['tasks'])){
-            foreach($component['patterns'][0]['tasks'] as $task){
-                if(!isset( $tasks_time_by_type[$task->type])){
-                    $tasks_time_by_type[$task->type] = 0;
-                    $tasks_num_by_type[$task->type] = 0;
-                   
-                }
-                
-                if(!isset( $tasks_time_by_task[$task->title])){
-                    $tasks_time_by_task[$task->title] = 0;
-                }
-
-                if(!isset( $tasks_num_by_classtarget[$task->target])){
-                    $tasks_num_by_classtarget[$task->target] = 0;
-                }
-
-                $tasks_time_by_type[$task->type] +=  $task->time;
-                $tasks_num_by_type[$task->type] +=  1;
-
-                $tasks_time_by_task[$task->title] += $task->time;
-
-                $tasks_num_by_classtarget[$task->target] += 1;
-                
+        if(isset($component['patterns'])){
+            foreach($component['patterns'] as $_pattern){
+                foreach($_pattern['tasks'] as $task){
+                    if(!isset( $tasks_time_by_type[$task->type])){
+                        $tasks_time_by_type[$task->type] = 0;
+                        $tasks_num_by_type[$task->type] = 0;
+                       
+                    }
+                    
+                    if(!isset( $tasks_time_by_task[$task->title])){
+                        $tasks_time_by_task[$task->title] = 0;
+                    }
+    
+                    if(!isset( $tasks_num_by_classtarget[$task->target])){
+                        $tasks_num_by_classtarget[$task->target] = 0;
+                    }
+    
+                    $tasks_time_by_type[$task->type] +=  $task->time;
+                    $tasks_num_by_type[$task->type] +=  1;
+    
+                    $tasks_time_by_task[$task->title] += $task->time;
+    
+                    $tasks_num_by_classtarget[$task->target] += 1;
+                 }
             }
         }
 

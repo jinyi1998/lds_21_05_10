@@ -59,13 +59,11 @@ const ComponentOutcomeAssessment = (props)=>{
         }
     }
 
-    const displayOutcomeDetail = (_task) => {
+    const displayOutcomeDetail = (_task, indexing) => {
         if(_task.has_assessment){
             // has assessment
             return (
-                <Accordion
-                key = {_task.id}
-                >
+                <Accordion key = {indexing}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1a-content"
@@ -80,17 +78,8 @@ const ComponentOutcomeAssessment = (props)=>{
                         { _task.learningtask_id.map( (_id, index) => 
                             {
                                 return (
-                                    // <ListItem 
-                                    //     alignItems="center"
-                                    //     key = {"learning_task_"+_id}
-                                    // >
-                                    //     <ListItemText
-                                    //         primary = { "learning task #" + _id  + "--" +  _task.learningtask_title[index]}
-                                    //         key = {"learning_task_"+_id}
-                                    //     />
-                                    //  </ListItem>
-                                    <Paper style = {{width: '100%', margin: 16}} key = {_id}>
-                                        <Grid item container xs={12} key = {_id}>
+                                    <Paper style = {{width: '100%', margin: 16}} key = {index}>
+                                        <Grid item container xs={12} key = {index}>
                                             <Grid item xs={1} height="100%">
                                                 <div style={taskTypeColor(_task.learningtask_type[index])}>
                                                 </div>
@@ -120,12 +109,11 @@ const ComponentOutcomeAssessment = (props)=>{
                 button
                 alignItems="center"
                 style = {displayColor(_task.has_assessment)}
-                key = {1}
+                key = {indexing}
             >
                 <ListItemText 
                     primary={"Learning Outcome: "+ _task.description} 
                     secondary = {displayWarnText(_task.has_assessment)}
-                    key = {1}
                 />
             </ListItem>
 
@@ -139,8 +127,8 @@ const ComponentOutcomeAssessment = (props)=>{
             <Grid item xs = {12} >
                 <List component="nav">
                     {
-                        data.map(_task => 
-                            displayOutcomeDetail(_task)
+                        data.map((_task, index) => 
+                            displayOutcomeDetail(_task, index)
                         )
                     }
                 </List>

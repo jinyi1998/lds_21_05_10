@@ -38,6 +38,7 @@ import {
     apiLearningTaskPost, apiLearningTaskPut, apiLearningTaskCompPut,
     apiLearningTaskDelete,
     apiLearningCompGetPatternOpts,
+    apiLearningPattTempList, apiLearningPattTempGet,
     apiLearningPatternPut, apiLearningPatternPost
 } from '../../../api';
 import { update } from 'lodash';
@@ -231,8 +232,10 @@ const ComponentPatternTaskContainer = (props) =>{
     const [ onOpenPattern, setOpenPattern] = React.useState(-1);
     const [ editPatternOpen, setEditPatternOpen] = React.useState(false);
     const [ isDisplayPatternOpen, setIsDisplayPatternOpen ] = React.useState(false);
+    const [ patternTempRawOpts, setPatternTempRawOpts] = React.useState([]);
     const [ patternTempOpts, setPatternTempOpts] = React.useState([]);
     const [ patternTempID, setPatternTempID] = React.useState(-1);
+    const [ searchText, setSearchText ] = React.useState("");
     const [ selectDisplayPattern, setSelectDisplayPattern ] = React.useState(-1);
 
     React.useEffect(()=> {
@@ -241,11 +244,48 @@ const ComponentPatternTaskContainer = (props) =>{
         }
     }, [editPatternOpen]) 
 
+    React.useEffect(()=>{
+        setPatternTempOpts(patternTempRawOpts);
+    }, [patternTempRawOpts])
+
+    React.useEffect(()=>{
+        setLoadingOpen(true);
+
+        if(searchText.length){
+            onFilterBySearchText();
+        }else{
+            setPatternTempOpts(patternTempRawOpts);
+            setLoadingOpen(false);
+        }
+    }, [searchText])
+
+    const onFilterBySearchText = () => {
+        setLoadingOpen(true);
+      
+        var temp = JSON.parse(JSON.stringify(patternTempRawOpts));
+        temp = temp.filter(_pattern => {
+            if(typeof _pattern.title == "undefined"){
+                return false;
+            }
+            if(_pattern.title.toUpperCase().indexOf(searchText.toUpperCase()) > -1){
+                return true;
+            }
+            if(_pattern.tags.filter( _tags => _tags.name.toUpperCase().indexOf(searchText.toUpperCase()) > -1 ).length > 0){
+                return true;
+            }
+            return false;
+        });
+
+        setPatternTempOpts(temp);
+    
+        setLoadingOpen(false);
+    }
+
     async function reloadPatternTemplate(id) {
-        return await apiLearningCompGetPatternOpts(id)
+        return await apiLearningPattTempList()
         .then(response => {
             //load the default learning outcomes by api request
-            setPatternTempOpts(response.data);
+            setPatternTempRawOpts(response.data);
             return response;
         })
         .catch(error => console.log(error));
@@ -253,28 +293,36 @@ const ComponentPatternTaskContainer = (props) =>{
   
     async function saveLearningPattern() {
         if(patternTempOpts.filter(x => x.id == patternTempID).length > 0){
-            var json = patternTempOpts.find(x => x.id == patternTempID);
-            json["component_id"] = component.id;
-    
-            return await apiLearningPatternPost(json)
-            .then(response => {
-                  //load the default learning outcomes by api request
-                  setLoadingOpen(false);
-                  setEditPatternOpen(false);
-                  displayMsg("success", "Pattern Added");
-                  refreshCourse();
-            })
-            .catch(error => {
+
+            apiLearningPattTempGet(patternTempID).then((response) => {
+                var json = response.data;
+                json["component_id"] = component.id;
+        
+                return apiLearningPatternPost(json)
+                .then(response => {
+                      //load the default learning outcomes by api request
+                      setLoadingOpen(false);
+                      setEditPatternOpen(false);
+                      displayMsg("success", "Pattern Added");
+                      refreshCourse();
+                })
+            }).catch(error => {
                 setLoadingOpen(false);
                 setEditPatternOpen(false);
                 console.log(error);
                 displayMsg("error", "Error Occured");
             });
+           
+           
         }else{
             displayMsg("error", "Error Occured");
         }
     }
     
+    const onSearch = (e) => {
+        setSearchText(e.target.value)
+    }
+
     const onClickLoadPattern = () => {
         setEditPatternOpen(true);
     }   
@@ -593,6 +641,9 @@ const ComponentPatternTaskContainer = (props) =>{
 
             <Dialog open={editPatternOpen} onClose={onCloseLoadPattern} maxWidth = "lg" style = {{minHeight: 400}}>
                 <DialogContent>
+                    <Grid container item xs = {12}>
+                        <TextField label = {"search text"} onChange = {onSearch} />
+                    </Grid>
                     <Grid container item xs = {12} style= {{width: 1280}}>
                     {
                          patternTempOpts.map((_patternOpt, index)=>{

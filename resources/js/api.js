@@ -94,6 +94,7 @@ import config from 'react-global-configuration';
   export const apiLessoneGet = data => lessonRequest.get(`/${data}`);
   export const apiLessonDelete = data => lessonRequest.delete(`/${data}`);
   export const apiLessonCreate = data => lessonRequest.post('/', JSON.stringify(data));
+  export const apiLessonPut = data => lessonRequest.put(`/${data.id}`, JSON.stringify(data));
   export const apiLessonUpdate = data => lessonRequest.put(`/${data.lesson_id}`, JSON.stringify(data));
   //#endregion
 

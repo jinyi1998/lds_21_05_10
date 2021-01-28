@@ -373,6 +373,7 @@ const LearningTaskEditView = (props) => {
                                         control={<Checkbox 
                                             checked={hasAssessment} 
                                             onChange={() => onChangeIsAssessment()} 
+                                            disabled = {assessment.length > 0?  true : false}
                                             value="Assessment" />}
                                         label="Have Assessment?"
                                     />

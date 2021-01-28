@@ -271,7 +271,7 @@ const ComponentContainer = (props)=>{
                         <TextField value = {componentTitle} onChange = {(event => setComponentTitlte(event.target.value))} fullWidth></TextField>
                         :
                         <React.Fragment>
-                          <Typography className={classes.heading}>{index + 1} :  {component.title}</Typography>
+                          <Typography className={classes.heading}>{component.sequence} :  {component.title}</Typography>
                         </React.Fragment>
                     }
                   </Grid>
@@ -340,8 +340,8 @@ const ComponentContainer = (props)=>{
                 </Grid>
             </AccordionDetails>
           </Accordion>
-          <ComponentFloatDashboardContainer />
 
+          <ComponentFloatDashboardContainer/>
          
         </ComponentContext.Provider>
     );

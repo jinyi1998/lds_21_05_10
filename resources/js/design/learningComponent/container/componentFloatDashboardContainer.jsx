@@ -53,6 +53,7 @@ const colorConfig = [
 const ComponentFloatDashboardContainer = (props) => {
     const classes = useStyles();
     const {
+        component,
         componentID,
         selectComIndex,
         index} = React.useContext(ComponentContext);
@@ -107,7 +108,7 @@ const ComponentFloatDashboardContainer = (props) => {
         if(options.taskElearingResource.length > 0  && index == selectComIndex){
             fetchcomponentanalysis(componentID)
         }
-    }, [options, selectComIndex])
+    }, [options, selectComIndex, component])
 
 
     const displayDashboard = () => {

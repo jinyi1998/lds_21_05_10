@@ -4,7 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+
+import EditIcon from '@material-ui/icons/Edit';
+import DoneIcon from '@material-ui/icons/Done';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import LessonPlanView from '../component/lessonPlanView';
 import LessonPlanTaskSelect from '../component/lessonPlanTaskSelect';
@@ -14,7 +20,7 @@ import {AppContextStore} from '../../../container/app';
 
 import {
     apiLearningTaskPost, apiLearningTaskPut,
-    apiLessonTaskUpdate, apiLessonUpdate 
+    apiLessonTaskUpdate, apiLessonUpdate, apiLessonPut
 
 } from '../../../api.js';
 
@@ -25,7 +31,11 @@ const LessonPlanViewContainer = (props) => {
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     
     const [editMode, setEditMode] =  React.useState(false);
+    const [editLesson, setEditLesson] = React.useState(false);
     const [lesson, setLesson] =  React.useState(props.lesson);
+    const [editTitle, setTitle] = React.useState("");
+    const [editTime, setTime] = React.useState("");
+
     const canEdit = props.canEdit;
 
     const refreshLesson = () => {
@@ -36,7 +46,9 @@ const LessonPlanViewContainer = (props) => {
     const enableEdit = course.permission > 2;
     
     React.useEffect(()=>{
-        setLesson(props.lesson) 
+        setLesson(props.lesson);
+        setTitle(props.lesson.title);
+        setTime(props.lesson.time);
     }, [props])
 
     //#region api function
@@ -82,9 +94,24 @@ const LessonPlanViewContainer = (props) => {
         .then(response => {
             refreshCourse();
             setEditMode(false);
+            setEditLesson(false);
             setLoadingOpen(false);
         })
         .catch(error => console.log(error));
+    }
+
+    const onCancelEditLesson = () => {
+        setTitle(props.lesson.title);
+        setTime(props.lesson.time);
+        setEditLesson(false)
+    }
+
+    const updateLessonBasic = () => {
+        var temp = JSON.parse(JSON.stringify(lesson));
+        temp.time = editTime;
+        temp.title = editTitle;
+        temp.lesson_id = temp.id;
+        updateLesson(temp);
     }
     //#endregion
 
@@ -92,8 +119,48 @@ const LessonPlanViewContainer = (props) => {
     return (
         <Grid container data-tour = "lesson_view">
             <Grid item xs = {12}>
-                <Typography variant = {"h6"}> {lesson.title}</Typography>
+                {
+                    editLesson?
+                    <Grid container item xs alignContent = {"flex-end"} justify = {"space-between"}>
+                        <Grid item xs = {3}>
+                        <TextField label = {"Lesson Title"}  value = {editTitle}  onChange = {(event) => setTitle(event.target.value)}/>
+                        </Grid>
+
+                        <Grid item xs = {3}>
+                        <TextField label = {"In Class Duration"} value = {editTime} onChange = {(event) => setTime(event.target.value)}/>
+                        </Grid>
+
+                      
+                        <Grid item xs>
+                            <IconButton color="primary" aria-label="upload picture" component="span" onClick = {()=> updateLessonBasic()}>
+                                <DoneIcon />
+                            </IconButton>
+                            <IconButton color="primary" aria-label="upload picture" component="span"  onClick = {onCancelEditLesson}>
+                                <CancelIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                    :
+                    <Grid container item xs alignContent = {"flex-end"} justify = {"space-between"}>
+                        <Grid item>
+                            <Typography variant = {"h6"} gutterBottom> {lesson.title}</Typography>
+                            <Typography variant = {"subtitle2"} gutterBottom> 
+                                In Class Lesson Duration - {lesson.time}
+                            </Typography>
+                        </Grid>
+
+
+                        <Grid item xs = {3}>
+                            <IconButton color="primary" aria-label="upload picture" component="span" onClick = {()=> setEditLesson(true)}>
+                                <EditIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+            
+                }
+                
             </Grid>
+
              <LessonPlanView 
                 lesson = {lesson}
                 lessontype = {1}

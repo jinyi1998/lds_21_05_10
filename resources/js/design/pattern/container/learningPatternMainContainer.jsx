@@ -23,6 +23,7 @@ import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
 import {
+    apiLearningPatternList,
     apiLearningCompGetPatternOpts,
     apiLearningPatternPost
 } from '../../../api.js';
@@ -48,7 +49,7 @@ const LearningTaskMainContainer = (props) => {
 
     //#region local action
     async function reloadPatternTemplate(id) {
-        return await apiLearningCompGetPatternOpts(id)
+        return await apiLearningPatternList()
         .then(response => {
             //load the default learning outcomes by api request
             setPatternTempOpts(response.data);
