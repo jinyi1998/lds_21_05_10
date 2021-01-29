@@ -76,7 +76,7 @@ class LearningTaskOptsController extends Controller
 
     public function getLearningTaskType(){
         // return DB::table('learningTasktypeOpts')->where('is_deleted', 0)->get();
-        return App\LearningTasktypeOpts::where('is_deleted', 0)->get();
+        return App\LearningTasktypeOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getClassType(){

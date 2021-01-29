@@ -32,7 +32,7 @@ const PrintableContent = () => {
 
 
                 <Grid item xs = {12}>
-                    <Typography variant = "h6"> Unit Level Outcome </Typography>
+                    <Typography variant = "h6"> Outcomes </Typography>
                     <UnitOutcome />
                 </Grid>
 

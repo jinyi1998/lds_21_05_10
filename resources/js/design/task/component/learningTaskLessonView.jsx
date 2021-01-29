@@ -12,6 +12,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from "@material-ui/icons/Edit";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';

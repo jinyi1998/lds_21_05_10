@@ -20,7 +20,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
-import { apiLearningCompTempPost, apiLearningCompTempDelete } from '../../../api';
+import { apiLearningCompTempPost, apiDesignTypeCompTempDelete, apiLearningCompTempDelete } from '../../../api';
 
 import ComponentTemplateBuilderContainer from '../container/componentTemplateBuilderContainer';
 import {DesignTypeBuilderContextStore} from '../container/designTypeBuilderContainer';
@@ -60,7 +60,10 @@ const DesignTypeBuilderComponentView = (props) => {
     }
 
     const onDeleteComponent = (component) => {
-        apiLearningCompTempDelete(component).then(()=>{
+        var request = {
+            id: component.relation_id,
+        }
+        apiDesignTypeCompTempDelete(request).then(()=>{
             refreshDesignType();
         })
     }

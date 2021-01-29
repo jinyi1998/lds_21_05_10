@@ -14,6 +14,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -281,7 +282,7 @@ const LearningTaskView = (props) => {
                     
                     <Grid item xs={12} className={classes.contentGrid} data-tour="component_task_lo">
                         <Tooltip title="Learning Outcome" aria-label="lo">
-                            <AssessmentIcon />
+                            <CheckCircleIcon />
                         </Tooltip>
                       
                        {task.assessment?.map(

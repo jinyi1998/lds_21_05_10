@@ -154,8 +154,10 @@ Route::post('designType/uploadImg', 'API\DesignTypeController@uploadImg');
 Route::resource('designType', 'API\DesignTypeController');
 
 Route::post('designTypeInstruction/uploadImg', 
-'API\DesigntypeInstructionController@uploadImg');
-Route::resource('designTypeInstruction', 'API\DesigntypeInstructionController');
+'API\DesignTypeInstructionController@uploadImg');
+Route::resource('designTypeInstruction', 'API\DesignTypeInstructionController');
+Route::resource('designTypeComponentTemplate', 'API\DesignTypeComponentTempController');
+
 
 
 Route::resource('classSize', 'API\ClassSizeController');

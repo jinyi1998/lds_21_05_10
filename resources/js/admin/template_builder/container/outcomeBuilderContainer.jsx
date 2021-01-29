@@ -202,15 +202,15 @@ const OutcomeBuilderContainer = (props) => {
                        
                         <Grid item xs = {12}>
                             <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
-                                {"Add the pre-design unit-level learning outcomes step 2 and link to the tasks with assessment"}
+                                {"Add the pre-design learning outcomes step 2 and link to the tasks with assessment"}
                             </Typography>
                         </Grid>
 
                         <Grid item xs ={12}>
                             <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
                                 {"Design Tips: One learning outcome can be archieved by several tasks. \
-                                You might also specify the unit-level outcome into several \
-                                sup-learning outcomes to indicate how students fulfil the outcome step by step."}
+                                You might also specify the outcome into several \
+                                sub-learning outcomes to indicate how students fulfil the outcome step by step."}
                             </Typography>
                         </Grid>
                     </Grid>

@@ -74,7 +74,8 @@ const ComponentAddView = (props) => {
     React.useEffect(()=>{
         apiDesignTypeList()
         .then(response => {
-            setDesignTypeOtps(response.data)
+            var opts = response.data?.filter(x => x.is_activate);
+            setDesignTypeOtps(opts)
         }) 
     }, [])
 

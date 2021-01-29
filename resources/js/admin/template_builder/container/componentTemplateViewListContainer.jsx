@@ -137,9 +137,9 @@ const ComponentTemplateViewListContainer = (props) => {
                                                 />
                                             </TableCell>
                                             <TableCell component="th">
-                                                <IconButton color="primary" aria-label="add to shopping cart" onClick = {() => {event.preventDefault(); onDeleteComponent(_component)}}>
+                                                {/* <IconButton color="primary" aria-label="add to shopping cart" onClick = {() => {event.preventDefault(); onDeleteComponent(_component)}}>
                                                     <DeleteForeverIcon />
-                                                </IconButton>
+                                                </IconButton> */}
                                             </TableCell>
                                         </TableRow>
                                     ))}

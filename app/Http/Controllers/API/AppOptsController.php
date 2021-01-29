@@ -77,7 +77,7 @@ class AppOptsController extends Controller
     }
 
     public function getLearningTaskType(){
-        return App\LearningTasktypeOpts::where('is_deleted', 0)->get();
+        return App\LearningTasktypeOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getClassType(){

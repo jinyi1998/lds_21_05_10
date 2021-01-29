@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import config from 'react-global-configuration';
   
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,9 +74,15 @@ export default function Welcome() {
             Accessible from anywhere, you will find the strong support on pedagogies with customerized templates and useful tips. 
           </Typography>
           <br/>
-          <Button variant="contained" color="primary" href="register">
-              LET's GET STARTED
-          </Button>
+          {
+            config.get('enableRegisteration')?
+            <Button variant="contained" color="primary" href="register">
+                LET's GET STARTED
+            </Button>
+            :
+            null
+          }
+         
         </div>
       </Grid>
       <Grid item xs={false} sm={4} md={7} className={classes.image} >

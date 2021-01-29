@@ -269,7 +269,7 @@ const OutcomeTemplateEditView = (props) => {
             <Grid item xs={12}>
                 <FormControl required className={classes.formControl} fullWidth   error = {error['outcomeType'] != ""} >
                     <FormLabel>
-                        What do you think are the most important knowledge, skills, or generic skills in the unit that you are teaching?
+                        What do you think are the most important knowledge, skills, or non-disciplinary outcomes in the unit that you are teaching?
                     </FormLabel >
                     <RadioGroup
                         data-tour = "lo_edit_type"

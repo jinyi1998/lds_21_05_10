@@ -14,6 +14,7 @@ import config from 'react-global-configuration';
   export const apiUserMgmtDashboard = data => userRequest.get('/getUserMgmtDashboard');
   export const apiUserAvaGroup = data => userRequest.get('/getAvaUserGroup');
   export const apiUserGuidedTourUpdate = data => userRequest.put('/tourguide', JSON.stringify(data));
+  export const apiUserChangePassword =  data => userRequest.post('/changepassword', JSON.stringify(data));
   //#endregion
   
   //#region user group api
@@ -312,6 +313,23 @@ import config from 'react-global-configuration';
     export const apiGetDesignTypeInstruction = data => designTypeRequest.get(`/getDesignTypeInstruction/${data}`);
     export const apiDesignTypeUploadImg = data => designTypeRequest.post('/uploadImg', JSON.stringify(data));
     //#endregion design type
+
+    //#region 
+        //#region lesson api
+  const designTypeComponentTempRequest = axios.create({
+    baseURL: 'http://'+config.get('url')+'/api/designTypeComponentTemplate',
+    headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+    },
+  });
+  export const apiDesignTypeCompTempList = () => designTypeComponentTempRequest.get(`/`);
+  export const apiDesignTypeCompTempGet = data => designTypeComponentTempRequest.get(`/${data.id}`);
+  export const apiDesignTypeCompTempDelete = data => designTypeComponentTempRequest.delete(`/${data.id}`);
+  export const apiDesignTypeCompTempPost = data => designTypeComponentTempRequest.post('/', JSON.stringify(data));
+  export const apiDesignTypeCompTempPut = data => designTypeComponentTempRequest.put(`/${data.id}`, JSON.stringify(data));
+  //#endregion
+    //#endregion
 
 
     //#region design type instruction

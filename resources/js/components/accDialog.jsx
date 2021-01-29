@@ -12,27 +12,19 @@ import Grid from '@material-ui/core/Grid';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import config from 'react-global-configuration';
 import validator from 'validator';
+import {apiUserChangePassword} from '../api';
 
 const AccDialog = (props) => {
 
     async function updatePassword() {
-        return await fetch(
-          'http://'+config.get('url')+'/api/user/changepassword',
-          {
-            method: "POST",
-            body:  JSON.stringify(user),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            }
-          }
-        ).then(res => res.json())
-        .then(response => {
-          if(response == "success"){
-            handleAccClose();
-          }else{
-            setError({...error, password: "auth_fail, please check your password"})
-          }
-        })
+
+        return apiUserChangePassword(user).then((response)=>{
+            if(response.data == "success"){
+                handleAccClose();
+              }else{
+                setError({...error, password: "auth_fail, please check your password"})
+              }
+        });
       }
 
     const {accDialogOpen, handleAccClose} = props;
