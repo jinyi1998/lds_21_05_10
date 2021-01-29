@@ -66,7 +66,7 @@ class ModifyTasktypeOptsAddColumnSequence extends Migration
                     break;
             }
 
-            DB::table('learningTaskTypeOpts')->where('id', $_type->id)->update([
+            DB::table('learningTasktypeOpts')->where('id', $_type->id)->update([
                 'sequence' => $sequence,
             ]);
            
@@ -81,7 +81,7 @@ class ModifyTasktypeOptsAddColumnSequence extends Migration
     public function down()
     {
         //
-        Schema::table('learningTaskTypeOpts', function($table)
+        Schema::table('learningTasktypeOpts', function($table)
         {
             $table->dropColumn('sequence');
         });
