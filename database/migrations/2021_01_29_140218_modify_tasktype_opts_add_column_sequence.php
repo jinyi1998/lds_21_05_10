@@ -14,16 +14,16 @@ class ModifyTasktypeOptsAddColumnSequence extends Migration
     public function up()
     {
         //
-        Schema::table('learningTaskTypeOpts', function($table)
+        Schema::table('learningTasktypeOpts', function($table)
         {
             $table->smallInteger('sequence')->nullable();
         });
         
-        DB::table('learningTaskTypeOpts')->where('id', 4)->update([
+        DB::table('learningTasktypeOpts')->where('id', 4)->update([
             'description' => "Practice",
         ]);
 
-        $type = DB::table('learningTaskTypeOpts')->get();
+        $type = DB::table('learningTasktypeOpts')->get();
 
         foreach($type as $_type){
             $sequence = 1;
