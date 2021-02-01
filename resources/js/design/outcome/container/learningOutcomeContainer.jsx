@@ -433,17 +433,32 @@ const LearningOutcomeContainer = (props)=>{
                     )
                     :
                     <Grid container spacing = {2}>
-                        <Grid item xs = {12}>
-                            <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
-                                {"What intended learning outcomes do you want to achieve by designing this component"}
-                            </Typography>
-                        </Grid>
+                        {
+                            modeLevel == "course"?
+                                <Grid item xs = {12}>
+                                    <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                        {"What intended learning outcomes do you want to achieve"}
+                                    </Typography>
+                                </Grid>
+                                :
+                                <Grid item xs = {12}>
+                                    <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                        {"What intended learning outcomes do you want to achieve by designing this component"}
+                                    </Typography>
+                                </Grid>
+                        }
+                        
+                        {
+                            modeLevel == "course"?
+                                null
+                                :
+                                <Grid item xs = {12}>
+                                    <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
+                                        {"Add the pre-design learning outcomes from step 2 and link to the tasks with assessment"}
+                                    </Typography>
+                                </Grid>
+                        }
                        
-                        <Grid item xs = {12}>
-                            <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">
-                                {"Add the pre-design learning outcomes step 2 and link to the tasks with assessment"}
-                            </Typography>
-                        </Grid>
 
                         <Grid item xs ={12}>
                             <Typography variant = {"body2"} color = "textPrimary" data-tour = "lo_description">

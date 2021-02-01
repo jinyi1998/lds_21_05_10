@@ -251,10 +251,11 @@ const LearningTaskContainer = (props) => {
 
     async function moveLearningTask(task, moveTo){
         setLoadingOpen(true);
-        if(typeof component_id != 'undefined'){
+        if(typeof moveTo != 'undefined'){
             if(moveTo != -1){
                 var temp_task = JSON.parse(JSON.stringify(task));
                 delete temp_task['pattern_id'];
+                delete temp_task['assessment'];
                 temp_task['component_id'] = moveTo;
                 // temp_task['sequence'] = course.components.find(x => x.id == moveTo)? course.components.find(x => x.id == moveTo)?.tasks.length + 1 : 999;
                 
@@ -270,7 +271,13 @@ const LearningTaskContainer = (props) => {
                     console.log(error);
                     displayMsg("error", "Some Errors Occured");
                 })
+            }else{
+                displayMsg("error", "You need to select the component you want to move");
+                setLoadingOpen(false);
             }
+        }else{
+            displayMsg("error", "You need to select the component you want to move");
+            setLoadingOpen(false);
         }
     }
 

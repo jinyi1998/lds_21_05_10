@@ -16,6 +16,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import validator from 'validator';
+import config from 'react-global-configuration';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -158,16 +159,21 @@ const LoginForm = (props) => {
                       Cancel
                     </Button>
                     <Grid container justify="flex-end">
+                      {
+                        config.get('enableRegisteration')?
                         <Grid item xs = {12} container justify="flex-end">
                           <Link href="register" variant="body2">
                               Do not have an account? Register!
                           </Link>
                         </Grid>
-                        <Grid item xs = {12} container justify="flex-end">
-                          <Link href="password/reset" variant="body2">
-                              Forget your password
-                          </Link>
-                        </Grid>
+                        :
+                        null
+                      }
+                      <Grid item xs = {12} container justify="flex-end">
+                        <Link href="password/reset" variant="body2">
+                            Forget your password
+                        </Link>
+                      </Grid>
                     </Grid>
                     <input type="hidden" name = "_token" value = {$('meta[name="csrf-token"]').attr('content')} />
                 </form>
