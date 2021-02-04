@@ -11,6 +11,23 @@ class LearningTasktypeOpts extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    public function category(){
+        return $this->hasOneThrough(
+            'App\TaxonomyCategory',
+            'App\TaxonomyCategoryTasktypeRelation',
+            'task_type_id', 
+            'id',
+            'id', 
+            'taxonomy_category_id' 
+        );
+    }
+
+    public function categoryid(){
+        return $this->hasOne(
+            'App\TaxonomyCategoryTasktypeRelation',
+            'task_type_id',
+        );
+    }
     public function createdby(){
         return $this->hasOne(
             'App\User',

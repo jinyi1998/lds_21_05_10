@@ -203,6 +203,10 @@ class RouteController extends Controller
     public function admin_moodlemod(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_moodlemod']);
     }
+
+    public function admin_taxcategory(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_taxcategory']);
+    }
     #endregion
 
 

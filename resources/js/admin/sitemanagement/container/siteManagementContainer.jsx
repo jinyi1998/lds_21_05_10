@@ -10,6 +10,7 @@ import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import CategoryIcon from '@material-ui/icons/Category';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -209,6 +210,32 @@ const SiteManagement = () => {
         );
     }
 
+    const displayTaxonomyCategory = () => {
+        return (
+            <Button 
+            className = {classes.button}
+            variant="outlined" 
+            onClick={ (event)=>{window.location.href = "taxonomy_category"}}  
+            >
+                <Grid container>
+                    <Grid item xs ={12}>
+                        <CategoryIcon  className = {classes.media}/>
+                    </Grid>
+                    <Grid item xs = {12}>
+                        <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                            Taxonomy Category
+                        </Typography>
+                    </Grid>
+                    <Grid  item xs = {12}>
+                        <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                            Edit the default Taxonomy Category Mapping Here
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Button>
+        );
+    }
+
     return (
         <React.Fragment>
             <Grid container spacing = {4}>
@@ -238,6 +265,11 @@ const SiteManagement = () => {
 
                 <Grid container item xs ={3} justify="center">
                     {displayMoodleMod()}
+                </Grid>
+
+
+                <Grid container item xs ={3} justify="center">
+                    {displayTaxonomyCategory()}
                 </Grid>
                 
             </Grid>

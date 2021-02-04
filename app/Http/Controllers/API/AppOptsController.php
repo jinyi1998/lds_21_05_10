@@ -26,7 +26,8 @@ class AppOptsController extends Controller
             "bloomLvlOpts" => $this->getBloomLevel(),
             "outcomeTypeOpts" => $this->getOutcomeType(),
             "STEMTypeOpts" => $this->getSTEMType(),
-            "designType" => $this->getDesignType()
+            "designType" => $this->getDesignType(),
+            "taxonomyCategory" => $this->getTaxonomyCategory()
         ];
         return response()->json($data);
     }
@@ -77,7 +78,11 @@ class AppOptsController extends Controller
     }
 
     public function getLearningTaskType(){
-        return App\LearningTasktypeOpts::where('is_deleted', 0)->orderBy('sequence')->get();
+        return App\LearningTasktypeOpts::where('is_deleted', 0)->orderBy('sequence')->with(['categoryid'])->get();
+    }
+
+    public function getTaxonomyCategory(){
+        return App\TaxonomyCategory::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getClassType(){

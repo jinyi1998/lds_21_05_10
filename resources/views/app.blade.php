@@ -41,7 +41,10 @@
                     </div>
                 </div>
             </div>
+
             <div class="copyright">
+                <a href = "https://forms.gle/BZwGMm4jzWUMqg9CA" target="_blank" > Report Bug </a> 
+                <br />
                 © 2020 All rights reserved, CITE, HKU
                 <br />
                 LDS K-12 STEM Beta v{{Config::get('app.app_ver')}}

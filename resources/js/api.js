@@ -421,6 +421,36 @@ import config from 'react-global-configuration';
     export const apiMoodleModDelete = data => moodleModRequest.delete(`/${data.id}`);
     //#endregion
 
+     //#region Taxonomy Category
+     const taxCategoryRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/taxonomyCategory',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiTaxCategoryList = data => taxCategoryRequest.get(`/`);
+    export const apiTaxCategoryGet = data => taxCategoryRequest.get(`/${data}`);
+    export const apiTaxCategoryPost = data => taxCategoryRequest.post('/', JSON.stringify(data));
+    export const apiTaxCategoryPut = data => taxCategoryRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiTaxCategoryDelete = data => taxCategoryRequest.delete(`/${data.id}`);
+    //#endregion
+
+     //#region Taxonomy Category Task Type Relation
+     const taxCategoryTaskRelationRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/taxonomyCategoryTasktypeRelation',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    });
+    export const apiTaxCategoryTaskRelationList = data => taxCategoryTaskRelationRequest.get(`/`);
+    export const apiTaxCategoryTaskRelationGet = data => taxCategoryTaskRelationRequest.get(`/${data}`);
+    export const apiTaxCategoryTaskRelationPost = data => taxCategoryTaskRelationRequest.post('/', JSON.stringify(data));
+    export const apiTaxCategoryTaskRelationPut = data => taxCategoryTaskRelationRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiTaxCategoryTaskRelationDelete = data => taxCategoryTaskRelationRequest.delete(`/${data.id}`);
+    //#endregion
+
 
     //#region class size opts
      const classSizeOptsRequest = axios.create({

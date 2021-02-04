@@ -50,6 +50,7 @@ Route::middleware('admin_auth')->prefix('admin')->group(function(){
     Route::get('elearningtool_opts', '\App\Http\Controllers\RouteController@admin_elearningtool_opts');
     Route::get('tasktype_opts', '\App\Http\Controllers\RouteController@admin_tasktype_opts');
     Route::get('moodlemod', '\App\Http\Controllers\RouteController@admin_moodlemod');
+    Route::get('taxonomy_category', '\App\Http\Controllers\RouteController@admin_taxcategory');
     #endregion
    
 

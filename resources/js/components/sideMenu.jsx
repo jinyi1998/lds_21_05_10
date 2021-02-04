@@ -116,6 +116,7 @@ const useStyles = makeStyles(theme => ({
       case 'admin_elearningtool_opts':
       case 'admin_tasktype_opts':
       case 'admin_moodlemod':
+      case 'admin_taxcategory':
         return 'admin_site_management';
     }
   }

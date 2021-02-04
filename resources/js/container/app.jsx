@@ -43,6 +43,7 @@ import ELearningToolsOptsContainer from '../admin/sitemanagement/container/elear
 import ResourceOptsContainer from '../admin/sitemanagement/container/resourceOptsContainer';
 import TaskTypeOptsContainer from '../admin/sitemanagement/container/taskTypeOptsContainer';
 import MoodleModContainer from '../admin/sitemanagement/container/moodleModContainer';
+import TaxonomyCategoryContainer from '../admin/sitemanagement/container/taxonomyCategoryContainer'
 //#endregion
 
 import {
@@ -104,7 +105,8 @@ const App = (props) => {
     taskElearingResource: [],
     bloomLvlOpts: [],
     outcomeTypeOpts: [],
-    STEMTypeOpts: []
+    STEMTypeOpts: [],
+    taxonomyCategory: []
 });
   const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
@@ -193,7 +195,8 @@ const App = (props) => {
             "taskElearingResource": response.data.elearningtoolOpts,
             "bloomLvlOpts": response.data.bloomLvlOpts,
             "outcomeTypeOpts": response.data.outcomeTypeOpts,
-            "STEMTypeOpts": response.data.STEMTypeOpts
+            "STEMTypeOpts": response.data.STEMTypeOpts,
+            "taxonomyCategory": response.data.taxonomyCategory
           }
       })
       .catch(error => console.log(error));
@@ -287,6 +290,8 @@ const App = (props) => {
         return <TaskTypeOptsContainer />;
       case 'admin_moodlemod':
         return <MoodleModContainer />;
+      case 'admin_taxcategory':
+        return <TaxonomyCategoryContainer />;
     }
   }
 

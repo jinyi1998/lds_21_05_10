@@ -11,7 +11,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-
+import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import {ContextStore} from '../../../container/designContainer'
@@ -324,9 +324,6 @@ const LearningTaskEditView = (props) => {
                         )}
                         MenuProps={MenuProps}
                     >
-                        {/* <ListSubheader>
-                            Component LO
-                        </ListSubheader> */}
                         {
                             outcomes.map(_outcome => ( 
                                 <MenuItem key={_outcome.id} value= {_outcome.id} style={{whiteSpace: 'normal' }}>
@@ -539,7 +536,7 @@ const LearningTaskEditView = (props) => {
                 <div style={taskTypeColor(task.type)}>
                 </div>
             </Grid>
-
+           
             <Grid item xs={8}>
                 <Grid container  spacing={4}>
                     <Grid item xs={8} className={classes.contentGrid}> 
@@ -548,16 +545,46 @@ const LearningTaskEditView = (props) => {
                                 Type
                             </InputLabel>
                             <Select
-                            labelId={"type-"+ taskID +"-label"}
-                            id= {"type-"+taskID}
-                            name="type"
-                            value={task.type}
-                            onChange={handleChange}
-                            renderValue={selected => (
-                                taskTypeOpts.find(x => x.id==selected)?.description
-                            )}
+                                labelId={"type-"+ taskID +"-label"}
+                                id= {"type-"+taskID}
+                                name="type"
+                                value={task.type}
+                                onChange={handleChange}
+                                renderValue={selected => (
+                                    taskTypeOpts.find(x => x.id==selected)?.description
+                                )}
                             >
-                                {taskTypeOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
+                                
+                                {
+                                    options.taxonomyCategory?.map(
+                                        (_category) =>
+                                        {
+                                            var x =   [
+                                                <ListSubheader>
+                                                    {_category.name}
+                                                </ListSubheader>
+                                            ,
+                                                taskTypeOpts.filter( _opts => _opts.categoryid?.taxonomy_category_id == _category.id)?.map(_opts =>  
+                                                    <MenuItem value={_opts.id} key={_opts.id}>
+                                                        <Grid container>
+                                                            <Grid item xs = {2}>
+                                                                <div style={taskTypeColor(_opts.id)} />
+                                                            </Grid>
+                                                            <Grid item xs = {10}>
+                                                                <Typography variant = {"subtitle2"}>
+                                                                    {_opts.description}
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                       
+                                                    </MenuItem>
+                                                )
+                                            ];
+                                            return (x);
+                                        }
+                                    )       
+                                }
+                               
                             </Select>
                             <FormHelperText>
                                     {! (error["type"]=="")? error["type"]:  ""}

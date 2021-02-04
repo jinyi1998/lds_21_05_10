@@ -49,18 +49,23 @@ class CourseAnalysisController extends Controller
         $tasks_num_by_type = [];
 
         foreach($temp['components'] as $_component){
-
-            if(isset($_component['patterns'][0]['tasks'])){
-                foreach($_component['patterns'][0]['tasks'] as $task){
-                    if(!isset( $tasks_time_by_type[$task->type])){
-                        $tasks_time_by_type[$task->type] = 0;
-                        $tasks_num_by_type[$task->type] = 0;
+            // pattern
+            if(isset($_component['patterns'])){
+                foreach($_component['patterns'] as $_pattern){
+                    if(isset($_pattern['tasks'])){
+                        foreach($_pattern['tasks'] as $task){
+                            if(!isset( $tasks_time_by_type[$task->type])){
+                                $tasks_time_by_type[$task->type] = 0;
+                                $tasks_num_by_type[$task->type] = 0;
+                            }
+                            $tasks_time_by_type[$task->type] +=  $task->time;
+                            $tasks_num_by_type[$task->type] +=  1;
+                        }
                     }
-                    $tasks_time_by_type[$task->type] +=  $task->time;
-                    $tasks_num_by_type[$task->type] +=  1;
                 }
             }
-    
+            
+            // task
             if(isset($_component['tasks'])){
     
                 foreach($_component['tasks'] as $task){
