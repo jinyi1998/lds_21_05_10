@@ -35,7 +35,7 @@ const ComponentPlanContainer = (props)  => {
   const classes = useStyles();
   const { course, refreshCourse } = React.useContext(ContextStore);
   const { setLoadingOpen, displayMsg  } = React.useContext(AppContextStore);
-  const [ selectComIndex, setSelectComIndex] = React.useState(0);
+  const [ selectComIndex, setSelectComIndex] = React.useState(-1);
   const [ addComponentOpen, setAddComponentOpen ] = React.useState(false);
   const isDraggable = course.permission > 2;
 
@@ -255,7 +255,7 @@ const ComponentPlanContainer = (props)  => {
         <Grid item xs={12}>
             <InstructionBox 
                 title="Unit Plan" 
-                content= "You can customize the Unit design based on the recommended learning outcomes and learning tasks." 
+                content= "The sequence of curriculum components (CCs) anchors the steps defined in the disciplinary practice. Each CC should have its own learning outcomes, assessments and learning tasks." 
                 tips=""
             />
         </Grid>

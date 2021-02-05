@@ -231,11 +231,7 @@ const Design = (props) => {
   
   //#region data init
   //preload learningOutcome (Unit Level)
-  async function importOutcomeTemplateToCourse(outcome) {
-    await apiLearningOutcomePost(outcome)
-    .then(response=> {return response.data})
-  }
-
+  
   //preload learningComponent
   async function fetchInitDataWithDesignType() {
     var updates = [];
@@ -250,7 +246,7 @@ const Design = (props) => {
           var _outcome_temp = _outcome;
           _outcome_temp.course_id = course.id;
           _outcome_temp.stemtypes_id = _outcome.stemtypesid.map(x=>x.stem_type_id);
-          updates.push( importOutcomeTemplateToCourse(_outcome_temp) );
+          updates.push( apiLearningOutcomePost(_outcome_temp) );
         })
       }
     );

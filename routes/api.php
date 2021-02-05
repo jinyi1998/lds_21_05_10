@@ -134,7 +134,7 @@ Route::resource('patternbinCategory', 'API\PatternBinCategoryController');
 
 Route::resource('usergroup', 'API\UserGroupController');
 Route::resource('usergroupuser', 'API\UserGroupUserController');
-Route::resource('usergroupuserTemp', 'API\UserGroupUserTempController');
+Route::resource('usergroupuserTemp', 'API\UsergroupUserTempController');
 
 Route::resource('test', 'API\TestController');
 
