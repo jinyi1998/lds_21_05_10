@@ -186,15 +186,18 @@ class LearningComponentController extends Controller
             }
         }
         // pattern
-        if($request->has('patterns') && isset($request->patterns[0])){
-            $_pattern =  $request->patterns[0];
-            $_pattern['component_id'] = $component->id;
-            foreach(  $_pattern['tasks'] as $key => $_task){
-                $_task['sequence'] = $key;
-                $_pattern['tasks'][$key]['sequence'] = $key + 1;
+        if($request->has('patterns') && isset($request->patterns)){
+
+            foreach($request->patterns as $_pattern){
+                // $_pattern =  $request->patterns[0];
+                $_pattern['component_id'] = $component->id;
+                foreach(  $_pattern['tasks'] as $key => $_task){
+                    $_task['sequence'] = $key;
+                    $_pattern['tasks'][$key]['sequence'] = $key + 1;
+                }
+                $request_pattern = new \Illuminate\Http\Request( $_pattern);
+                LearningPatternController::store($request_pattern);
             }
-            $request_pattern = new \Illuminate\Http\Request( $_pattern);
-            LearningPatternController::store($request_pattern);
         }
        
         //tasks

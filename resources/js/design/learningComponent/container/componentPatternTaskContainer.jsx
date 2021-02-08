@@ -229,7 +229,7 @@ const ComponentPatternTaskContainer = (props) =>{
 
 
     //#region pattern
-    const [ onOpenPattern, setOpenPattern] = React.useState(-1);
+    const [ onOpenPattern, setOpenPattern] = React.useState(initPatternOpen());
     const [ editPatternOpen, setEditPatternOpen] = React.useState(false);
     const [ isDisplayPatternOpen, setIsDisplayPatternOpen ] = React.useState(false);
     const [ patternTempRawOpts, setPatternTempRawOpts] = React.useState([]);
@@ -258,6 +258,16 @@ const ComponentPatternTaskContainer = (props) =>{
             setLoadingOpen(false);
         }
     }, [searchText])
+
+    function initPatternOpen(){
+        var arr = [];
+        component.patterntaskid.map((_patterntaskid, index) => {
+            if(typeof _patterntaskid.pattern_id != 'undefined' && _patterntaskid.pattern_id != null){
+                arr.push(_patterntaskid.pattern_id);
+            }
+        })
+        return arr;
+    }
 
     const onFilterBySearchText = () => {
         setLoadingOpen(true);
@@ -520,7 +530,7 @@ const ComponentPatternTaskContainer = (props) =>{
                     <Grid container>
                         <Grid item xs = {12}>
                             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                                <Droppable droppableId="droppable">
+                                <Droppable droppableId="component">
                                     {(provided, snapshot) => (
                                         <RootRef rootRef={provided.innerRef}>
                                             <List style={getListStyle(snapshot.isDraggingOver)}>
@@ -533,13 +543,13 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                     key={index} 
                                                                     draggableId={index.toString()} 
                                                                     index={index} 
-                                                                    isDragDisabled = {!(enableDrag && onOpenPattern != _patterntaskid.pattern_id)}>
+                                                                    isDragDisabled = {!(enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1)}>
                                                                 {(provided, snapshot) => (
-                                                                    <Grid container item xs style = {{margin : 2}} >
+                                                                    <Grid container item xs   style = {{margin : "16px 0px"}} >
                                                                         <LearningPatternContainer 
                                                                             provided = {provided} 
                                                                             snapshot = {snapshot} 
-                                                                            enableDrag = {enableDrag && onOpenPattern != _patterntaskid.pattern_id}
+                                                                            enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
                                                                             componentID = {component.id} 
                                                                             patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
                                                                             key = {index}

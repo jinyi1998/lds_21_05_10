@@ -197,7 +197,15 @@ const LearningPatternContainer = (props) => {
     }
 
     const handleExpandChange = (event, isExpanded) => {
-        setOpenPattern(isExpanded ? pattern.id : -1);
+        var openPattern_temp = JSON.parse(JSON.stringify(onOpenPattern));
+        if(isExpanded){
+            openPattern_temp.push(pattern.id);
+        }else{
+            openPattern_temp.splice(openPattern_temp.indexOf(pattern.id), 1);
+        }
+        console.log(openPattern_temp);
+        // setOpenPattern(isExpanded ? pattern.id : -1);
+        setOpenPattern(openPattern_temp);
     };
 
     const onChangePatternName = (event) => {
@@ -238,9 +246,10 @@ const LearningPatternContainer = (props) => {
     return (
         <React.Fragment>
             <Accordion  
+                // defaultExpanded = {true}
                 data-tour = "component_pattern_view"  
                 onChange = {handleExpandChange}
-                expanded={onOpenPattern === pattern.id}
+                expanded={ onOpenPattern.indexOf(pattern.id) != -1 }
                 {...getDraggable(provided, snapshot)} 
             > 
                 <AccordionSummary

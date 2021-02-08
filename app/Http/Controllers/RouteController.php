@@ -214,7 +214,7 @@ class RouteController extends Controller
     public function changePassword(Request $request){
         try{
             $credentials = $request->only('email', 'password');
-
+            $request->name = str_replace(" ", "_",$request->name);
             if (Auth::attempt($credentials)) {
                 $request->user()->fill([
                     'password' => Hash::make($request->new_password),

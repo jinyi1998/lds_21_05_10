@@ -69,7 +69,7 @@ class CourseAnalysisController extends Controller
             if(isset($_component['tasks'])){
     
                 foreach($_component['tasks'] as $task){
-                    if(!isset( $taskstime[$task->type])){
+                    if(!isset( $tasks_time_by_type[$task->type])){
                         $tasks_time_by_type[$task->type] = 0;
                         $tasks_num_by_type[$task->type] = 0;
                     }
