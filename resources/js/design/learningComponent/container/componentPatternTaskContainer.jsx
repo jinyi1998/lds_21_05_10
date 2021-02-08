@@ -41,7 +41,6 @@ import {
     apiLearningPattTempList, apiLearningPattTempGet,
     apiLearningPatternPut, apiLearningPatternPost
 } from '../../../api';
-import { update } from 'lodash';
 
 const getListStyle = isDraggingOver => ({
     background: isDraggingOver ? 'lightgrey' : '',
