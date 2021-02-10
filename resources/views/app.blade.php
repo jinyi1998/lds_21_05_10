@@ -14,7 +14,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <script src="{{ asset('js/app.js') }}"></script>
+        <!-- <script src="{{ asset('js/app.js') }}"></script> -->
 
         <!-- Styles -->
         <style>
@@ -53,4 +53,10 @@
        
     </body>
 </html>
-<script type="text/javascript" src="/js/app.js"> </script>
+<script type = "text/javascript" lanugage = "javascript" >
+    var version = "{{ Config::get('app.app_ver') }}";
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "/js/app.js?v=" + version;
+    document.body.appendChild(script); 
+</script>

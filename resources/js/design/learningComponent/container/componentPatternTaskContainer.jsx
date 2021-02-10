@@ -160,28 +160,59 @@ const ComponentPatternTaskContainer = (props) =>{
 
     async function moveLearningTask(task, moveTo){
         setLoadingOpen(true);
-        if(moveTo != -1){
-            var temp_task = JSON.parse(JSON.stringify(task));
-            delete temp_task['pattern_id'];
-            delete temp_task['assessmentid'];
-            temp_task['component_id'] = moveTo;
-            // temp_task['sequence'] = course.components.find(x => x.id == moveTo)? course.components.find(x => x.id == moveTo)?.tasks.length + 1 : 999;
-            
-            return await apiLearningTaskPost(temp_task)
-            .then(response => {
-                //load the default learning outcomes by api request
-                refreshCourse();
-                setLoadingOpen(false);  
-                deleteLearningTask(task)
-                displayMsg("success", "Learning Task Moved"); 
-            })
-            .catch(error => {
-                console.log(error);
-                displayMsg("error", "Some Errors Occured");
-                setLoadingOpen(false);  
-            })
+        if(typeof moveTo != 'undefined'){
+
+            // identify component / pattern
+            var arr = moveTo.split("_");
+            var type = arr[0];
+            var id = arr[1];
+
+            if(type == "component"){
+                var temp_task = JSON.parse(JSON.stringify(task));
+                delete temp_task['pattern_id'];
+                delete temp_task['assessment'];
+                temp_task['component_id'] = id;
+               
+                return await apiLearningTaskPost(temp_task)
+                .then(response => {
+                    //load the default learning outcomes by api request
+                    refreshCourse();
+                    setLoadingOpen(false);  
+                    deleteLearningTask(task)
+                    displayMsg("success", "Learning Task Moved"); 
+                })
+                .catch(error => {
+                    console.log(error);
+                    displayMsg("error", "Some Errors Occured");
+                })
+            }else if(type == "pattern"){
+                var temp_task = JSON.parse(JSON.stringify(task));
+                delete temp_task['component_id'];
+                delete temp_task['assessment'];
+                temp_task['pattern_id'] = id;
+               
+                return await apiLearningTaskPost(temp_task)
+                .then(response => {
+                    //load the default learning outcomes by api request
+                    refreshCourse();
+                    setLoadingOpen(false);  
+                    deleteLearningTask(task)
+                    displayMsg("success", "Learning Task Moved"); 
+                })
+                .catch(error => {
+                    console.log(error);
+                    displayMsg("error", "Some Errors Occured");
+                })
+            }else{
+                displayMsg("error", "You need to select the component you want to move");
+                setLoadingOpen(false);
+            }
+        }else{
+            displayMsg("error", "You need to select the component you want to move");
+            setLoadingOpen(false);
         }
     }
+
 
     async function updateLearningTask() {
         setLoadingOpen(true);

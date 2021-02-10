@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import IconButton from '@material-ui/core/IconButton';
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -85,7 +86,7 @@ const LearningTaskView = (props) => {
     const [duplicateTo, setDuplicateTo] = React.useState(taskData.componentid? taskData.componentid.component_id : -1);
 
     const [moveDialogOpen, setMoveDialogOpen] = React.useState(false);
-    const [moveTo, setMoveTo] = React.useState(taskData.componentid? taskData.componentid.component_id : -1);
+    const [moveTo, setMoveTo] = React.useState("component_-1");
 
     const {editBtn, duplicateBtn, deleteBtn, moveBtn, dragAble} = props;
     const {provided, snapshot, index} = props;
@@ -143,7 +144,6 @@ const LearningTaskView = (props) => {
     }
 
     async function moveLearningTask() {
-        // console.log(props);
         props.moveLearningTask(task, moveTo);
         setMoveDialogOpen(false); 
     }
@@ -180,7 +180,6 @@ const LearningTaskView = (props) => {
             // component task
             setDuplicateDialogOpen(true);
         }
-    
     }
 
     const onClickMove = () => {
@@ -405,13 +404,31 @@ const LearningTaskView = (props) => {
                 <DialogTitle>Move Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Please select the component you wanna move to.
+                        Please select the component you wanna move the task to.
                     </DialogContentText>
                     <Select value = {moveTo} onChange = {(event) => setMoveTo(event.target.value)} fullWidth>
-                        {course.components.map(_component => 
-                            <MenuItem value = {_component.id} key = {_component.id}> 
-                                {_component.title}
-                            </MenuItem>
+                         <MenuItem disabled value= {"component_"+-1}>
+                            <em>Please select the pattern/ component</em>
+                        </MenuItem>
+                        {course.components.map((_component, index) => {
+                            return (
+                            [
+                                <ListSubheader> CC {index + 1} - {_component.title} </ListSubheader>, 
+                                _component.patterns.map(_pattern => 
+                                <MenuItem  value = {"pattern_"+_pattern.id} key = {_pattern.id}> 
+                                    {_pattern.title}
+                                </MenuItem>
+                                ),
+                                <MenuItem value = {"component_"+_component.id} key = {_component.id}> 
+                                    Others
+                                </MenuItem>
+                            ]    
+                            )
+                        }
+                          
+                            // <MenuItem value = {_component.id} key = {_component.id}> 
+                            //     {_component.title}
+                            // </MenuItem>
                         )}
                     </Select>
                 </DialogContent>
