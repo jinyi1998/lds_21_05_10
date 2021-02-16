@@ -221,7 +221,7 @@ const LearningPatternContainer = (props) => {
         <React.Fragment>
             <Droppable droppableId = {"pattern_" + pattern.id} type = "sub_level">
             {(provided_drop, snapshot_drop) => (
-                <div style={getListStyle(snapshot_drop.isDraggingOver, 'yellow')}>
+                <div style={getListStyle(snapshot_drop.isDraggingOver, 'grey')}>
                       {provided_drop.placeholder}
                         <RootRef rootRef={provided_drop.innerRef}>
                         <Accordion  

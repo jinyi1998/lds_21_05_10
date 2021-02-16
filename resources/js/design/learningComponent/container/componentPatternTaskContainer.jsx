@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
+import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
@@ -26,6 +26,8 @@ import LearningPatternContainer from '../../pattern/container/learningPatternCon
 import LearningTaskView from '../../task/component/learningTaskView';
 import LearningTaskEditView from '../../task/component/learningTaskEditView';
 import ComponentPatternSelectBox from '../component/componentPatternSelectBox';
+
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 import RootRef from "@material-ui/core/RootRef";
 import List from '@material-ui/core/List';
@@ -531,16 +533,18 @@ const ComponentPatternTaskContainer = (props) =>{
     const handleReoderSubLevel = (result) => {
         var source = result.draggableId;
         var destination = result.destination.droppableId;
-        if(source.split("_")[0] == "task"){
-            var task_id = source.split("_")[1]; 
-            var task = component.tasks.find(x => x.id == task_id);
-            var moveTo = "pattern_" + destination.split("_")[1];
-            console.log(task, moveTo);
-            moveLearningTask(task, moveTo);
+        if(destination.split("_")[0] == "pattern"){
+            if(source.split("_")[0] == "task"){
+                var task_id = source.split("_")[1]; 
+                var task = component.tasks.find(x => x.id == task_id);
+                var moveTo = "pattern_" + destination.split("_")[1];
+                moveLearningTask(task, moveTo);
+            }else{
+                console.log('no one match')
+            }
         }else{
             console.log('no one match')
-        }
-        
+        }   
     }
 
     async function duplicateLearningTask(task, duplicateTo) {
@@ -634,37 +638,38 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                                 style = {{margin : "16px 0px"}}       
                                                                                 {...getDraggable(provided, snapshot)}
                                                                             >
-                                                                                <Grid item xs = {1} >
-                                                                                    Drag Me  
+                                                                                <Paper style = {{padding: "16px"}}>                                                 
+                                                                                <Grid item xs = {12} >
+                                                                                    <DragHandleIcon />
+                                                                                    Learning Tasks
                                                                                   </Grid>
-                                                                                <Grid item xs>
-                                                                                    <Droppable droppableId = {"task_" + index.toString()} type = "sub_level">
+                                                                                <Grid item xs = {12}>
+                                                                                    <Droppable droppableId = {"task_" + index.toString()} type = "sub_level" isDropDisabled = {true}>
                                                                                         {(provided_drop, snapshot_drop) => (
                                                                                             <div style={getListStyle(snapshot_drop.isDraggingOver)}>
                                                                                                 {provided_drop.placeholder}
                                                                                                     <RootRef rootRef={provided_drop.innerRef}>
                                                                                                     <Draggable key={index} draggableId={"task_" + _patterntaskid.task_id} index={index} isDragDisabled = {!enableDrag}>
                                                                                                     {(provided, snapshot) => (
-                                                                                                           <RootRef rootRef={provided_drop.innerRef}>
-                                                                                                                <LearningTaskView 
-                                                                                                                    provided = {provided} 
-                                                                                                                    snapshot = {snapshot} 
-                                                                                                                    taskID = {_patterntaskid.task_id} 
-                                                                                                                    taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
-                                                                                                                    onEditearningTask = {onEditearningTask}
-                                                                                                                    duplicateLearningTask = {duplicateLearningTask}
-                                                                                                                    deleteLearningTask = {deleteLearningTask}
-                                                                                                                    moveLearningTask = {moveLearningTask}
-                                                                                                                    key = {index}
-                                                                                                                    enableDrag = {enableDrag}
-                                                                                                                    editBtn = {enableEdit}
-                                                                                                                    duplicateBtn = {enableDuplicate}
-                                                                                                                    deleteBtn = {enableDelete}
-                                                                                                                    moveBtn = {enableMove}
-                                                                                                                    lastestindex = {1}
-                                                                                                                />
-                                                                                                           </RootRef>
-                                                                                                      
+                                                                                                        <RootRef rootRef={provided_drop.innerRef}>
+                                                                                                            <LearningTaskView 
+                                                                                                                provided = {provided} 
+                                                                                                                snapshot = {snapshot} 
+                                                                                                                taskID = {_patterntaskid.task_id} 
+                                                                                                                taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
+                                                                                                                onEditearningTask = {onEditearningTask}
+                                                                                                                duplicateLearningTask = {duplicateLearningTask}
+                                                                                                                deleteLearningTask = {deleteLearningTask}
+                                                                                                                moveLearningTask = {moveLearningTask}
+                                                                                                                key = {index}
+                                                                                                                enableDrag = {enableDrag}
+                                                                                                                editBtn = {enableEdit}
+                                                                                                                duplicateBtn = {enableDuplicate}
+                                                                                                                deleteBtn = {enableDelete}
+                                                                                                                moveBtn = {enableMove}
+                                                                                                                lastestindex = {1}
+                                                                                                            />
+                                                                                                        </RootRef>
                                                                                                     )}
                                                                                                 </Draggable>
                                                                                                 </RootRef>
@@ -672,6 +677,7 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                                         )}
                                                                                     </Droppable>
                                                                                 </Grid>
+                                                                                </Paper>
                                                                           </Grid>
                                                                     )}
                                                                 </Draggable>
