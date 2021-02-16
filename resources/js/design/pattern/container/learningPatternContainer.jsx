@@ -40,6 +40,10 @@ import {ComponentContext} from '../../learningComponent/container/componentConta
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
+import RootRef from "@material-ui/core/RootRef";
+import {getDraggable, getListStyle} from '../../../dragndrop';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import {
     apiLearningPatternPut, apiLearningPatternPost, apiLearningPatternDelete
 } from '../../../api.js';
@@ -73,36 +77,6 @@ const LearningPatternContainer = (props) => {
 
 
     //#region local function
-    const getItemStyle = (isDragging, draggableStyle) => ({
-        // styles we need to apply on draggables
-        ...draggableStyle,
-      
-        ...(isDragging && {
-          background: "rgb(235,235,235)"
-        }),
-        width: "calc(100% - 4px)"
-    });
-    
-    const getDraggable = (provided, snapshot) => {
-        if(typeof provided == 'undefined'){
-            return (
-               null
-            );
-        }else{
-            return (
-                {
-                    // styles we need to apply on draggables
-                    ref: provided.innerRef,
-                    ...provided.draggableProps,
-                    ...provided.dragHandleProps,
-                    style: getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style,
-                    )
-                }
-            );
-        }
-    }
 
     const onDuplicate = () => {
         setLoadingOpen(true);
@@ -245,124 +219,131 @@ const LearningPatternContainer = (props) => {
     //#endregion
     return (
         <React.Fragment>
-            <Accordion  
-                // defaultExpanded = {true}
-                data-tour = "component_pattern_view"  
-                onChange = {handleExpandChange}
-                expanded={ onOpenPattern.indexOf(pattern.id) != -1 }
-                {...getDraggable(provided, snapshot)} 
-            > 
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                >
-                    <Grid container>
-                        {typeof provided == 'undefined' || !enablePatternDrag?    
-                            null
-                        :
-                            <Grid item xs ={1} container  justify="flex-start" alignItems="center">
-                                <DragHandleIcon />
+            <Droppable droppableId = {"pattern_" + pattern.id} type = "sub_level">
+            {(provided_drop, snapshot_drop) => (
+                <div style={getListStyle(snapshot_drop.isDraggingOver, 'yellow')}>
+                      {provided_drop.placeholder}
+                        <RootRef rootRef={provided_drop.innerRef}>
+                        <Accordion  
+                            data-tour = "component_pattern_view"  
+                            onChange = {handleExpandChange}
+                            expanded={ onOpenPattern.indexOf(pattern.id) != -1 }
+                            {...getDraggable(provided, snapshot)} 
+                        > 
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                        >
+                        <Grid container>
+                            {typeof provided == 'undefined' || !enablePatternDrag?    
+                                null
+                            :
+                                <Grid item xs ={1} container  justify="flex-start" alignItems="center">
+                                    <DragHandleIcon />
+                                </Grid>
+                            }
+                            <Grid container item xs justify = "center" alignItems = "center">
+                                <Grid item xs = {12} >
+                                    {
+                                        editPattern?
+                                        <TextField 
+                                            value = {editPatternName} 
+                                            onChange = {onChangePatternName}
+                                            onClick = {e => e.stopPropagation()} 
+                                            fullWidth 
+                                        />
+                                        :
+                                        <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>
+                                            {pattern.title}
+                                        </Typography>
+                                    }
+                            
+                                
+                                </Grid>
                             </Grid>
-                        }
-                        <Grid container item xs justify = "center" alignItems = "center">
-                            <Grid item xs = {12} >
-                                {
-                                    editPattern?
-                                    <TextField 
-                                        value = {editPatternName} 
-                                        onChange = {onChangePatternName}
-                                        onClick = {e => e.stopPropagation()} 
-                                        fullWidth 
-                                    />
-                                    :
-                                    <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>
-                                        {pattern.title}
-                                    </Typography>
-                                }
-                         
-                               
-                            </Grid>
+                            {   
+                                canEdit ? 
+                                <Grid item xs = {2}>
+                                    {
+                                        editPattern?
+                                        <React.Fragment>
+                                            <IconButton
+                                                onClick={onConfirmChangePatternName}
+                                            >
+                                                <DoneIcon />
+                                            </IconButton>
+
+                                            <IconButton
+                                                onClick={onCancelPatternName}
+                                            >
+                                                <CancelIcon />
+                                            </IconButton>
+                                        </React.Fragment>
+                                        :
+                                        <React.Fragment>
+                                            <IconButton
+                                                aria-label="more"
+                                                aria-controls="long-menu"
+                                                aria-haspopup="true"
+                                                onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
+                                            >
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id="pattern-edit-menu"
+                                                anchorEl={anchorEl}
+                                                keepMounted
+                                                open={Boolean(anchorEl)}
+                                                onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
+                                            >
+                                                <MenuItem onClick={onClickChangePatternName}>
+                                                    <ListItemIcon><EditIcon/></ListItemIcon>
+                                                    Rename
+                                                </MenuItem>
+                                                <MenuItem onClick={onClickDuplicate}>
+                                                    <ListItemIcon>
+                                                        <FileCopyIcon/>
+                                                    </ListItemIcon>
+                                                    Duplicate
+                                                </MenuItem>
+
+                                                <MenuItem onClick={onClickMove}>
+                                                    <ListItemIcon>
+                                                        <LocalShippingIcon/>
+                                                    </ListItemIcon>
+                                                    Move
+                                                </MenuItem>
+                                                
+                                                <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
+                                                    <ListItemIcon>
+                                                        <DeleteIcon/>
+                                                    </ListItemIcon>
+                                                    Delete
+                                                </MenuItem>
+                                            </Menu>
+                                        </React.Fragment>    
+                                    }
+                                </Grid>
+                                : 
+                                null 
+                            }
+                        
                         </Grid>
-                        {   
-                            canEdit ? 
-                            <Grid item xs = {2}>
-                                {
-                                    editPattern?
-                                    <React.Fragment>
-                                        <IconButton
-                                            onClick={onConfirmChangePatternName}
-                                        >
-                                            <DoneIcon />
-                                        </IconButton>
 
-                                        <IconButton
-                                            onClick={onCancelPatternName}
-                                        >
-                                            <CancelIcon />
-                                        </IconButton>
-                                    </React.Fragment>
-                                    :
-                                    <React.Fragment>
-                                        <IconButton
-                                            aria-label="more"
-                                            aria-controls="long-menu"
-                                            aria-haspopup="true"
-                                            onClick={(event) => { event.stopPropagation(); setAnchorEl(event.currentTarget);}}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                        <Menu
-                                            id="pattern-edit-menu"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={Boolean(anchorEl)}
-                                            onClose={(event) => {event.stopPropagation(); setAnchorEl(null)}}
-                                        >
-                                            <MenuItem onClick={onClickChangePatternName}>
-                                                <ListItemIcon><EditIcon/></ListItemIcon>
-                                                Rename
-                                            </MenuItem>
-                                            <MenuItem onClick={onClickDuplicate}>
-                                                <ListItemIcon>
-                                                    <FileCopyIcon/>
-                                                </ListItemIcon>
-                                                Duplicate
-                                            </MenuItem>
-
-                                            <MenuItem onClick={onClickMove}>
-                                                <ListItemIcon>
-                                                    <LocalShippingIcon/>
-                                                </ListItemIcon>
-                                                Move
-                                            </MenuItem>
-                                            
-                                            <MenuItem onClick={(e)=> {e.stopPropagation(); onDelete()}}>
-                                                <ListItemIcon>
-                                                    <DeleteIcon/>
-                                                </ListItemIcon>
-                                                Delete
-                                            </MenuItem>
-                                        </Menu>
-                                    </React.Fragment>    
-                                }
-                            </Grid>
-                            : 
-                            null 
-                        }
-                      
-                    </Grid>
-
-                </AccordionSummary>
-                <AccordionDetails>
-                    <LearningTaskContainer 
-                        pattern_id = {pattern.id} 
-                        tasksData = {pattern.tasks} 
-                        enableDrag = {enableDrag}
-                        enableDuplicate = {enableDuplicate}
-                        enableMove = {false}
-                    />
-                </AccordionDetails>
-            </Accordion>
-            
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <LearningTaskContainer 
+                            pattern_id = {pattern.id} 
+                            tasksData = {pattern.tasks} 
+                            enableDrag = {enableDrag}
+                            enableDuplicate = {enableDuplicate}
+                            enableMove = {false}
+                        />
+                    </AccordionDetails>
+                </Accordion>
+                    </RootRef>
+                </div>
+            )}
+            </Droppable>
             {/* duplicate dialog */}
             <Dialog open={duplicateDialog} onClose={onCloseDuplicateDialog} maxWidth = "md" style = {{minHeight: 400}}>
                 <DialogTitle>

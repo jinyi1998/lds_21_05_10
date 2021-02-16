@@ -42,11 +42,10 @@ import {
     apiLearningPatternPut, apiLearningPatternPost
 } from '../../../api';
 
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightgrey' : '',
-    width: '100%'
-});
 
+import {
+    getListStyle, getDraggable
+} from '../../../dragndrop';
 const ComponentPatternTaskContainer = (props) =>{
     const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
     const { course, refreshCourse } = React.useContext(ContextStore);
@@ -436,13 +435,31 @@ const ComponentPatternTaskContainer = (props) =>{
 
     //#region local action
     const onDragEnd = (result) => {
+        console.log(result);
+        // return;
         if (!result.destination || !result.source ) {
             return;
         }
 
+        var destination = result.destination.droppableId;
+
+        if(result.type == "DEFAULT"){
+            handleReorderCompnentLevel(result);
+        }else if(result.type == "sub_level"){
+            //move to pattern
+            handleReoderSubLevel(result);
+        }else{
+            console.log('no one match')
+        }
+    }
+
+    const handleReorderCompnentLevel = (result) => {
+        // result.destination.index = result.destination.droppableId.split("_")[1];
+        console.log(result.destination.index);
         if(result.destination.index == result.source.index){
             return;
         }
+
         var updates = [];
         setLoadingOpen(true);
 
@@ -511,6 +528,21 @@ const ComponentPatternTaskContainer = (props) =>{
         })
     }
 
+    const handleReoderSubLevel = (result) => {
+        var source = result.draggableId;
+        var destination = result.destination.droppableId;
+        if(source.split("_")[0] == "task"){
+            var task_id = source.split("_")[1]; 
+            var task = component.tasks.find(x => x.id == task_id);
+            var moveTo = "pattern_" + destination.split("_")[1];
+            console.log(task, moveTo);
+            moveLearningTask(task, moveTo);
+        }else{
+            console.log('no one match')
+        }
+        
+    }
+
     async function duplicateLearningTask(task, duplicateTo) {
         setLoadingOpen(true);
         if(duplicateTo != -1){
@@ -563,7 +595,8 @@ const ComponentPatternTaskContainer = (props) =>{
                                 <Droppable droppableId="component">
                                     {(provided, snapshot) => (
                                         <RootRef rootRef={provided.innerRef}>
-                                            <List style={getListStyle(snapshot.isDraggingOver)}>
+                                            <List style={getListStyle(snapshot.isDraggingOver)} >
+                                            {provided.placeholder}
                                             {
                                                 component.patterntaskid.map((_patterntaskid, index) => 
                                                     {
@@ -575,43 +608,71 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                     index={index} 
                                                                     isDragDisabled = {!(enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1)}>
                                                                 {(provided, snapshot) => (
-                                                                    <Grid container item xs   style = {{margin : "16px 0px"}} >
-                                                                        <LearningPatternContainer 
-                                                                            provided = {provided} 
-                                                                            snapshot = {snapshot} 
-                                                                            enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
-                                                                            componentID = {component.id} 
-                                                                            patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
-                                                                            key = {index}
-                                                                            onOpenPattern = {onOpenPattern}
-                                                                            setOpenPattern = {setOpenPattern}
-                                                                        />
-                                                                    </Grid>
+                                                                    <div>
+                                                                        <Grid container item xs   style = {{margin : "16px 0px"}} >
+                                                                            <LearningPatternContainer 
+                                                                                provided = {provided} 
+                                                                                snapshot = {snapshot} 
+                                                                                enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
+                                                                                componentID = {component.id} 
+                                                                                patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
+                                                                                key = {index}
+                                                                                onOpenPattern = {onOpenPattern}
+                                                                                setOpenPattern = {setOpenPattern}
+                                                                            />
+                                                                        </Grid>
+                                                                    </div>
                                                                 )}
                                                                 </Draggable>
                                                             )
 
                                                         }else if(typeof _patterntaskid.task_id != 'undefined' && _patterntaskid.task_id != null){
                                                             return(
-                                                                <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                                                <Draggable key={index} draggableId={"comptask_" + _patterntaskid.task_id} index={index} isDragDisabled = {!enableDrag}>
                                                                     {(provided, snapshot) => (
-                                                                        <LearningTaskView 
-                                                                            provided = {provided} 
-                                                                            snapshot = {snapshot} 
-                                                                            taskID = {_patterntaskid.task_id} 
-                                                                            taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
-                                                                            onEditearningTask = {onEditearningTask}
-                                                                            duplicateLearningTask = {duplicateLearningTask}
-                                                                            deleteLearningTask = {deleteLearningTask}
-                                                                            moveLearningTask = {moveLearningTask}
-                                                                            key = {index}
-                                                                            enableDrag = {enableDrag}
-                                                                            editBtn = {enableEdit}
-                                                                            duplicateBtn = {enableDuplicate}
-                                                                            deleteBtn = {enableDelete}
-                                                                            moveBtn = {enableMove}
-                                                                            lastestindex = {1}
-                                                                        />
+                                                                            <Grid container item xs   
+                                                                                style = {{margin : "16px 0px"}}       
+                                                                                {...getDraggable(provided, snapshot)}
+                                                                            >
+                                                                                <Grid item xs = {1} >
+                                                                                    Drag Me  
+                                                                                  </Grid>
+                                                                                <Grid item xs>
+                                                                                    <Droppable droppableId = {"task_" + index.toString()} type = "sub_level">
+                                                                                        {(provided_drop, snapshot_drop) => (
+                                                                                            <div style={getListStyle(snapshot_drop.isDraggingOver)}>
+                                                                                                {provided_drop.placeholder}
+                                                                                                    <RootRef rootRef={provided_drop.innerRef}>
+                                                                                                    <Draggable key={index} draggableId={"task_" + _patterntaskid.task_id} index={index} isDragDisabled = {!enableDrag}>
+                                                                                                    {(provided, snapshot) => (
+                                                                                                           <RootRef rootRef={provided_drop.innerRef}>
+                                                                                                                <LearningTaskView 
+                                                                                                                    provided = {provided} 
+                                                                                                                    snapshot = {snapshot} 
+                                                                                                                    taskID = {_patterntaskid.task_id} 
+                                                                                                                    taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
+                                                                                                                    onEditearningTask = {onEditearningTask}
+                                                                                                                    duplicateLearningTask = {duplicateLearningTask}
+                                                                                                                    deleteLearningTask = {deleteLearningTask}
+                                                                                                                    moveLearningTask = {moveLearningTask}
+                                                                                                                    key = {index}
+                                                                                                                    enableDrag = {enableDrag}
+                                                                                                                    editBtn = {enableEdit}
+                                                                                                                    duplicateBtn = {enableDuplicate}
+                                                                                                                    deleteBtn = {enableDelete}
+                                                                                                                    moveBtn = {enableMove}
+                                                                                                                    lastestindex = {1}
+                                                                                                                />
+                                                                                                           </RootRef>
+                                                                                                      
+                                                                                                    )}
+                                                                                                </Draggable>
+                                                                                                </RootRef>
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </Droppable>
+                                                                                </Grid>
+                                                                          </Grid>
                                                                     )}
                                                                 </Draggable>
                                                             )
