@@ -62,7 +62,7 @@ const ComponentPatternTaskContainer = (props) =>{
     
 
     //#region task 
-
+    const [ onOpenTask, setOpenTask] = React.useState(initTaskOpen());
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ taskData, setTaskData] = React.useState({});
     const [ error, setError] = React.useState({
@@ -74,6 +74,30 @@ const ComponentPatternTaskContainer = (props) =>{
         "target": "",
         "size": ""
     });
+
+    function initTaskOpen(){
+        var arr = [];
+        component.patterntaskid.map((_patterntaskid, index) => {
+            if(typeof _patterntaskid.task_id != 'undefined' && _patterntaskid.task_id != null){
+                arr.push(_patterntaskid.task_id);
+            }
+        })
+        return arr;
+    }
+    
+    const handleExpandChange = (event, isExpanded, id) => {
+        console.log(openPattern_temp);
+        var openPattern_temp = JSON.parse(JSON.stringify(onOpenTask));
+        console.log(id);
+        if(isExpanded){
+            openPattern_temp.push(id);
+        }else{
+            openPattern_temp.splice(openPattern_temp.indexOf(id), 1);
+        }
+        console.log(openPattern_temp);
+        // setOpenPattern(isExpanded ? pattern.id : -1);
+        setOpenTask(openPattern_temp);
+    };
 
     const validate = () => {
         var validated = true;
@@ -607,10 +631,11 @@ const ComponentPatternTaskContainer = (props) =>{
                                                         if(typeof _patterntaskid.pattern_id != 'undefined' && _patterntaskid.pattern_id != null){
                                                             return(
                                                                 <Draggable 
-                                                                    key={index} 
-                                                                    draggableId={index.toString()} 
+                                                                    key={_patterntaskid.pattern_id} 
+                                                                    draggableId={"comptask_" + _patterntaskid.pattern_id} 
                                                                     index={index} 
-                                                                    isDragDisabled = {!(enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1)}>
+                                                                    isDragDisabled = {!(enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1)}
+                                                                >
                                                                 {(provided, snapshot) => (
                                                                     <div>
                                                                         <Grid container item xs   style = {{margin : "16px 0px"}} >
@@ -632,26 +657,62 @@ const ComponentPatternTaskContainer = (props) =>{
 
                                                         }else if(typeof _patterntaskid.task_id != 'undefined' && _patterntaskid.task_id != null){
                                                             return(
-                                                                <Draggable key={index} draggableId={"comptask_" + _patterntaskid.task_id} index={index} isDragDisabled = {!enableDrag}>
+                                                                <Draggable 
+                                                                    key={_patterntaskid.task_id} 
+                                                                    draggableId={"comptask_" + _patterntaskid.task_id} 
+                                                                    index={index} 
+                                                                    isDragDisabled = {onOpenTask.indexOf(_patterntaskid.task_id) != -1}
+                                                                >
                                                                     {(provided, snapshot) => (
-                                                                            <Grid container item xs   
+                                                                        <div  {...getDraggable(provided, snapshot)}>
+                                                                            <Grid container item xs = {12}   
                                                                                 style = {{margin : "16px 0px"}}       
-                                                                                {...getDraggable(provided, snapshot)}
+                                                                               
                                                                             >
-                                                                                <Paper style = {{padding: "16px"}}>                                                 
-                                                                                <Grid item xs = {12} >
-                                                                                    <DragHandleIcon />
-                                                                                    Learning Tasks
-                                                                                  </Grid>
-                                                                                <Grid item xs = {12}>
-                                                                                    <Droppable droppableId = {"task_" + index.toString()} type = "sub_level" isDropDisabled = {true}>
+                                                                                <Accordion 
+                                                                                    expanded = {onOpenTask.indexOf(_patterntaskid.task_id) != -1}
+                                                                                    onChange = {(event, isExpanded) => handleExpandChange(event, isExpanded, _patterntaskid.task_id)}
+                                                                                >
+                                                                                    <AccordionSummary
+                                                                                    expandIcon={<ExpandMoreIcon />}
+                                                                                    >   
+                                                                                        <Grid container item xs ={12}>
+                                                                                            {onOpenTask.indexOf(_patterntaskid.task_id) != -1?
+                                                                                                null
+                                                                                            :
+                                                                                                <Grid item xs ={1} container  justify="flex-start" alignItems="center">
+                                                                                                    <DragHandleIcon />
+                                                                                                </Grid>
+                                                                                            }
+                                                                                            <Grid container item xs justify = "center" alignItems = "center">
+                                                                                                <Grid item xs = {12} >
+                                                                                                    <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>
+                                                                                                        Learning Task
+                                                                                                    </Typography>
+                                                                                                </Grid>
+                                                                                            </Grid>
+                                                                                        </Grid>
+                                                                                        
+                                                                                    </AccordionSummary>
+                                                                                    <AccordionDetails>
+                                                                                        <Droppable 
+                                                                                        droppableId = {"task_" +  _patterntaskid.task_id} 
+                                                                                        type = "sub_level" 
+                                                                                        isDropDisabled = {true}
+                                                                                        index = {index}
+                                                                                    >
                                                                                         {(provided_drop, snapshot_drop) => (
                                                                                             <div style={getListStyle(snapshot_drop.isDraggingOver)}>
                                                                                                 {provided_drop.placeholder}
                                                                                                     <RootRef rootRef={provided_drop.innerRef}>
-                                                                                                    <Draggable key={index} draggableId={"task_" + _patterntaskid.task_id} index={index} isDragDisabled = {!enableDrag}>
+                                                                                                    <Draggable 
+                                                                                                        key={_patterntaskid.id} 
+                                                                                                        draggableId={"task_" + _patterntaskid.task_id} 
+                                                                                                        index={index} 
+                                                                                                        isDragDisabled = {!enableDrag}
+                                                                                                    >
                                                                                                     {(provided, snapshot) => (
-                                                                                                        <RootRef rootRef={provided_drop.innerRef}>
+                                                                                                        <RootRef rootRef={provided.innerRef}>
                                                                                                             <LearningTaskView 
                                                                                                                 provided = {provided} 
                                                                                                                 snapshot = {snapshot} 
@@ -676,9 +737,10 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                                             </div>
                                                                                         )}
                                                                                     </Droppable>
-                                                                                </Grid>
-                                                                                </Paper>
-                                                                          </Grid>
+                                                                                    </AccordionDetails>
+                                                                                </Accordion>
+                                                                            </Grid>
+                                                                          </div>
                                                                     )}
                                                                 </Draggable>
                                                             )
