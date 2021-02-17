@@ -188,7 +188,6 @@ const LearningTaskView = (props) => {
                  
                     <Grid item xs ={4} style={taskTypeColor(task.type)}>
                     </Grid>
-
                 </Grid>
 
                 
@@ -326,6 +325,11 @@ const LearningTaskView = (props) => {
         justify="center"
 
         >   
+            {typeof provided == 'undefined' || !props.enableDrag?    
+                null
+            :
+                provided.placeholder
+            }
             {
                 displayView()
             }

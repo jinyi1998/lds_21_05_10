@@ -37,7 +37,7 @@ import { AppContextStore } from '../../../container/app';
 import { ContextStore } from '../../../container/designContainer'
 
 import {  
-    apiLearningTaskPost, apiLearningTaskPut, apiLearningTaskCompPut,
+    apiLearningTaskGet, apiLearningTaskPost, apiLearningTaskPut, apiLearningTaskCompPut,
     apiLearningTaskDelete,
     apiLearningCompGetPatternOpts,
     apiLearningPattTempList, apiLearningPattTempGet,
@@ -62,7 +62,6 @@ const ComponentPatternTaskContainer = (props) =>{
     
 
     //#region task 
-    const [ onOpenTask, setOpenTask] = React.useState(initTaskOpen());
     const [ openTaskEdit, setOpenTaskEdit] = React.useState(false);
     const [ taskData, setTaskData] = React.useState({});
     const [ error, setError] = React.useState({
@@ -74,30 +73,6 @@ const ComponentPatternTaskContainer = (props) =>{
         "target": "",
         "size": ""
     });
-
-    function initTaskOpen(){
-        var arr = [];
-        component.patterntaskid.map((_patterntaskid, index) => {
-            if(typeof _patterntaskid.task_id != 'undefined' && _patterntaskid.task_id != null){
-                arr.push(_patterntaskid.task_id);
-            }
-        })
-        return arr;
-    }
-    
-    const handleExpandChange = (event, isExpanded, id) => {
-        console.log(openPattern_temp);
-        var openPattern_temp = JSON.parse(JSON.stringify(onOpenTask));
-        console.log(id);
-        if(isExpanded){
-            openPattern_temp.push(id);
-        }else{
-            openPattern_temp.splice(openPattern_temp.indexOf(id), 1);
-        }
-        console.log(openPattern_temp);
-        // setOpenPattern(isExpanded ? pattern.id : -1);
-        setOpenTask(openPattern_temp);
-    };
 
     const validate = () => {
         var validated = true;
@@ -460,28 +435,81 @@ const ComponentPatternTaskContainer = (props) =>{
     //#endregion
 
     //#region local action
+    async function duplicateLearningTask(task, duplicateTo) {
+        setLoadingOpen(true);
+        if(duplicateTo != -1){
+            var json = task;
+            json['component_id'] = duplicateTo;
+            // json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
+            
+            return await apiLearningTaskPost(json)
+            .then(response => {
+                //load the default learning outcomes by api request
+                refreshCourse();
+                setLoadingOpen(false);  
+                displayMsg("success", "Learning Task Duplicated"); 
+            })
+            .catch(error => {
+                console.log(error);
+                displayMsg("error", "Some Errors Occured");
+            })
+        }
+    }
+
+    async function deleteLearningTask(task) {
+        setLoadingOpen(true);
+        return await apiLearningTaskDelete(task.id)
+        .then(response => {
+            //load the default learning outcomes by api request
+            refreshCourse();
+            setLoadingOpen(false);
+            displayMsg("success", "Learning Task Deleted");
+        })
+        .catch(error => {
+            displayMsg("error", "Some Errors Occured");
+            console.log(error);
+        });
+    }
+    //#endregion
+
+
+    //#region dragrelated
     const onDragEnd = (result) => {
         console.log(result);
         // return;
         if (!result.destination || !result.source ) {
             return;
         }
-
+        
         var destination = result.destination.droppableId;
+        var source = result.source.droppableId;
 
-        if(result.type == "DEFAULT"){
-            handleReorderCompnentLevel(result);
-        }else if(result.type == "sub_level"){
-            //move to pattern
-            handleReoderSubLevel(result);
-        }else{
-            console.log('no one match')
+
+        if(result.type == "patterntask"){
+            if(result.destination.droppableId == result.source.droppableId){
+                handleReorderTaskInPattern(result);
+            }else{
+                handleReorderComponent2Pattern(result);
+            }
+            return;
+        }else if(result.type == "component"){
+            if(destination.split("_")[0] == "component" && source.split("_")[0] == "component"){
+                handleReorderCompnentLevel(result);
+            }else if(destination.split("_")[0] == "pattern" && source.split("_")[0] == "component"){
+                //move to pattern
+                handleReorderComponent2Pattern(result);
+            }else if(destination.split("_")[0] == "component" && source.split("_")[0] == "pattern"){
+                console.log('no one match')
+            }else{
+    
+            }
         }
+
+   
     }
 
     const handleReorderCompnentLevel = (result) => {
         // result.destination.index = result.destination.droppableId.split("_")[1];
-        console.log(result.destination.index);
         if(result.destination.index == result.source.index){
             return;
         }
@@ -513,7 +541,7 @@ const ComponentPatternTaskContainer = (props) =>{
             if(tempTask.pattern_id > 0){
                 updates.push(apiLearningPatternPut(tempTask))
             }else{
-                 updates.push( apiLearningTaskPut(tempTask) );
+                 updates.push(apiLearningTaskPut(tempTask) );
             }
            
             updates.push (tempTask);
@@ -554,60 +582,90 @@ const ComponentPatternTaskContainer = (props) =>{
         })
     }
 
-    const handleReoderSubLevel = (result) => {
-        var source = result.draggableId;
+    const handleReorderComponent2Pattern = (result) => {
+        var draggableItem = result.draggableId;
         var destination = result.destination.droppableId;
-        if(destination.split("_")[0] == "pattern"){
-            if(source.split("_")[0] == "task"){
-                var task_id = source.split("_")[1]; 
-                var task = component.tasks.find(x => x.id == task_id);
+
+        if(draggableItem.split("_")[0] == "pattern" || draggableItem.split("_")[0] == "comppattern" ){
+            console.log('do not support drag a pattern into a pattern')
+            return;
+        }
+
+        if(destination.split("_")[0] == "pattern" || destination.split("_")[0] == "patternpattern"){
+            var task_id = draggableItem.split("_")[1]; 
+            apiLearningTaskGet(task_id).then((rs)=>{
+                var task = rs.data;
                 var moveTo = "pattern_" + destination.split("_")[1];
+                console.log(task, moveTo);
                 moveLearningTask(task, moveTo);
-            }else{
-                console.log('no one match')
-            }
+            });
         }else{
             console.log('no one match')
         }   
     }
 
-    async function duplicateLearningTask(task, duplicateTo) {
-        setLoadingOpen(true);
-        if(duplicateTo != -1){
-            var json = task;
-            json['component_id'] = duplicateTo;
-            // json['sequence'] = course.components.find(x => x.id == duplicateTo)? course.components.find(x => x.id == duplicateTo)?.tasks.length + 1 : 999;
-            
-            return await apiLearningTaskPost(json)
-            .then(response => {
-                //load the default learning outcomes by api request
-                refreshCourse();
-                setLoadingOpen(false);  
-                displayMsg("success", "Learning Task Duplicated"); 
-            })
-            .catch(error => {
-                console.log(error);
-                displayMsg("error", "Some Errors Occured");
-            })
+    const handleReorderTaskInPattern = (result) => {
+        if (!result.destination || !result.source ) {
+            return;
         }
-    }
 
-    async function deleteLearningTask(task) {
+        if(result.destination.index == result.source.index){
+            return;
+        }
+
+        var pattern_id = result.destination.droppableId.split("_")[1];
+        var updates = [];
         setLoadingOpen(true);
-        return await apiLearningTaskDelete(task.id)
-        .then(response => {
-            //load the default learning outcomes by api request
-            refreshCourse();
-            setLoadingOpen(false);
-            displayMsg("success", "Learning Task Deleted");
-        })
-        .catch(error => {
-            displayMsg("error", "Some Errors Occured");
-            console.log(error);
-        });
-    }
-    //#endregion
 
+        //sync the data to root state
+        var tempTasks =  JSON.parse(JSON.stringify( component.patterns.find(x => x.id == pattern_id)?.tasks));
+
+        tempTasks.map((_task, index)=> {
+            if(_task.patternid.sequence == null){
+                tempTasks[index].patternid.sequence = index + 1;
+            }
+        });
+
+        var sourceTask = {
+          id: tempTasks[result.source.index].id,
+          pattern_id: tempTasks[result.source.index].patternid.pattern_id,
+          sequence: tempTasks[result.destination.index].patternid.sequence
+        }
+
+        if(result.source.index < result.destination.index){
+          for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
+            let tempTask = {
+              id : tempTasks[i].id,
+              pattern_id: tempTasks[i].patternid.pattern_id,
+              sequence: tempTasks[i].patternid.sequence - 1
+            }
+            updates.push( apiLearningTaskPut(tempTask) );
+         }
+        }else{
+
+          for(var i = result.destination.index; i < result.source.index; i++){
+            let tempTask = {
+              id : tempTasks[i].id,
+              pattern_id: tempTasks[i].patternid.pattern_id,
+              sequence: tempTasks[i].patternid.sequence + 1
+            }
+            updates.push ( apiLearningTaskPut(tempTask) );
+          }
+        }
+        updates.push( apiLearningTaskPut(sourceTask) );
+
+        Promise.all(updates).then(()=>{
+            setLoadingOpen(false);
+            displayMsg("success", "Learning Tasks Sequences Updated")
+            refreshCourse();
+
+        }).catch((error)=> {
+            console.log(error);
+            displayMsg("error", "Error Occured")
+        })
+    }
+
+    //#endregion
     return (
         <React.Fragment>
              <Accordion defaultExpanded = {true}>
@@ -620,7 +678,7 @@ const ComponentPatternTaskContainer = (props) =>{
                     <Grid container>
                         <Grid item xs = {12}>
                             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                                <Droppable droppableId="component">
+                                <Droppable droppableId="component" type = "component">
                                     {(provided, snapshot) => (
                                         <RootRef rootRef={provided.innerRef}>
                                             <List style={getListStyle(snapshot.isDraggingOver)} >
@@ -632,24 +690,45 @@ const ComponentPatternTaskContainer = (props) =>{
                                                             return(
                                                                 <Draggable 
                                                                     key={_patterntaskid.pattern_id} 
-                                                                    draggableId={"comptask_" + _patterntaskid.pattern_id} 
+                                                                    draggableId={"comppattern_" + _patterntaskid.pattern_id} 
                                                                     index={index} 
                                                                     isDragDisabled = {!(enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1)}
                                                                 >
                                                                 {(provided, snapshot) => (
-                                                                    <div>
-                                                                        <Grid container item xs   style = {{margin : "16px 0px"}} >
-                                                                            <LearningPatternContainer 
-                                                                                provided = {provided} 
-                                                                                snapshot = {snapshot} 
-                                                                                enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
-                                                                                componentID = {component.id} 
-                                                                                patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
-                                                                                key = {index}
-                                                                                onOpenPattern = {onOpenPattern}
-                                                                                setOpenPattern = {setOpenPattern}
-                                                                            />
-                                                                        </Grid>
+                                                                    <div 
+                                                                        ref = {provided.innerRef} 
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                    >
+                                                                        <Droppable 
+                                                                            droppableId={"pattern_"+ _patterntaskid.pattern_id} 
+                                                                            isDropDisabled = {onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
+                                                                            type = "component"
+                                                                        >
+                                                                            {(provided_drop, snapshot_drop) => (
+                                                                                <div
+                                                                                    ref={provided_drop.innerRef}
+                                                                                    {...provided_drop.draggableProps}
+                                                                                    {...provided_drop.droppableProps}
+                                                                                    style={getListStyle(snapshot_drop.isDraggingOver, 'DarkRed')}
+                                                                                >
+                                                                                    {provided_drop.placeholder}
+                                                                                    <Grid container item xs  style = {{margin : "16px 0px"}} >
+                                                                                        <LearningPatternContainer 
+                                                                                            provided = {provided} 
+                                                                                            snapshot = {snapshot} 
+                                                                                            enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
+                                                                                            componentID = {component.id} 
+                                                                                            patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
+                                                                                            key = {index}
+                                                                                            index = {index}
+                                                                                            onOpenPattern = {onOpenPattern}
+                                                                                            setOpenPattern = {setOpenPattern}
+                                                                                        />
+                                                                                    </Grid>
+                                                                                </div>
+                                                                                )}
+                                                                        </Droppable>
                                                                     </div>
                                                                 )}
                                                                 </Draggable>
@@ -657,92 +736,39 @@ const ComponentPatternTaskContainer = (props) =>{
 
                                                         }else if(typeof _patterntaskid.task_id != 'undefined' && _patterntaskid.task_id != null){
                                                             return(
-                                                                <Draggable 
-                                                                    key={_patterntaskid.task_id} 
-                                                                    draggableId={"comptask_" + _patterntaskid.task_id} 
-                                                                    index={index} 
-                                                                    isDragDisabled = {onOpenTask.indexOf(_patterntaskid.task_id) != -1}
+                                                                <Grid container item xs = {12}   
+                                                                    style = {{margin : "16px 0px"}}       
+                                                                    
                                                                 >
-                                                                    {(provided, snapshot) => (
-                                                                        <div  {...getDraggable(provided, snapshot)}>
-                                                                            <Grid container item xs = {12}   
-                                                                                style = {{margin : "16px 0px"}}       
-                                                                               
-                                                                            >
-                                                                                <Accordion 
-                                                                                    expanded = {onOpenTask.indexOf(_patterntaskid.task_id) != -1}
-                                                                                    onChange = {(event, isExpanded) => handleExpandChange(event, isExpanded, _patterntaskid.task_id)}
-                                                                                >
-                                                                                    <AccordionSummary
-                                                                                    expandIcon={<ExpandMoreIcon />}
-                                                                                    >   
-                                                                                        <Grid container item xs ={12}>
-                                                                                            {onOpenTask.indexOf(_patterntaskid.task_id) != -1?
-                                                                                                null
-                                                                                            :
-                                                                                                <Grid item xs ={1} container  justify="flex-start" alignItems="center">
-                                                                                                    <DragHandleIcon />
-                                                                                                </Grid>
-                                                                                            }
-                                                                                            <Grid container item xs justify = "center" alignItems = "center">
-                                                                                                <Grid item xs = {12} >
-                                                                                                    <Typography  data-tour = "component_pattern_title" variant = {"subtitle2"}>
-                                                                                                        Learning Task
-                                                                                                    </Typography>
-                                                                                                </Grid>
-                                                                                            </Grid>
-                                                                                        </Grid>
-                                                                                        
-                                                                                    </AccordionSummary>
-                                                                                    <AccordionDetails>
-                                                                                        <Droppable 
-                                                                                        droppableId = {"task_" +  _patterntaskid.task_id} 
-                                                                                        type = "sub_level" 
-                                                                                        isDropDisabled = {true}
-                                                                                        index = {index}
-                                                                                    >
-                                                                                        {(provided_drop, snapshot_drop) => (
-                                                                                            <div style={getListStyle(snapshot_drop.isDraggingOver)}>
-                                                                                                {provided_drop.placeholder}
-                                                                                                    <RootRef rootRef={provided_drop.innerRef}>
-                                                                                                    <Draggable 
-                                                                                                        key={_patterntaskid.id} 
-                                                                                                        draggableId={"task_" + _patterntaskid.task_id} 
-                                                                                                        index={index} 
-                                                                                                        isDragDisabled = {!enableDrag}
-                                                                                                    >
-                                                                                                    {(provided, snapshot) => (
-                                                                                                        <RootRef rootRef={provided.innerRef}>
-                                                                                                            <LearningTaskView 
-                                                                                                                provided = {provided} 
-                                                                                                                snapshot = {snapshot} 
-                                                                                                                taskID = {_patterntaskid.task_id} 
-                                                                                                                taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
-                                                                                                                onEditearningTask = {onEditearningTask}
-                                                                                                                duplicateLearningTask = {duplicateLearningTask}
-                                                                                                                deleteLearningTask = {deleteLearningTask}
-                                                                                                                moveLearningTask = {moveLearningTask}
-                                                                                                                key = {index}
-                                                                                                                enableDrag = {enableDrag}
-                                                                                                                editBtn = {enableEdit}
-                                                                                                                duplicateBtn = {enableDuplicate}
-                                                                                                                deleteBtn = {enableDelete}
-                                                                                                                moveBtn = {enableMove}
-                                                                                                                lastestindex = {1}
-                                                                                                            />
-                                                                                                        </RootRef>
-                                                                                                    )}
-                                                                                                </Draggable>
-                                                                                                </RootRef>
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </Droppable>
-                                                                                    </AccordionDetails>
-                                                                                </Accordion>
-                                                                            </Grid>
-                                                                          </div>
-                                                                    )}
-                                                                </Draggable>
+                                                                    <Draggable 
+                                                                        key={_patterntaskid.id} 
+                                                                        draggableId={"task_" + _patterntaskid.task_id} 
+                                                                        index={index} 
+                                                                        isDragDisabled = {!enableDrag}
+                                                                    >
+                                                                        {(provided, snapshot) => (
+                                                                            <RootRef rootRef={provided.innerRef}>
+                                                                                <LearningTaskView 
+                                                                                    provided = {provided} 
+                                                                                    snapshot = {snapshot} 
+                                                                                    taskID = {_patterntaskid.task_id} 
+                                                                                    taskData = {component.tasks.find(x => x.id == _patterntaskid.task_id)} 
+                                                                                    onEditearningTask = {onEditearningTask}
+                                                                                    duplicateLearningTask = {duplicateLearningTask}
+                                                                                    deleteLearningTask = {deleteLearningTask}
+                                                                                    moveLearningTask = {moveLearningTask}
+                                                                                    key = {index}
+                                                                                    enableDrag = {enableDrag}
+                                                                                    editBtn = {enableEdit}
+                                                                                    duplicateBtn = {enableDuplicate}
+                                                                                    deleteBtn = {enableDelete}
+                                                                                    moveBtn = {enableMove}
+                                                                                    lastestindex = {1}
+                                                                                />
+                                                                            </RootRef>
+                                                                        )}
+                                                                    </Draggable>       
+                                                                </Grid>
                                                             )
                                                         }
                                                     }
