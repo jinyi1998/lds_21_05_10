@@ -22,7 +22,6 @@ import {
     apiLearningTaskDelete
 } from '../../../api.js';
 
-import {getListStyle} from '../../../dragndrop'
 //   tasks: [
 //     {
 //       id: 0,
@@ -37,6 +36,11 @@ import {getListStyle} from '../../../dragndrop'
 //       description: "",
 //     }
 //   ],
+
+const getListStyle = isDraggingOver => ({
+    background: isDraggingOver ? 'lightgrey' : '',
+    width: '100%'
+});
 
 const LearningTaskContainer = (props) => {
 
@@ -459,7 +463,7 @@ const LearningTaskContainer = (props) => {
                                     tasksData.map( 
                                         (_task, index) => 
                                         <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
-                                        {(provided, snapshot) => (        
+                                        {(provided, snapshot) => (
                                             <LearningTaskView 
                                                 provided = {provided} 
                                                 snapshot = {snapshot} 

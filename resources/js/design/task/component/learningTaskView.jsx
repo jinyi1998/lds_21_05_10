@@ -31,9 +31,6 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
 
-
-import {getItemStyle, getDraggable} from '../../../dragndrop'
-
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
@@ -110,6 +107,36 @@ const LearningTaskView = (props) => {
         description: "",
         has_assessment: false
     });  
+
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+      
+        ...(isDragging && {
+          background: "rgb(235,235,235)"
+        })
+    });
+    
+    const getDraggable = (provided, snapshot) => {
+        if(typeof provided == 'undefined'){
+            return (
+               null
+            );
+        }else{
+            return (
+                {
+                    // styles we need to apply on draggables
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    style: getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )
+                }
+            );
+        }
+    }
 
     async function duplicateLearningTask() {
         props.duplicateLearningTask(task, duplicateTo);
@@ -188,6 +215,7 @@ const LearningTaskView = (props) => {
                  
                     <Grid item xs ={4} style={taskTypeColor(task.type)}>
                     </Grid>
+
                 </Grid>
 
                 
@@ -333,11 +361,6 @@ const LearningTaskView = (props) => {
         justify="center"
 
         >   
-            {typeof provided == 'undefined' || !props.enableDrag?    
-                null
-            :
-                provided.placeholder
-            }
             {
                 displayView()
             }
