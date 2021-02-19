@@ -700,6 +700,7 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                         {...provided.draggableProps}
                                                                         {...provided.dragHandleProps}
                                                                     >
+                                                                        {provided.placeholder}
                                                                         <Droppable 
                                                                             droppableId={"pattern_"+ _patterntaskid.pattern_id} 
                                                                             isDropDisabled = {onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
@@ -708,12 +709,26 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                             {(provided_drop, snapshot_drop) => (
                                                                                 <div
                                                                                     ref={provided_drop.innerRef}
-                                                                                    {...provided_drop.draggableProps}
                                                                                     {...provided_drop.droppableProps}
-                                                                                    style={getListStyle(snapshot_drop.isDraggingOver, 'DarkRed')}
+                                                                                    style={getListStyle(snapshot_drop.isDraggingOver, 'grey')}
                                                                                 >
                                                                                     {provided_drop.placeholder}
+                                                                                   
                                                                                     <Grid container item xs  style = {{margin : "16px 0px"}} >
+                                                                                    {
+                                                                                        snapshot_drop.isDraggingOver?
+                                                                                        <LearningPatternContainer 
+                                                                                            provided = {provided} 
+                                                                                            snapshot = {snapshot} 
+                                                                                            enableDrag = {enableDrag && onOpenPattern.indexOf(_patterntaskid.pattern_id) == -1}
+                                                                                            componentID = {component.id} 
+                                                                                            patternData = {component.patterns.find(x => x.id == _patterntaskid.pattern_id)}
+                                                                                            key = {index}
+                                                                                            index = {index}
+                                                                                            onOpenPattern = {[]}
+                                                                                            setOpenPattern = {setOpenPattern}
+                                                                                        />
+                                                                                        :
                                                                                         <LearningPatternContainer 
                                                                                             provided = {provided} 
                                                                                             snapshot = {snapshot} 
@@ -725,6 +740,9 @@ const ComponentPatternTaskContainer = (props) =>{
                                                                                             onOpenPattern = {onOpenPattern}
                                                                                             setOpenPattern = {setOpenPattern}
                                                                                         />
+
+                                                                                        }
+                                                                                     
                                                                                     </Grid>
                                                                                 </div>
                                                                                 )}
