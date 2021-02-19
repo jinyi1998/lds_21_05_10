@@ -231,9 +231,11 @@ const LearningTaskView = (props) => {
                             {
                                 editBtn == true?
                                 <Grid item xs={3} className={classes.contentGrid} >
+                                    <Tooltip title="Edit" aria-label="edit">
                                      <IconButton onClick={()=>onClickEdit()} size="small">
-                                        <EditIcon />
+                                            <EditIcon />
                                     </IconButton>
+                                    </Tooltip>
                                 </Grid>
                                 :
                                 null
@@ -242,9 +244,11 @@ const LearningTaskView = (props) => {
                             {
                                 duplicateBtn == true?
                                 <Grid item xs={3} className={classes.contentGrid} >
-                                    <IconButton onClick={()=> {onClickDuplicate()}} size="small">
-                                        <FileCopyIcon />
-                                    </IconButton>
+                                    <Tooltip title="Duplicate" aria-label="duplicate">
+                                        <IconButton onClick={()=> {onClickDuplicate()}} size="small">
+                                            <FileCopyIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Grid>
                                 :
                                 null
@@ -253,9 +257,11 @@ const LearningTaskView = (props) => {
                             {
                                    moveBtn == true?
                                     <Grid item xs={3} className={classes.contentGrid} >
-                                        <IconButton onClick={()=> {onClickMove()}} size="small">
-                                            <LocalShippingIcon />
-                                        </IconButton>
+                                        <Tooltip title="Move" aria-label="move">
+                                            <IconButton onClick={()=> {onClickMove()}} size="small">
+                                                <LocalShippingIcon />
+                                            </IconButton>
+                                        </Tooltip>
                                     </Grid>
                                     :
                                     null
@@ -264,9 +270,11 @@ const LearningTaskView = (props) => {
                             {
                                 deleteBtn == true?
                                 <Grid item xs={3} className={classes.contentGrid} >
-                                    <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    <Tooltip title="Delete" aria-label="delete">
+                                        <IconButton onClick={()=> {setDelDialogOpen(true)}} size="small">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
                                 </Grid>
                                 :
                                 null
@@ -404,11 +412,11 @@ const LearningTaskView = (props) => {
                 <DialogTitle>Move Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Please select the component you wanna move the task to.
+                        Please select the curriculum component/ pattern you want move the task to.
                     </DialogContentText>
                     <Select value = {moveTo} onChange = {(event) => setMoveTo(event.target.value)} fullWidth>
                          <MenuItem disabled value= {"component_"+-1}>
-                            <em>Please select the pattern/ component</em>
+                            <em>Please select the curriculum component/ pattern</em>
                         </MenuItem>
                         {course.components.map((_component, index) => {
                             return (

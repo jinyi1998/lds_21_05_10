@@ -109,16 +109,20 @@ const ComponentSelectContainer = (props ) => {
             request.course_id = course.id;
             request.outcomes_id = handleComponentOutcomeMapping(component.outcomes);
 
-            var lo_add = handleComponentOutcomeAdd(request.outcomes);
-            if(lo_add.length > 0){
-                updates.push(Promise.resolve(handleComponentWithLO(request, lo_add)));
-            }else{
-              //normal handling => no addition lo need to be adde
-              if(typeof request.outcomes !== 'undefined'){
+            // var lo_add = handleComponentOutcomeAdd(request.outcomes);
+            // if(lo_add.length > 0){
+            //     updates.push(Promise.resolve(handleComponentWithLO(request, lo_add)));
+            // }else{
+            //   //normal handling => no addition lo need to be adde
+            //   if(typeof request.outcomes !== 'undefined'){
+            //     request.outcomes_id = handleComponentOutcomeMapping(request.outcomes);
+            //   }
+            //   updates.push(Promise.resolve(apiLearningCompPost(request)));
+            // }
+            if(typeof request.outcomes !== 'undefined'){
                 request.outcomes_id = handleComponentOutcomeMapping(request.outcomes);
               }
-              updates.push(Promise.resolve(apiLearningCompPost(request)));
-            }
+            updates.push(Promise.resolve(apiLearningCompPost(request)));
         });
         Promise.all(updates).then((rs)=>{
             Promise.all(rs).then(()=>{
