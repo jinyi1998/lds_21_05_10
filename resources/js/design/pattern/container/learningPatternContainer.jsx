@@ -40,6 +40,10 @@ import {ComponentContext} from '../../learningComponent/container/componentConta
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
+import RootRef from "@material-ui/core/RootRef";
+import {getDraggable, getListStyle} from '../../../dragndrop';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import {
     apiLearningPatternPut, apiLearningPatternPost, apiLearningPatternDelete
 } from '../../../api.js';
@@ -73,36 +77,6 @@ const LearningPatternContainer = (props) => {
 
 
     //#region local function
-    const getItemStyle = (isDragging, draggableStyle) => ({
-        // styles we need to apply on draggables
-        ...draggableStyle,
-      
-        ...(isDragging && {
-          background: "rgb(235,235,235)"
-        }),
-        width: "calc(100% - 4px)"
-    });
-    
-    const getDraggable = (provided, snapshot) => {
-        if(typeof provided == 'undefined'){
-            return (
-               null
-            );
-        }else{
-            return (
-                {
-                    // styles we need to apply on draggables
-                    ref: provided.innerRef,
-                    ...provided.draggableProps,
-                    ...provided.dragHandleProps,
-                    style: getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style,
-                    )
-                }
-            );
-        }
-    }
 
     const onDuplicate = () => {
         setLoadingOpen(true);
@@ -246,16 +220,17 @@ const LearningPatternContainer = (props) => {
     return (
         <React.Fragment>
             <Accordion  
-                // defaultExpanded = {true}
                 data-tour = "component_pattern_view"  
                 onChange = {handleExpandChange}
                 expanded={ onOpenPattern.indexOf(pattern.id) != -1 }
-                {...getDraggable(provided, snapshot)} 
+                // {...getDraggable(provided, snapshot)} 
             > 
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                >
+                {/* {provided.placeholder} */}
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                    >
                     <Grid container>
+
                         {typeof provided == 'undefined' || !enablePatternDrag?    
                             null
                         :
@@ -263,6 +238,7 @@ const LearningPatternContainer = (props) => {
                                 <DragHandleIcon />
                             </Grid>
                         }
+
                         <Grid container item xs justify = "center" alignItems = "center">
                             <Grid item xs = {12} >
                                 {
@@ -278,10 +254,11 @@ const LearningPatternContainer = (props) => {
                                         {pattern.title}
                                     </Typography>
                                 }
-                         
-                               
+                        
+                            
                             </Grid>
                         </Grid>
+                        
                         {   
                             canEdit ? 
                             <Grid item xs = {2}>
@@ -348,9 +325,8 @@ const LearningPatternContainer = (props) => {
                             : 
                             null 
                         }
-                      
+                    
                     </Grid>
-
                 </AccordionSummary>
                 <AccordionDetails>
                     <LearningTaskContainer 
@@ -362,7 +338,6 @@ const LearningPatternContainer = (props) => {
                     />
                 </AccordionDetails>
             </Accordion>
-            
             {/* duplicate dialog */}
             <Dialog open={duplicateDialog} onClose={onCloseDuplicateDialog} maxWidth = "md" style = {{minHeight: 400}}>
                 <DialogTitle>

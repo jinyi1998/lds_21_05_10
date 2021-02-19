@@ -148,7 +148,7 @@ const ComponentSelectContainer = (props ) => {
             
                 outcome['template_id'] = outcome.id;
                 outcome['course_id'] = course.id;
-                add_request.push(apiLearningOutcomePost(outcome));
+                // add_request.push(apiLearningOutcomePost(outcome));
             }
         })
 
