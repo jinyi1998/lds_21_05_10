@@ -267,7 +267,7 @@ const LearningTaskContainer = (props) => {
                 return await apiLearningTaskPost(temp_task)
                 .then(response => {
                     //load the default learning outcomes by api request
-                    refreshCourse();
+                    // refreshCourse();
                     setLoadingOpen(false);  
                     deleteLearningTask(task)
                     displayMsg("success", "Learning Task Moved"); 
@@ -285,7 +285,7 @@ const LearningTaskContainer = (props) => {
                 return await apiLearningTaskPost(temp_task)
                 .then(response => {
                     //load the default learning outcomes by api request
-                    refreshCourse();
+                    // refreshCourse();
                     setLoadingOpen(false);  
                     deleteLearningTask(task)
                     displayMsg("success", "Learning Task Moved"); 

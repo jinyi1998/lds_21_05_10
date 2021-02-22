@@ -18,6 +18,8 @@ import LessonPlanTaskSelect from '../component/lessonPlanTaskSelect';
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import {
     apiLearningTaskPost, apiLearningTaskPut,
     apiLessonTaskUpdate, apiLessonUpdate, apiLessonPut
@@ -27,7 +29,7 @@ import {
 const LessonPlanViewContainer = (props) => {
 
     const { course, refreshCourse } = React.useContext(ContextStore);
-    const { setLoadingOpen } = React.useContext(AppContextStore);
+    const { setLoadingOpen, displayMsg} = React.useContext(AppContextStore);
     const { tourSetMode, tourSetRun, tourNextStep } = React.useContext(ContextStore);
     
     const [editMode, setEditMode] =  React.useState(false);
@@ -42,7 +44,7 @@ const LessonPlanViewContainer = (props) => {
         refreshCourse();
     }
 
-    const enableDrag = course.permission > 2;
+    const enableDrag = course.permission > 2 && canEdit;
     const enableEdit = course.permission > 2;
     
     React.useEffect(()=>{
@@ -116,6 +118,138 @@ const LessonPlanViewContainer = (props) => {
     //#endregion
 
 
+    //#region drag and drop related
+    const onDragSameType = (result) => {
+        var updates = [];
+        setLoadingOpen(true);
+
+        var lessontype = result.source.droppableId;
+        let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
+        //sync the data to root state
+        var tempTasks =  JSON.parse(JSON.stringify(lessontask));
+ 
+        tempTasks.map((_task, index)=> {
+            if(_task.lessonid.sequence == null){
+                tempTasks[index].lessonid.sequence = index + 1;
+            }
+        });
+ 
+        var sourceTask = {
+          id: tempTasks[result.source.index].lessonid.id,
+          sequence: tempTasks[result.destination.index].lessonid.sequence,
+          lessontype: lessontype
+        }
+ 
+        if(result.source.index < result.destination.index){
+          for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence - 1,
+              lessontype: lessontype
+            }
+            // console.log(tempTask);
+            updates.push( updateLearningTaskLessonRelation(tempTask) );
+         }
+        }else{
+ 
+          for(var i = result.destination.index; i < result.source.index; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence + 1,
+              lessontype: lessontype
+            }
+            // console.log(tempTask);
+            updates.push( updateLearningTaskLessonRelation(tempTask) );
+          }
+        }
+        // console.log(sourceTask);
+        updates.push( updateLearningTaskLessonRelation(sourceTask) );
+ 
+        Promise.all(updates).then(()=>{
+            setLoadingOpen(false);
+            displayMsg("success", "Tasks Sequence Updated")
+        });
+    }
+
+    const onDragAccrossType = (result) => {
+        var updates = [];
+        setLoadingOpen(true);
+
+        var lessontype_source = result.source.droppableId;
+        let lessontask_source = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype_source);
+        //sync the data to root state
+        var tempTasks_source =  JSON.parse(JSON.stringify(lessontask_source));
+
+       
+
+        var lessontype = result.destination.droppableId;
+        let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
+        //sync the data to root state
+        var tempTasks =  JSON.parse(JSON.stringify(lessontask));
+ 
+        tempTasks.map((_task, index)=> {
+            if(_task.lessonid.sequence == null){
+                tempTasks[index].lessonid.sequence = index + 1;
+            }
+        });
+ 
+        var sourceTask = {
+            id: tempTasks_source[result.source.index].lessonid.id,
+            sequence: tempTasks_source[result.destination.index].lessonid.sequence,
+            lessontype: lessontype
+        }
+ 
+        if(result.source.index < result.destination.index){
+          for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence - 1,
+              lessontype: lessontype
+            }
+            // console.log(tempTask);
+            updates.push( updateLearningTaskLessonRelation(tempTask) );
+         }
+        }else{
+ 
+          for(var i = result.destination.index; i < result.source.index; i++){
+            let tempTask = {
+              id : tempTasks[i].lessonid.id,
+              sequence: tempTasks[i].lessonid.sequence + 1,
+              lessontype: lessontype
+            }
+            // console.log(tempTask);
+            updates.push( updateLearningTaskLessonRelation(tempTask) );
+          }
+        }
+        // console.log(sourceTask);
+        updates.push( updateLearningTaskLessonRelation(sourceTask) );
+ 
+        Promise.all(updates).then(()=>{
+            setLoadingOpen(false);
+            displayMsg("success", "Tasks Sequence Updated")
+        });
+    }
+
+    const onDragEnd = (result) => {
+        // dropped outside the list
+        if (!result.destination) {
+           return;
+       }
+
+       if(result.destination.droppableId == result.source.droppableId ){
+            onDragSameType(result);
+       }else{
+            onDragAccrossType(result);
+       }
+
+       console.log(result);
+       return;
+
+      
+   }
+
+    //#endregion
+
     return (
         <Grid container data-tour = "lesson_view">
             <Grid item xs = {12}>
@@ -160,42 +294,43 @@ const LessonPlanViewContainer = (props) => {
                 }
                 
             </Grid>
+            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                <LessonPlanView 
+                    lesson = {lesson}
+                    lessontype = {1}
+                    canEdit = {canEdit}
+                    setEditMode = {setEditMode}
+                    refreshLesson = {refreshLesson}
+                    enableDrag = {enableDrag}
+                    enableEdit = {enableEdit}
+                    updateLearningTask = {updateLearningTask}
+                    updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
+                />
 
-             <LessonPlanView 
-                lesson = {lesson}
-                lessontype = {1}
-                canEdit = {canEdit}
-                setEditMode = {setEditMode}
-                refreshLesson = {refreshLesson}
-                enableDrag = {enableDrag}
-                enableEdit = {enableEdit}
-                updateLearningTask = {updateLearningTask}
-                updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
-            />
+                <LessonPlanView 
+                    lesson = {lesson}
+                    lessontype = {2}
+                    canEdit = {canEdit}
+                    setEditMode = {setEditMode}
+                    refreshLesson = {refreshLesson}
+                    enableDrag = {enableDrag}
+                    enableEdit = {enableEdit}
+                    updateLearningTask = {updateLearningTask}
+                    updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
+                />
 
-            <LessonPlanView 
-                lesson = {lesson}
-                lessontype = {2}
-                canEdit = {canEdit}
-                setEditMode = {setEditMode}
-                refreshLesson = {refreshLesson}
-                enableDrag = {enableDrag}
-                enableEdit = {enableEdit}
-                updateLearningTask = {updateLearningTask}
-                updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
-            />
-
-            <LessonPlanView 
-                lesson = {lesson}
-                lessontype = {3}
-                canEdit = {canEdit}
-                setEditMode = {setEditMode}
-                refreshLesson = {refreshLesson}
-                enableDrag = {enableDrag}
-                enableEdit = {enableEdit}
-                updateLearningTask = {updateLearningTask}
-                updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
-            />
+                <LessonPlanView 
+                    lesson = {lesson}
+                    lessontype = {3}
+                    canEdit = {canEdit}
+                    setEditMode = {setEditMode}
+                    refreshLesson = {refreshLesson}
+                    enableDrag = {enableDrag}
+                    enableEdit = {enableEdit}
+                    updateLearningTask = {updateLearningTask}
+                    updateLearningTaskLessonRelation = {updateLearningTaskLessonRelation}
+                />
+            </DragDropContext>
 
             {canEdit == true && enableEdit ? 
                 <Grid item xs ={12}>

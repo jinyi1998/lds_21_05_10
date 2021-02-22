@@ -75,7 +75,7 @@ const LearningTaskLessonView = (props) => {
 
     const classes = useStyles();
 
-    const {taskID, taskData, onEditearningTask} = props;
+    const {taskID, taskData, onEditearningTask, enableDrag} = props;
     const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
     const {error, editBtn} = props;
@@ -146,11 +146,17 @@ const LearningTaskLessonView = (props) => {
                 provided.draggableProps.style
             )}
         >   
-            <Grid container item xs ={1} justify="center" alignItems="center">
-                <DragHandleIcon />
-            </Grid>
+            {
+            enableDrag?
+                <Grid container item xs ={1} justify="center" alignItems="center">
+                    <DragHandleIcon />
+                </Grid>
+                :
+                null
+            }
+        
 
-            <Grid container item xs ={11}>
+            <Grid container item xs>
                 <Accordion  style={{width: '100%'}}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}

@@ -253,8 +253,8 @@ const LessonPlanView = (props) => {
                 
                 <Grid item xs ={12}>
 
-                    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
-                        <Droppable droppableId="droppable">
+                    {/* <DragDropContext onDragEnd={(result) => onDragEnd(result)}> */}
+                        <Droppable droppableId={lessontype.toString()}>
                         {(provided, snapshot) => (
                             <RootRef rootRef={provided.innerRef}>
                                 <List style={getListStyle(snapshot.isDraggingOver)}>
@@ -262,7 +262,7 @@ const LessonPlanView = (props) => {
                                     lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype).length > 0 ?
                                         lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype).map(
                                             (_task, index) => 
-                                            <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                            <Draggable key={_task.lessonid.id.toString()} draggableId={_task.lessonid.id.toString()} index={index} isDragDisabled = {!enableDrag}>
                                                 {(provided, snapshot) => (
                                                     <LearningTaskLessonView 
                                                     provided = {provided} 
@@ -270,6 +270,7 @@ const LessonPlanView = (props) => {
                                                     taskID = {_task.id} 
                                                     taskData = {_task} 
                                                     editBtn = {enableEdit}
+                                                    enableDrag = {enableDrag}
                                                     // onEditearningTask = {()=>{}
 
                                                     onEditearningTask = {onEditearningTask}
@@ -290,7 +291,7 @@ const LessonPlanView = (props) => {
                             </RootRef>
                         )}
                         </Droppable>
-                    </DragDropContext>
+                    {/* </DragDropContext> */}
                  </Grid>
             </Grid>
 

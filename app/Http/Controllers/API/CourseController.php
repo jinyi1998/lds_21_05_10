@@ -159,11 +159,11 @@ class CourseController extends Controller
         if($request->has('tags')){
             $course->tagsid()->delete();
             foreach($request->tags as $_tag){
-                if(Tags::where('name', $_tag)->count() > 0){ // if tags existed
-                    $tag = Tags::where('name', $_tag)->first();
+                if(Tags::where('name', $_tag['name'])->count() > 0){ // if tags existed
+                    $tag = Tags::where('name', $_tag['name'])->first();
                 }else{
                     $tag = new Tags();
-                    $tag->name = $_tag;
+                    $tag->name = $_tag['name'];
                     $tag->created_by = Auth::user()->id;
                     $tag->updated_by = Auth::user()->id;
 
@@ -511,8 +511,10 @@ class CourseController extends Controller
                 foreach($_task['assessmentid'] as $assessment_index => $_assessment){
                     foreach($_component['outcomeid'] as $index_outcomes => $_outcomes){
                         if( $_assessment['learningoutcome_id'] == $_outcomes['outcome_id']){    
-                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomeid'][$index_outcomes]['outcome_id'];
-                            $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningtask_id'] =  $taskMapping[$_task_index];
+                            if(isset($new_component['outcomeid'][$index_outcomes]['outcome_id'])){
+                                $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningoutcome_id'] = $new_component['outcomeid'][$index_outcomes]['outcome_id'];
+                                $taskAssessmentMapping_filter[$_task_index]['assessmentid'][$assessment_index]['learningtask_id'] =  $taskMapping[$_task_index];
+                            }
                         }
                     }
                 }

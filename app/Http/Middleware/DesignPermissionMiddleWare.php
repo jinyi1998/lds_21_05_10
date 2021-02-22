@@ -45,7 +45,7 @@ class DesignPermissionMiddleWare
 
         $rs = $this->checkPermission($request, $permission);
 
-        if($rs){
+        if($rs || $module == 'learningTask' ){
             // return \response()->json($permission);
             return $next($request);
         }else{
