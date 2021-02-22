@@ -153,6 +153,7 @@ const LessonPlanViewContainer = (props) => {
         }else{
  
           for(var i = result.destination.index; i < result.source.index; i++){
+              
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence + 1,
@@ -201,6 +202,11 @@ const LessonPlanViewContainer = (props) => {
  
         if(result.source.index < result.destination.index){
           for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
+            if(typeof tempTasks[i] == "undefined" ){
+                continue
+            }
+            
+
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence - 1,
@@ -212,6 +218,10 @@ const LessonPlanViewContainer = (props) => {
         }else{
  
           for(var i = result.destination.index; i < result.source.index; i++){
+            if(typeof tempTasks[i] == "undefined" ){
+                continue
+            }
+            
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence + 1,
