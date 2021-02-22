@@ -242,7 +242,7 @@ const LessonPlanViewContainer = (props) => {
             onDragAccrossType(result);
        }
 
-       console.log(result);
+    //    console.log(result);
        return;
 
       
