@@ -236,7 +236,11 @@ const DesignInfo = (props) => {
       "no_of_lesson": parseInt(courseData.no_of_lesson),
       "description": courseData.description,
       "subject": courseData.subject,
-      'tags': tags
+      'tags': tags.map(_tags => {
+        return {
+          "name": _tags
+        }
+      })
     }).then(response => {
       dispatch({
         type: "INIT_COURSE",
