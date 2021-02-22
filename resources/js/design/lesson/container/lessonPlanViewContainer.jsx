@@ -136,7 +136,7 @@ const LessonPlanViewContainer = (props) => {
  
         var sourceTask = {
           id: tempTasks[result.source.index].lessonid.id,
-          sequence: tempTasks[result.destination.index].lessonid.sequence,
+          sequence: result.destination.index + 1,
           lessontype: lessontype
         }
  
