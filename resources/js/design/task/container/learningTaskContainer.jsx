@@ -268,9 +268,18 @@ const LearningTaskContainer = (props) => {
                 .then(response => {
                     //load the default learning outcomes by api request
                     // refreshCourse();
-                    setLoadingOpen(false);  
-                    deleteLearningTask(task)
-                    displayMsg("success", "Learning Task Moved"); 
+                    // setLoadingOpen(false);  
+                    apiLearningTaskDelete(task.id)
+                    .then(response => {
+                        //load the default learning outcomes by api request
+                        refreshCourse();
+                        setLoadingOpen(false);
+                        displayMsg("success", "Learning Task Moved");
+                    })
+                    .catch(error => {
+                        displayMsg("error", "Some Errors Occured");
+                        console.log(error);
+                    });
                 })
                 .catch(error => {
                     console.log(error);
@@ -286,9 +295,18 @@ const LearningTaskContainer = (props) => {
                 .then(response => {
                     //load the default learning outcomes by api request
                     // refreshCourse();
-                    setLoadingOpen(false);  
-                    deleteLearningTask(task)
-                    displayMsg("success", "Learning Task Moved"); 
+                    // setLoadingOpen(false);  
+                    apiLearningTaskDelete(task.id)
+                    .then(response => {
+                        //load the default learning outcomes by api request
+                        refreshCourse();
+                        setLoadingOpen(false);
+                        displayMsg("success", "Learning Task Moved");
+                    })
+                    .catch(error => {
+                        displayMsg("error", "Some Errors Occured");
+                        console.log(error);
+                    });
                 })
                 .catch(error => {
                     console.log(error);

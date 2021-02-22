@@ -176,10 +176,21 @@ const ComponentPatternTaskContainer = (props) =>{
                 return await apiLearningTaskPost(temp_task)
                 .then(response => {
                     //load the default learning outcomes by api request
-                    refreshCourse();
-                    setLoadingOpen(false);  
-                    deleteLearningTask(task)
-                    displayMsg("success", "Learning Task Moved"); 
+                    // refreshCourse();
+                    // setLoadingOpen(false);  
+                    apiLearningTaskDelete(task.id)
+                    .then(response => {
+                        //load the default learning outcomes by api request
+                        refreshCourse();
+                        setLoadingOpen(false);
+                        displayMsg("success", "Learning Task Moved"); 
+                    })
+                    .catch(error => {
+                        displayMsg("error", "Some Errors Occured");
+                        console.log(error);
+                    });
+                    // deleteLearningTask(task)
+                    // displayMsg("success", "Learning Task Moved"); 
                 })
                 .catch(error => {
                     console.log(error);
@@ -194,10 +205,21 @@ const ComponentPatternTaskContainer = (props) =>{
                 return await apiLearningTaskPost(temp_task)
                 .then(response => {
                     //load the default learning outcomes by api request
-                    refreshCourse();
-                    setLoadingOpen(false);  
-                    deleteLearningTask(task)
-                    displayMsg("success", "Learning Task Moved"); 
+                    // refreshCourse();
+                    // setLoadingOpen(false);  
+                    apiLearningTaskDelete(task.id)
+                    .then(response => {
+                        //load the default learning outcomes by api request
+                        refreshCourse();
+                        setLoadingOpen(false);
+                        displayMsg("success", "Learning Task Moved"); 
+                    })
+                    .catch(error => {
+                        displayMsg("error", "Some Errors Occured");
+                        console.log(error);
+                    });
+                    // deleteLearningTask(task)
+                    // displayMsg("success", "Learning Task Moved"); 
                 })
                 .catch(error => {
                     console.log(error);

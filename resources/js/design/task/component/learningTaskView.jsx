@@ -412,7 +412,7 @@ const LearningTaskView = (props) => {
                 <DialogTitle>Move Learning Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Please select the curriculum component/ pattern you want move the task to.
+                        Please select the curriculum component/ pattern you want to move the task to.
                     </DialogContentText>
                     <Select value = {moveTo} onChange = {(event) => setMoveTo(event.target.value)} fullWidth>
                          <MenuItem disabled value= {"component_"+-1}>
