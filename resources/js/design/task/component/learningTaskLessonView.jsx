@@ -25,7 +25,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 import { AppContextStore } from '../../../container/app';
-import { ContextStore } from '../../../container/designContainer'
+
+import { getItemStyle } from '../../../dragndrop';
 //   tasks: [
 //     {
 //       id: 0,
@@ -40,15 +41,6 @@ import { ContextStore } from '../../../container/designContainer'
 //       description: "",
 //     }
 //   ],
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
-  
-    ...(isDragging && {
-      background: "rgb(235,235,235)"
-    })
-  });
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -79,10 +71,7 @@ const LearningTaskLessonView = (props) => {
     const {provided, snapshot, index} = props;
     // const {onEditTasks} = props;
     const {error, editBtn} = props;
-    const {course } = React.useContext(ContextStore);
     const { options, taskTypeColor} = React.useContext(AppContextStore);
-    const [delDialogOpen, setDelDialogOpen] = React.useState(false);
-    const mode = props.mode;  
 
     const [task, setTask] = React.useState({
         id: -1,

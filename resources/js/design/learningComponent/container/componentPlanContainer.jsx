@@ -13,7 +13,7 @@ import InstructionBox from '../../../components/instructionBox';
 
 import RootRef from "@material-ui/core/RootRef";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
+import {getListStyle} from '../../../dragndrop';
 import { apiLearningCompPost, apiLearningCompTempGet, apiLearningCompPut,
 apiCourseGet, 
 apiLearningOutcomePost} from '../../../api.js';
@@ -35,7 +35,7 @@ const ComponentPlanContainer = (props)  => {
   const classes = useStyles();
   const { course, refreshCourse } = React.useContext(ContextStore);
   const { setLoadingOpen, displayMsg  } = React.useContext(AppContextStore);
-  const [ selectComIndex, setSelectComIndex] = React.useState(-1);
+  const [ selectCompID, setSelectCompID] = React.useState(-1);
   const [ addComponentOpen, setAddComponentOpen ] = React.useState(false);
   const isDraggable = course.permission > 2;
 
@@ -44,6 +44,20 @@ const ComponentPlanContainer = (props)  => {
     width: '100%',
     padding: 16
   });
+
+  React.useEffect(()=>{
+    setSelectCompID(props.component_id);
+    if(props.component_id > 0){
+      setTimeout(function(){   
+        document.getElementById('component_focus_'+props.component_id)
+        .scrollIntoView({behavior: "smooth", block: "start", inline: "start"}
+      );
+    }, 1000);
+    
+      // document.getElementById('component_'+props.component_id)
+      // .scrollIntoView({behavior: "smooth", block: "start", inline: "start"});
+    }
+  }, [props.component_id])
 
   const onAddComponentClose = () => {
     setAddComponentOpen(false)
@@ -266,19 +280,19 @@ const ComponentPlanContainer = (props)  => {
                 <RootRef rootRef={provided.innerRef}>
                     <Grid container style={getListStyle(snapshot.isDraggingOver)} spacing = {2}>
                     {course.components.map((_component, index)=>(
-                         <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {(!isDraggable || selectComIndex == index) }>
+                         <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {(!isDraggable || selectCompID == index) }>
                          {(provided, snapshot) => (
-                              <Grid item xs ={12}>
+                              <Grid item xs ={12} id = {"component_focus_" + _component.id}>
                                 <ComponentContainer 
                                   component = {_component}
                                   componentID = {_component.id}
                                   key= {index}
                                   index = {index}
-                                  isDraggable = {(isDraggable && selectComIndex != index)}
+                                  isDraggable = {(isDraggable && selectCompID != _component.id)}
                                   provided = {provided} 
                                   snapshot = {snapshot} 
-                                  selectComIndex= {selectComIndex}
-                                  setSelectComIndex = {setSelectComIndex}
+                                  selectCompID= {selectCompID}
+                                  setSelectCompID = {setSelectCompID}
                                 />
                               </Grid>
                          )}

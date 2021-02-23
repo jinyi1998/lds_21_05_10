@@ -30,15 +30,19 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import MenuIcon from '@material-ui/icons/Menu';
-import InfoIcon from '@material-ui/icons/Info';
-import GpsFixedIcon from '@material-ui/icons/GpsFixed';
-import ExploreIcon from '@material-ui/icons/Explore';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
+import InfoIcon from '@material-ui/icons/Info';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
+import AvTimerIcon from '@material-ui/icons/AvTimer';
+import PieChartIcon from '@material-ui/icons/PieChart'
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
 import {AppContextStore} from '../container/app';
+
 
 import {
   apiCourseUpdate, apiCourseClearComponent,
@@ -97,7 +101,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerPaperClose: {
     overflowX: 'hidden',
-    width: 0,
+    width: "24px",
   },
 }));
 
@@ -109,6 +113,8 @@ const PageListMenu = (props) => {
   const [extended, setExtend] = React.useState(true);
   const classes = useStyles();
 
+  const { course} = React.useContext(ContextStore);
+
   return (
     <div
       classes={
@@ -117,7 +123,8 @@ const PageListMenu = (props) => {
       style = {{
         position: "sticky", 
         top: "72px",
-        transition: "width 2s"
+        transition: "width 2s",
+        maxWidth: "240px",
       }}
     >
       {
@@ -129,86 +136,157 @@ const PageListMenu = (props) => {
               </IconButton>
           </div>
           <List component="nav" aria-label="" className={classes.drawerList}>
-          <ListSubheader>Course Overview</ListSubheader>
-          <ListItem
-            button
-            selected={activeStage === 'courseinfo'}
-            onClick={(event) => setActiveStage('courseinfo')}
-          >
-            {/* <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon> */}
-            <ListItemText primary="Course Information" />
-          </ListItem>
-  
-          <ListItem
-            button
-            selected={activeStage === 'learningOutcomes'}
-            onClick={(event) => setActiveStage('learningOutcomes')}
-          >
-            {/* <ListItemIcon>
-              <InfoIcon />
-            </ListItemIcon> */}
-            <ListItemText primary="Learning Outcomes" />
-          </ListItem>
-  
-          <ListSubheader>Design Stage</ListSubheader>
-          {/* <ListItem
-            button
-            selected={activeStage === 'unitPlan'}
-            onClick={(event) => setActiveStage('unitPlan')}
-          >
-            <ListItemIcon>
-              <ExploreIcon />
-            </ListItemIcon>
-            <ListItemText primary="Curriculum Component Design" />
-          </ListItem> */}
-  
-          <ListItem
-            button
-            selected={activeStage === 'componentPlan'}
-            onClick={(event) => setActiveStage('componentPlan')}
-          >
-            <ListItemText primary="Curriculum Component Plan" />
-          </ListItem>
-  
-          <ListItem
-            button
-            selected={activeStage === 'lessonPlan'}
-            onClick={(event) => setActiveStage('lessonPlan')}
-          >
-            <ListItemText primary="Lesson Plan" />
-          </ListItem>
-  
-          {/* <ListItem
-            button
-            selected={activeStage === 'timeline'}
-            onClick={(event) => window.open(
-              `/timeline/${props.course_id}`
-            ,'_blank'
-            )}
-          >
-            <ListItemText primary="Timeline" />
-          </ListItem> */}
-  
-          <ListSubheader>Review Stage</ListSubheader>
+            {/* <ListSubheader>Course Overview</ListSubheader> */}
             <ListItem
               button
-              selected={activeStage === 'finish'}
-              onClick={(event) => setActiveStage('finish')}
+              selected={activeStage === 'courseinfo'}
+              onClick={(event) => setActiveStage('courseinfo')}
             >
-              {/* <ListItemIcon>
-                <ExploreIcon />
-              </ListItemIcon> */}
-              <ListItemText primary="Review" />
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="Course Information" />
             </ListItem>
-        </List>
+    
+            <ListItem
+              button
+              selected={activeStage === 'learningOutcomes'}
+              onClick={(event) => setActiveStage('learningOutcomes')}
+            >
+              <ListItemIcon>
+                <AssignmentTurnedInIcon />
+              </ListItemIcon>
+              <ListItemText primary="Learning Outcomes" />
+            </ListItem>
+    
+            {/* <ListSubheader>Design Stage</ListSubheader> */}
+            {/* <ListItem
+              button
+              selected={activeStage === 'unitPlan'}
+              onClick={(event) => setActiveStage('unitPlan')}
+            >
+              <ListItemIcon>
+                <ExploreIcon />
+              </ListItemIcon>
+              <ListItemText primary="Curriculum Component Design" />
+            </ListItem> */}
+    
+            <ListItem
+              button
+              selected={activeStage === 'componentPlan'}
+              onClick={(event) => setActiveStage('componentPlan')}
+            >
+              <ListItemIcon>
+                <ViewHeadlineIcon />
+              </ListItemIcon>
+              <ListItemText primary="Curriculum Component Plan" />
+            </ListItem>
+
+            {
+              course.components.map(_comp => 
+                <ListItem
+                button
+                selected={activeStage === ('componentPlan_' + _comp.id)}
+                onClick={(event) => setActiveStage('componentPlan_' + _comp.id)}
+              >
+                <ListItemText primary={_comp.title} primaryTypographyProps = {{noWrap: true, variant: "caption"}} />
+              </ListItem>
+              )
+            }
+    
+            <ListItem
+              button
+              selected={activeStage === 'lessonPlan'}
+              onClick={(event) => setActiveStage('lessonPlan')}
+            >
+              <ListItemIcon>
+                <AvTimerIcon />
+              </ListItemIcon>
+               
+              <ListItemText primary="Lesson Plan" />
+            </ListItem>
+    
+            {/* <ListItem
+              button
+              selected={activeStage === 'timeline'}
+              onClick={(event) => window.open(
+                `/timeline/${props.course_id}`
+              ,'_blank'
+              )}
+            >
+              <ListItemText primary="Timeline" />
+            </ListItem> */}
+    
+            {/* <ListSubheader>Review Stage</ListSubheader> */}
+              <ListItem
+                button
+                selected={activeStage === 'finish'}
+                onClick={(event) => setActiveStage('finish')}
+              >
+                <ListItemIcon>
+                  <PieChartIcon  />
+                </ListItemIcon>
+                <ListItemText primary="Review" />
+              </ListItem>
+          </List>
         </React.Fragment>
         :
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={() => {setExtend(true)}}>
-              <ChevronRightIcon />
-          </IconButton>
+          <List component="nav" aria-label="" className={classes.drawerList}>
+            <IconButton onClick={() => {setExtend(true)}}>
+                <ChevronRightIcon />
+            </IconButton>
+            <ListItem
+              button
+              selected={activeStage === 'courseinfo'}
+              onClick={(event) => setActiveStage('courseinfo')}
+            >
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+            </ListItem>
+    
+            <ListItem
+              button
+              selected={activeStage === 'learningOutcomes'}
+              onClick={(event) => setActiveStage('learningOutcomes')}
+            >
+              <ListItemIcon>
+                <AssignmentTurnedInIcon />
+              </ListItemIcon>
+          
+            </ListItem>
+    
+            <ListItem
+              button
+              selected={activeStage === 'componentPlan'}
+              onClick={(event) => setActiveStage('componentPlan')}
+            >
+                <ListItemIcon>
+                  <ViewHeadlineIcon />
+                </ListItemIcon>
+            </ListItem>
+    
+            <ListItem
+              button
+              selected={activeStage === 'lessonPlan'}
+              onClick={(event) => setActiveStage('lessonPlan')}
+            >
+                <ListItemIcon>
+                  <AvTimerIcon  />
+                </ListItemIcon>
+            </ListItem>
+
+              <ListItem
+                button
+                selected={activeStage === 'finish'}
+                onClick={(event) => setActiveStage('finish')}
+              >
+                <ListItemIcon>
+                  <PieChartIcon  />
+                </ListItemIcon>
+              </ListItem>
+          </List>
         </div>
       }
      
@@ -488,6 +566,20 @@ const Design = (props) => {
   }
 
   const getDesignStageContent = () => {
+    if(activePage.split('_')[0] == "componentPlan"){
+      if(typeof activePage.split('_')[1] != "undefined"){
+          return(
+            <Grid container item xs spacing = {2}>
+              <Grid item xs = {12}>
+                <ComponentPlanContainer component_id = {activePage.split('_')[1]}/>
+              </Grid>
+              <Grid container item xs = {12} justify = {"flex-end"}>
+                <Button variant = {"outlined"} color = {"primary"} onClick = {()=>setActivePage('lessonPlan')}> Next </Button>
+              </Grid>
+            </Grid>
+          );
+      }
+    }
     switch (activePage){
       case 'unitPlan':
         return(          

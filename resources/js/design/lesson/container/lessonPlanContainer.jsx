@@ -164,7 +164,7 @@ const LessonPlanContainer = (props) => {
 
     return (
         <Grid container >
-            <Grid item xs={3}>
+            <Grid item xs={2}>
                 <Paper className={classes.paper}>
                     <List data-tour = "lesson_lesson_list">
                         {course.lessons.map((_lessons, index) => 
@@ -212,7 +212,7 @@ const LessonPlanContainer = (props) => {
                 </Paper>
             </Grid>
 
-            <Grid item xs={9}>
+            <Grid item xs={10}>
                 {
                     selectedLessonID == -1 ? 
                         course.lessons.map(_lesson => 

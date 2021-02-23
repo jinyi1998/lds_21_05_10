@@ -26,6 +26,8 @@ import ComponentPatternTaskContainer from '../container/componentPatternTaskCont
 
 import ComponentFloatDashboardContainer from './componentFloatDashboardContainer';
 
+import {getItemStyle, getDraggable} from '../../../dragndrop';
+
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
@@ -77,9 +79,9 @@ const ComponentContainer = (props)=>{
   const {provided, snapshot} = props;
   const isDraggable = props.isDraggable? props.isDraggable : false;
 
-  const selectComIndex = props.selectComIndex;
-  const setSelectComIndex = props.setSelectComIndex;
-  const {course, refreshCourse } = React.useContext(ContextStore);
+  const selectCompID = props.selectCompID;
+  const setSelectCompID = props.setSelectCompID;
+  const {course, refreshCourse, setActivePage } = React.useContext(ContextStore);
   const { setLoadingOpen, displayMsg } = React.useContext(AppContextStore);
   
   const [component, setComponent] = React.useState(props.component);
@@ -101,43 +103,15 @@ const ComponentContainer = (props)=>{
     return time;
   };
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
-    // styles we need to apply on draggables
-    ...draggableStyle,
-  
-    ...(isDragging && {
-      background: "rgb(235,235,235)"
-    })
-});
-
-  const getDraggable = (provided, snapshot) => {
-      if(typeof provided == 'undefined'){
-          return (
-            null
-          );
-      }else{
-          return (
-              {
-                  // styles we need to apply on draggables
-                  ref: provided.innerRef,
-                  ...provided.draggableProps,
-                  ...provided.dragHandleProps,
-                  style: getItemStyle(
-                      snapshot.isDragging,
-                      provided.draggableProps.style
-                  )
-              }
-          );
-      }
-  }
-
     //#region action button
     const handleChange = (panel) => (event, isExpanded) => {
       event.stopPropagation();
       if(isExpanded){
-        setSelectComIndex(selectComIndex != index ? index : -1)
+        // setSelectCompID(selectCompID != index ? index : -1)
+        setActivePage('componentPlan_' + component.id)
       }else{
-        setSelectComIndex(-1)
+        // setSelectCompID(-1)
+        setActivePage('componentPlan')
       }
     
     };
@@ -151,18 +125,6 @@ const ComponentContainer = (props)=>{
         setEditComponent(false);
         setAnchorEl(null);
       }) 
-    }
-
-    const handleScroll = () => {
-      if (window.pageYOffset > 250) {
-          if(index == selectComIndex && componentTitleColor != 'yellow'){
-            setComponentTitleColor('yellow');   
-          }else if(index != selectComIndex){
-            setComponentTitleColor('#FFFFFF');   
-          }
-      }else{
-        setComponentTitleColor('#FFFFFF');   
-      }
     }
 
     async function updateComponent(component){
@@ -231,20 +193,19 @@ const ComponentContainer = (props)=>{
             component: component,
             componentID: componentID,
             index: index,
-            selectComIndex: props.selectComIndex,
-            setSelectComIndex: props.setSelectComIndex
+            selectCompID: props.selectCompID,
+            setSelectCompID: props.setSelectCompID
         }}>
         
 
           <Accordion 
-            expanded = {index == selectComIndex} 
+       
+            expanded = {component.id == selectCompID} 
             onChange = {handleChange()}
             {...getDraggable(provided, snapshot)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon/>}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
               data-tour = "component_expand_panel"
               style = {{ 
                 "position": "sticky" ,
@@ -256,7 +217,7 @@ const ComponentContainer = (props)=>{
               <Grid container spacing = {3} alignItems = {"center"}>
                 {
                   isDraggable?
-                  <Grid item xs = {1}>
+                  <Grid item xs style = {{maxWidth: "3%"}}>
                     <DragHandleIcon />
                   </Grid>
                   : 
@@ -264,7 +225,7 @@ const ComponentContainer = (props)=>{
                 }
           
 
-                <Grid container item xs spacing = {3}>
+                <Grid container item xs spacing = {3} alignItems = {"center"}>
                   <Grid item xs  data-tour = "component_header">
                     {
                         editComponent?
@@ -311,11 +272,6 @@ const ComponentContainer = (props)=>{
                     : 
                       null
                   }
-
-                  <Grid item xs={12} data-tour = "component_time">
-                      <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
-                  </Grid>
-
                 </Grid>
               </Grid>
             </AccordionSummary>
@@ -324,6 +280,9 @@ const ComponentContainer = (props)=>{
                   "position": "flex" ,
               }}>
                 <Grid container spacing={2}>
+                  <Grid item xs={12} data-tour = "component_time">
+                      <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
+                  </Grid>
 
                   <Grid container item xs = {5}>
                     <Grid item xs={12}> 

@@ -23,9 +23,7 @@ import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app'
 import { Typography } from '@material-ui/core';
 
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightgrey' : '',
-});
+import { getListStyle } from '../../../dragndrop';
 
 const LessonPlanView = (props) => {
 
@@ -116,62 +114,6 @@ const LessonPlanView = (props) => {
 
     async function updateLearningTaskLessonRelation(task_relation) {
        props.updateLearningTaskLessonRelation(task_relation);
-    }
-
-    const onDragEnd = (result) => {
-         // dropped outside the list
-         if (!result.destination) {
-            return;
-        }
-
-        var updates = [];
-        setLoadingOpen(true);
-
-        let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
-        //sync the data to root state
-        var tempTasks =  JSON.parse(JSON.stringify(lessontask));
-
-        tempTasks.map((_task, index)=> {
-            if(_task.lessonid.sequence == null){
-                tempTasks[index].lessonid.sequence = index + 1;
-            }
-        });
-
-        var sourceTask = {
-          id: tempTasks[result.source.index].lessonid.id,
-          sequence: tempTasks[result.destination.index].lessonid.sequence,
-          lessontype: lessontype
-        }
-
-        if(result.source.index < result.destination.index){
-          for(var i = result.source.index + 1; i < result.destination.index + 1; i++){
-            let tempTask = {
-              id : tempTasks[i].lessonid.id,
-              sequence: tempTasks[i].lessonid.sequence - 1,
-              lessontype: lessontype
-            }
-            // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
-         }
-        }else{
-
-          for(var i = result.destination.index; i < result.source.index; i++){
-            let tempTask = {
-              id : tempTasks[i].lessonid.id,
-              sequence: tempTasks[i].lessonid.sequence + 1,
-              lessontype: lessontype
-            }
-            // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
-          }
-        }
-        // console.log(sourceTask);
-        updates.push( updateLearningTaskLessonRelation(sourceTask) );
-
-        Promise.all(updates).then(()=>{
-            setLoadingOpen(false);
-            displayMsg("success", "Tasks Sequence Updated")
-        });
     }
 
     const onSaveTask = () => {
