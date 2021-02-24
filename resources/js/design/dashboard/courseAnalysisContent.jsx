@@ -24,19 +24,18 @@ const CourseAnalysisContent = (props)=>{
 
     return (
         <React.Fragment>
-                <Grid item xs = {6} >
-                    <Paper className = {classes.paper}>
-                        <h5>Total Tasks Number Distribution By Type</h5>
-                        <Pie data={data['tasks_num_by_type']} />
-                    </Paper>
-                </Grid> 
-
-                <Grid item xs = {6} >
-                    <Paper className = {classes.paper}>
-                        <h5>Total Tasks Time Distribution By Type</h5>
-                        <Pie data={data['tasks_time_by_type']} />
-                    </Paper>
-                </Grid>   
+            <Grid item xs = {6} >
+                <Paper className = {classes.paper}>
+                    <h5>Distribution of time of learning task types</h5>
+                    <Pie data={data['tasks_time_by_type']} />
+                </Paper>
+            </Grid>   
+            <Grid item xs = {6} >
+                <Paper className = {classes.paper}>
+                    <h5>Distribution of number spent on learning task types</h5>
+                    <Pie data={data['tasks_num_by_type']} />
+                </Paper>
+            </Grid>                
         </React.Fragment>
     );
 }

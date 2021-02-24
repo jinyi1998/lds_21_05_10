@@ -95,7 +95,7 @@ const LessonAnalysisContainer = (props)=>{
             return (
                 <Grid item xs = {6} >
                      <Paper className = {classes.paper}>
-                        <h5>Lesson Task Number Distribution By Type</h5>
+                        <h5>Distribution of number of learning task types in {props.lesson?.title}</h5>
                         <Pie data={data.tasks_num_by_type} />
                      </Paper>
                   

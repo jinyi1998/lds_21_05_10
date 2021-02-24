@@ -197,7 +197,9 @@ const LessonAnalysisContainer = ()=>{
                 {displayLessonTabBar()}
             </Grid>
             
-            <LessonAnalysisContent data = {data} />      
+            <LessonAnalysisContent 
+            data = {data} 
+            lesson = {course.lessons.find(_lesson => lesson == _lesson.id)}/>      
 
         </Grid>
        

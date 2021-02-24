@@ -167,7 +167,7 @@ const ComponentAnalysisContainer = ()=>{
                    {displayComponentTabBar()}
                 </Grid>
                
-                <ComponentAnalysisContent data = {data}/>
+                <ComponentAnalysisContent data = {data} component = {course.components.find(_component => component == _component.id)}/>
 
             </Grid>
        

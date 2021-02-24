@@ -176,13 +176,13 @@ const LessonOutcomeAssessment = (props)=>{
     return (
         <Grid container item xs = {12} alignContent="center" alignItems ="center">
             <Grid item xs = {5} >
-                Curriculum Component
+                Relevant Curriculum Component(s) and Tasks(s)
             </Grid>
             <Grid item xs = {2} >
                 
             </Grid>
             <Grid item xs = {5} >
-                Lesson Assessment
+                Learning Outcome(s)
             </Grid>
 
             <Grid item xs = {7} >
