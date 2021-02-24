@@ -391,7 +391,7 @@ const LearningTaskEditView = (props) => {
                     <Grid item xs={12} className={classes.contentGrid}>
                         <FormControl variant="outlined" className={classes.formControl} fullWidth error = {! (error["classType"]=="")} margin='dense'>
                             <InputLabel  id={"classType-"+ taskID + "-label"}>
-                                Class Type
+                                Location
                             </InputLabel>
                             <Select
                             labelId={"classType-"+ taskID + "-label"}
@@ -405,7 +405,7 @@ const LearningTaskEditView = (props) => {
                             )}
                             >
                                 <MenuItem value={-1} disabled>
-                                    <em>Please select the class type</em>
+                                    <em>Please select the location</em>
                                 </MenuItem>
                                 {classTypeOtps.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.description}</MenuItem>)}
                             </Select>

@@ -307,7 +307,7 @@ const LearningTaskView = (props) => {
                     </Grid>
 
                     <Grid item xs={4} className={classes.contentGrid} data-tour="component_task_classtype">
-                        <Tooltip title="Class Type" aria-label="classtype">
+                        <Tooltip title="Location" aria-label="classtype">
                             <RoomIcon /> 
                         </Tooltip>
                         {classTypeOtps.find(x => x.id == task.class_type)?.description}
