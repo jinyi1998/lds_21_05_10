@@ -47,11 +47,11 @@ const LessonAnalysisContainer = (props)=>{
                 <React.Fragment>
                     <Grid container item xs ={12} spacing = {4}>
                         {displayTaskAessessmentWithComponent()}
-                        {displayLearningTimeChart()}
+                        {/* {displayLearningTimeChart()} */}
                         {displayTaskTypeChart()}
-                        {displayTaskClassTypeChart()}
-                        {displayTaskClassSizeChart()}
-                        {displayTaskClassTargetChart()}
+                        {/* {displayTaskClassTypeChart()} */}
+                        {/* {displayTaskClassSizeChart()} */}
+                        {/* {displayTaskClassTargetChart()} */}
                     </Grid>
                 </React.Fragment>
             )

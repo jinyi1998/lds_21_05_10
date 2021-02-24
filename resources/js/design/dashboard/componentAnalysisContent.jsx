@@ -38,7 +38,7 @@ const ComponentAnalysisContent = (props)=>{
             return (
                 <Grid item xs = {12} >
                     <Paper className = {classes.paper}>
-                        <h5>Component Task/ Lesson Matching</h5>
+                        <h5>Curriculum Component Task/ Lesson Matching</h5>
                         <ComponentTaskLesson data = {data['tasks_by_lesson']}/>
                     </Paper>
                 </Grid>     
@@ -53,31 +53,31 @@ const ComponentAnalysisContent = (props)=>{
 
                 <Grid item xs = {12} >
                     <Paper className = {classes.paper}>
-                        <h5>Component Outcome/ Task Assessment Matching</h5>
+                        <h5>Curriculum Component Outcome/ Task Assessment Matching</h5>
                         <ComponentOutcomeAessessment data = {data['task_assessment']}/>
                     </Paper>
                 </Grid>     
 
                 <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
-                        <h5>Component Task Time Distribution By Task Type</h5>
+                        <h5>Curriculum Component Task Time Distribution By Task Type</h5>
                         <Pie data={data['tasks_time_by_type']} />
                     </Paper>
                 </Grid>    
 
                 <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
-                        <h5>Component Task Number Distribution By Task Type</h5>
+                        <h5>Curriculum Component Task Number Distribution By Task Type</h5>
                         <Pie data={data['tasks_num_by_type']} />
                     </Paper>
                 </Grid>   
 
-                <Grid item xs = {6} >
+                {/* <Grid item xs = {6} >
                     <Paper className = {classes.paper}>
                         <h5>Component Task Time Distribution By Tasks</h5>
                         <Pie data={data['tasks_time_by_task']} />
                     </Paper>
-                </Grid>   
+                </Grid>    */}
 
        </React.Fragment>
     );

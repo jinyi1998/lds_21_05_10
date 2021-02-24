@@ -160,7 +160,7 @@ const ComponentAnalysisContainer = ()=>{
    
             <Grid container spacing = {6}>
                 <Grid item xs = {12} >
-                    <h2> Component Analysis Container</h2>
+                    <h2> Curriculum Component Analysis</h2>
                 </Grid>
 
                 <Grid item xs = {12}>

@@ -38,7 +38,7 @@ const DashBoardContainer = ()=>{
                             Course Analysis
                         </MenuItem>
                         <MenuItem onClick = {()=>{setModule("component")}} selected = {module == "component"}  style={{whiteSpace: 'normal'}}>
-                            Component Analysis
+                            Curriculum Component Analysis
                         </MenuItem>
                         <MenuItem onClick = {()=>{setModule("lesson")}} selected = {module == "lesson"}  style={{whiteSpace: 'normal'}}>
                             Lesson Analysis
