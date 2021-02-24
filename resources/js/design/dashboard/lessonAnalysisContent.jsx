@@ -47,11 +47,11 @@ const LessonAnalysisContainer = (props)=>{
                 <React.Fragment>
                     <Grid container item xs ={12} spacing = {4}>
                         {displayTaskAessessmentWithComponent()}
-                        {displayLearningTimeChart()}
+                        {/* {displayLearningTimeChart()} */}
                         {displayTaskTypeChart()}
-                        {displayTaskClassTypeChart()}
-                        {displayTaskClassSizeChart()}
-                        {displayTaskClassTargetChart()}
+                        {/* {displayTaskClassTypeChart()} */}
+                        {/* {displayTaskClassSizeChart()} */}
+                        {/* {displayTaskClassTargetChart()} */}
                     </Grid>
                 </React.Fragment>
             )
@@ -65,7 +65,7 @@ const LessonAnalysisContainer = (props)=>{
             return (
                 <Grid item xs = {12} >
                     <Paper className = {classes.paper}>
-                        <h5>Lesson Tasks Assessment</h5>
+                        {/* <h5>Lesson Tasks Assessment</h5> */}
                         <LessonOutcomeAssessment data= {data.lesson_task_with_component}/>
                     </Paper>
                 </Grid> 
@@ -95,7 +95,7 @@ const LessonAnalysisContainer = (props)=>{
             return (
                 <Grid item xs = {6} >
                      <Paper className = {classes.paper}>
-                        <h5>Lesson Task Number Distribution By Type</h5>
+                        <h5>Distribution of number of learning task types in {props.lesson?.title}</h5>
                         <Pie data={data.tasks_num_by_type} />
                      </Paper>
                   

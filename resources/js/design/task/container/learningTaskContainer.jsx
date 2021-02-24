@@ -102,7 +102,7 @@ const LearningTaskContainer = (props) => {
           }
     
         if(validator.isEmpty(taskData.class_type.toString())){
-          tempError["classType"] = "Please enter the class type";
+          tempError["classType"] = "Please enter the location";
           validated = false;
         }
     

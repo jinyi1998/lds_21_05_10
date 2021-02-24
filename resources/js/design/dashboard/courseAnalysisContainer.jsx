@@ -126,7 +126,7 @@ const CourseAnalysisContainer = ()=>{
         <Grid container spacing = {6}>
 
             <Grid item xs = {12} >
-                <h2> Overall Analysis Container</h2>
+                <h2> Course Analysis</h2>
             </Grid>
 
             <CourseAnalysisContent data = {data} />

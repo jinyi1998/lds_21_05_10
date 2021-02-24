@@ -191,13 +191,15 @@ const LessonAnalysisContainer = ()=>{
 
         <Grid container spacing = {6}>
             <Grid item xs = {12} >
-                <h2> Lesson Analysis Container</h2>
+                <h2> Lesson Analysis</h2>
             </Grid>
             <Grid item xs = {12}>
                 {displayLessonTabBar()}
             </Grid>
             
-            <LessonAnalysisContent data = {data} />      
+            <LessonAnalysisContent 
+            data = {data} 
+            lesson = {course.lessons.find(_lesson => lesson == _lesson.id)}/>      
 
         </Grid>
        

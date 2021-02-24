@@ -121,7 +121,7 @@ const LessonOutcomeAssessment = (props)=>{
                             // id= {_task.id}
                             // style = {displayColor(_task.has_assessment)}
                         >
-                            <Typography className={classes.heading}>Learning Component: {data.component[component_id]} </Typography>
+                            <Typography className={classes.heading}>Curriculum Component: {data.component[component_id]} </Typography>
                         </AccordionSummary>
 
                         <AccordionDetails>
@@ -176,13 +176,13 @@ const LessonOutcomeAssessment = (props)=>{
     return (
         <Grid container item xs = {12} alignContent="center" alignItems ="center">
             <Grid item xs = {5} >
-                Component
+                Relevant Curriculum Component(s) and Task(s)
             </Grid>
             <Grid item xs = {2} >
                 
             </Grid>
             <Grid item xs = {5} >
-                Lesson Assessment
+                Learning Outcome(s)
             </Grid>
 
             <Grid item xs = {7} >
