@@ -65,7 +65,7 @@ const LessonAnalysisContainer = (props)=>{
             return (
                 <Grid item xs = {12} >
                     <Paper className = {classes.paper}>
-                        <h5>Lesson Tasks Assessment</h5>
+                        {/* <h5>Lesson Tasks Assessment</h5> */}
                         <LessonOutcomeAssessment data= {data.lesson_task_with_component}/>
                     </Paper>
                 </Grid> 
