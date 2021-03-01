@@ -161,7 +161,7 @@ const LessonAnalysisContainer = (props)=>{
                     : 
                     <Grid item xs = {12} >
                          <Paper className = {classes.paper}>
-                         some error...
+                         some error... you might need to select the lesson first...
                          </Paper>
                     </Grid>
                 }

@@ -28,6 +28,11 @@ const theme = createMuiTheme({
                 minWidth: "24px"
             }
         },
+        MuiAccordionDetails: {
+            root: {
+                padding: 0
+            }
+        },
         MuiAccordionSummary:{
             root: {
                 minHeight: "24px",
@@ -35,6 +40,10 @@ const theme = createMuiTheme({
                     minHeight: "36px"
                 }
             },
+            content: {
+                fontSize: "0.7rem",
+                fontWeight: "bold"
+            }
         },
         MuiListItem:{
             root: {

@@ -41,8 +41,11 @@ import {
 
 const useStyles = makeStyles(theme => ({
     AccordionSummary: {
-      backgroundColor: theme.palette.primary.dark,
-      color: 'white'
+    //   backgroundColor: theme.palette.primary.dark,
+    //   color: 'DarkBlue',
+      borderStyle: "solid",
+      borderWidth: "4px",
+      borderColor: "#F0F8FF"
     },
   }));
 

@@ -69,7 +69,7 @@ const LearningOutcomeUnit = (props)=>{
                     provided.draggableProps.style
             )}>
                 <ListItemIcon>
-                    <DragHandleIcon />
+                    <DragHandleIcon fontSize = {"small"}/>
                 </ListItemIcon>
                 <ListItemText
                     primary={
@@ -102,7 +102,7 @@ const LearningOutcomeUnit = (props)=>{
                                 outcome.outcomeType == 3?
                                 null
                                 :
-                                <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_stem_type"> STEM TYPE: ( {
+                                <Typography variant = {'caption'} component={'span'} display="inline" color = "textSecondary" data-tour = "lo_stem_type"> STEM TYPE: ( {
                                         outcome.stemtypesid.length > 0?
                                        
                                         outcome.stemtypesid.map( x => options.STEMTypeOpts.find( _opts => x.stem_type_id == _opts.id).name).join(',')
@@ -111,7 +111,7 @@ const LearningOutcomeUnit = (props)=>{
                                 } )  </Typography>
                             }
                         
-                            <Typography variant = {'caption'} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_level"> 
+                            <Typography variant = {'caption'} component={'span'} display="inline" color = "textSecondary" data-tour = "lo_level"> 
                                 Bloom Taxonomy Level: {options.bloomLvlOpts.find( x => x.id == outcome.bloom_id)?.name }  
                             </Typography>
                         </React.Fragment>

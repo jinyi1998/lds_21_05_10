@@ -185,6 +185,7 @@ const PageListMenu = (props) => {
             {
               course.components.map(_comp => 
                 <ListItem
+                key = {_comp.id}
                 button
                 selected={activeStage === ('componentPlan_' + _comp.id)}
                 onClick={(event) => setActiveStage('componentPlan_' + _comp.id)}
@@ -536,13 +537,13 @@ const Design = (props) => {
                   <Grid container item xs = {12}>
                     <Paper style = {{width: '100%', padding: 16, margin: 16}}>
                       <Grid item xs = {12}>
-                        <Typography variant="h4" gutterBottom style = {{fontWeight: 900}}>
+                        <Typography variant="h6" gutterBottom style = {{fontWeight: 900}}>
                           {course.unit_title}
                         </Typography>
                       </Grid>
 
                       <Grid item xs = {12}>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant={"subtitle1"} gutterBottom>
                           By {course.createdby.name} @{course.createdby.school}
                         </Typography>
                       </Grid>

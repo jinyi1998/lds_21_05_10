@@ -80,7 +80,10 @@ const LearningPatternContainer = (props) => {
         ...(isDragging && {
           background: "rgb(235,235,235)"
         }),
-        width: "calc(100% - 4px)"
+        width: "calc(100% - 4px)",
+        borderStyle: "solid",
+        borderWidth: "2px",
+        borderColor: "#f50057"
     });
     
     const getDraggable = (provided, snapshot) => {

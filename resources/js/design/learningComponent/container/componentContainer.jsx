@@ -88,7 +88,7 @@ const ComponentContainer = (props)=>{
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [editComponent, setEditComponent] = React.useState(false);
   const [componentTitle, setComponentTitlte] = React.useState(component.title);
-  const [componentTitleColor, setComponentTitleColor] = React.useState('#FFFFFF');
+  const [componentTitleColor, setComponentTitleColor] = React.useState('#F0F8FF');
 
   React.useEffect(()=>{
     setComponent(props.component);
@@ -214,18 +214,18 @@ const ComponentContainer = (props)=>{
                 "top": 60
               }} 
             >
-              <Grid container spacing = {3} alignItems = {"center"}>
+              <Grid container spacing = {2} alignItems = {"center"}>
                 {
                   isDraggable?
-                  <Grid item xs style = {{maxWidth: "3%"}}>
-                    <DragHandleIcon />
+                  <Grid item xs style = {{maxWidth: "2%"}}>
+                    <DragHandleIcon size = {"small"}/>
                   </Grid>
                   : 
                   null
                 }
           
 
-                <Grid container item xs spacing = {3} alignItems = {"center"}>
+                <Grid container item xs alignItems = {"center"}>
                   <Grid item xs  data-tour = "component_header">
                     {
                         editComponent?

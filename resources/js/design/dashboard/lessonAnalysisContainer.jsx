@@ -37,7 +37,7 @@ const generateHoverColor = (num) => {
 const LessonAnalysisContainer = ()=>{
     const { course } = React.useContext(ContextStore);
     const { options } = React.useContext(AppContextStore);
-    const [lesson, setLesson] = React.useState(course.lessons[0].id);
+    const [lesson, setLesson] = React.useState(course.lesson?.length? course.lessons[0].id : -1);
     
     const [data, setData] = React.useState({
         title: "", 
@@ -198,8 +198,9 @@ const LessonAnalysisContainer = ()=>{
             </Grid>
             
             <LessonAnalysisContent 
-            data = {data} 
-            lesson = {course.lessons.find(_lesson => lesson == _lesson.id)}/>      
+                data = {data} 
+                lesson = {course.lessons.find(_lesson => lesson == _lesson.id)}
+            />      
 
         </Grid>
        

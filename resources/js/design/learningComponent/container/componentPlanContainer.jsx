@@ -39,12 +39,6 @@ const ComponentPlanContainer = (props)  => {
   const [ addComponentOpen, setAddComponentOpen ] = React.useState(false);
   const isDraggable = course.permission > 2;
 
-  const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightgrey' : '',
-    width: '100%',
-    padding: 16
-  });
-
   React.useEffect(()=>{
     setSelectCompID(props.component_id);
     if(props.component_id > 0){
@@ -278,7 +272,7 @@ const ComponentPlanContainer = (props)  => {
             <Droppable droppableId="droppable">
             {(provided, snapshot) => (
                 <RootRef rootRef={provided.innerRef}>
-                    <Grid container style={getListStyle(snapshot.isDraggingOver)} spacing = {2}>
+                    <Grid container style={getListStyle(snapshot.isDraggingOver)}>
                     {course.components.map((_component, index)=>(
                          <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {(!isDraggable || selectCompID == index) }>
                          {(provided, snapshot) => (
@@ -313,7 +307,7 @@ const ComponentPlanContainer = (props)  => {
         />
         {
           course.permission > 2 ? 
-          <Button variant = {"outlined"} color = {"secondary"} onClick = {onClickAddComponent} fullWidth>
+          <Button variant = {"outlined"} color = {"primary"} onClick = {onClickAddComponent} fullWidth>
               Add New Curriculum Component
           </Button>
           :

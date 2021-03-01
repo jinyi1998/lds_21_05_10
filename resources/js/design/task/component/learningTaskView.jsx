@@ -208,8 +208,8 @@ const LearningTaskView = (props) => {
                     {typeof provided == 'undefined' || !props.enableDrag?    
                         null
                     :
-                        <Grid container item xs ={8} justify="flex-start" alignContent = "center">
-                            <DragHandleIcon />
+                        <Grid container item xs ={6} justify="flex-start" alignContent = "center">
+                            <DragHandleIcon fontSize = {"small"} />
                         </Grid>
                     }
                  

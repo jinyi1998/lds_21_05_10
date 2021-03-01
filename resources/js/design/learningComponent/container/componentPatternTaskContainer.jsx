@@ -574,9 +574,9 @@ const ComponentPatternTaskContainer = (props) =>{
         <React.Fragment>
              <Accordion defaultExpanded = {true}>
                 <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon />}
                 >
-                <Typography>Learning Patterns & Tasks </Typography>
+                    <Typography style = {{fontWeight: "bold"}}>Learning Patterns & Tasks </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container>
