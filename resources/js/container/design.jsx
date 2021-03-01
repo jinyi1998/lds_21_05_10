@@ -260,7 +260,7 @@ const PageListMenu = (props) => {
     
             <ListItem
               button
-              selected={activeStage === 'componentPlan'}
+              selected={activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan'}
               onClick={(event) => setActiveStage('componentPlan')}
             >
                 <ListItemIcon>

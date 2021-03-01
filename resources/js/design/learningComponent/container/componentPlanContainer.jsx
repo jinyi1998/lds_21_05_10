@@ -274,7 +274,7 @@ const ComponentPlanContainer = (props)  => {
                 <RootRef rootRef={provided.innerRef}>
                     <Grid container style={getListStyle(snapshot.isDraggingOver)}>
                     {course.components.map((_component, index)=>(
-                         <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {(!isDraggable || selectCompID == index) }>
+                         <Draggable key={index} draggableId={index.toString()} index={index} isDragDisabled = {(!isDraggable || selectCompID ==  _component.id) }>
                          {(provided, snapshot) => (
                               <Grid item xs ={12} id = {"component_focus_" + _component.id}>
                                 <ComponentContainer 
