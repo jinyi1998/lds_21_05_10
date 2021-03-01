@@ -55,7 +55,7 @@ const ComponentFloatDashboardContainer = (props) => {
     const {
         component,
         componentID,
-        selectComIndex,
+        selectCompID,
         index} = React.useContext(ComponentContext);
     const { options } = React.useContext(AppContextStore);
     const [tasks_time_by_task, set_tasks_time_by_task] = React.useState({});
@@ -105,10 +105,10 @@ const ComponentFloatDashboardContainer = (props) => {
 
 
     React.useEffect(()=>{
-        if(options.taskElearingResource.length > 0  && index == selectComIndex){
+        if(options.taskElearingResource.length > 0  && componentID == selectCompID){
             fetchcomponentanalysis(componentID)
         }
-    }, [options, selectComIndex, component])
+    }, [options, selectCompID, component])
 
 
     const displayDashboard = () => {
@@ -152,7 +152,7 @@ const ComponentFloatDashboardContainer = (props) => {
     }
 
     return (
-        index == selectComIndex?
+        componentID == selectCompID?
         displayDashboard()
         :
         null
