@@ -108,12 +108,53 @@ const LearningOutcomeUnit = (props)=>{
                                         outcome.stemtypesid.map( x => options.STEMTypeOpts.find( _opts => x.stem_type_id == _opts.id).name).join(',')
                                         :
                                         "N/A"
-                                } )  </Typography>
+                                } )  
+                                </Typography>
                             }
                         
                             <Typography variant = {'caption'} component={'span'} display="inline" color = "textSecondary" data-tour = "lo_level"> 
                                 Bloom Taxonomy Level: {options.bloomLvlOpts.find( x => x.id == outcome.bloom_id)?.name }  
                             </Typography>
+
+                             {/* SLO */}
+                            <Grid container>
+                            {
+                                slo.map(
+                                    _slo =>
+                                    <Grid container item xs = {12}key = {_slo.id}>
+                                        {/* <Grid item xs = {1}>
+                                        </Grid> */}
+
+                                        <Grid item xs = {10}>
+                                            <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
+                                                {_slo.description}
+                                            </Typography>
+                                            
+                                        </Grid> 
+
+                                        <Grid item xs = {1}>
+                                            <LearningOutcomeAssessmentView 
+                                                tasks = {_slo.tasks?.filter(
+                                                    _task => {
+                                                        if(typeof props.component == "undefined"){
+                                                            return false;
+                                                        }
+                                                        if(_task.componentid?.component_id == props.component.id){
+                                                            return true;
+                                                        }else if(_task.patternid?.componentid?.component_id == props.component.id){
+                                                            return true;
+                                                        }else{
+                                                            return false;
+                                                        }
+                                                    }
+                                                )}
+                                                isShow = {typeof props.component != "undefined"}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                )
+                            }
+                            </Grid>
                         </React.Fragment>
                     } 
                 />
@@ -146,45 +187,7 @@ const LearningOutcomeUnit = (props)=>{
                 </ListItemSecondaryAction>
             </ListItem>
 
-            {/* SLO */}
-            <Grid container>
-            {
-                slo.map(
-                    _slo =>
-                    <Grid container item xs = {12}key = {_slo.id}>
-                        <Grid item xs = {1}>
-                        </Grid>
-
-                        <Grid item xs = {10}>
-                            <Typography variant = {"caption"} component={'span'} display="inline" color = "textPrimary" data-tour = "lo_description">
-                                {_slo.description}
-                            </Typography>
-                            
-                        </Grid> 
-
-                        <Grid item xs = {1}>
-                            <LearningOutcomeAssessmentView 
-                                tasks = {_slo.tasks?.filter(
-                                    _task => {
-                                        if(typeof props.component == "undefined"){
-                                            return false;
-                                        }
-                                        if(_task.componentid?.component_id == props.component.id){
-                                            return true;
-                                        }else if(_task.patternid?.componentid?.component_id == props.component.id){
-                                            return true;
-                                        }else{
-                                            return false;
-                                        }
-                                    }
-                                )}
-                                isShow = {typeof props.component != "undefined"}
-                            />
-                        </Grid>
-                    </Grid>
-                )
-            }
-            </Grid>
+           
             
             
         </React.Fragment>

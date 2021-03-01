@@ -10,7 +10,7 @@ const InstructionBox = (props) => {
     const {title, content, tips} = props;
     return (
         <React.Fragment>
-             <Card variant="outlined" style={{margin: "16px"}}>
+             <Card variant="outlined" style={{margin: "16px 0px"}}>
                 <CardContent>
                     {/* <Typography variant="h5" gutterBottom>
                         {title}

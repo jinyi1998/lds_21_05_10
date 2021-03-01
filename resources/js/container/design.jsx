@@ -534,8 +534,8 @@ const Design = (props) => {
                 </Grid>
                 
                 <Grid item xs>
-                  <Grid container item xs = {12}>
-                    <Paper style = {{width: '100%', padding: 16, margin: 16}}>
+                  <Grid container item xs = {12}  style = {{width: '100%', padding: 16}} >
+                    {/* <Paper style = {{width: '100%', padding: 16, margin: 16}}> */}
                       <Grid item xs = {12}>
                         <Typography variant="h6" gutterBottom style = {{fontWeight: 900}}>
                           {course.unit_title}
@@ -547,7 +547,7 @@ const Design = (props) => {
                           By {course.createdby.name} @{course.createdby.school}
                         </Typography>
                       </Grid>
-                    </Paper>
+                    {/* </Paper> */}
                   </Grid>
                   {getDesignStageContent()}
                 </Grid>

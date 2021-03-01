@@ -44,8 +44,9 @@ const useStyles = makeStyles(theme => ({
     //   backgroundColor: theme.palette.primary.dark,
     //   color: 'DarkBlue',
       borderStyle: "solid",
-      borderWidth: "4px",
-      borderColor: "#F0F8FF"
+      borderWidth: "2px",
+      borderColor: "#87CEFA"
+    // boxShadow: "0px 0px 0px 3px #1E90FF inset"
     },
   }));
 
