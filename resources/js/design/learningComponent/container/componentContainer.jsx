@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
       flex: '1 0 auto',
     },
     heading: {
-      fontSize: theme.typography.pxToRem(15),
+      fontSize: '0.8rem',
       fontWeight: theme.typography.fontWeightRegular,
     },
     subheading: {
@@ -88,7 +88,6 @@ const ComponentContainer = (props)=>{
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [editComponent, setEditComponent] = React.useState(false);
   const [componentTitle, setComponentTitlte] = React.useState(component.title);
-  const [componentTitleColor, setComponentTitleColor] = React.useState('#F0F8FF');
 
   React.useEffect(()=>{
     setComponent(props.component);
@@ -210,7 +209,7 @@ const ComponentContainer = (props)=>{
               style = {{ 
                 "position": "sticky" ,
                 "zIndex": 499,
-                "backgroundColor": componentTitleColor,
+                "backgroundColor": "#f2f7ff",
                 "top": 60
               }} 
             >
@@ -232,7 +231,7 @@ const ComponentContainer = (props)=>{
                         <TextField value = {componentTitle} onChange = {(event => setComponentTitlte(event.target.value))} fullWidth></TextField>
                         :
                         <React.Fragment>
-                          <Typography className={classes.heading}>{component.sequence} :  {component.title}</Typography>
+                          <Typography className={classes.heading}>CC {component.sequence} :  {component.title}</Typography>
                         </React.Fragment>
                     }
                   </Grid>
@@ -280,6 +279,7 @@ const ComponentContainer = (props)=>{
                   "position": "flex" ,
               }}>
                 <Grid container spacing={2}>
+
                   <Grid item xs={12} data-tour = "component_time">
                       <Typography className={classes.subheading}>Estimated learning time: {learningTime()} min(s)</Typography>
                   </Grid>

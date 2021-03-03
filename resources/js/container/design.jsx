@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   drawerList: {
-  
+    backgroundColor: 'rgb(0, 0, 0, 0.08)'
   },
   drawerPaper: {
     whiteSpace: 'nowrap',
@@ -103,9 +103,16 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'hidden',
     width: "24px",
   },
+  pageListText: {
+    fontSize: '0.7rem'
+  },
+  pageListItem: {
+    backgroundColor: 'rgb(255, 255, 255, 1) !important',
+    color: "blue",
+    fontWeight: '700 !important'
+  }
 }));
 
-// const steps = ['STEM PRACTICE', 'UNIT', 'UNIT LEVEL LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'CURRICULUM COMPONENT DESIGN', 'UNIT REVIEW'];
 const steps = ['STEM PRACTICE', 'COURSE/ CURRICULUM UNIT INFO', 'LEARNING OUTCOMES', 'CURRICULUM COMPONENTS OVERVIEW',  'START YOUR DESIGN'];
 
 const PageListMenu = (props) => {
@@ -114,6 +121,32 @@ const PageListMenu = (props) => {
   const classes = useStyles();
 
   const { course} = React.useContext(ContextStore);
+
+  const getIconStyle = (selected) =>
+  {
+    if(selected){
+      return {
+        color: "primary"
+      }
+    }else{
+      return {
+        color: "default"
+      }
+    }
+  }
+
+  const getTextStyle = (selected) =>
+  {
+    if(selected){
+      return {
+        fontWeight: "bold" 
+      }
+    }else{
+      return {
+        fontWeight: "500"
+      }
+    }
+  }
 
   return (
     <div
@@ -124,7 +157,7 @@ const PageListMenu = (props) => {
         position: "sticky", 
         top: "72px",
         transition: "width 2s",
-        maxWidth: "240px",
+        maxWidth: "205px",
       }}
     >
       {
@@ -141,70 +174,101 @@ const PageListMenu = (props) => {
               button
               selected={activeStage === 'courseinfo'}
               onClick={(event) => setActiveStage('courseinfo')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
-                <InfoIcon />
+                <InfoIcon {...getIconStyle(activeStage === 'courseinfo')}/>
               </ListItemIcon>
-              <ListItemText primary="Course Information" />
+              <ListItemText primary="Course Information" 
+                primaryTypographyProps = {{
+                  variant: "subtitle2",
+                  style: {...getTextStyle(activeStage === 'courseinfo')}
+                }}
+              />
             </ListItem>
     
             <ListItem
               button
               selected={activeStage === 'learningOutcomes'}
               onClick={(event) => setActiveStage('learningOutcomes')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
-                <AssignmentTurnedInIcon />
+                <AssignmentTurnedInIcon {...getIconStyle(activeStage === 'learningOutcomes')}/>
               </ListItemIcon>
-              <ListItemText primary="Learning Outcomes" />
+              <ListItemText primary="Learning Outcomes" 
+                primaryTypographyProps = {{
+                  variant: "subtitle2",
+                  style: {...getTextStyle(activeStage === 'learningOutcomes')}
+                }}/>
             </ListItem>
-    
-            {/* <ListSubheader>Design Stage</ListSubheader> */}
-            {/* <ListItem
-              button
-              selected={activeStage === 'unitPlan'}
-              onClick={(event) => setActiveStage('unitPlan')}
-            >
-              <ListItemIcon>
-                <ExploreIcon />
-              </ListItemIcon>
-              <ListItemText primary="Curriculum Component Design" />
-            </ListItem> */}
-    
+  
             <ListItem
               button
-              selected={activeStage === 'componentPlan'}
+              selected={activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan'}
               onClick={(event) => setActiveStage('componentPlan')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
-                <ViewHeadlineIcon />
+                <ViewHeadlineIcon {...getIconStyle(activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan')}/>
               </ListItemIcon>
-              <ListItemText primary="Curriculum Component Plan" />
+              <ListItemText 
+                primary="Curriculum Component" 
+                primaryTypographyProps = {{
+                  variant: "subtitle2",
+                  style: {...getTextStyle(activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan')}
+                }}/>
             </ListItem>
 
             {
+              activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan'?
               course.components.map(_comp => 
                 <ListItem
                 key = {_comp.id}
                 button
                 selected={activeStage === ('componentPlan_' + _comp.id)}
                 onClick={(event) => setActiveStage('componentPlan_' + _comp.id)}
+                classes = {{
+                  selected: classes.pageListItem
+                }}
               >
-                <ListItemText primary={_comp.title} primaryTypographyProps = {{noWrap: true, variant: "caption"}} />
+                <ListItemText primary={_comp.title} 
+                  primaryTypographyProps = {{
+                    noWrap: true, 
+                    variant: "caption", 
+                    style: {marginLeft: 24, ...getTextStyle(activeStage === 'componentPlan_' + _comp.id)}
+                  }} 
+                />
               </ListItem>
               )
+              :
+              null
             }
     
             <ListItem
               button
               selected={activeStage === 'lessonPlan'}
               onClick={(event) => setActiveStage('lessonPlan')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
-                <AvTimerIcon />
+                <AvTimerIcon {...getIconStyle(activeStage === 'lessonPlan')}/>
               </ListItemIcon>
                
-              <ListItemText primary="Lesson Plan" />
+              <ListItemText 
+                primary="Lesson Plan" 
+                primaryTypographyProps = {{
+                  variant: "subtitle2", 
+                  style: {...getTextStyle(activeStage === 'lessonPlan')}
+                }}/>
             </ListItem>
     
             {/* <ListItem
@@ -223,11 +287,18 @@ const PageListMenu = (props) => {
                 button
                 selected={activeStage === 'finish'}
                 onClick={(event) => setActiveStage('finish')}
+                classes = {{
+                  selected: classes.pageListItem
+                }}
               >
                 <ListItemIcon>
-                  <PieChartIcon  />
+                  <PieChartIcon  {...getIconStyle(activeStage === 'finish')}/>
                 </ListItemIcon>
-                <ListItemText primary="Review" />
+                <ListItemText primary="Review" 
+                  primaryTypographyProps = {{
+                    variant: "subtitle2",
+                    style: {...getTextStyle(activeStage === 'finish')}
+                  }}/>
               </ListItem>
           </List>
         </React.Fragment>
@@ -241,6 +312,9 @@ const PageListMenu = (props) => {
               button
               selected={activeStage === 'courseinfo'}
               onClick={(event) => setActiveStage('courseinfo')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
                 <InfoIcon />
@@ -251,6 +325,9 @@ const PageListMenu = (props) => {
               button
               selected={activeStage === 'learningOutcomes'}
               onClick={(event) => setActiveStage('learningOutcomes')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
               <ListItemIcon>
                 <AssignmentTurnedInIcon />
@@ -262,6 +339,9 @@ const PageListMenu = (props) => {
               button
               selected={activeStage === 'componentPlan' || activeStage.split("_")[0] == 'componentPlan'}
               onClick={(event) => setActiveStage('componentPlan')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
                 <ListItemIcon>
                   <ViewHeadlineIcon />
@@ -272,6 +352,9 @@ const PageListMenu = (props) => {
               button
               selected={activeStage === 'lessonPlan'}
               onClick={(event) => setActiveStage('lessonPlan')}
+              classes = {{
+                selected: classes.pageListItem
+              }}
             >
                 <ListItemIcon>
                   <AvTimerIcon  />
@@ -282,6 +365,9 @@ const PageListMenu = (props) => {
                 button
                 selected={activeStage === 'finish'}
                 onClick={(event) => setActiveStage('finish')}
+                classes = {{
+                  selected: classes.pageListItem
+                }}
               >
                 <ListItemIcon>
                   <PieChartIcon  />
@@ -529,11 +615,11 @@ const Design = (props) => {
           <React.Fragment>
               <Grid container>
                
-                <Grid item>
+                <Grid item style = {{marginLeft: 0}}>
                   <PageListMenu activeStage ={activePage} setActiveStage ={setActivePage} course_id = {courseID}/> 
                 </Grid>
                 
-                <Grid item xs>
+                <Grid item xs style = {{marginLeft: 16}}>
                   <Grid container item xs = {12}  style = {{width: '100%', padding: 16}} >
                     {/* <Paper style = {{width: '100%', padding: 16, margin: 16}}> */}
                       <Grid item xs = {12}>
@@ -668,8 +754,8 @@ const Design = (props) => {
     <React.Fragment>
       <CssBaseline />
       <main className={classes.layout}>
-        <Paper className={classes.paper} style ={{padding: "16px"}}>
-          <Grid container spacing = {4}>
+        <Paper className={classes.paper}>
+          <Grid container style = {{paddingTop: 16, paddingBottom: 16}}>
             <Grid item xs = {12}>
               {getActiveStage()}
             </Grid>

@@ -36,19 +36,22 @@ const theme = createMuiTheme({
         MuiAccordionSummary:{
             root: {
                 minHeight: "24px",
+                paddingTop: 4,
+                paddingBottom: 4,
                 "&$expanded": {
                     minHeight: "36px"
                 }
             },
             content: {
-                fontSize: "0.7rem",
+                fontSize: "0.8rem",
                 fontWeight: "bold"
             }
         },
         MuiListItem:{
             root: {
                 '&$selected': {
-                    background: 'linear-gradient(to right, #3f51b5 3%, rgba(0, 0, 0, 0.08) 3%)',
+                    // background: 'linear-gradient(to right, #3f51b5 3%, rgba(0, 0, 0, 0.08) 3%)',
+                    fontWeight: "bold"
                 },
             },
             // selected:{

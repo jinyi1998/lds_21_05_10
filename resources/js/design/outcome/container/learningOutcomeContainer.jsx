@@ -378,7 +378,7 @@ const LearningOutcomeContainer = (props)=>{
                     outcomes.filter(lo => lo.isCourseLevel == true).length > 0?
                     options.outcomeTypeOpts.map( (_lo_type, index) => 
 
-                        <Accordion defaultExpanded = {true} style = {{width: '100%'} } key = {index}>
+                        <Accordion defaultExpanded = {true} style = {{width: '100%', margin: 8} } key = {index}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 className = {classes.AccordionSummary}
