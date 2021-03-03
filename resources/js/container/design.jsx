@@ -157,7 +157,7 @@ const PageListMenu = (props) => {
         position: "sticky", 
         top: "72px",
         transition: "width 2s",
-        maxWidth: "205px",
+        width: "240px",
       }}
     >
       {
