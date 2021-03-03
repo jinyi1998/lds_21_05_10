@@ -157,12 +157,12 @@ const PageListMenu = (props) => {
         position: "sticky", 
         top: "72px",
         transition: "width 2s",
-        width: "240px",
+        maxWidth: "240px",
       }}
     >
       {
         extended?
-        <React.Fragment>
+        <div style= {{width: "240px"}}>
           <div className={classes.toolbarIcon}>
               <IconButton onClick={() => {setExtend(false)}}>
                   <ChevronLeftIcon />
@@ -301,7 +301,7 @@ const PageListMenu = (props) => {
                   }}/>
               </ListItem>
           </List>
-        </React.Fragment>
+        </div>
         :
         <div className={classes.toolbarIcon}>
           <List component="nav" aria-label="" className={classes.drawerList}>
