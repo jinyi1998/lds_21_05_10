@@ -108,7 +108,7 @@ const useStyles = makeStyles(theme => ({
   },
   pageListItem: {
     backgroundColor: 'rgb(255, 255, 255, 1) !important',
-    color: "blue",
+    color: theme.palette.primary.main,
     fontWeight: '700 !important'
   }
 }));
@@ -238,7 +238,8 @@ const PageListMenu = (props) => {
                   selected: classes.pageListItem
                 }}
               >
-                <ListItemText primary={_comp.title} 
+                <ListItemText 
+                  primary={ "CC" + _comp.sequence + "-" + _comp.title} 
                   primaryTypographyProps = {{
                     noWrap: true, 
                     variant: "caption", 

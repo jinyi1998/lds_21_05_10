@@ -436,7 +436,7 @@ const LearningOutcomeContainer = (props)=>{
                         
                     )
                     :
-                    <Grid container spacing = {2}>
+                    <Grid container style = {{padding: 16}}>
                         {
                             modeLevel == "course"?
                                 <Grid item xs = {12}>

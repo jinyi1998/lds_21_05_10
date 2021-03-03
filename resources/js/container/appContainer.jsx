@@ -44,7 +44,9 @@ const theme = createMuiTheme({
             },
             content: {
                 fontSize: "0.8rem",
-                fontWeight: "bold"
+                fontWeight: "bold",
+                marginBottom: 0,
+                marginTop: 0,
             }
         },
         MuiListItem:{

@@ -196,7 +196,6 @@ const ComponentContainer = (props)=>{
             setSelectCompID: props.setSelectCompID
         }}>
         
-
           <Accordion 
        
             expanded = {component.id == selectCompID} 
@@ -210,7 +209,8 @@ const ComponentContainer = (props)=>{
                 "position": "sticky" ,
                 "zIndex": 499,
                 "backgroundColor": "#f2f7ff",
-                "top": 60
+                "top": 60,
+                "fontSize": '0.7rem'
               }} 
             >
               <Grid container spacing = {2} alignItems = {"center"}>
@@ -277,6 +277,7 @@ const ComponentContainer = (props)=>{
 
             <AccordionDetails style = {{ 
                   "position": "flex" ,
+                  padding: 16
               }}>
                 <Grid container spacing={2}>
 
@@ -290,7 +291,7 @@ const ComponentContainer = (props)=>{
                     </Grid>
                   </Grid>
 
-                  <Grid container item xs = {7} spacing={2} alignContent = {"flex-start"}> 
+                  <Grid container item xs = {7} spacing={2} alignContent = {"flex-start"} style = {{paddingRight: 0}}> 
                     <Grid item xs = {12}>
                       <ComponentPatternTaskContainer component = {component} />
                     </Grid>
