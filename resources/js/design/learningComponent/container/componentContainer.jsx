@@ -216,9 +216,7 @@ const ComponentContainer = (props)=>{
               <Grid container spacing = {2} alignItems = {"center"}>
                 {
                   isDraggable?
-                  <Grid item xs style = {{maxWidth: "2%"}}>
-                    <DragHandleIcon size = {"small"}/>
-                  </Grid>
+                  <DragHandleIcon size = {"small"}/>
                   : 
                   null
                 }
