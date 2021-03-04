@@ -15,6 +15,7 @@ class ApiAuth
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        // return $next($request);
+        print_r($request);
     }
 }

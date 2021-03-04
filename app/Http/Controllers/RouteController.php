@@ -97,6 +97,10 @@ class RouteController extends Controller
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_usersmanagement']);
     }
 
+    public function public_sharing($token){
+        return view('publicsharing',  ['token' => $token, 'module' => 'publicsharing']);
+    }
+
     #region temp management
     public function admin_templatebuilder(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_template_builder']);

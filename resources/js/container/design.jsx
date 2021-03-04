@@ -155,7 +155,7 @@ const PageListMenu = (props) => {
       }
       style = {{
         position: "sticky", 
-        top: "72px",
+        top: document.getElementById('top_menu')?.style.height > 0? document.getElementById('top_menu')?.style.height : 0,
         transition: "width 2s",
         maxWidth: "240px",
       }}
@@ -471,9 +471,9 @@ const Design = (props) => {
 
   const initDesign = () => {
     setLoadingOpen(true)
-    if(courseID != -1){
-      if(course.isinited){
 
+    if(course.id != -1){
+      if(course.isinited){
         if(course.components.length == 0 ){
           setLoadingOpen(false)
           if(course.unit_title == ""  && course.outcomes.length > 0){
@@ -487,13 +487,14 @@ const Design = (props) => {
         }else{
           setLoadingOpen(false)
           if(props.step == 0){
-              // setActiveStep(4);
-            // setActiveStage('unitPlan')
             setActiveStage('designStage');
             setActivePage('componentPlan');
           }else if(props.step == 5){
             setActiveStage('designStage');
             setActivePage('finish');
+          }else{
+            setActiveStage('designStage');
+            setActivePage('componentPlan');
           }
         }
       }

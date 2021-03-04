@@ -428,14 +428,17 @@ const DesignInfo = (props) => {
             Next
           </Button>
           :
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => onSave()}
-            data-tour = "course_info_save"
-          >
-            Save
-          </Button>
+          courseData.permission > 2?
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => onSave()}
+              data-tour = "course_info_save"
+            >
+              Save
+            </Button>
+            :
+            null
           }
          
       </div>

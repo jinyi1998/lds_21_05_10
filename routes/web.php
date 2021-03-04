@@ -35,6 +35,12 @@ Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
 Route::get('file/downloadCourseJson/{file_name}', 'API\FileSystemController@apiFileCourseDownload');
 
+Route::resource('api/publicsharing', 'API\PublicSharingController');
+Route::get('api/publicsharing/verify/{token}', 'API\PublicSharingController@verify');
+Route::get('publicsharing/{token}', function($token){
+    return view('publicsharing',  ['token' => $token, 'module' => 'publicsharing']);
+});
+
 //admin related
 Route::middleware('admin_auth')->prefix('admin')->group(function(){
     // Route::get('/', '\App\Http\Controllers\RouteController@admin_dashboard');

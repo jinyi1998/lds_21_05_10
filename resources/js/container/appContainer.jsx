@@ -82,6 +82,7 @@ const AppContainer = () => {
                 component_id = {document.getElementById('appcontainer').dataset.componentid}
                 designtype_id = {document.getElementById('appcontainer').dataset.designtypeid? document.getElementById('appcontainer').dataset.designtypeid : -1}
                 patternbin_category_id = {document.getElementById('appcontainer').dataset.patternbin_category_id? document.getElementById('appcontainer').dataset.patternbin_category_id : -1}
+                public_share_token = {document.getElementById('appcontainer').dataset.patternbin_category_id? document.getElementById('appcontainer').dataset.public_share_token : ""}
             />
           </ThemeProvider>
     );

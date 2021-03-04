@@ -231,6 +231,8 @@ const App = (props) => {
       default:
         // return <DesignContainer courseID= {props.value} user = {props.user} step = {props.step}/>;
         break
+      case 'publicsharing':
+         return <DesignContainer token= {props.public_share_token}/>;
       case 'timeline':
         return  <TimelineContainer/>;
       case 'designstudio':
@@ -310,13 +312,24 @@ const App = (props) => {
       }}
     >
       <Grid container>
-          <Grid item xs ={12} style = {{height: 72}}>
-              <TopMenu user = {props.user}/>
-          </Grid>
-
-            <Grid item>
+         
+            {
+              currentModule == "publicsharing"?
+              null
+              :
+              <Grid item xs ={12} style = {{height: 72}}>
+                <TopMenu user = {props.user}/>
+              </Grid>
+            }
+          
+            {
+                currentModule == "publicsharing"?
+                null
+                :
+                <Grid item>
                 <SideMenu user = {props.user}/>
-            </Grid>
+                </Grid>
+            }
             
             <Grid xs item className={clsx(sideMenuOpen && classes.appBarShift, !sideMenuOpen && classes.normal)}>
                 {displayModule()}

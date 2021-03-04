@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
       <React.Fragment>
         <CssBaseline />
         
-        <AppBar className={clsx(classes.appBar, sideMenuOpen && classes.appBarShift)}>
+        <AppBar className={clsx(classes.appBar, sideMenuOpen && classes.appBarShift)}  id = "top_menu">
             <Toolbar className={classes.toolbar}>
             <IconButton
                 edge="start"

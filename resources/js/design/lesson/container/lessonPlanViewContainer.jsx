@@ -269,11 +269,11 @@ const LessonPlanViewContainer = (props) => {
                     editLesson?
                     <Grid container item xs alignContent = {"flex-end"} justify = {"space-between"}>
                         <Grid item xs = {3}>
-                        <TextField label = {"Lesson Title"}  value = {editTitle}  onChange = {(event) => setTitle(event.target.value)}/>
+                            <TextField label = {"Lesson Title"}  value = {editTitle}  onChange = {(event) => setTitle(event.target.value)}/>
                         </Grid>
 
                         <Grid item xs = {3}>
-                        <TextField label = {"In Class Duration"} value = {editTime} onChange = {(event) => setTime(event.target.value)}/>
+                            <TextField label = {"In Class Duration"} value = {editTime} onChange = {(event) => setTime(event.target.value)}/>
                         </Grid>
 
                       
@@ -297,9 +297,15 @@ const LessonPlanViewContainer = (props) => {
 
 
                         <Grid item xs = {3}>
-                            <IconButton color="primary" aria-label="upload picture" component="span" onClick = {()=> setEditLesson(true)}>
-                                <EditIcon />
-                            </IconButton>
+                            { 
+                                canEdit?
+                                <IconButton color="primary" aria-label="upload picture" component="span" onClick = {()=> setEditLesson(true)}>
+                                    <EditIcon />
+                                </IconButton>
+                                :
+                                null
+                            }
+
                         </Grid>
                     </Grid>
             

@@ -1,10 +1,11 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import Design from './design';
 import ActionTool from '../design/actionTool';
 
 
 import {
-    apiCourseCreate, apiCourseGet,
+    apiCourseCreate, apiCourseGet, apiPublicSharingVerify
   } 
   from '../api.js';
 
@@ -129,19 +130,27 @@ const DesignContainer = (props) => {
     React.useEffect(()=>{
         setLoadingOpen(true)
         InitCourseData()
-
-        let user = JSON.parse(props.user);
-        if(user['display_tourguide'] == 1){
-            setDisplayGuideTour(true);
-        }else{
-            setDisplayGuideTour(false);
-        }          
+        if(typeof props.user != 'undefined'){
+            let user = JSON.parse(props.user);
+            if(user['display_tourguide'] == 1){
+                setDisplayGuideTour(true);
+            }else{
+                setDisplayGuideTour(false);
+            }       
+        }
+         
     },
     []);
 
     const InitCourseData = () => {
-         if(props.courseID == -1){
-            fetchNewCourseData();
+        if(typeof props.token != 'undefined'){
+            apiPublicSharingVerify({token: props.token}).then((response)=>{
+                console.log(response.data);
+                fetchCourseData(response.data.course_id)
+            })
+        }else if(props.courseID == -1){
+            fetchNewCourseData()
+            
         }else{
             fetchCourseData(props.courseID);
         }
@@ -191,7 +200,7 @@ const DesignContainer = (props) => {
             // setLoadingOpen(true);
             return null;
         }else{
-            return <Design courseID={props.courseID} step = {props.step}/>
+            return <Design courseID={State.course.id} step = {props.step}/>
         }
     }
 

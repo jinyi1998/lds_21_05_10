@@ -209,7 +209,7 @@ const ComponentContainer = (props)=>{
                 "position": "sticky" ,
                 "zIndex": 499,
                 "backgroundColor": "#f2f7ff",
-                "top": 60,
+                "top":  document.getElementById('top_menu')?.style.height > 0? document.getElementById('top_menu')?.style.height : 0,
                 "fontSize": '0.7rem'
               }} 
             >
@@ -226,7 +226,11 @@ const ComponentContainer = (props)=>{
                   <Grid item xs  data-tour = "component_header">
                     {
                         editComponent?
-                        <TextField value = {componentTitle} onChange = {(event => setComponentTitlte(event.target.value))} fullWidth></TextField>
+                        <TextField 
+                          value = {componentTitle} 
+                          onChange = {(event => setComponentTitlte(event.target.value))} 
+                          fullWidth 
+                        />
                         :
                         <React.Fragment>
                           <Typography className={classes.heading}>CC {component.sequence} :  {component.title}</Typography>

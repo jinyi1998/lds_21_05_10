@@ -587,6 +587,20 @@ import config from 'react-global-configuration';
     export const apiFileCourseImport = data => fileRequest.post(`courseImport`, JSON.stringify(data));
     export const apiFileCourseExport = data => fileRequest.get(`exportCourseJson/${data}`);
     export const apiFileCourseDownload = data => fileRequest.get(`downloadCourseJson/${data}`);
+    //#endregion
+
+
+    //#region public sharing api
+    const publicSharingRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/publicsharing',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+    export const apiPublicSharingVerify = data => publicSharingRequest.get(`verify/${data.token}`,);
+    export const apiPublicSharingGet = data => publicSharingRequest.get(`${data.id}`);
+    //#endregion
+
 
     //#region template api
     // const templateRequest = axios.create({
