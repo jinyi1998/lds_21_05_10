@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 // });
 
 Route::resource('opts', 'API\AppOptsController');
-Route::get('course/{id}', 'API\CourseController@show');
+
 
 Route::middleware(['auth:api'])->group(function () {
     //File System
@@ -107,6 +107,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('file/courseImport', 'API\CourseController@importCourse');
     Route::get('course/getPermission/{id}', 'API\CourseController@getCoursePermission');
     Route::post('course/updatePermission', 'API\CourseController@updateCoursePermission');
+    Route::get('course/{id}', 'API\CourseController@show');
     Route::middleware('design_permission')->resource('course', 'API\CourseController')->except(['show']);
 
     Route::get('designType/getLearningComponentByDesignType/{id}', 'API\DesignTypeController@getLearningComponentByDesignType');

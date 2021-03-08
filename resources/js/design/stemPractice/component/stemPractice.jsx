@@ -167,26 +167,37 @@ const StemPractice = (props) => {
               <Grid container item xs = {6} 
               alignItems="center"
               justify="center">
-              <Button 
+                {
+                  props.enableAdd?
+                  <Button 
                     variant="contained" color="primary"
                     onClick={(event) => handleExpandClick(event)}
                     aria-label="show more"  
                   >
-                      Know More
-              </Button>
+                    Know More
+                  </Button>
+                  :
+                  null
+                }
               </Grid>
             
               
               <Grid container item xs = {6} 
               alignItems="center"
               justify="center">
-              <Button 
+                {
+                  props.enableAdd?
+                  <Button 
                     variant="outlined" color="primary"
                     onClick={onSelectSTEMPractice}  
                     aria-label="add"  
                   >
                       Add
-              </Button>
+                  </Button>
+                  :
+                  null
+                }
+              
               </Grid>
             </Grid>  
             

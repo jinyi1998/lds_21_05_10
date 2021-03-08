@@ -298,7 +298,7 @@ const LessonPlanViewContainer = (props) => {
 
                         <Grid item xs = {3}>
                             { 
-                                canEdit?
+                                course.permission > 2?
                                 <IconButton color="primary" aria-label="upload picture" component="span" onClick = {()=> setEditLesson(true)}>
                                     <EditIcon />
                                 </IconButton>

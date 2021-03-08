@@ -68,6 +68,7 @@ class CourseController extends Controller
     {
         //
         $course = Course::with(['componentid', 'components', 'outcomes', 'outcomeid', 'lessons', 'lessonid', 'createdby', 'tags'])->find($id);
+        $course['test'] = Auth::user();
         if(isset(Auth::user()->id)){
             $course['permission'] = $this->getCurrentUserCoursePermission($course->id);
         }

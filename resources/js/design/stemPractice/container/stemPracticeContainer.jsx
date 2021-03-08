@@ -50,6 +50,7 @@ const StemPracticeContainer = (props) => {
   React.useEffect(()=> {
     tourSetRun(false);
     tourSetMode('design_type');
+    console.log(course);
   }, [])
 
   const onClickMore = (id) => {
@@ -180,7 +181,12 @@ const StemPracticeContainer = (props) => {
         <Grid item xs = {12}>
           <GridList className={classes.gridList}>
             {designType.filter(x => x.is_activate).map((_data, i) => (
-                <StemPractice designBoxData={_data} key={i} onSelectSTEMPractice={onSelectSTEMPractice} onClickMore = {onClickMore} />
+                <StemPractice 
+                  designBoxData={_data} 
+                  key={i} 
+                  onSelectSTEMPractice={onSelectSTEMPractice} 
+                  onClickMore = {onClickMore} 
+                  enableAdd = {course.permission >2}/>
             ))}
           </GridList>
         </Grid>

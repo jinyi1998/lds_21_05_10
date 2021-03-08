@@ -209,7 +209,7 @@ const ComponentContainer = (props)=>{
                 "position": "sticky" ,
                 "zIndex": 499,
                 "backgroundColor": "#f2f7ff",
-                "top":  document.getElementById('top_menu')?.style.height > 0? document.getElementById('top_menu')?.style.height : 0,
+                "top":  document.getElementById('top_menu')?.clientHeight > 0? document.getElementById('top_menu')?.clientHeight : 0,
                 "fontSize": '0.7rem'
               }} 
             >

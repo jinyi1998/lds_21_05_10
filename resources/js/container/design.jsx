@@ -607,7 +607,7 @@ const Design = (props) => {
         return (
           <React.Fragment>
             <DesignStepper activeStep = {activeStep} steps={steps} setActiveStep = {setActiveStep} />
-            <div>
+            <div style = {{padding: 32}}>
               {getStepContent(activeStep)}
             </div>
           </React.Fragment>

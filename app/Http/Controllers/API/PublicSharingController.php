@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PublicSharing;
 use App\Course;
+use Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PublicSharingController extends Controller
@@ -73,6 +74,14 @@ class PublicSharingController extends Controller
     public function destroy($id)
     {
         //
+        $publicSharing = PublicSharing::find($id);
+
+        $publicSharing->is_deleted = true;
+        $publicSharing->deleted_at = now();
+
+        $publicSharing->save();
+
+        return response()->json('success');
     }
 
     public function save(PublicSharing $publicSharing, Request $request){
@@ -80,8 +89,8 @@ class PublicSharingController extends Controller
         $token =  Hash::make($request->course_id + time());
         $publicSharing->token = str_replace('/', '', $token);
 
-        $publicSharing->created_by = $request->created_by;
-        $publicSharing->updated_by = $request->updated_by;
+        $publicSharing->created_by = Auth::user()->id;
+        $publicSharing->updated_by =  Auth::user()->id;
 
         $publicSharing->save();
 
@@ -122,5 +131,10 @@ class PublicSharingController extends Controller
             ]);
         }
       
+    }
+
+    public function showByCourse($id){
+        $publicSharing = PublicSharing::where('course_id', $id)->where('is_deleted', false)->first();
+        return response()->json($publicSharing);
     }
 }

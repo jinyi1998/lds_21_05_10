@@ -145,8 +145,17 @@ const DesignContainer = (props) => {
     const InitCourseData = () => {
         if(typeof props.token != 'undefined'){
             apiPublicSharingVerify({token: props.token}).then((response)=>{
-                console.log(response.data);
-                fetchCourseData(response.data.course_id)
+                // console.log(response.data);
+                if(response.data.verification){
+                    // fetchCourseData(response.data.course_id);
+                    Dispatch({
+                        type: "INIT_COURSE",
+                        value: response.data.course
+                    })
+                }else{
+                    window.alert("token error");
+                    window.location.href = document.location.origin;
+                }   
             })
         }else if(props.courseID == -1){
             fetchNewCourseData()

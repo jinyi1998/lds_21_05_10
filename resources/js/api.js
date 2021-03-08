@@ -599,6 +599,9 @@ import config from 'react-global-configuration';
     })
     export const apiPublicSharingVerify = data => publicSharingRequest.get(`verify/${data.token}`,);
     export const apiPublicSharingGet = data => publicSharingRequest.get(`${data.id}`);
+    export const apiPublicSharingPost = data => publicSharingRequest.post('/', JSON.stringify(data));
+    export const apiPublicSharingDelete = data => publicSharingRequest.delete(`/${data.id}`);
+    export const apiPublicSharingGetByCourse = data => publicSharingRequest.get(`getByCourse/${data.course_id}`);
     //#endregion
 
 

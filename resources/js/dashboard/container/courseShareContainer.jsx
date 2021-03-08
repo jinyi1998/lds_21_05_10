@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import CourseSharePublic from '../component/courseSharePublic'
 import CourseShareUsergroup from '../component/courseShareUsergroup';
 import CourseShareUser from '../component/courseShareUser';
+import CourseSharePublicOutsideSys from '../component/courseSharePublicOutsideSys';
 
 import {apiCourseGetPermission, apiCourseUpdatePermission} from '../../api.js';
 import Tabs from '@material-ui/core/Tabs';
@@ -118,6 +119,7 @@ const CourseShareContainer = (props) => {
                             <Tab label="Users"  value = {1} {...a11yProps(1)} />
                             <Tab label="Groups" value = {2} {...a11yProps(2)} />
                             <Tab label="Public" value = {3} {...a11yProps(3)} />
+                            <Tab label="Public (Outside The System)" value = {4} {...a11yProps(4)} />
                         </Tabs>
 
                         <TabPanel value={courseType} index={1}>
@@ -133,6 +135,12 @@ const CourseShareContainer = (props) => {
                         <TabPanel value={courseType} index={3}>
                             <React.Fragment>
                                 <CourseSharePublic courseid= {courseData.id} permissionArr = {permissionArr} setPermissionArr = {setPermissionArr} />
+                            </React.Fragment>
+                        </TabPanel>
+
+                        <TabPanel value={courseType} index={4}>
+                            <React.Fragment>
+                                <CourseSharePublicOutsideSys course_id= {courseData.id} />
                             </React.Fragment>
                         </TabPanel>
                     </div>
