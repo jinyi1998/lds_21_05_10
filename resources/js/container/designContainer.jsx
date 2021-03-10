@@ -153,7 +153,7 @@ const DesignContainer = (props) => {
                         value: response.data.course
                     })
                 }else{
-                    window.alert("token error");
+                    window.alert("The share link for the Learning Design is no longer available.");
                     window.location.href = document.location.origin;
                 }   
             })
