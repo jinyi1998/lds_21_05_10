@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 // });
 
 Route::resource('opts', 'API\AppOptsController');
+Route::get('printable/{id}', 'API\CourseController@show');
+Route::get('printable/patternopts', 'API\LearningTaskController@getLearningPatternOpts');
 
 
 Route::middleware(['auth:api'])->group(function () {

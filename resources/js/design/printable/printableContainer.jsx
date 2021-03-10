@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import html2canvas from 'html2canvas';  
 // import jsPDF from 'jspdf';  
 
-import {apiCourseGet,
-    apiOptionsList, apiLearningTaskGetPatternOpts, 
+import {apiPrintableGet,
+    apiOptionsList, apiPrintableGetPatternOpts, 
 } from '../../api';
 
 import PrintableContent from './printableContent';
@@ -75,7 +75,7 @@ const PrintableContainer = (props) => {
     }
 
     async function fetchlearningPatternOptsData() {
-        await apiLearningTaskGetPatternOpts().then(
+        await apiPrintableGetPatternOpts().then(
             response => {
                 setOptions(optionsInit=> ({
                     ...optionsInit,
@@ -115,7 +115,7 @@ const PrintableContainer = (props) => {
     }
 
     React.useEffect(()=>{
-        apiCourseGet(courseid)
+        apiPrintableGet({id: courseid})
                 .then((repsonse)=> {
                     setCourse(repsonse.data)
                     InitDesignOption();

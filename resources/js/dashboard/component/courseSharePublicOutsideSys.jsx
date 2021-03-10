@@ -54,7 +54,7 @@ const CourseSharePublicOutsideSys = (props) => {
                             <TextField
                                 id="filled-share-link"
                                 label="Share Link"
-                                helperText="People who get this link can view the Learning Design"
+                                helperText="Anyone with this link can view the Learning Design without sign in. "
                                 variant="filled"
                                 value = {window.location.origin + '/publicsharing/' + publicShare.token}
                                 fullWidth
@@ -68,7 +68,7 @@ const CourseSharePublicOutsideSys = (props) => {
                             onClick = {onCloseLink}
                             fullWidth
                         > 
-                            Close The Public (Outside the system) Sharing
+                            Close The Public (WITHOUT SIGN IN LDS) Sharing
                         </Button>
                         </Grid>
                     ]
