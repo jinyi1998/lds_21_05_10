@@ -11,6 +11,8 @@ import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import LearningTaskEditView  from '../../../task/component/learningTaskEditView'
+
 
 /** define the styles of the taskEdition, including the width of the leftInfo and rightnfo **/
 const useStyles = makeStyles((theme) => ({
@@ -59,205 +61,103 @@ export default function TaskEdition(props){
 		choseTask.displayName = ''
 	const [state, setState] = React.useState(choseTask);
 
+	const [ taskData, setTaskData] = React.useState(choseTask);
+	const [ error, setError] = React.useState({
+        "type": "",
+        "title": "",
+        "description": "",
+        "time": "",
+        "classType": "",
+        "target": "",
+        "size": ""
+    });
+
+    const validate = () => {
+        var validated = true;
+        var tempError = {
+          "type": "",
+          "title": "",
+          "description": "",
+          "time": "",
+          "classType": "",
+          "target": "",
+          "size": "",
+          "has_assessment": "",
+        }
+
+        if(validator.isEmpty(taskData.type.toString())){
+            tempError["type"] = "Please enter the course type";
+            validated = false;
+          }
+      
+        if(validator.isEmpty(taskData.title.toString())){
+            tempError["title"] = "Please enter the title";
+            validated = false;
+        }
+    
+        if(!validator.isInt(taskData.time.toString(), {min: 0, max: 999})){
+            tempError["time"] = "Please enter the time";
+            validated = false;
+          }
+    
+        if(validator.isEmpty(taskData.class_type.toString())){
+          tempError["classType"] = "Please enter the location";
+          validated = false;
+        }
+    
+        if(validator.isEmpty(taskData.target.toString())){
+          tempError["target"] = "Please enter the target";
+          validated = false;
+        }
+    
+        if(validator.isEmpty(taskData.size.toString())){
+          tempError["size"] = "Please enter the course size";
+          validated = false;
+        }
+
+        if(taskData.has_assessment){
+            if(taskData.assessmentid.length == 0){
+                tempError["has_assessment"] = "You said there is some assessment in the task but you have not select any assessment yet";
+                validated = false;
+            }
+        }
+    
+        setError(tempError);
+        return validated;
+    }
+
+
     /*** When change infomation, record it using the state****/
-	const handleChange = (event) => {
-	    const name = event.target.name;
-	    let value = event.target.value
-	    setState({
-	      ...state,
-	      [name]: value,
-		});
-	};
+	const onSave = () => {
+		if(validate){
+			props.changeLessonList(taskData);
+		}else{
+			return;
+		}
+	}
 
 	React.useEffect(()=>{
-		DATAAPI.getOpts();
-	}, [])
+	console.log(taskData);
+	}, [taskData])
 	
 
 	return (
       <div className="taskEdition">
-	      <div className='taskEditiontitle1'> Edit Learning Task </div>
-	      <div className='taskEditiontitle2'> You may add new learning task for this component... </div>
-	      <div className='taskInfo'>
-	      	<div className='leftInfo'>
-	      		
-	      		<FormControl variant="outlined" className={classes.leftInfoStyle}>
-		      		 <TextField
-		      		  required
-		      		  error
-		      		  inputProps={{ name: 'time',}}
-					  id='filled-mintues'
-			          label="Minutes"
-			          defaultValue={state.time}
-			          variant="filled"
-			          onChange={handleChange}
-			        />
-			    </FormControl>
+			<div className='taskEditiontitle1'> Edit Learning Task  </div>
+	      	<div className='taskEditiontitle2'> You may add new learning task for this component... </div>
+			<LearningTaskEditView 
+				taskID = {taskData.id} 
+				taskData = {taskData} 
+				syncTask = {setTaskData} 
+				showAssessment = {false}
+				error = {error}
+				mode = "lesson_edit"/> 
 
-	      		<FormControl variant="outlined" className={classes.leftInfoStyle}>
-			        <InputLabel htmlFor="class_type"> Class Type: </InputLabel>
-			        <Select
-							native
-							value={state.class_type}
-							onChange={handleChange}
-							label="classType"
-							inputProps={{
-								name: 'class_type',
-								id: 'class_type',
-					        }}>
-						<option value='1'>In Class</option>
-						<option value='2'>Out Class</option>
-			        </Select>
-			     </FormControl>
 
-			     <FormControl variant="outlined" className={classes.leftInfoStyle}>
-			        <InputLabel htmlFor="target"> Class Target: </InputLabel>
-			        <Select
-							native
-							value={state.target}
-							onChange={handleChange}
-							label="target"
-							inputProps={{
-								name: 'target',
-								id: 'target',
-					        }}>
-						<option value='3'> Individual </option>
-						<option value='4'> Peer </option>
-						<option value='2'> Group </option>
-						<option value='1'> Whole </option>
-			        </Select>
-			     </FormControl>
-
-			    <FormControl variant="outlined" className={classes.leftInfoStyle}>
-			        <InputLabel htmlFor="size"> Size: </InputLabel>
-			        <Select
-							native
-							value={state.size}
-							onChange={handleChange}
-							label="size"
-							inputProps={{
-								name: 'size',
-								id: 'size',
-					        }}>
-					    {sizeOpts.map((size) => (
-					    	<option value={size.id} key={size.id}> {size.description} </option> 
-						))}
-			        </Select>
-			     </FormControl>
-
-				<FormControl className={classes.leftInfoStyle}>
-					<InputLabel id="resources-label"> Resources: </InputLabel>
-					<Select
-							labelId="resources-label"
-							id="allResourcedId"
-							multiple
-							value={state.allResourcedId}
-							onChange={handleChange}
-							input={<Input name='allResourcedId' />}
-							renderValue={(selected) => selected.map((selectId)=>resourcesName[selectId-1].description).join(',')}
-							MenuProps={MenuProps} >
-						{resourcesName.map((resources) => (
-							<MenuItem key={resources.id} value={resources.id}>
-								<Checkbox checked={(state.allResourcedId).indexOf(resources.id) > -1} style={style}/>
-								<ListItemText primary={resources.description} style={style}/>
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl> 
-
-				<FormControl className={classes.leftInfoStyle}>
-					<InputLabel id="tools-label"> Tools: </InputLabel>
-					<Select
-							labelId="tools-label"
-							id="allToolsId"
-							multiple
-							value={state.allToolsId}
-							onChange={handleChange}
-							input={<Input name='allToolsId' />}
-							renderValue={(selected) => selected.map((selectId)=>toolsName[selectId-1].description).join(',')}
-							MenuProps={MenuProps} >
-						{toolsName.map((tools) => (
-							<MenuItem key={tools.id} value={tools.id}>
-								<Checkbox checked={(state.allToolsId).indexOf(tools.id) > -1} style={style}/>
-								<ListItemText primary={tools.description} style={style}/>
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-
-	      	</div>
-
-	      	<div className='rightInfo'>
-	      		<FormControl className={classes.rightInfoStyle}>
-					<InputLabel id="type-label"> Type: </InputLabel>
-					 <Select
-							native
-							error
-							value={state.type}
-							onChange={handleChange}
-							label="typeName"
-							inputProps={{
-								name: 'type',
-								id: 'type',
-					        }}>
-					    {typeName.map((tasktype) => (
-					    	<option value={tasktype.id} key={tasktype.id}> {tasktype.description} </option> 
-						))}
-			        </Select>
-				</FormControl> 
-				
-	      		<FormControl className={classes.rightInfoStyle}>
-		      		<TextField
-		      		  id="filled-multiline-static"
-				      label="Multiline"
-				      multiline
-				      rows={3}
-		      		  required
-		      		  error
-		      		  inputProps={{ name: 'title',}}
-			          id="filled-title"
-			          label="Title"
-			          defaultValue={state.title}
-			          variant="filled"
-			          onChange={handleChange}
-			        />
-			    </FormControl> 
-
-	      		<FormControl className={classes.rightInfoStyle}>
-			        <TextField
-			          id="filled-multiline-static"
-				      label="Multiline"
-				      multiline
-				      rows={5}
-			          required
-			          error
-			          inputProps={{ name: 'description',}}
-			          id="filled-description"
-			          label="Description"
-			          defaultValue={state.description}
-			          variant="filled"
-			          onChange={handleChange}
-			        />
-			    </FormControl> 
-
-	      		<FormControl className={classes.rightInfoStyle}>
-			        <TextField
-			          required
-			          inputProps={{ name: 'displayName',}}
-			          id="outlined-displayName"
-			          label="Display name(for timeline): "
-			          defaultValue={state.displayName}
-			          variant="outlined"
-			          error
-			          onChange={handleChange}
-			        />
-			     </FormControl> 
-	      	</div>
-	      </div>
-
+	    
 	      <div className='buttonG'>
-	      	<Button id='cancel' variant="contained" onClick={() => {props.setShowEditionView(false); }}>CANCEL</Button>
-	      	<Button id='save' variant="contained" onClick={() => {props.changeLessonList(state);}}> SAVE</Button>
+	      	<Button id='cancel' variant="contained" color = {"secondary"} onClick={() => {props.setShowEditionView(false); }}>CANCEL</Button>
+	      	<Button id='save' variant="contained" color = {"primary"} onClick={onSave}> SAVE</Button>
 	     </div>
 
 	     </div>

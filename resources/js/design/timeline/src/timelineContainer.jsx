@@ -51,10 +51,6 @@ function TimelineContainer() {
 			currentTaskId = {currentTaskId}
 			setShowEditionView={(ifshowEdition) =>{setShowEditionView(ifshowEdition)}}
 			changeLessonList={(newstate)=>{
-				let allResourcedId = newstate.allResourcedId
-				let allToolsId = newstate.allToolsId
-				newstate.resourceid = allResourcedId.map((resource_id) => ({'learningtask_id': newstate.id, 'resource_id': resource_id}))
-				newstate.toolid = allToolsId.map((tool_id) => ({'learningtask_id': newstate.id, 'elearningtool_id': tool_id}))
 				DATAAPI.setTaskInfo(newstate, currentLessonIndex, forceUpdate)
 				let taskid = newstate.id
 				let taskidx = (lessonList[currentLessonIndex]['tasks']).findIndex(task => task['id'] === taskid)

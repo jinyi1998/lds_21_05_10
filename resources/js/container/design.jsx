@@ -38,6 +38,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
 import AvTimerIcon from '@material-ui/icons/AvTimer';
 import PieChartIcon from '@material-ui/icons/PieChart'
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 import UnitPlanContainer from '../design/unitPlanContainer';
 import {ContextStore} from '../container/designContainer'
@@ -50,6 +51,7 @@ import {
   apiDesignTypeGet,
 } 
 from '../api.js';
+import { countBy } from 'lodash';
 
 
 const drawerWidth = 240;
@@ -146,6 +148,19 @@ const PageListMenu = (props) => {
         fontWeight: "500"
       }
     }
+  }
+
+  const onClickTimeline = () => {
+    console.log(course);
+    if(course.lessons[0]?.time % 15 == 0 || course.lessons[0]?.time%10 == 0){
+      window.open(
+        `/timeline/${props.course_id}`
+      ,'_blank'
+      )
+    }else{
+      window.alert("Your lesson time cannot rounded by 10/ 15, the current timeline does not support this");
+    }
+ 
   }
 
   return (
@@ -272,16 +287,16 @@ const PageListMenu = (props) => {
                 }}/>
             </ListItem>
     
-            {/* <ListItem
+            <ListItem
               button
               selected={activeStage === 'timeline'}
-              onClick={(event) => window.open(
-                `/timeline/${props.course_id}`
-              ,'_blank'
-              )}
+              onClick={onClickTimeline}
             >
+               <ListItemIcon>
+                  <TimelineIcon  {...getIconStyle(activeStage === 'finish')}/>
+                </ListItemIcon>
               <ListItemText primary="Timeline" />
-            </ListItem> */}
+            </ListItem>
     
             {/* <ListSubheader>Review Stage</ListSubheader> */}
               <ListItem

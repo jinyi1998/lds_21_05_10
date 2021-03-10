@@ -194,6 +194,7 @@ const DATAAPI = {
         let tkids = lesson["tasks"].filter(item => item["lessonid"]["lessontype"]==task_type).map(item => {
             return {"lesson_id": lesson["id"], "task_id": item["id"], "sequence": 1}
         })
+
         // tkids.push({"lesson_id": lesson["id"], "task_id": task["id"], "sequence": 1})
         let obj = {"lesson_id": lesson["id"],
             "lessontype": task_type,
@@ -238,18 +239,39 @@ const DATAAPI = {
         });
     },
     updateLessonTaskRelation: (task)=>{
-        let obj = {"id":task["lessonid"]["id"], "sequence": 1, "lessontype": task["lessonid"]["lessontype"], "starttime": task["lessonid"]["starttime"]}
-        const e = axios.create({
-            baseURL:  DATAAPI.baseURL + '/lessonTaskRelation',
+      
+        const request = axios.create({
+            baseURL:  DATAAPI.baseURL + '/learningTask',
             headers: DATAAPI.headers
         });
-        e.put('/' + task["lessonid"]["id"], obj)
+        request.get('/' + task["id"])
             .then(function (response) {
                 console.log(response['data'])
+                console.log(task)
+                let obj = {
+                    "id":response['data']["lessonid"]["id"], 
+                    "sequence": 1, 
+                    "lessontype": typeof task["lessonid"]["lessontype"] != 'undefined'? task["lessonid"]["lessontype"] : response['data']["lessonid"]["lessontype"], 
+                    "starttime":  typeof task["lessonid"]["starttime"] != 'undefined'?  task["lessonid"]["starttime"] : response['data']["lessonid"]["starttime"]
+                }
+
+                const e = axios.create({
+                    baseURL:  DATAAPI.baseURL + '/lessonTaskRelation',
+                    headers: DATAAPI.headers
+                });
+                e.put('/' + response['data']["lessonid"]["id"], obj)
+                    .then(function (response) {
+                        console.log(response['data'])
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
             })
             .catch(function (error) {
                 console.log(error);
         });
+
+       
     },
 }
 export { DATAAPI }
