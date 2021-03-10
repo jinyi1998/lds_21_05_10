@@ -756,7 +756,7 @@ const Design = (props) => {
             <PrintableContainer isPrint = {false} courseid = {courseID}/>
             <Grid container item xs ={12} justify = {"flex-end"}>
               <Grid item xs = {2}>
-                <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActivePage('componentPlan')} fullWidth> Edit </Button>
+                <Button variant = {"outlined"} color = {"secondary"} onClick = {()=>setActivePage('componentPlan')} fullWidth> {course.permission > 2? "Edit" : "Back"}</Button>
               </Grid>
               <Grid item xs = {2}>
                 <Button variant = {"outlined"} color = {"primary"} onClick = {onFinish} fullWidth>Finish</Button>

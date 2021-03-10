@@ -119,7 +119,7 @@ const CourseShareContainer = (props) => {
                             <Tab label="Users"  value = {1} {...a11yProps(1)} />
                             <Tab label="Groups" value = {2} {...a11yProps(2)} />
                             <Tab label="Public" value = {3} {...a11yProps(3)} />
-                            <Tab label="Public (Outside The System)" value = {4} {...a11yProps(4)} />
+                            <Tab label="Public (WITHOUT SIGN IN LDS)" value = {4} {...a11yProps(4)} />
                         </Tabs>
 
                         <TabPanel value={courseType} index={1}>

@@ -604,6 +604,17 @@ import config from 'react-global-configuration';
     export const apiPublicSharingGetByCourse = data => publicSharingRequest.get(`getByCourse/${data.course_id}`);
     //#endregion
 
+    //#region public sharing api
+       const printableRequest = axios.create({
+        baseURL: 'http://'+config.get('url')+'/api/printable',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+    export const apiPrintableGet = data => printableRequest.get(`${data.id}`);
+    export const apiPrintableGetPatternOpts = data => printableRequest.get(`patternopts`);
+    //#endregion
+
 
     //#region template api
     // const templateRequest = axios.create({
