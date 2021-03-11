@@ -78,7 +78,7 @@ class TABLEVIEW extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0 && nextProps.currentLessonIndex!=this.props.currentLessonIndex){
+        if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0 && nextProps.currentLessonIndex!=this.props.currentLessonIndex && nextProps.buttonAction == true){
                 let atime = nextProps.currentLessonIndex * nextProps.lessonList[0].time * ONE_MINUTE * 5;
                 let st = (originTimeInMS - atime) / timeGap[defaultTimeGap] * this.defaultUnitWidth; //styles.unit.width
 
@@ -88,6 +88,8 @@ class TABLEVIEW extends React.Component {
                     timeStart: st,
                     unitWidth: this.defaultUnitWidth
                 })
+
+                nextProps.setButtonAction(false)
         }
 
         if(nextProps.lessonList){
@@ -317,10 +319,34 @@ class TABLEVIEW extends React.Component {
 
     draggingTime = (e) => {
         const val = e.clientX
+
         // mouse movement: e.clientX - this.dragTimeStartX
         this.setState((prevState) => {
-            // cannot drag time before the first lesson
             let newTimeStart = prevState.timeStart + (val - this.dragTimeStartX)
+
+            const gap = timeGap[this.state.showTimeGap]
+            var right_boundary =  - (this.state.lessons[0]?.preClass + this.state.lessons[0]?.inClass + this.state.lessons[0]?.postClass) / gap 
+            * this.state.unitWidth 
+            * ( this.state.lessons.length - 1);
+             
+            var lesson_predict = newTimeStart / (- (this.state.lessons[0]?.preClass + this.state.lessons[0]?.inClass + this.state.lessons[0]?.postClass) / gap 
+            * this.state.unitWidth );
+            var lesson_predict_round = Math.floor(lesson_predict);
+       
+            if(lesson_predict_round >= 0){
+                this.props.changeLessonIndex(lesson_predict_round)
+            }   
+
+            if(newTimeStart > 0 && e.movementX > 0){ //left movement
+                return ({
+                    timeStart: prevState.timeStart,
+                })
+            }else if (right_boundary > newTimeStart && e.movementX < 0){ //right movement
+                return ({
+                    timeStart: prevState.timeStart,
+                })
+            }
+
             return ({
                 timeStart: newTimeStart,
             })

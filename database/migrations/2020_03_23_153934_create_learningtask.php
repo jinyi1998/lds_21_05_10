@@ -30,7 +30,7 @@ class CreateLearningtask extends Migration
             $table->timestamp('updated_at')->useCurrent();
 
             $table->foreign('type')->references('id')->on('learningTasktypeOpts');
-            $table->foreign('class_type')->references('id')->on('classTargetOpts');
+            $table->foreign('class_type')->references('id')->on('classTypeOpts');
             $table->foreign('target')->references('id')->on('classTargetOpts');
             $table->foreign('size')->references('id')->on('classSizeOpts');
         });

@@ -20,6 +20,7 @@ function deepCopyTask(item, index){
 
 function TimelineContainer() {
 	const forceUpdate = React.useState()[1].bind(null, {})
+	const [buttonAction, setButtonAction ] = useState(false)
 	const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
 	const [currentTaskId, setcurrentTaskId] = useState(0)
 	const [lessonList, setLessonList] = useState([])
@@ -65,6 +66,8 @@ function TimelineContainer() {
 				toolORresource={toolORresource}
 				currentLessonIndex={currentLessonIndex}
 				changeLessonIndex={(index)=>{setCurrentLessonIndex(index)}} 
+				buttonAction = {buttonAction}
+				setButtonAction = {setButtonAction}
 				changeTaskIndex= {(index)=>{setcurrentTaskId(index)}}
 				setShowEditionView={(ifshowEdition) =>{setShowEditionView(ifshowEdition)}}
 				changeLessonList={(newLessonlist, item, taskType, is_deleted = false)=>{
@@ -83,6 +86,8 @@ function TimelineContainer() {
 		<div style={styles.lessonview}>
 			<LESSONVIEW lessonList={lessonList}
 				currentLessonIndex={currentLessonIndex}
+				buttonAction = {buttonAction}
+				setButtonAction = {setButtonAction}
 				currentTaskId = {currentTaskId}
 				changeLessonIndex={(index)=>{setCurrentLessonIndex(index)}} 
 				changeTaskIndex= {(index) => {setcurrentTaskId(index)}}

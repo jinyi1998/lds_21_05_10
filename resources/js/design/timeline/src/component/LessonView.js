@@ -78,6 +78,15 @@ const getItemStyle = (isDragging, draggableStyle, otherStyle) => ({
 function LessonButtonGroup(props) {
     const classes = useStyles()
     const [currentlesson, setCurrentlesson] = useState(0)
+
+    React.useEffect(()=>{
+        if(props.currentLessonIndex == -1){
+            
+        }else{
+            setCurrentlesson(props.currentLessonIndex);
+        }
+       
+    }, [props.currentLessonIndex])
     
     return (
         <div className={classes.root}>
@@ -88,7 +97,7 @@ function LessonButtonGroup(props) {
                             key = {index}
                             variant={index===currentlesson?"contained":"text"}
                             color="primary"
-                            onClick={() => {props.lessonChange(index);setCurrentlesson(index);}}
+                            onClick={() => {props.lessonChange(index);setCurrentlesson(index); props.setButtonAction(true);}}
                             >
                             Lesson {index+1}
                     </Button>)
@@ -281,7 +290,9 @@ class LESSONVIEW extends React.Component {
             <React.Fragment>
                 <LessonButtonGroup lessonList={this.props.lessonList} 
                     currentLessonIndex={this.props.currentLessonIndex} 
-                    lessonChange={this.props.changeLessonIndex}/>
+                    lessonChange={this.props.changeLessonIndex}
+                    setButtonAction = {this.props.setButtonAction}
+                />
                 {
                      this.props.currentLessonIndex  != -1?
                     <LessonPreInPostClass setShowPatternView={this.props.showPatternViewChange} 

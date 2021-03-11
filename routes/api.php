@@ -20,6 +20,9 @@ use Illuminate\Http\Request;
 Route::resource('opts', 'API\AppOptsController');
 Route::get('printable/{id}', 'API\CourseController@show');
 Route::get('printable/patternopts', 'API\LearningTaskController@getLearningPatternOpts');
+Route::resource('publicsharing', 'API\PublicSharingController');
+Route::get('publicsharing/getByCourse/{id}', 'API\PublicSharingController@showByCourse');
+Route::get('publicsharing/verify/{token}', 'API\PublicSharingController@verifyReturnCourse');
 
 
 Route::middleware(['auth:api'])->group(function () {

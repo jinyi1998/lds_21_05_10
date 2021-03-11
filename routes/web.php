@@ -35,9 +35,6 @@ Route::get('/usergroups', '\App\Http\Controllers\RouteController@usergroups');
 Route::get('/usergroup/{id}', '\App\Http\Controllers\RouteController@usergroup');
 Route::get('file/downloadCourseJson/{file_name}', 'API\FileSystemController@apiFileCourseDownload');
 
-Route::resource('api/publicsharing', 'API\PublicSharingController');
-Route::get('api/publicsharing/getByCourse/{id}', 'API\PublicSharingController@showByCourse');
-Route::get('api/publicsharing/verify/{token}', 'API\PublicSharingController@verifyReturnCourse');
 Route::get('publicsharing/{token}', function($token){
     return view('publicsharing',  ['token' => $token, 'module' => 'publicsharing']);
 });

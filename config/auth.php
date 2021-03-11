@@ -52,7 +52,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'design_permissopn' => [
+        'design_permission' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
