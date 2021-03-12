@@ -336,10 +336,12 @@
 /****************CSS FOR RIGHT CLASS EDITION*******************/
 /*************************************************************/
 .taskEdition{
+    overflow-y: auto;
+    max-height: 80vh;
     position: fixed;
     right: 5px; 
     top: 80px; 
-     width: 600px; 
+    width: 600px; 
     border: 1.2px solid #ccc;
     padding-top: 12px;
     padding-bottom: 12px;

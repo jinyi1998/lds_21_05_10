@@ -131,24 +131,24 @@ function LessonPreInPostClass(props) {
                 <Grid container spacing={1}>
                     <Grid item xs={2} sm={4}>
                         <Paper className={classes.paper}>Pre-Class
-                        <IconButton aria-label="AddBoxIcon">
-                            <AddBoxIcon className={classes.iconRight} onClick={()=>{setShowtaskPanel(0)}}/>
+                        <IconButton aria-label="AddBoxIcon"  onClick={()=>{setShowtaskPanel(0)}}>
+                            <AddBoxIcon className={classes.iconRight}/>
                         </IconButton>
                         {showtaskPanel==0?(<AddTaskPanel setShowPatternView={() => props.setShowPatternView(1)} addEmptyTask={props.addEmptyTask}></AddTaskPanel>):""}
                         </Paper>
                     </Grid>
                     <Grid item xs={2} sm={4}>
                         <Paper className={classes.paper}>In-Class
-                        <IconButton aria-label="AddBoxIcon">
-                            <AddBoxIcon className={classes.iconRight} onClick={()=>{setShowtaskPanel(1)}}/>
+                        <IconButton aria-label="AddBoxIcon"  onClick={()=>{setShowtaskPanel(1)}}>
+                            <AddBoxIcon className={classes.iconRight}/>
                         </IconButton>
                         {showtaskPanel==1?(<AddTaskPanel setShowPatternView={() => props.setShowPatternView(2)} addEmptyTask={props.addEmptyTask}></AddTaskPanel>):""}
                         </Paper>
                     </Grid>
                     <Grid item xs={2} sm={4}>
                         <Paper className={classes.paper}>Post-Class
-                        <IconButton aria-label="AddBoxIcon">
-                            <AddBoxIcon className={classes.iconRight} onClick={()=>{setShowtaskPanel(2)}}/>
+                        <IconButton aria-label="AddBoxIcon"  onClick={()=>{setShowtaskPanel(2)}}>
+                            <AddBoxIcon className={classes.iconRight}/>
                         </IconButton>
                         {showtaskPanel==2?(<AddTaskPanel setShowPatternView={() => props.setShowPatternView(3)} addEmptyTask={props.addEmptyTask}></AddTaskPanel>):""}
                         </Paper>

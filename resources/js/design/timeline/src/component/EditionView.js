@@ -136,29 +136,23 @@ export default function TaskEdition(props){
 		}
 	}
 
-	React.useEffect(()=>{
-	console.log(taskData);
-	}, [taskData])
-	
-
 	return (
       <div className="taskEdition">
-			<div className='taskEditiontitle1'> Edit Learning Task  </div>
-	      	<div className='taskEditiontitle2'> You may add new learning task for this component... </div>
-			<LearningTaskEditView 
-				taskID = {taskData.id} 
-				taskData = {taskData} 
-				syncTask = {setTaskData} 
-				showAssessment = {false}
-				error = {error}
-				mode = "lesson_edit"/> 
+        <div className='taskEditiontitle1'> Edit Learning Task  </div>
 
-
-	    
-	      <div className='buttonG'>
-	      	<Button id='cancel' variant="contained" color = {"secondary"} onClick={() => {props.setShowEditionView(false); }}>CANCEL</Button>
-	      	<Button id='save' variant="contained" color = {"primary"} onClick={onSave}> SAVE</Button>
-	     </div>
+        <div className='taskEditiontitle2'> You may add new learning task for this component... </div>
+        <LearningTaskEditView 
+          taskID = {taskData.id} 
+          taskData = {taskData} 
+          syncTask = {setTaskData} 
+          showAssessment = {false}
+          error = {error}
+          mode = "lesson_edit"/> 
+        
+        <div className='buttonG'>
+          <Button id='cancel' variant="contained" color = {"secondary"} onClick={() => {props.setShowEditionView(false); }}>CANCEL</Button>
+          <Button id='save' variant="contained" color = {"primary"} onClick={onSave}> SAVE</Button>
+        </div>
 
 	     </div>
      
