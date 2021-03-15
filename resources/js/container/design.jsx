@@ -293,7 +293,7 @@ const PageListMenu = (props) => {
               onClick={onClickTimeline}
             >
                <ListItemIcon>
-                  <TimelineIcon  {...getIconStyle(activeStage === 'finish')}/>
+                  <TimelineIcon  {...getIconStyle(activeStage === 'timeline')}/>
                 </ListItemIcon>
               <ListItemText primary="Timeline" />
             </ListItem>
@@ -374,6 +374,16 @@ const PageListMenu = (props) => {
             >
                 <ListItemIcon>
                   <AvTimerIcon  />
+                </ListItemIcon>
+            </ListItem>
+
+            <ListItem
+              button
+              selected={activeStage === 'timeline'}
+              onClick={onClickTimeline}
+            >
+                <ListItemIcon>
+                  <TimelineIcon  {...getIconStyle(activeStage === 'timeline')}/>
                 </ListItemIcon>
             </ListItem>
 

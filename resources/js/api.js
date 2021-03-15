@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 
   //#region  user api
   const userRequest = axios.create({
-    baseURL:  'http://'+config.get('url')+'/api/user',
+    baseURL:  config.get('url')+'/api/user',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
@@ -19,7 +19,7 @@ import config from 'react-global-configuration';
   
   //#region user group api
   const usergroupRequest = axios.create({
-    baseURL:  'http://'+config.get('url')+'/api/usergroup',
+    baseURL:  config.get('url')+'/api/usergroup',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
@@ -34,7 +34,7 @@ import config from 'react-global-configuration';
 
   //#region user group user api
   const usergroupUserRequest = axios.create({
-    baseURL:  'http://'+config.get('url')+'/api/usergroupuser',
+    baseURL:  config.get('url')+'/api/usergroupuser',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
@@ -49,7 +49,7 @@ import config from 'react-global-configuration';
 
   //#region user group user temp api
   const usergroupUseTempRequest = axios.create({
-    baseURL:  'http://'+config.get('url')+'/api/usergroupuserTemp',
+    baseURL:  config.get('url')+'/api/usergroupuserTemp',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
@@ -64,7 +64,7 @@ import config from 'react-global-configuration';
 
   //#region course api
   const courseRequest = axios.create({
-    baseURL:  'http://'+config.get('url')+'/api/course',
+    baseURL:  config.get('url')+'/api/course',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -85,7 +85,7 @@ import config from 'react-global-configuration';
 
     //#region lesson api
   const lessonRequest = axios.create({
-    baseURL: 'http://'+config.get('url')+'/api/lesson',
+    baseURL: config.get('url')+'/api/lesson',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -101,7 +101,7 @@ import config from 'react-global-configuration';
 
     //#region lesson task api
     const lessonTaskRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/lessonTaskRelation',
+        baseURL: config.get('url')+'/api/lessonTaskRelation',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -116,7 +116,7 @@ import config from 'react-global-configuration';
 
     //#region learningoutcome api
     const learningOutcomeRequest = axios.create({
-    baseURL: 'http://'+config.get('url')+'/api/learningOutcome',
+    baseURL: config.get('url')+'/api/learningOutcome',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -133,7 +133,7 @@ import config from 'react-global-configuration';
 
     //#region learningoutcome component api
     const learningOutcomeComponentRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/componentOutcomeRelation',
+        baseURL: config.get('url')+'/api/componentOutcomeRelation',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -148,7 +148,7 @@ import config from 'react-global-configuration';
 
     //#region learningoutcome course api
     const learningOutcomeCourseRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/courseOutcomeRelation',
+        baseURL: config.get('url')+'/api/courseOutcomeRelation',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -163,7 +163,7 @@ import config from 'react-global-configuration';
 
     //#region learningoutcometemp api
     const learningOutcomeTempRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningOutcomeTemplate',
+        baseURL: config.get('url')+'/api/learningOutcomeTemplate',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -179,7 +179,7 @@ import config from 'react-global-configuration';
 
     //#region learningcomponent api
     const learningComponentRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningComponent',
+        baseURL: config.get('url')+'/api/learningComponent',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -197,7 +197,7 @@ import config from 'react-global-configuration';
 
     //#region learningcomponenttemp api
     const learningComponentTempRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningComponentTemplate',
+        baseURL: config.get('url')+'/api/learningComponentTemplate',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -217,7 +217,7 @@ import config from 'react-global-configuration';
 
     //#region learningcomponenttempinstruction api
     const learningComponentInstructionRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/componentInstruction',
+        baseURL: config.get('url')+'/api/componentInstruction',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -234,7 +234,7 @@ import config from 'react-global-configuration';
 
     //#region learningpatterntemp api
     const learningPatternTempRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningPatternTemplate',
+        baseURL: config.get('url')+'/api/learningPatternTemplate',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -251,7 +251,7 @@ import config from 'react-global-configuration';
 
     //#region patternbin category api
     const patternbinCategoryRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/patternbinCategory',
+        baseURL: config.get('url')+'/api/patternbinCategory',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -266,7 +266,7 @@ import config from 'react-global-configuration';
 
     //#region patternbin api
     const patternbinRequest =  axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/patternbin',
+        baseURL: config.get('url')+'/api/patternbin',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -283,7 +283,7 @@ import config from 'react-global-configuration';
 
     //#region learningtasktemp api
     const learningTaskTempRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningTaskTemplate',
+        baseURL: config.get('url')+'/api/learningTaskTemplate',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -298,7 +298,7 @@ import config from 'react-global-configuration';
 
     //#region design type api
     const designTypeRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/designType',
+        baseURL: config.get('url')+'/api/designType',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -317,7 +317,7 @@ import config from 'react-global-configuration';
     //#region 
         //#region lesson api
   const designTypeComponentTempRequest = axios.create({
-    baseURL: 'http://'+config.get('url')+'/api/designTypeComponentTemplate',
+    baseURL: config.get('url')+'/api/designTypeComponentTemplate',
     headers: {
         "Content-type": "application/json; charset=UTF-8",
         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -334,7 +334,7 @@ import config from 'react-global-configuration';
 
     //#region design type instruction
     const designTypeInstructionRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/designTypeInstruction',
+        baseURL: config.get('url')+'/api/designTypeInstruction',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -350,7 +350,7 @@ import config from 'react-global-configuration';
 
     //#region learning task api
     const learningTaskRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningTask',
+        baseURL: config.get('url')+'/api/learningTask',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -366,7 +366,7 @@ import config from 'react-global-configuration';
 
     //#region learning task component api
     const learningTaskCompRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/componentTaskRelation',
+        baseURL: config.get('url')+'/api/componentTaskRelation',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -381,7 +381,7 @@ import config from 'react-global-configuration';
 
     //#region learning pattern api
     const learningPatternRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/learningPattern',
+        baseURL: config.get('url')+'/api/learningPattern',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -397,7 +397,7 @@ import config from 'react-global-configuration';
 
     //#region options api
     const optionsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/opts',
+        baseURL: config.get('url')+'/api/opts',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -408,7 +408,7 @@ import config from 'react-global-configuration';
 
     //#region moodle mod
     const moodleModRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/moodleMod',
+        baseURL: config.get('url')+'/api/moodleMod',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -423,7 +423,7 @@ import config from 'react-global-configuration';
 
      //#region Taxonomy Category
      const taxCategoryRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/taxonomyCategory',
+        baseURL: config.get('url')+'/api/taxonomyCategory',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -438,7 +438,7 @@ import config from 'react-global-configuration';
 
      //#region Taxonomy Category Task Type Relation
      const taxCategoryTaskRelationRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/taxonomyCategoryTasktypeRelation',
+        baseURL: config.get('url')+'/api/taxonomyCategoryTasktypeRelation',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -454,7 +454,7 @@ import config from 'react-global-configuration';
 
     //#region class size opts
      const classSizeOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/classSize',
+        baseURL: config.get('url')+'/api/classSize',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -469,7 +469,7 @@ import config from 'react-global-configuration';
 
     //#region class target opts
     const classTargetOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/classTarget',
+        baseURL: config.get('url')+'/api/classTarget',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -485,7 +485,7 @@ import config from 'react-global-configuration';
 
     //#region class type opts
     const classTypeOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/classType',
+        baseURL: config.get('url')+'/api/classType',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -500,7 +500,7 @@ import config from 'react-global-configuration';
 
     //#region tasks type opts
       const taskTypeOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/taskType',
+        baseURL: config.get('url')+'/api/taskType',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -515,7 +515,7 @@ import config from 'react-global-configuration';
 
     //#region resource opts
       const resourceOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/resource',
+        baseURL: config.get('url')+'/api/resource',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -530,7 +530,7 @@ import config from 'react-global-configuration';
 
     //#region elearning opts
       const elearningToolOptsRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/elearningTool',
+        baseURL: config.get('url')+'/api/elearningTool',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -545,7 +545,7 @@ import config from 'react-global-configuration';
 
     //#region componentanalysis api
     const componentAnalysisRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/componentanalysis',
+        baseURL: config.get('url')+'/api/componentanalysis',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -556,7 +556,7 @@ import config from 'react-global-configuration';
 
     //#region courseanalysis
     const courseAnalysisRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/courseanalysis',
+        baseURL: config.get('url')+'/api/courseanalysis',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -567,7 +567,7 @@ import config from 'react-global-configuration';
 
     //#region lessonanalysis api
     const lessonAnalysisRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/lessonanalysis',
+        baseURL: config.get('url')+'/api/lessonanalysis',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -578,7 +578,7 @@ import config from 'react-global-configuration';
 
     //#region fileExport api
     const fileRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/file',
+        baseURL: config.get('url')+'/api/file',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
@@ -592,7 +592,7 @@ import config from 'react-global-configuration';
 
     //#region public sharing api
     const publicSharingRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/publicsharing',
+        baseURL: config.get('url')+'/api/publicsharing',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
@@ -606,7 +606,7 @@ import config from 'react-global-configuration';
 
     //#region public sharing api
        const printableRequest = axios.create({
-        baseURL: 'http://'+config.get('url')+'/api/printable',
+        baseURL: config.get('url')+'/api/printable',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
         },
@@ -618,7 +618,7 @@ import config from 'react-global-configuration';
 
     //#region template api
     // const templateRequest = axios.create({
-    //     baseURL: 'http://'+config.get('url')+'/api/template',
+    //     baseURL: config.get('url')+'/api/template',
     //     headers: {
     //         "Content-type": "application/json; charset=UTF-8",
     //         "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')

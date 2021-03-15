@@ -18,45 +18,47 @@ class DesignPermissionMiddleWare
      * @param  \Closure  $next
      * @return mixed
      */
+    private string $method;
+    private string $module;
+    private int $id;
+
+
     public function handle($request, Closure $next)
     {
         
         [$module, $id] = $this->handleSegments($request);
+        $this->module = $module;
+        $this->id = $id;
+        $this->method = $request->method();
+
 
         $permission = [];
         if($id == -1){
             return $next($request);
         }else{
-            switch($module){
+            switch($this->module){
                 case 'course':
-                    $permission = $this->getDesignPermission($id);
+                    $permission = $this->getDesignPermission($this->id);
                 break;
                 case 'learningComponent':
-                    $permission = $this->getCoursePermissionFromComponent($id);
+                    $permission = $this->getCoursePermissionFromComponent($this->id);
                 break;
                 case 'learningPattern':
-                    $permission = $this->getCoursePermissionFromPattern($id);
+                    $permission = $this->getCoursePermissionFromPattern($this->id);
                 break;
                 case 'learningTask':
-                    $permission = $this->getCoursePermissionFromTask($id);
+                    $permission = $this->getCoursePermissionFromTask($this->id);
                 break;
             }
         }
 
         $rs = $this->checkPermission($request, $permission);
 
-        if($rs || $module == 'learningTask' ){
-            // return \response()->json($permission);
+        if($rs){
             return $next($request);
         }else{
             return \response()->json(['message' => 'unauthenticated', 'permission' => $permission], 401);
-            // return \response()->json($rs);
-        }
-        // return $next($request);
-        // return \response()->json($permission);
-     
-    
-      
+        }      
     }
 
     public function handleSegments($request){
@@ -160,18 +162,32 @@ class DesignPermissionMiddleWare
     }
 
     public function checkPermissionMethod($request, $permission){
-        switch($request->method()){
-            case 'DELETE':
-                if($permission > 3) return true;
-            break;
-            case 'POST':
-            case 'PUT':
-                if($permission > 2) return true;
-            break; 
-            case 'GET':
-                if($permission > 0) return true;
-            default:
-                return false;
+        if($this->method == 'course'){
+            switch($this->method){
+                case 'DELETE':
+                    if($permission > 3) return true;
+                break;
+                case 'POST':
+                case 'PUT':
+                    if($permission > 2) return true;
+                break; 
+                case 'GET':
+                    if($permission > 0) return true;
+                default:
+                    return false;
+            }
+        }else{
+            switch($this->method){
+                case 'DELETE':
+                case 'POST':
+                case 'PUT':
+                    if($permission > 2) return true;
+                break; 
+                case 'GET':
+                    if($permission > 0) return true;
+                default:
+                    return false;
+            }
         }
     }
 

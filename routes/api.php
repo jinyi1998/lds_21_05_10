@@ -43,7 +43,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('learningComponent/getPatternOpts/{id}', 
     'API\LearningComponentController@getPatternOpts');
 
-    Route::middleware('design_permission')->resource('learningComponent', 'API\LearningComponentController');
+  
 
     //Learning Component Task Relation Controller
     Route::resource('componentTaskRelation', 'API\ComponentTaskController');
@@ -54,15 +54,13 @@ Route::middleware(['auth:api'])->group(function () {
     //Learning Pattern Controller
     Route::put('learningPattern/unlockPattern/{id}', 
     'API\LearningPatternController@unlockPattern');
-    Route::middleware('design_permission')->resource('learningPattern', 
-    'API\LearningPatternController');
+   
 
 
     //Learning Task Controller
     Route::get('learningTask/getLearningPatternOpts', 
     'API\LearningTaskController@getLearningPatternOpts');
-    Route::middleware('design_permission')->resource('learningTask', 'API\LearningTaskController');
-
+ 
     //Learning Lesson
     Route::resource('lesson', 'API\LessonController');
 
@@ -113,8 +111,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('course/getPermission/{id}', 'API\CourseController@getCoursePermission');
     Route::post('course/updatePermission', 'API\CourseController@updateCoursePermission');
     Route::get('course/{id}', 'API\CourseController@show');
-    Route::middleware('design_permission')->resource('course', 'API\CourseController')->except(['show']);
-
+   
     Route::get('designType/getLearningComponentByDesignType/{id}', 'API\DesignTypeController@getLearningComponentByDesignType');
     Route::get('designType/getDesignTypeInstruction/{id}', 'API\DesignTypeController@getDesignTypeInstruction');
     Route::post('designType/uploadImg', 'API\DesignTypeController@uploadImg');
@@ -148,4 +145,11 @@ Route::middleware(['auth:api'])->group(function () {
         return response()->json('admin test');
     });
 
+
+    Route::middleware('design_permission')->group(function(){
+        Route::resource('course', 'API\CourseController')->except(['show']);
+        Route::resource('learningComponent', 'API\LearningComponentController');
+        Route::resource('learningPattern', 'API\LearningPatternController');
+        Route::resource('learningTask', 'API\LearningTaskController');
+    });
 });

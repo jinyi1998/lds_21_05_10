@@ -14,7 +14,7 @@ class InsertClassTargetOpts extends Migration
     public function up()
     {
         //
-        DB::table('classtargetopts')
+        DB::table('classTargetOpts')
         ->insert(['description' => "Peer", "created_by" => 1, "updated_by" => 1, "is_deleted"=> 1]);
     }
 
@@ -26,6 +26,6 @@ class InsertClassTargetOpts extends Migration
     public function down()
     {
         //
-        DB::table('classtargetopts')->where('id', 4)->delete();
+        DB::table('classTargetOpts')->where('id', 4)->delete();
     }
 }
