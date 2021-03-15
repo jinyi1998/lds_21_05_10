@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from 'react-global-configuration';
 
 const DATAAPI = {
-    baseURL:  'http://'+config.get('url')+'/api',
+    baseURL: config.get('url')+'/api',
     ONE_MINUTE : 60000,
     groupName : ['Whole Class', 'Group', 'Individual', 'Peer', ],
     headers: {

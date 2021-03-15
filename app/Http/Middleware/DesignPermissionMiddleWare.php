@@ -18,9 +18,9 @@ class DesignPermissionMiddleWare
      * @param  \Closure  $next
      * @return mixed
      */
-    private string $method;
-    private string $module;
-    private int $id;
+    private $method;
+    private $module;
+    private $id;
 
 
     public function handle($request, Closure $next)

@@ -25,9 +25,10 @@ class LearningTasktypeOpts extends Model
     public function categoryid(){
         return $this->hasOne(
             'App\TaxonomyCategoryTasktypeRelation',
-            'task_type_id',
+            'task_type_id'
         );
     }
+
     public function createdby(){
         return $this->hasOne(
             'App\User',
