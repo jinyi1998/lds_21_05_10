@@ -10,6 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import validator from 'validator';
 import ChipInput from 'material-ui-chip-input'
+import Link from '@material-ui/core/Link';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -54,7 +55,7 @@ const DesignInfo = (props) => {
   const [ tags, setTags ] = React.useState(course.tags.map( _tag => _tag.name));
   const [ lesson_time, setLessonTime ] = React.useState(0);
   const [ lessonWarning, setLessonWarning ] = React.useState(false);
-
+  const [ showMore, setShowMore ] = React.useState(false)
   const [error, setError] = React.useState({
     "unit_title": "",
     "level": "",
@@ -240,7 +241,13 @@ const DesignInfo = (props) => {
         return {
           "name": _tags
         }
-      })
+      }),
+      'school': courseData.school,
+      'sch_cc_goal': courseData.sch_cc_goal,
+      'technology': courseData.technology,
+      'prior_knowledge': courseData.prior_knowledge,
+      'highlight': courseData.highlight,
+      'reflection': courseData.reflection,
     }).then(response => {
       dispatch({
         type: "INIT_COURSE",
@@ -271,7 +278,7 @@ const DesignInfo = (props) => {
           Design type: {options.designType.find(x => x.id== course.design_type_id)?.name}
       </Typography>
 
-      <Grid container spacing={5} data-tour = "course_info">
+      <Grid container spacing={2} data-tour = "course_info">
         <Grid item xs={12} md={12}>
           <TextField  
           id="unit_title" 
@@ -285,10 +292,39 @@ const DesignInfo = (props) => {
           disabled = {!(courseData.permission > 2)}
           onChange={onChange}/>
         </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            School
+          </InputLabel>
+          <TextField 
+            id="school" 
+            name="school" 
+            data-tour = "school"
+            value = {courseData.school}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+         
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            School Level Curriculum Goal
+          </InputLabel>
+          <TextField 
+            id="sch_cc_goal" 
+            name="sch_cc_goal" 
+            data-tour = "sch_cc_goal"
+            value = {courseData.sch_cc_goal}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+        </Grid>
         
         <Grid item xs={12} md={6}>
           <InputLabel>
-            Grade
+            Grade/ Level
             <QuestionHint title= {
               <React.Fragment>
                 Teachers are expected to complete the blank “level” by adding the grade level of targeted students. 
@@ -368,6 +404,34 @@ const DesignInfo = (props) => {
             InputProps={{endAdornment: <InputAdornment position="end">min(s)</InputAdornment>}}
             onChange={onChange} />
         </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            Technology
+          </InputLabel>
+          <TextField 
+            id="technology" 
+            name="technology" 
+            data-tour = "technology"
+            value = {courseData.technology}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            Prior Knowledge
+          </InputLabel>
+          <TextField 
+            id="prior_knowledge" 
+            name="prior_knowledge" 
+            data-tour = "prior_knowledge"
+            value = {courseData.prior_knowledge}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+        </Grid>
             
         <Grid item xs={12} md={12}>
           <InputLabel>
@@ -387,11 +451,11 @@ const DesignInfo = (props) => {
             name="description" 
             data-tour = "description"
             value = {courseData.description} 
-            multiline
             error = {! (error["description"]=="")}
             helperText= {! (error["description"]=="")? error["description"]:  ""}
             disabled = {!(courseData.permission > 2)}
             fullWidth 
+            multiline
             rows={5}
             onChange={onChange}/>
         </Grid>
@@ -407,7 +471,75 @@ const DesignInfo = (props) => {
               fullWidth
           />
         </Grid>
+
+          
+        <Grid item xs = {12}>
+          <Link
+            component="button"
+            variant="body2"
+            onClick={() => {
+              setShowMore(!showMore)
+            }}
+          >
+            {showMore? "Show Less": "Show More"}
+          </Link>
+        </Grid>
+
+        {
+          showMore?
+            [
+              <Grid item xs={12}>
+                <InputLabel>
+                  Highlight
+                </InputLabel>
+                <TextField 
+                  id="highlight" 
+                  name="highlight" 
+                  data-tour = "highlight"
+                  value = {courseData.highlight}
+                  disabled = {!(courseData.permission > 2)}
+                  placeholder = {"What do you think it is the most satisfying/ innovative part of the LD..."}
+                  fullWidth 
+                  multiline
+                  rows={5}
+                  onChange={onChange} />
+              </Grid>
+            ,
+            <Grid item xs={12}>
+              <InputLabel>
+                Reflection
+              </InputLabel>
+              <TextField 
+                id="reflection" 
+                name="reflection" 
+                data-tour = "reflection"
+                value = {courseData.reflection}
+                disabled = {!(courseData.permission > 2)}
+                placeholder = {"How this LD may be further improved in future implementations..."}
+                fullWidth 
+                multiline
+                rows={5}
+                onChange={onChange} />
+            </Grid>
+            ]
+            :
+            null
+        }
+
+        <Grid item xs = {12}>
+          <Link
+              variant="body2"
+              onClick={() => {
+                window.open('https://forms.gle/tfnsD4BVAj1BF2e36', '_blank');
+              }}
+            >
+              Evidence of achieved outcomes +
+            </Link>
+        </Grid>
       </Grid>
+
+    
+      
       
       <div className={classes.buttons}>
           {isStep? 

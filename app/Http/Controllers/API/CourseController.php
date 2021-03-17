@@ -142,6 +142,30 @@ class CourseController extends Controller
             $course->coursetype =  $request->coursetype;
         }
 
+        if($request->has('school')){
+            $course->school =  $request->school;
+        }
+
+        if($request->has('sch_cc_goal')){
+            $course->sch_cc_goal =  $request->sch_cc_goal;
+        }
+
+        if($request->has('technology')){
+            $course->technology =  $request->technology;
+        }
+
+        if($request->has('prior_knowledge')){
+            $course->prior_knowledge =  $request->prior_knowledge;
+        }
+
+        if($request->has('highlight')){
+            $course->highlight =  $request->highlight;
+        }
+
+        if($request->has('reflection')){
+            $course->reflection =  $request->reflection;
+        }
+
         if($request->has('usergroupid')){
             $course->usergroupid()->delete();
             foreach((array) $request->usergroupid as $_usergroup){
