@@ -910,7 +910,7 @@ class TABLEVIEW extends React.Component {
         return (
             <div ref="tableview" id='tablevis' style={styles.root}>
                 <div style={styles.viewName}>
-                    A detailed timeline layout for planning learning tasks and required tools and resourceimgs
+                    A detailed timeline layout for planning learning tasks and required tools and resources
                 </div>
                 <div id='timeTable' style={styles.timeTable}>
                     <div style={{display: 'flex'}}>
