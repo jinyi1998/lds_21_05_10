@@ -112,11 +112,11 @@ const DesignInfo = (props) => {
       validated = false;
    }
 
-    if(validator.isEmpty(courseData.description.toString())){
-      tempError["description"] = "Please enter the course description";
-      // setError({...error, courseDes: "Please enter the course description"})
-      validated = false;
-    }
+    // if(validator.isEmpty(courseData.description.toString())){
+    //   tempError["description"] = "Please enter the course description";
+    //   // setError({...error, courseDes: "Please enter the course description"})
+    //   validated = false;
+    // }
 
     setError(tempError);
     return validated;
@@ -463,6 +463,11 @@ const DesignInfo = (props) => {
         <Grid item xs = {12}>
           <InputLabel>
             Tags
+            <QuestionHint title = {
+                <React.Fragment>
+                 The tags could be used for searching in the "My Design" and "Public Design" area.
+                </React.Fragment>
+            }/>
           </InputLabel>
           <ChipInput
               value={tags}
