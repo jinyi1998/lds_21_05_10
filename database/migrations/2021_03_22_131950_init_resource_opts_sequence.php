@@ -14,9 +14,9 @@ class InitResourceOptsSequence extends Migration
     public function up()
     {
         //
-        $type = DB::table('resourceopts')->get();
+        $type = DB::table('resourceOpts')->get();
         foreach($type as $index => $_type){
-            DB::table('resourceopts')->where('id', '=', $_type->id)->update([
+            DB::table('resourceOpts')->where('id', '=', $_type->id)->update([
                 'sequence'=> $index + 1
             ]);
         }

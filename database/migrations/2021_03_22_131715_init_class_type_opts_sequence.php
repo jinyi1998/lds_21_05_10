@@ -14,9 +14,9 @@ class InitClassTypeOptsSequence extends Migration
     public function up()
     {
         //
-        $type = DB::table('classtypeopts')->get();
+        $type = DB::table('classTypeOpts')->get();
         foreach($type as $index => $_type){
-            DB::table('classtypeopts')->where('id', '=', $_type->id)->update([
+            DB::table('classTypeOpts')->where('id', '=', $_type->id)->update([
                 'sequence'=> $index + 1
             ]);
         }

@@ -14,9 +14,9 @@ class InitEtoolOptsSequence extends Migration
     public function up()
     {
         //
-        $type = DB::table('elearningtoolopts')->get();
+        $type = DB::table('elearningtoolOpts')->get();
         foreach($type as $index => $_type){
-            DB::table('elearningtoolopts')->where('id', '=', $_type->id)->update([
+            DB::table('elearningtoolOpts')->where('id', '=', $_type->id)->update([
                 'sequence'=> $index + 1
             ]);
         }

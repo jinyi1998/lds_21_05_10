@@ -14,9 +14,9 @@ class InitClassTargetOptsSequence extends Migration
     public function up()
     {
         //
-        $target = DB::table('classtargetopts')->get();
+        $target = DB::table('classTargetOpts')->get();
         foreach($target as $index => $_target){
-            DB::table('classtargetopts')->where('id', '=', $_target->id)->update([
+            DB::table('classTargetOpts')->where('id', '=', $_target->id)->update([
                 'sequence'=> $index + 1
             ]);
         }

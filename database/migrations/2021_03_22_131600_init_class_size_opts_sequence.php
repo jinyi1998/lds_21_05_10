@@ -14,9 +14,9 @@ class InitClassSizeOptsSequence extends Migration
     public function up()
     {
         //
-        $size = DB::table('classsizeopts')->get();
+        $size = DB::table('classSizeOpts')->get();
         foreach($size as $index => $_size){
-            DB::table('classsizeopts')->where('id', '=', $_size->id)->update([
+            DB::table('classSizeOpts')->where('id', '=', $_size->id)->update([
                 'sequence'=> $index + 1
             ]);
         }
