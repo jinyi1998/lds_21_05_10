@@ -14,7 +14,7 @@ class AddColumnSequenceResourcesOpts extends Migration
     public function up()
     {
         //
-        Schema::table('resourceopts', function (Blueprint $table) {
+        Schema::table('resourceOpts', function (Blueprint $table) {
             $table->smallInteger('sequence');
         });
 
@@ -28,7 +28,7 @@ class AddColumnSequenceResourcesOpts extends Migration
     public function down()
     {
         //
-        Schema::table('resourceopts', function (Blueprint $table) {
+        Schema::table('resourceOpts', function (Blueprint $table) {
             $table->dropColumn('sequence');
         });
     }

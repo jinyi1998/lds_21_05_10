@@ -14,7 +14,7 @@ class AddColumnSequenceClassTargetOpts extends Migration
     public function up()
     {
         //
-        Schema::table('classtargetopts', function (Blueprint $table) {
+        Schema::table('classTargetOpts', function (Blueprint $table) {
             $table->smallInteger('sequence');
         });
 
@@ -28,7 +28,7 @@ class AddColumnSequenceClassTargetOpts extends Migration
     public function down()
     {
         //
-        Schema::table('classtargetopts', function (Blueprint $table) {
+        Schema::table('classTargetOpts', function (Blueprint $table) {
             $table->dropColumn('sequence');
         });
     }

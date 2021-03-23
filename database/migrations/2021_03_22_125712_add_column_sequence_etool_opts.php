@@ -14,7 +14,7 @@ class AddColumnSequenceEtoolOpts extends Migration
     public function up()
     {
         //
-        Schema::table('elearningtoolopts', function (Blueprint $table) {
+        Schema::table('elearningtoolOpts', function (Blueprint $table) {
             $table->smallInteger('sequence');
         });
 
@@ -28,7 +28,7 @@ class AddColumnSequenceEtoolOpts extends Migration
     public function down()
     {
         //
-        Schema::table('elearningtoolopts', function (Blueprint $table) {
+        Schema::table('elearningtoolOpts', function (Blueprint $table) {
             $table->dropColumn('sequence');
         });
     }
