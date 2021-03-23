@@ -139,4 +139,18 @@ class LearningTask extends Model
             'learningtask_id'
         )->where('is_deleted', 0)->select(['learningtask_id','elearningtool_id'])->with(['moodlemod:moodle_mod_id,name_moodle']);
     }
+
+    public function feedbackid(){
+        return $this->hasMany(
+            'App\TaskFeedbackRelation',
+            'task_id'
+        )->where('is_deleted', 0)->select(['task_id','feedback_id']);
+    }
+
+    public function motivatorid(){
+        return $this->hasMany(
+            'App\TaskMotivatorRelation',
+            'task_id'
+        )->where('is_deleted', 0)->select(['task_id','motivator_id']);
+    }
 }

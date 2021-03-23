@@ -17,7 +17,7 @@ class ClassTargetController extends Controller
     public function index()
     {
         //
-        $classTargetOpts = ClassTargetOpts::with(['createdby', 'updatedby'])->get();
+        $classTargetOpts = ClassTargetOpts::with(['createdby', 'updatedby'])->orderBy('sequence')->get();
 
         return $classTargetOpts;
     }
@@ -32,6 +32,7 @@ class ClassTargetController extends Controller
     {
         //
         $classTargetOpts = new ClassTargetOpts();
+        $request['sequence'] = ClassTargetOpts::count() + 1;
         $classTargetOpts = $this->save($classTargetOpts, $request);
 
         return response()->json($classTargetOpts);
@@ -78,6 +79,9 @@ class ClassTargetController extends Controller
     public function save(ClassTargetOpts $classTargetOpts, Request $request){
         if($request->has('description')){
             $classTargetOpts->description = $request->description;
+        }
+        if($request->has('sequence')){
+            $classTargetOpts->sequence = $request->sequence;
         }
 
         if(!($classTargetOpts->id > 0)){

@@ -44,6 +44,8 @@ import ResourceOptsContainer from '../admin/sitemanagement/container/resourceOpt
 import TaskTypeOptsContainer from '../admin/sitemanagement/container/taskTypeOptsContainer';
 import MoodleModContainer from '../admin/sitemanagement/container/moodleModContainer';
 import TaxonomyCategoryContainer from '../admin/sitemanagement/container/taxonomyCategoryContainer'
+import MotivatorOptsContainer from '../admin/sitemanagement/container/motivatorOptsContainer';
+import FeedbackOptsContainer from '../admin/sitemanagement/container/feedbackOptsContainer';
 //#endregion
 
 import {
@@ -106,7 +108,9 @@ const App = (props) => {
     bloomLvlOpts: [],
     outcomeTypeOpts: [],
     STEMTypeOpts: [],
-    taxonomyCategory: []
+    taxonomyCategory: [],
+    motivatorOpts: [],
+    feedbackOpts: []
 });
   const [taskTypeColorValue, setTaskTypeColorValue] = React.useState({});
 
@@ -196,7 +200,9 @@ const App = (props) => {
             "bloomLvlOpts": response.data.bloomLvlOpts,
             "outcomeTypeOpts": response.data.outcomeTypeOpts,
             "STEMTypeOpts": response.data.STEMTypeOpts,
-            "taxonomyCategory": response.data.taxonomyCategory
+            "taxonomyCategory": response.data.taxonomyCategory,
+            "motivatorOpts": response.data.motivatorOpts,
+            "feedbackOpts": response.data.feedbackOpts
           }
       })
       .catch(error => console.log(error));
@@ -212,6 +218,7 @@ const App = (props) => {
     Promise.all(updates).then((response)=>{
       var temp = {};
       response.map(_response => {
+        console.log(_response);
         Object.keys(_response).map(_key => {
           temp[_key] = _response[_key];
         })
@@ -294,6 +301,10 @@ const App = (props) => {
         return <MoodleModContainer />;
       case 'admin_taxcategory':
         return <TaxonomyCategoryContainer />;
+      case 'admin_feedback_opts':
+        return <FeedbackOptsContainer />;
+      case 'admin_motivator_opts':
+        return <MotivatorOptsContainer />;
     }
   }
 

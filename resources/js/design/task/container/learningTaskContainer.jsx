@@ -334,6 +334,8 @@ const LearningTaskContainer = (props) => {
             size: 1,
             toolid: [],
             resourceid: [],
+            feedbackid: [],
+            motivatorid: [],
             // STEMType: [],
             description: "",
             hasAssessment: false,

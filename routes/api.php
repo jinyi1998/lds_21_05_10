@@ -140,9 +140,12 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('user/tourguide', '\App\Http\Controllers\RouteController@displayTourGuide');
     Route::resource('user', 'API\UserController');
 
+    Route::get('feedback/', 'API\FeedbackOptsController@index');
+    Route::get('motivator/', 'API\MotivatorOptsController@index');
 
-    Route::middleware('admin_auth')->get('/admin', function(){
-        return response()->json('admin test');
+    Route::middleware('admin_auth')->group(function(){
+        Route::resource('feedback', 'API\FeedbackOptsController')->except(['index']);
+        Route::resource('motivator', 'API\MotivatorOptsController')->except(['index']);
     });
 
 

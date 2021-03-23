@@ -17,7 +17,7 @@ class ClassSizeController extends Controller
     public function index()
     {
         //
-        return ClassSizeOpts::with(['createdby', 'updatedby'])->get();
+        return ClassSizeOpts::with(['createdby', 'updatedby'])->orderBy('sequence')->get();
     }
 
     /**
@@ -30,6 +30,7 @@ class ClassSizeController extends Controller
     {
         //
         $classSizeOpts = new ClassSizeOpts();
+        $request['sequence'] = ClassSizeOpts::count() + 1;
         $classSizeOpts = $this->save( $classSizeOpts, $request);
 
         return response()->json($classSizeOpts);
@@ -85,6 +86,11 @@ class ClassSizeController extends Controller
         if($request->has('description')){
             $classSizeOpts->description = $request->description;
         }
+
+        if($request->has('sequence')){
+            $classSizeOpts->sequence = $request->sequence;
+        }
+
         if(!($classSizeOpts->id > 0)){
             $classSizeOpts->created_by = Auth::user()->id;
             $classSizeOpts->created_at = now();

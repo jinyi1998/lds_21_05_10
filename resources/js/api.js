@@ -589,6 +589,36 @@ import config from 'react-global-configuration';
     export const apiFileCourseDownload = data => fileRequest.get(`downloadCourseJson/${data}`);
     //#endregion
 
+     //#region public sharing api
+     const motivatorRequest = axios.create({
+        baseURL: config.get('url')+'/api/motivator',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    })
+    export const apiMotivatorList = data => motivatorRequest.get(`/`);
+    export const apiMotivatorGet = data => motivatorRequest.get(`${data.id}`);
+    export const apiMotivatorPost = data => motivatorRequest.post('/', JSON.stringify(data));
+    export const apiMotivatorPut = data => motivatorRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiMotivatorDelete = data => motivatorRequest.delete(`/${data.id}`);
+    //#endregion
+
+      //#region public sharing api
+      const feedBackRequest = axios.create({
+        baseURL: config.get('url')+'/api/feedback',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
+        },
+    })
+    export const apiFeedbackList = data => feedBackRequest.get(`/`);
+    export const apiFeedbackGet = data => feedBackRequest.get(`${data.id}`);
+    export const apiFeedbackPost = data => feedBackRequest.post('/', JSON.stringify(data));
+    export const apiFeedbackPut = data => feedBackRequest.put(`/${data.id}`, JSON.stringify(data));
+    export const apiFeedbackDelete = data => feedBackRequest.delete(`/${data.id}`);
+    //#endregion
+
 
     //#region public sharing api
     const publicSharingRequest = axios.create({
@@ -616,6 +646,7 @@ import config from 'react-global-configuration';
     //#endregion
 
 
+   
     //#region template api
     // const templateRequest = axios.create({
     //     baseURL: config.get('url')+'/api/template',

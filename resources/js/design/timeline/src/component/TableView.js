@@ -78,6 +78,7 @@ class TABLEVIEW extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.currentLessonIndex);
         if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0 && nextProps.currentLessonIndex!=this.props.currentLessonIndex && nextProps.buttonAction == true){
                 let atime = nextProps.currentLessonIndex * nextProps.lessonList[0].time * ONE_MINUTE * 5;
                 let st = (originTimeInMS - atime) / timeGap[defaultTimeGap] * this.defaultUnitWidth; //styles.unit.width
@@ -111,7 +112,7 @@ class TABLEVIEW extends React.Component {
                         unitWidth: newUnitWidth,
                     })
                 }
-            }else{
+            }else if(nextProps.currentLessonIndex >= 0){
                 let tmplesson = this.getLessons(nextProps.lessonList);
                 if(tmplesson.length > 0){
                     this.defaultInClass = tmplesson[0]['defaultInClass']? tmplesson[0]['defaultInClass'] : 60;
@@ -133,6 +134,8 @@ class TABLEVIEW extends React.Component {
                         unitWidth: widthRangeLesson[0]
                     })
                 }   
+            }else{
+                nextProps.setCurrentLessonIndex(0)
             }
         }
     }
@@ -910,7 +913,7 @@ class TABLEVIEW extends React.Component {
         return (
             <div ref="tableview" id='tablevis' style={styles.root}>
                 <div style={styles.viewName}>
-                    A detailed timeline layout for planning learning tasks and required tools and resources
+                    A detailed timeline layout for planning learning tasks and required tools and resourceimgs
                 </div>
                 <div id='timeTable' style={styles.timeTable}>
                     <div style={{display: 'flex'}}>

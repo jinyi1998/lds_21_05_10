@@ -27,7 +27,9 @@ class AppOptsController extends Controller
             "outcomeTypeOpts" => $this->getOutcomeType(),
             "STEMTypeOpts" => $this->getSTEMType(),
             "designType" => $this->getDesignType(),
-            "taxonomyCategory" => $this->getTaxonomyCategory()
+            "taxonomyCategory" => $this->getTaxonomyCategory(),
+            "motivatorOpts" => $this->getMotivator(),
+            "feedbackOpts" => $this->getFeedback()
         ];
         return response()->json($data);
     }
@@ -86,23 +88,23 @@ class AppOptsController extends Controller
     }
 
     public function getClassType(){
-        return App\ClassTypeOpts::where('is_deleted', 0)->get();
+        return App\ClassTypeOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getClassTarget(){
-        return App\ClassTargetOpts::where('is_deleted', 0)->get();
+        return App\ClassTargetOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getClassSize(){
-        return App\ClassSizeOpts::where('is_deleted', 0)->get();
+        return App\ClassSizeOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getResource(){
-        return App\ResourceOpts::where('is_deleted', 0)->get();
+        return App\ResourceOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getElearningTool(){
-        return App\ElearningtoolOpts::where('is_deleted', 0)->get();
+        return App\ElearningtoolOpts::where('is_deleted', 0)->orderBy('sequence')->get();
     }
 
     public function getBloomLevel(){
@@ -119,5 +121,13 @@ class AppOptsController extends Controller
 
     public function getDesignType(){
         return App\DesignType::with(['updatedby', 'createdby'])->get();
+    }
+
+    public function getMotivator(){
+        return App\MotivatorOpts::with(['updatedby', 'createdby'])->orderBy('sequence')->get();
+    }
+
+    public function getFeedback(){
+        return App\FeedbackOpts::with(['updatedby', 'createdby'])->orderBy('sequence')->get();
     }
 }

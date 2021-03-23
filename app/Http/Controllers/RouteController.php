@@ -211,6 +211,14 @@ class RouteController extends Controller
     public function admin_taxcategory(){
         return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_taxcategory']);
     }
+
+    public function admin_feedback_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_feedback_opts']);
+    }
+
+    public function admin_motivator_opts(){
+        return view('app',  ['user'=> $this->getUserJson(), 'module' => 'admin_motivator_opts']);
+    }
     #endregion
 
 

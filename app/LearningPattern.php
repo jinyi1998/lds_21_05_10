@@ -36,7 +36,7 @@ class LearningPattern extends Model
             'id', // LearningPattern id
             'id', // component id
             'task_id' //PatternTaskRelation task id
-        )->with(["assessmentid", "resourceid", "toolid", 'assessment', 'patternid'])->orderBy('sequence');
+        )->with(["assessmentid", "resourceid", "toolid", 'assessment', 'patternid',  "motivatorid", "feedbackid"])->orderBy('sequence');
     }
 
     public function tasksid(){

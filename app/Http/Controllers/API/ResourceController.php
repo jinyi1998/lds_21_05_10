@@ -17,7 +17,7 @@ class ResourceController extends Controller
     public function index()
     {
         //
-        $resourceOpts = ResourceOpts::with(['createdby', 'updatedby'])->get();
+        $resourceOpts = ResourceOpts::with(['createdby', 'updatedby'])->orderBy('sequence')->get();
         return response()->json($resourceOpts);
     }
 
@@ -31,6 +31,7 @@ class ResourceController extends Controller
     {
         //
         $resourceOpts = new ResourceOpts();
+        $request['sequence'] = ResourceOpts::count();
         $resourceOpts = $this->save($resourceOpts, $request);
         return response()->json($resourceOpts);
     }
@@ -79,6 +80,9 @@ class ResourceController extends Controller
 
         if($request->has('description')){
             $resourceOpts->description = $request->description;
+        }
+        if($request->has('sequence')){
+            $resourceOpts->sequence = $request->sequence;
         }
 
         if(!($resourceOpts->id > 0)){

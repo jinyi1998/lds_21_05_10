@@ -17,7 +17,7 @@ class ElearningToolController extends Controller
     public function index()
     {
         //
-        $elearningToolOpts = ElearningtoolOpts::with(['createdby', 'updatedby'])->get();
+        $elearningToolOpts = ElearningtoolOpts::with(['createdby', 'updatedby'])->orderBy('sequence')->get();
 
         return response()->json($elearningToolOpts);
     }
@@ -32,7 +32,7 @@ class ElearningToolController extends Controller
     {
         //
         $elearningToolOpts = new ElearningtoolOpts();
-
+        $request['sequence'] = ElearningtoolOpts::count() + 1;
         $elearningToolOpts = $this->save($elearningToolOpts, $request);
         return response()->json($elearningToolOpts);
     }
@@ -80,6 +80,10 @@ class ElearningToolController extends Controller
     public function save(ElearningtoolOpts $elearningToolOpts, Request $request){
         if($request->has('description')){
             $elearningToolOpts->description = $request->description;
+        }
+
+        if($request->has('sequence')){
+            $elearningToolOpts->sequence = $request->sequence;
         }
 
         if(!($elearningToolOpts->id > 0)){

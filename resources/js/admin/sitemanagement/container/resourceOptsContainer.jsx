@@ -28,6 +28,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import RootRef from "@material-ui/core/RootRef";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import SortIcon from '@material-ui/icons/Sort';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+
 import {AppContextStore} from '../../../container/app';
 import { 
     apiMoodleModList,
@@ -35,7 +42,7 @@ import {
 
 const ResourceOptsContainer = () => {
     const { setLoadingOpen } = React.useContext(AppContextStore);
-
+    const [ enableDrag, setEnableDrag] = React.useState(false);
     const [ resourceOpts, setResourceOpts ] = React.useState([]);
     const [ moodleMods, setMoodleMods ] = React.useState([]);
     const [ isEditOpen, setIsEditOpen ] = React.useState(false);
@@ -133,6 +140,82 @@ const ResourceOptsContainer = () => {
     }
     //#endregion
 
+    //#region drag drop start
+    const onDragEnd = (result) => {
+        if (!result.destination) {
+            return;
+        }
+        if (!result.source) {
+            return;
+        }
+        var temp =  JSON.parse( JSON.stringify(resourceOpts) );
+        var source =  JSON.parse( JSON.stringify(resourceOpts[result.source.index]) );
+        if(result.destination.index == result.source.index){
+            return;
+        }else if(result.destination.index > result.source.index){
+            temp.splice(result.destination.index + 1, 0, source);
+            temp.splice(result.source.index , 1);
+            
+        }else{
+            temp.splice(result.destination.index, 0, source);
+            temp.splice(result.source.index + 1 , 1);
+        }
+
+        setLoadingOpen(true)
+
+        temp.map((_temp, index) => _temp.sequence = index + 1);
+
+        var updates = [];
+        temp.map(_opts => {
+            updates.push(apiResourceOptsPut(_opts));
+        });
+
+        Promise.all(updates).then(()=>{
+            reloadResourceOpts();
+        }).catch((ex) => {
+            console.log(ex);
+            setLoadingOpen(false)
+        })
+    }
+    
+    const getListStyle = isDraggingOver => ({
+        background: isDraggingOver ? 'lightgrey' : '',
+        width: '100%',
+        cursor: isDraggingOver? "" : 'pointer',
+    });
+
+    const getItemStyle = (isDragging, draggableStyle) => ({
+        // styles we need to apply on draggables
+        ...draggableStyle,
+        
+        ...(isDragging && {
+            background: "rgb(235,235,235)"
+        })
+    });
+    
+    const getDraggable = (provided, snapshot) => {
+        if(typeof provided == 'undefined'){
+            return ({
+                style: {cursor: "pointer"}
+            });
+        }else{
+            return (
+                {
+                    // styles we need to apply on draggables
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    style: getItemStyle(
+                        snapshot.isDragging,
+                        provided.draggableProps.style
+                    )
+                }
+            );
+        }
+    }
+    
+    //#endregion    
+
     return (
         <React.Fragment>
             <Grid container justify="space-between" spacing = {3}>
@@ -149,6 +232,19 @@ const ResourceOptsContainer = () => {
                 </Grid>
 
                 <Grid item xs = {12}>
+                    {
+                        enableDrag?
+                        <IconButton onClick={()=> setEnableDrag(false) }>
+                            <CheckBoxIcon />
+                        </IconButton>
+                        :
+                        <IconButton onClick={()=> setEnableDrag(true) }>
+                            <SortIcon />
+                        </IconButton>
+                    }
+                </Grid>
+
+                <Grid item xs = {12}>
                     <Paper>
                         <Table
                             aria-labelledby="tableTitle"
@@ -157,11 +253,25 @@ const ResourceOptsContainer = () => {
                             >
                             <TableHead/>
 
-                            <TableBody>
+                            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                                <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                    <RootRef rootRef={provided.innerRef}>
+                                        <TableBody style={getListStyle(snapshot.isDraggingOver)}>
                                 {resourceOpts
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((_resourceOpts ) => (
-                                        <TableRow key = {_resourceOpts.id} hover style = {{cursor: "pointer"}}>
+                                .map((_resourceOpts, index ) => (
+                                    <Draggable key={index} draggableId={_resourceOpts.id.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                    {(provided, snapshot) => (
+                                    <TableRow key = {_resourceOpts.id} hover {...getDraggable(provided, snapshot)}>
+                                        {
+                                        enableDrag?
+                                        <TableCell component="th">
+                                            <DragHandleIcon />
+                                        </TableCell>
+                                        :
+                                        null
+                                        }
                                             <TableCell component="th" scope="row"  onClick={ () => onOpenEditDialog(_resourceOpts.id) }>
                                                 <ListItemText 
                                                     primary = {_resourceOpts.description}
@@ -180,8 +290,15 @@ const ResourceOptsContainer = () => {
                                                 </IconButton> */}
                                             </TableCell>
                                         </TableRow>
+                                         )}
+                                         </Draggable>
                                     ))}
-                            </TableBody>
+                            {provided.placeholder}
+                                        </TableBody>
+                                    </RootRef>
+                                )}
+                                </Droppable>
+                            </DragDropContext>
                           </Table>
                            <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
