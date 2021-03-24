@@ -8,6 +8,7 @@ import { DATAAPI } from './api/api-server'
 import LESSONVIEW from './component/LessonView'
 import TABLEVIEW from './component/TableView'
 import styles from './component/viewStyle.js'
+import {apiCourseGet} from '../../../api'
 
 function deepCopyTask(item, index){
 	let newtask = {}
@@ -31,6 +32,10 @@ function TimelineContainer() {
 	useEffect(()=>{
 		DATAAPI.getOpts();
 		DATAAPI.getCourseInfo(setLessonList)
+		let courseid = window.location.href.split('/').reverse()[0]
+		apiCourseGet(courseid).then((rs)=>{
+			setLessonList(rs.data.lessons)
+		})
 	}, [])
 
 
