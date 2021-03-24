@@ -87,7 +87,6 @@ const LessonPlanViewContainer = (props) => {
         .then(response => {
             //load the default learning outcomes by api request
             setLoadingOpen(false);
-            refreshCourse();
         })
         .catch(error => console.log(error));
     }
@@ -122,13 +121,17 @@ const LessonPlanViewContainer = (props) => {
 
     //#region drag and drop related
     const onDragSameType = (result) => {
-        var updates = [];
+    
         setLoadingOpen(true);
 
         var lessontype = result.source.droppableId;
         let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
         //sync the data to root state
         var tempTasks =  JSON.parse(JSON.stringify(lessontask));
+
+        var time = result.destination.index == 0? 0 :  tempTasks[result.destination.index].lessonid.starttime;
+        var request = [];
+        var updates = [];
  
         tempTasks.map((_task, index)=> {
             if(_task.lessonid.sequence == null){
@@ -139,7 +142,8 @@ const LessonPlanViewContainer = (props) => {
         var sourceTask = {
           id: tempTasks[result.source.index].lessonid.id,
           sequence: result.destination.index + 1,
-          lessontype: lessontype
+          lessontype: lessontype,
+          task_id: tempTasks[result.source.index].id
         }
  
         if(result.source.index < result.destination.index){
@@ -147,10 +151,11 @@ const LessonPlanViewContainer = (props) => {
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence - 1,
-              lessontype: lessontype
+              lessontype: lessontype,
+              task_id: tempTasks[i].id
             }
             // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
+            request.push( tempTask );
          }
         }else{
  
@@ -159,31 +164,41 @@ const LessonPlanViewContainer = (props) => {
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence + 1,
-              lessontype: lessontype
+              lessontype: lessontype,
+              task_id: tempTasks[i].id
             }
             // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
+            request.push( tempTask );
           }
         }
         // console.log(sourceTask);
-        updates.push( updateLearningTaskLessonRelation(sourceTask) );
+        request.push( sourceTask );
+
+        // recalculate all the starttime involving in the drag tasks
+        request.map((_request) => {
+            _request["starttime"] = time;
+            time += tempTasks.find(_task => _task.id == _request['task_id'])?.time? 
+                    tempTasks.find(_task => _task.id == _request['task_id'])?.time * 60 * 1000
+                    :
+                    0;
+            updates.push( updateLearningTaskLessonRelation(_request) );
+        })
  
         Promise.all(updates).then(()=>{
             setLoadingOpen(false);
+            refreshCourse();
             displayMsg("success", "Tasks Sequence Updated")
         });
     }
 
     const onDragAccrossType = (result) => {
-        var updates = [];
+     
         setLoadingOpen(true);
 
         var lessontype_source = result.source.droppableId;
         let lessontask_source = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype_source);
         //sync the data to root state
         var tempTasks_source =  JSON.parse(JSON.stringify(lessontask_source));
-
-       
 
         var lessontype = result.destination.droppableId;
         let lessontask = lesson.tasks.filter( _task => _task.lessonid.lessontype == lessontype);
@@ -195,11 +210,17 @@ const LessonPlanViewContainer = (props) => {
                 tempTasks[index].lessonid.sequence = index + 1;
             }
         });
+
+        var updates = [];
+        var updates_1 = []; //query task time
+        var request = [];
+        var time = result.destination.index == 0? 0 :  tempTasks[result.destination.index].lessonid.starttime;
  
         var sourceTask = {
             id: tempTasks_source[result.source.index].lessonid.id,
             sequence: result.destination.index + 1,
-            lessontype: lessontype
+            lessontype: lessontype,
+            task_id: tempTasks_source[result.source.index].id
         }
  
         if(result.source.index < result.destination.index){
@@ -207,15 +228,15 @@ const LessonPlanViewContainer = (props) => {
             if(typeof tempTasks[i] == "undefined" ){
                 continue
             }
-            
 
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence - 1,
-              lessontype: lessontype
+              lessontype: lessontype,
+              task_id: tempTasks[i].id
             }
             // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
+            request.push( tempTask );
          }
         }else{
  
@@ -227,17 +248,28 @@ const LessonPlanViewContainer = (props) => {
             let tempTask = {
               id : tempTasks[i].lessonid.id,
               sequence: tempTasks[i].lessonid.sequence + 1,
-              lessontype: lessontype
+              lessontype: lessontype,
+              task_id: tempTasks[i].id
             }
             // console.log(tempTask);
-            updates.push( updateLearningTaskLessonRelation(tempTask) );
+            request.push( tempTask );
           }
         }
         // console.log(sourceTask);
-        updates.push( updateLearningTaskLessonRelation(sourceTask) );
+        request.push( sourceTask );
+
+        request.map((_request) => {
+            _request["starttime"] = time;
+            time += tempTasks.find(_task => _task.id == _request['task_id'])?.time? 
+                    tempTasks.find(_task => _task.id == _request['task_id'])?.time * 60 * 1000
+                    :
+                    0;
+            updates.push( updateLearningTaskLessonRelation(_request) );
+        })
  
         Promise.all(updates).then(()=>{
             setLoadingOpen(false);
+            refreshCourse();
             displayMsg("success", "Tasks Sequence Updated")
         });
     }
@@ -254,7 +286,6 @@ const LessonPlanViewContainer = (props) => {
             onDragAccrossType(result);
        }
 
-    //    console.log(result);
        return;
 
       

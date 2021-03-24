@@ -43,6 +43,7 @@ let defaultTimeGap = 1 // 30min
 const grouidxToTarget = [3, 2, 4, 1] 
 
 class TABLEVIEW extends React.Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -75,10 +76,21 @@ class TABLEVIEW extends React.Component {
         this.taskIdx = -1
         this.contentTop = -1
         this.changeGroupStartX = 0
+
+        var supportsPassive = false;
+        try {
+        window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+            get: function () { supportsPassive = true; } 
+        }));
+        } catch(e) {}
+
+        var wheelOpt = supportsPassive ? { passive: false } : false;
+        var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+        window.addEventListener(wheelEvent, this.preventDefault, wheelOpt); // modern desktop
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.currentLessonIndex);
+
         if(this.state.showTimeGap>=0 && timeGap[this.state.showTimeGap]>=0 && nextProps.currentLessonIndex!=this.props.currentLessonIndex && nextProps.buttonAction == true){
                 let atime = nextProps.currentLessonIndex * nextProps.lessonList[0].time * ONE_MINUTE * 5;
                 let st = (originTimeInMS - atime) / timeGap[defaultTimeGap] * this.defaultUnitWidth; //styles.unit.width
@@ -232,6 +244,12 @@ class TABLEVIEW extends React.Component {
                     startToLesson += 3 * this.defaultInClass
                 let tool = taskOpt["tool"];
                 let resource = taskOpt["tool"]
+                var ovretime = false;
+                if(currentTask["lessonid"]["lessontype"] == 2 ){
+                    ovretime = lessons[lessoni].time * DATAAPI.ONE_MINUTE < currentTask['lessonid']['starttime'] +  currentTask['time'] *  DATAAPI.ONE_MINUTE
+                }else{
+                    ovretime = lessons[lessoni].time * DATAAPI.ONE_MINUTE * 2 < currentTask['lessonid']['starttime'] +  currentTask['time'] *  DATAAPI.ONE_MINUTE
+                }
 	            let tableTask = {
 	            	id: currentTask.id,
 	            	lesson: lessoni,
@@ -248,7 +266,9 @@ class TABLEVIEW extends React.Component {
                     resourceimgs: DATAAPI.getResourceIcon(currentTask),//'logo192.png',
                     classType: currentTask["lessonid"]["lessontype"]==1?"preClass":(currentTask["lessonid"]["lessontype"]==2?"inClass":"postClass"),
                     displayName: ('displayName' in currentTask)? currentTask.displayName: '', 
+                    overtime: ovretime
 	            }
+
 	            if(groupid == 3)
 	                idvTasks.push(tableTask)
 	            if(groupid == 2)
@@ -260,6 +280,7 @@ class TABLEVIEW extends React.Component {
     		}
     	}
     	let tasks_after =  [idvTasks, groupTasks, peerTasks, wholeTasks]
+        console.log(tasks_after);
         return tasks_after
     }
 
@@ -336,7 +357,7 @@ class TABLEVIEW extends React.Component {
             * this.state.unitWidth );
             var lesson_predict_round = Math.floor(lesson_predict);
        
-            if(lesson_predict_round >= 0){
+            if(lesson_predict_round >= 0 && this.props.currentLessonIndex != -1){
                 this.props.changeLessonIndex(lesson_predict_round)
             }   
 
@@ -357,7 +378,16 @@ class TABLEVIEW extends React.Component {
         this.dragTimeStartX = val
     }
 
+
+    preventDefault(e) {
+        e = e || window.event
+        if (e.preventDefault) {
+          e.preventDefault()
+        }
+        e.returnValue = false
+      }
     zoomTime = (e) => {
+        this.preventDefault(e);
         // record the mouse position
         this.zoomTimeStartX = e.clientX - e.currentTarget.getBoundingClientRect().left
         const gap = timeGap[this.state.showTimeGap]
@@ -413,6 +443,7 @@ class TABLEVIEW extends React.Component {
 
     // careful!!
     handleTaskSelection = (e) => {
+        return;
         // if this click makes the task is selected, then handle delete and edit
         if (e.currentTarget.parentNode.style.border !== selectedStyle) {
             e.currentTarget.parentNode.style.border = selectedStyle
@@ -571,6 +602,7 @@ class TABLEVIEW extends React.Component {
     }
 
     dragTaskStart = (e) => {
+        return;
         if (e.target.className.slice(0, 4) === 'task') {
             let task_id = Number(e.target.className.slice(4))
             let tmp = this.state.tasks
@@ -836,11 +868,16 @@ class TABLEVIEW extends React.Component {
 
                         {/* draw each task on the timeline */}
                         {this.state.tasks.length>0?this.state.tasks[groupIdx].map((task, taskIdx) => {
+
                             let item = { ...styles.item }
                             let val = (task.start - originTimeInMS) / gap * this.state.unitWidth + this.state.timeStart
                             item.transform = `translate(${val}px, 0px)`
                             let taskBorder = { ...styles.taskBorder }
                             taskBorder.width = task.duration / gap * this.state.unitWidth
+                            if(task.overtime){
+                                taskBorder.borderColor = "red"
+                                taskBorder.borderWidth =  3
+                            }
                             let desc = { ...styles.desc }
                             desc.backgroundColor = task.bgColor
 
