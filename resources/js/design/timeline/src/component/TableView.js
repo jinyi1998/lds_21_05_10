@@ -75,18 +75,7 @@ class TABLEVIEW extends React.Component {
         this.groupIdx = -1
         this.taskIdx = -1
         this.contentTop = -1
-        this.changeGroupStartX = 0
-
-        var supportsPassive = false;
-        try {
-        window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-            get: function () { supportsPassive = true; } 
-        }));
-        } catch(e) {}
-
-        var wheelOpt = supportsPassive ? { passive: false } : false;
-        var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-        window.addEventListener(wheelEvent, this.preventDefault, wheelOpt); // modern desktop
+        this.changeGroupStartX = 0   
     }
 
     componentWillReceiveProps(nextProps) {
@@ -280,7 +269,6 @@ class TABLEVIEW extends React.Component {
     		}
     	}
     	let tasks_after =  [idvTasks, groupTasks, peerTasks, wholeTasks]
-        console.log(tasks_after);
         return tasks_after
     }
 
