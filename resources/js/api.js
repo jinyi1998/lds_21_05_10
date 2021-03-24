@@ -595,6 +595,7 @@ import config from 'react-global-configuration';
         baseURL: config.get('url')+'/api/publicsharing',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' +$('meta[name="apitoken"]').attr('content')
         },
     })
     export const apiPublicSharingVerify = data => publicSharingRequest.get(`verify/${data.token}`,);

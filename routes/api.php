@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 Route::resource('opts', 'API\AppOptsController');
 Route::get('printable/{id}', 'API\CourseController@show');
 Route::get('printable/patternopts', 'API\LearningTaskController@getLearningPatternOpts');
-Route::resource('publicsharing', 'API\PublicSharingController');
+Route::resource('publicsharing', 'API\PublicSharingController')->except(['store']);
 Route::get('publicsharing/getByCourse/{id}', 'API\PublicSharingController@showByCourse');
 Route::get('publicsharing/verify/{token}', 'API\PublicSharingController@verifyReturnCourse');
 
@@ -145,6 +145,7 @@ Route::middleware(['auth:api'])->group(function () {
         return response()->json('admin test');
     });
 
+    Route::post('publicsharing', 'API\PublicSharingController@Store');
 
     Route::middleware('design_permission')->group(function(){
         Route::resource('course', 'API\CourseController')->except(['show']);
