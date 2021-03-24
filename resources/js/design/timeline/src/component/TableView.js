@@ -44,6 +44,7 @@ const grouidxToTarget = [3, 2, 4, 1]
 
 class TABLEVIEW extends React.Component {
 
+    
     constructor(props) {
         super(props)
         this.state = {
@@ -76,6 +77,22 @@ class TABLEVIEW extends React.Component {
         this.taskIdx = -1
         this.contentTop = -1
         this.changeGroupStartX = 0   
+
+     
+    }
+
+    componentDidMount(){
+        var supportsPassive = false;
+
+        try {
+        window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
+            get: function () { supportsPassive = true; } 
+        }));
+        } catch(e) {}
+
+        var wheelOpt = supportsPassive ? { passive: false } : false;
+        var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+        document.getElementById("timeTable").addEventListener(wheelEvent, this.preventDefault, wheelOpt);
     }
 
     componentWillReceiveProps(nextProps) {
