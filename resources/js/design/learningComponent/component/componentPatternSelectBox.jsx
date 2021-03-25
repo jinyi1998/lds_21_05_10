@@ -48,9 +48,15 @@ const useStyles = makeStyles(theme => ({
 const ComponentPatternSelectBox = (props) => {
     const {index, _patternOpt, selectPattern} = props;
     const [ isMouseOver, setIsMouseOver ] = React.useState(false);
+    const [ media, setMedia ] = React.useState('');
     const classes = useStyles(); 
 
     const { options, returnImgSrc } = React.useContext(AppContextStore);
+
+
+    React.useEffect(()=>{
+        setMedia(returnImgSrc(_patternOpt.media))
+    }, [])
 
     const handleOnClick = (e, index) => {
         if(typeof props.handleOnClick != "undefined"){
@@ -90,7 +96,7 @@ const ComponentPatternSelectBox = (props) => {
             >
                 <Grid container>
                     <Grid container item xs ={12} justify = "center">
-                        <img src =  {returnImgSrc(_patternOpt.media)}  style = {{height: 150}}/>
+                        <img src =  {media}  style = {{height: 150}}/>
                     </Grid>
 
                     <Grid item xs ={12}>

@@ -66,6 +66,20 @@ class LearningTaskTemplate extends Model
         )->where('is_deleted', 0)->select(['learningtask_id','elearningtool_id']);
     }
 
+    public function feedbackid(){
+        return $this->hasMany(
+            'App\TaskTemplateFeedbackRelation',
+            'task_id'
+        )->where('is_deleted', 0)->select(['task_id','feedback_id']);
+    }
+
+    public function motivatorid(){
+        return $this->hasMany(
+            'App\TaskTemplateMotivatorRelation',
+            'task_id'
+        )->where('is_deleted', 0)->select(['task_id','motivator_id']);
+    }
+
     public function patternid(){
         return $this->belongsTo('App\PatternTaskTemplateRelation', 'id','task_id');
     }
