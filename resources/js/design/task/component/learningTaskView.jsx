@@ -20,16 +20,16 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import RoomIcon from '@material-ui/icons/Room';
 import ImportantDevicesIcon from '@material-ui/icons/ImportantDevices';
 import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
-import AssessmentIcon from '@material-ui/icons/Assessment';
 import DragHandleIcon from '@material-ui/icons/DragHandle';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Tooltip from '@material-ui/core/Tooltip';
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
+import FeedbackIcon from '@material-ui/icons/Feedback';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 
 import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
@@ -103,6 +103,8 @@ const LearningTaskView = (props) => {
         size: 1,
         toolid: [],
         resourceid: [],
+        feedbackid: [],
+        motivatorid: [],
         // STEMType: [],
         description: "",
         has_assessment: false
@@ -164,6 +166,8 @@ const LearningTaskView = (props) => {
     const taskResouceOpts = options.taskResource;
     const taskELearnResouceOpts = options.taskElearingResource;
     const taskTypeOpts = options.taskType;
+    const feedbackOpts = options.feedbackOpts;
+    const motivatorOpts = options.motivatorOpts;
     //#endregion
 
     
@@ -340,6 +344,23 @@ const LearningTaskView = (props) => {
                             <ImportantDevicesIcon /> 
                         </Tooltip>  
                         {task.toolid.length == 0? "N/A" : task.toolid.map(selected=> taskELearnResouceOpts.find(x => x.id == selected.elearningtool_id)?.description.concat(', '))} 
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid} data-tour="">
+                        <Tooltip title="Feedback" aria-label="classtarget">
+                            <FeedbackIcon />
+                        </Tooltip>  
+                        {task.feedbackid.length == 0? "N/A" : task.feedbackid.map(selected=> feedbackOpts.find(x => x.id == selected.feedback_id)?.name.concat(', '))}
+                    </Grid>
+
+                    <Grid item xs={4} className={classes.contentGrid} data-tour = "">
+                        <Tooltip title="Motivator" aria-label="classtarget">
+                            <EmojiObjectsIcon /> 
+                        </Tooltip>  
+                        {task.motivatorid.length == 0? 
+                            "N/A" 
+                            : 
+                            task.motivatorid.map(selected=> motivatorOpts.find(x => x.id == selected.motivator_id)?.name.concat(', '))} 
                     </Grid>
                     
                     <Grid item xs={12} className={classes.contentGrid} data-tour ="component_task_description">

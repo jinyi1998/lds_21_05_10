@@ -82,7 +82,7 @@ class Component extends Model
             'id', // target table target id
             'id', // local table local id
             'task_id' //middle relation table target id
-        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid"])->orderBy('component_pattern_task_relation.sequence');
+        )->with(["assessment", "assessmentid", "resourceid", "toolid", "componentid", "motivatorid", "feedbackid"])->orderBy('component_pattern_task_relation.sequence');
     }
     public function patterntaskid(){
         return $this->hasMany(

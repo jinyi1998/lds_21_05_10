@@ -21,7 +21,7 @@ import {ContextStore} from '../../../container/designContainer'
 import {AppContextStore} from '../../../container/app';
 
 import {
-    apiLearningCompGet,
+    apiLearningCompGet
 } from '../../../api.js'
 
 
@@ -64,14 +64,25 @@ const LessonPlanTaskSelect = (props) => {
         var i = 1;
 
         const taskList = Object.keys(checkBoxState);
+        var time = 0;
         taskList.map( task_id => {
             if(checkBoxState[task_id] == true){
                 var temp = {
                     "lesson_id": lesson.id,
                     "task_id": task_id,
-                    "sequence": lesson.tasks.length + i,
+                    "sequence": i,
+                    "starttime": time
                     
                 };
+                // calculate the start time
+                time +=  lesson.tasks.find(_task => _task.id == task_id)?.time? 
+                            lesson.tasks.find(_task => _task.id == task_id)?.time * 1000 * 60 
+                            : 
+                            taskOpts.find(_task => _task.id == task_id)?.time?
+                                taskOpts.find(_task => _task.id == task_id)?.time * 1000 * 60
+                                :
+                                0
+                            ;
                 task_arr.push(temp);
                 i++;
             }

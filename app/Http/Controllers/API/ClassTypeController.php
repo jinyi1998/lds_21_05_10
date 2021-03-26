@@ -17,7 +17,7 @@ class ClassTypeController extends Controller
     public function index()
     {
         //
-        $classTypeOpts = ClassTypeOpts::with(['createdby', 'updatedby'])->get();
+        $classTypeOpts = ClassTypeOpts::with(['createdby', 'updatedby'])->orderBy('sequence')->get();
 
         return response()->json($classTypeOpts);
     }
@@ -32,7 +32,7 @@ class ClassTypeController extends Controller
     {
         //
         $classTypeOpts = new ClassTypeOpts();
-
+        $request['sequence'] = ClassTypeOpts::count() + 1;
         $classTypeOpts = $this->save($classTypeOpts, $request);
         return response()->json($classTypeOpts);
     }
@@ -78,6 +78,10 @@ class ClassTypeController extends Controller
     public function save(ClassTypeOpts $classTypeOpts, Request $request){
         if($request->has('description')){
             $classTypeOpts->description = $request->description;
+        }
+
+        if($request->has('sequence')){
+            $classTypeOpts->sequence = $request->sequence;
         }
 
         if(!($classTypeOpts->id > 0)){

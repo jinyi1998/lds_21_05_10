@@ -19,7 +19,7 @@ class LearningPatternTemplate extends Model
             'id', // LearningPatternTemplate id
             'id', // component_template id
             'task_id' //PatternTaskTemplateRelation task id
-        )->with(['assessmentid', 'toolid', 'resourceid', 'patternid'])->orderBy('sequence');
+        )->with(["assessmentid", "resourceid", "toolid", 'patternid',  "motivatorid", "feedbackid"])->orderBy('sequence');
     }
 
 

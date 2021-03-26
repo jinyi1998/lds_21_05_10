@@ -171,7 +171,7 @@ const LearningTaskLessonView = (props) => {
                             
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Grid item container  xs={12} spacing={4}>
+                            <Grid item container  xs={12} spacing={4} style = {{marginLeft: 0}}>
                                 <Grid item xs={1} height="100%">
                                     <div style={taskTypeColor(task.type)}>
                                     </div>

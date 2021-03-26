@@ -1,16 +1,9 @@
 import * as React from 'react';
 import { DATAAPI } from '../api/api-server';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Input from '@material-ui/core/Input';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import {apiLearningTaskGet} from '../../../../api';
 import LearningTaskEditView  from '../../../task/component/learningTaskEditView'
 
 
@@ -48,20 +41,9 @@ var style = {
 
 
 export default function TaskEdition(props){
-	const toolsName = DATAAPI.getelearningtoolOpts() 
-	const resourcesName = DATAAPI.getresourceOpts()
-	const typeName = DATAAPI.getlearningTasktypeOpts()
-	const sizeOpts = DATAAPI.getclassSizeOpts()
-
-	const classes = useStyles();
-	let choseTask = ((props.lessonList)[props.currentLessonIndex]["tasks"]).filter(item => item.id == props.currentTaskId)[0]
-	choseTask.allResourcedId = (choseTask.resourceid).map((resourceid) =>  resourceid.resource_id)
-	choseTask.allToolsId =(choseTask.toolid).map((toolid) =>  toolid.elearningtool_id)
-	if(!('displayName' in choseTask))
-		choseTask.displayName = ''
-	const [state, setState] = React.useState(choseTask);
-
-	const [ taskData, setTaskData] = React.useState(choseTask);
+	const [ taskData, setTaskData] = React.useState({
+    id: -1
+  });
 	const [ error, setError] = React.useState({
         "type": "",
         "title": "",
@@ -70,7 +52,13 @@ export default function TaskEdition(props){
         "classType": "",
         "target": "",
         "size": ""
+  });
+
+  React.useEffect(()=>{
+    apiLearningTaskGet( props.currentTaskId).then(response => {
+      setTaskData(response.data)
     });
+  }, [])
 
     const validate = () => {
         var validated = true;
@@ -141,13 +129,26 @@ export default function TaskEdition(props){
         <div className='taskEditiontitle1'> Edit Learning Task  </div>
 
         <div className='taskEditiontitle2'> You may add new learning task for this component... </div>
-        <LearningTaskEditView 
+        {
+          typeof taskData != "undefined"?
+          <LearningTaskEditView 
           taskID = {taskData.id} 
           taskData = {taskData} 
           syncTask = {setTaskData} 
           showAssessment = {false}
           error = {error}
           mode = "lesson_edit"/> 
+          :
+          null
+
+        }
+        {/* <LearningTaskEditView 
+          taskID = {taskData.id} 
+          taskData = {taskData} 
+          syncTask = {setTaskData} 
+          showAssessment = {false}
+          error = {error}
+          mode = "lesson_edit"/>  */}
         
         <div className='buttonG'>
           <Button id='cancel' variant="contained" color = {"secondary"} onClick={() => {props.setShowEditionView(false); }}>CANCEL</Button>

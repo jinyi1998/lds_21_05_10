@@ -10,6 +10,8 @@ use App\PatternTaskRelation;
 use App\TaskAssessmentRelation;
 use App\TaskResourceRelation;
 use App\TaskToolRelation;
+use App\TaskFeedbackRelation;
+use App\TaskMotivatorRelation;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -55,7 +57,9 @@ class LearningTaskController extends Controller
             'toolid', 
             'patternid',
             'componentid',
-            'lessonid'
+            'lessonid',
+            'motivatorid',
+            'feedbackid'
         ])->find($id);
        
         return response()->json($task);
@@ -226,7 +230,7 @@ class LearningTaskController extends Controller
                 $task->resourceid()->save($test);
             }
         }
-
+        //toolid
         if($request->has('toolid') ){
             $task->toolid()->delete();
             foreach($request->toolid as $_tool){
@@ -238,6 +242,34 @@ class LearningTaskController extends Controller
                     'is_deleted' => 0
                     ]);
                 $task->toolid()->save($test);
+            }
+        }
+
+        if($request->has('feedbackid') ){
+            $task->feedbackid()->delete();
+            foreach($request->feedbackid as $_feedback){
+                // return response($_assessment['learningoutcome_id'], 200);
+                $test = new TaskFeedbackRelation([
+                    'feedback_id' => $_feedback['feedback_id'],
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                    ]);
+                $task->feedbackid()->save($test);
+            }
+        }
+
+        if($request->has('motivatorid') ){
+            $task->motivatorid()->delete();
+            foreach($request->motivatorid as $_motivator){
+                // return response($_assessment['learningoutcome_id'], 200);
+                $test = new TaskMotivatorRelation([
+                    'motivator_id' => $_motivator['motivator_id'],
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                    'is_deleted' => 0
+                    ]);
+                $task->motivatorid()->save($test);
             }
         }
         return $task;

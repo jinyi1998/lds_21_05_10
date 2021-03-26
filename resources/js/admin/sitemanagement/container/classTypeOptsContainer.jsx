@@ -22,12 +22,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import EditAttributesIcon from '@material-ui/icons/EditAttributes';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
+import RootRef from "@material-ui/core/RootRef";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import SortIcon from '@material-ui/icons/Sort';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import {AppContextStore} from '../../../container/app';
 import { apiClassTypeOptsList, apiClassTypeOptsPost, apiClassTypeOptsPut} from '../../../api';
 
 const ClassTypeOptsContainer = () => {
     const { setLoadingOpen } = React.useContext(AppContextStore);
-
+    const [ enableDrag, setEnableDrag] = React.useState(false);
     const [ classTypeOpts, setClassTypeOpts ] = React.useState([]);
     const [ isEditOpen, setIsEditOpen ] = React.useState(false);
     const [ page, setPage ] = React.useState(0);
@@ -100,6 +106,84 @@ const ClassTypeOptsContainer = () => {
     }
     //#endregion
 
+        //#region drag drop start
+        const onDragEnd = (result) => {
+            if (!result.destination) {
+                return;
+            }
+            if (!result.source) {
+                return;
+            }
+            var temp =  JSON.parse( JSON.stringify(classTypeOpts) );
+            var source =  JSON.parse( JSON.stringify(classTypeOpts[result.source.index]) );
+            if(result.destination.index == result.source.index){
+                return;
+            }else if(result.destination.index > result.source.index){
+                temp.splice(result.destination.index + 1, 0, source);
+                temp.splice(result.source.index , 1);
+                
+            }else{
+                temp.splice(result.destination.index, 0, source);
+                temp.splice(result.source.index + 1 , 1);
+            }
+    
+            setLoadingOpen(true)
+    
+            temp.map((_temp, index) => _temp.sequence = index + 1);
+    
+            var updates = [];
+            temp.map(_opts => {
+                updates.push(apiClassTypeOptsPut(_opts));
+            });
+    
+            Promise.all(updates).then(()=>{
+                reloadClassTypeOpts();
+            }).catch((ex) => {
+                console.log(ex);
+                setLoadingOpen(false)
+            })
+        }
+    
+        const getListStyle = isDraggingOver => ({
+            background: isDraggingOver ? 'lightgrey' : '',
+            width: '100%',
+            cursor: isDraggingOver? "" : 'pointer',
+        });
+    
+        const getItemStyle = (isDragging, draggableStyle) => ({
+            // styles we need to apply on draggables
+            ...draggableStyle,
+          
+            ...(isDragging && {
+              background: "rgb(235,235,235)"
+            })
+        });
+        
+        const getDraggable = (provided, snapshot) => {
+            if(typeof provided == 'undefined'){
+                return ({
+                    style: {cursor: "pointer"}
+                });
+            }else{
+                return (
+                    {
+                        // styles we need to apply on draggables
+                        ref: provided.innerRef,
+                        ...provided.draggableProps,
+                        ...provided.dragHandleProps,
+                        style: getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                        )
+                    }
+                );
+            }
+        }
+    
+        //#endregion    
+
+
+
     return (
         <React.Fragment>
             <Grid container justify="space-between" spacing = {3}>
@@ -116,6 +200,19 @@ const ClassTypeOptsContainer = () => {
                 </Grid>
 
                 <Grid item xs = {12}>
+                    {
+                        enableDrag?
+                        <IconButton onClick={()=> setEnableDrag(false) }>
+                            <CheckBoxIcon />
+                        </IconButton>
+                        :
+                        <IconButton onClick={()=> setEnableDrag(true) }>
+                            <SortIcon />
+                        </IconButton>
+                    }
+                </Grid>
+
+                <Grid item xs = {12}>
                     <Paper>
                         <Table
                             aria-labelledby="tableTitle"
@@ -123,32 +220,52 @@ const ClassTypeOptsContainer = () => {
                             aria-label="enhanced table"
                             >
                             <TableHead/>
-
-                            <TableBody>
-                                {classTypeOpts
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((_classTargetOpts ) => (
-                                        <TableRow key = {_classTargetOpts.id} hover style = {{cursor: "pointer"}}>
-                                            <TableCell component="th" scope="row"  onClick={ () => onOpenEditDialog(_classTargetOpts.id) }>
-                                                <ListItemText 
-                                                    primary = {_classTargetOpts.description}
-                                                    secondary= {
-                                                        "Updated By:" + _classTargetOpts.updatedby.name + "@" + _classTargetOpts.updated_at
-                                                        + " || " 
-                                                        + "Created By: " + _classTargetOpts.createdby.name + "@" + _classTargetOpts.created_at } 
-                                                />
-                                            </TableCell>
-                                            <TableCell component="th">
-                                                <IconButton color="primary" onClick = {() => {event.preventDefault(); onOpenEditDialog(_classTargetOpts.id);}}>
-                                                    <EditAttributesIcon />
-                                                </IconButton>
-                                                {/* <IconButton color="primary" onClick = {() => {event.preventDefault();}}>
-                                                    <DeleteForeverIcon />
-                                                </IconButton> */}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
+                            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+                                <Droppable droppableId="droppable">
+                                {(provided, snapshot) => (
+                                    <RootRef rootRef={provided.innerRef}>
+                                        <TableBody style={getListStyle(snapshot.isDraggingOver)}>
+                                        {classTypeOpts
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        .map((_classTypeOpts, index ) => (
+                                            <Draggable key={index} draggableId={_classTypeOpts.id.toString()} index={index} isDragDisabled = {!enableDrag}>
+                                            {(provided, snapshot) => (
+                                                <TableRow key = {_classTypeOpts.id} hover {...getDraggable(provided, snapshot)}>
+                                                    {
+                                                        enableDrag?
+                                                        <TableCell component="th">
+                                                            <DragHandleIcon />
+                                                        </TableCell>
+                                                        :
+                                                        null
+                                                    }
+                                                    <TableCell component="th" scope="row"  onClick={ () => onOpenEditDialog(_classTypeOpts.id) }>
+                                                        <ListItemText 
+                                                            primary = {_classTypeOpts.description}
+                                                            secondary= {
+                                                                "Updated By:" + _classTypeOpts.updatedby.name + "@" + _classTypeOpts.updated_at
+                                                                + " || " 
+                                                                + "Created By: " + _classTypeOpts.createdby.name + "@" + _classTypeOpts.created_at } 
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell component="th">
+                                                        <IconButton color="primary" onClick = {() => {event.preventDefault(); onOpenEditDialog(_classTypeOpts.id);}}>
+                                                            <EditAttributesIcon />
+                                                        </IconButton>
+                                                        {/* <IconButton color="primary" onClick = {() => {event.preventDefault();}}>
+                                                            <DeleteForeverIcon />
+                                                        </IconButton> */}
+                                                    </TableCell>
+                                                </TableRow>
+                                                )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </TableBody>
+                                    </RootRef>
+                                )}
+                                </Droppable>
+                            </DragDropContext>
                           </Table>
                            <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}

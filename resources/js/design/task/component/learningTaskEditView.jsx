@@ -19,8 +19,6 @@ import {ComponentContext} from '../../learningComponent/container/componentConta
 import {AppContextStore} from '../../../container/app';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-import config from 'react-global-configuration';
 //   tasks: [
 //     {
 //       id: 0,
@@ -80,13 +78,16 @@ const LearningTaskEditView = (props) => {
         size: 1,
         toolid: [],
         resourceid: [],
-        // STEMType: [],
+        feedbackid: [],
+        motivatorid: [],
         description: "",
         has_assessment: false,
     });  
 
     const [tool, setTool] = React.useState([])
     const [resource, setResource] = React.useState([])
+    const [feedback, setFeedback] = React.useState([])
+    const [motivator, setMotivator] = React.useState([])
     const [assessment, setAssessment] = React.useState([])
     const [hasAssessment, setHasAssessment] = React.useState(
         false
@@ -98,10 +99,18 @@ const LearningTaskEditView = (props) => {
             //new task
             setTask({...task, id: -1});
         }else{
+            //init multiple choice data
             var toolData = taskData.toolid.map( _tool => {return _tool.elearningtool_id});
             setTool(toolData);
             var resourceData = taskData.resourceid.map( _resource => {return _resource.resource_id});
             setResource(resourceData);
+
+            var motivatorData = taskData.motivatorid.map( motivator => {return motivator.motivator_id});
+            setMotivator(motivatorData);
+
+            var feedbackData = taskData.feedbackid.map( _feedback => {return _feedback.feedback_id});
+            setFeedback(feedbackData);
+
             if(showAssessment){
                 // var hasAssessment = (taskData.assessmentid?.length > 0)? true: false
                 setHasAssessment(taskData.has_assessment? true : false);
@@ -169,6 +178,30 @@ const LearningTaskEditView = (props) => {
     , [resource])
 
     React.useEffect( ()=>{  
+        // update the original feedbackid
+        if(task.id != -999){
+           var feedbackid = {}
+           feedbackid =  feedback.map(_feedback => {
+               return {"feedback_id": _feedback, "task_id": task.id}
+           })
+           setTask({...task, feedbackid: feedbackid});
+       }
+   }
+   , [feedback])
+
+   React.useEffect( ()=>{  
+    // update the original motivtor
+    if(task.id != -999){
+       var motivatorid = {}
+       motivatorid =  motivator.map(_motivator => {
+           return {"motivator_id": _motivator, "task_id": task.id}
+       })
+       setTask({...task, motivatorid: motivatorid});
+   }
+}
+, [motivator])
+
+    React.useEffect( ()=>{  
         // update the original learningoutcome
         if(task.id != -999){
            var assessmentid = {}
@@ -214,6 +247,12 @@ const LearningTaskEditView = (props) => {
                 break;
             case "e-resource":
                 setTool(event.target.value);
+                break;
+            case "feedback":
+                setFeedback(event.target.value);
+                break;
+            case "motivator":
+                setMotivator(event.target.value);
                 break;
             // case "STEMType":
             //     setTask({...task, STEMType: event.target.value});
@@ -271,6 +310,8 @@ const LearningTaskEditView = (props) => {
     const taskResouceOpts = options.taskResource;
     const taskELearnResouceOpts = options.taskElearingResource;
     const taskTypeOpts = options.taskType;
+    const feedbackOpts = options.feedbackOpts;
+    const motivatorOpts = options.motivatorOpts;
 
     //#endregion
 
@@ -526,6 +567,68 @@ const LearningTaskEditView = (props) => {
                             </Select>
                             <FormHelperText>
                                You can select one or more e-learning tool(s)
+                            </FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    {/* Feedback */}
+                    <Grid item xs={12} className={classes.contentGrid}>
+                        <FormControl className={classes.formControl} fullWidth margin='dense'>
+                            <InputLabel id = {"feedback-"+ taskID + "-lebal"}>Feedback</InputLabel>
+                            <Select
+                                labelId = {"feedback-"+ taskID + "-lebal"}
+                                id = {"feedback-"+ taskID}
+                                multiple
+                                value = {feedback}
+                                fullWidth
+                                name = "feedback"
+                                size = "small"
+                                onChange={handleChangeMultiple}
+                                input = {<Input id={"feedback-"+ taskID} />}
+                                renderValue={selected => (
+                                    <div className={classes.chips}>
+                                    {selected.map(value => (
+                                        <Chip key={value} label={feedbackOpts.find(x=> x.id == value).name} className={classes.chip} />
+                                    ))}
+                                    </div>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {feedbackOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.name}</MenuItem>)}
+                            </Select>
+                            <FormHelperText>
+                               You can select one or more feedback(s)
+                            </FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    {/* Motivator */}
+                    <Grid item xs={12} className={classes.contentGrid}>
+                        <FormControl className={classes.formControl} fullWidth margin='dense'>
+                            <InputLabel id = {"motivator"+ taskID + "-lebal"}>Motivator(s)</InputLabel>
+                            <Select
+                                labelId = {"motivator"+ taskID + "-lebal"}
+                                id = {"motivator"+ taskID}
+                                multiple
+                                value = {motivator}
+                                fullWidth
+                                name = "motivator"
+                                size = "small"
+                                onChange={handleChangeMultiple}
+                                input = {<Input id={"motivator"+ taskID} />}
+                                renderValue={selected => (
+                                    <div className={classes.chips}>
+                                    {selected.map(value => (
+                                        <Chip key={value} label={motivatorOpts.find(x=> x.id == value).name} className={classes.chip} />
+                                    ))}
+                                    </div>
+                                )}
+                                MenuProps={MenuProps}
+                            >
+                                {motivatorOpts.map(_opts =>  <MenuItem value={_opts.id} key={_opts.id}>{_opts.name}</MenuItem>)}
+                            </Select>
+                            <FormHelperText>
+                               You can select one or more motivator(s)
                             </FormHelperText>
                         </FormControl>
                     </Grid>

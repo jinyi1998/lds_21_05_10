@@ -11,6 +11,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import GpsNotFixedIcon from '@material-ui/icons/GpsNotFixed';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import CategoryIcon from '@material-ui/icons/Category';
+import FeedbackIcon from '@material-ui/icons/Feedback';
+import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -236,6 +238,60 @@ const SiteManagement = () => {
         );
     }
 
+    const displayFeedback = () => {
+        return (
+            <Button 
+            className = {classes.button}
+            variant="outlined" 
+            onClick={ (event)=>{window.location.href = "feedback_opts"}}  
+            >
+                <Grid container>
+                    <Grid item xs ={12}>
+                        <FeedbackIcon  className = {classes.media}/>
+                    </Grid>
+                    <Grid item xs = {12}>
+                        <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                            Feedback
+                        </Typography>
+                    </Grid>
+                    <Grid  item xs = {12}>
+                        <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                            Edit the default Feedback Options Here
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Button>
+        );
+    }
+
+    
+    const displayMotivator = () => {
+        return (
+            <Button 
+            className = {classes.button}
+            variant="outlined" 
+            onClick={ (event)=>{window.location.href = "motivator_opts"}}  
+            >
+                <Grid container>
+                    <Grid item xs ={12}>
+                        <EmojiObjectsIcon  className = {classes.media}/>
+                    </Grid>
+                    <Grid item xs = {12}>
+                        <Typography variant="subtitle2" color="primary" style = {{textTransform: "initial"}}>
+                            Motivator
+                        </Typography>
+                    </Grid>
+                    <Grid  item xs = {12}>
+                        <Typography variant="caption" display="block" color="textSecondary" style = {{textTransform: "initial"}}>
+                            Edit the default Motivator Options Here
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Button>
+        );
+    }
+
+
     return (
         <React.Fragment>
             <Grid container spacing = {4}>
@@ -267,9 +323,16 @@ const SiteManagement = () => {
                     {displayMoodleMod()}
                 </Grid>
 
-
                 <Grid container item xs ={3} justify="center">
                     {displayTaxonomyCategory()}
+                </Grid>
+
+                <Grid container item xs ={3} justify="center">
+                    {displayFeedback()}
+                </Grid>
+
+                <Grid container item xs ={3} justify="center">
+                    {displayMotivator()}
                 </Grid>
                 
             </Grid>
