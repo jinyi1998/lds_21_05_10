@@ -17,8 +17,8 @@ Run the composer install command to install all the laravel dependency.
 
 Please edit your own ```.env``` file and config the database setting
 and then run
-```php artisan cache:clear
-php artisan key:generate```
+```php artisan cache:clear```
+```php artisan key:generate```
 
 Run the migration to update your database
 ```php artisan migrate```
