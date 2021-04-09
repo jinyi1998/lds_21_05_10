@@ -7,6 +7,7 @@ composer 1.10.17
 
 
 To begin with, please clone this repository to your local mechine
+<br />
 ```git clone -b ust_timeline https://github.com/ldsstem/ldsk12_beta.git```
 
 Go into the directory of the project source code
