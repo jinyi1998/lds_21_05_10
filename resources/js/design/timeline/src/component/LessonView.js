@@ -201,7 +201,7 @@ function LessonTaskList(props){
                         const taskOpt = DATAAPI.getTaskOptions(item)
                         item.currentTaskId = index; 
                         return (<Draggable 
-                                    isDragDisabled={true}
+                                    // isDragDisabled={true}
                                     key={""+item.id} 
                                     draggableId={""+item.id} 
                                     index={index}>
