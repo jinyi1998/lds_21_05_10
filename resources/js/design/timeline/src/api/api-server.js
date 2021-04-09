@@ -2,6 +2,7 @@ import axios from 'axios';
 import config from 'react-global-configuration';
 
 const DATAAPI = {
+    //https or http handling
     baseURL: config.get('url')+'/api',
     ONE_MINUTE : 60000,
     groupName : ['Whole Class', 'Group', 'Individual', 'Peer', ],
@@ -10,6 +11,7 @@ const DATAAPI = {
         "Authorization": 'Bearer ' + $('meta[name="apitoken"]').attr('content')
     },
     courseinfo: {},
+    // get opts data from the system
     OPTS: {
         "elearningtoolOpts": [],
         "resourceOpts": [],
@@ -244,10 +246,11 @@ const DATAAPI = {
             baseURL:  DATAAPI.baseURL + '/learningTask',
             headers: DATAAPI.headers
         });
+
+        // handling the lesson type and starttime issue
+
         request.get('/' + task["id"])
             .then(function (response) {
-                console.log(response['data'])
-                console.log(task)
                 let obj = {
                     "id":response['data']["lessonid"]["id"], 
                     "sequence": 1, 

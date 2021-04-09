@@ -81,6 +81,7 @@ class TABLEVIEW extends React.Component {
      
     }
 
+    // fix mousewheel rolling action on the timelime also roll the whole browser
     componentDidMount(){
         var supportsPassive = false;
 
@@ -250,6 +251,7 @@ class TABLEVIEW extends React.Component {
                     startToLesson += 3 * this.defaultInClass
                 let tool = taskOpt["tool"];
                 let resource = taskOpt["tool"]
+                // add new attritube overtime to identify if the task is overtime by checking the starttime? if yes, highlight the task 
                 var ovretime = false;
                 if(currentTask["lessonid"]["lessontype"] == 2 ){
                     ovretime = lessons[lessoni].time * DATAAPI.ONE_MINUTE < currentTask['lessonid']['starttime'] +  currentTask['time'] *  DATAAPI.ONE_MINUTE
@@ -350,6 +352,7 @@ class TABLEVIEW extends React.Component {
         const val = e.clientX
 
         // mouse movement: e.clientX - this.dragTimeStartX
+        // prevent user dragging time before/ after lessons
         this.setState((prevState) => {
             let newTimeStart = prevState.timeStart + (val - this.dragTimeStartX)
 
@@ -360,6 +363,7 @@ class TABLEVIEW extends React.Component {
              
             var lesson_predict = newTimeStart / (- (this.state.lessons[0]?.preClass + this.state.lessons[0]?.inClass + this.state.lessons[0]?.postClass) / gap 
             * this.state.unitWidth );
+            //predict while lesson we are on selecting
             var lesson_predict_round = Math.floor(lesson_predict);
        
             if(lesson_predict_round >= 0 && this.props.currentLessonIndex != -1){
@@ -383,7 +387,7 @@ class TABLEVIEW extends React.Component {
         this.dragTimeStartX = val
     }
 
-
+    //prevent rolling timeline also rolling the whole windows
     preventDefault(e) {
         e = e || window.event
         if (e.preventDefault) {
@@ -391,6 +395,7 @@ class TABLEVIEW extends React.Component {
         }
         e.returnValue = false
       }
+
     zoomTime = (e) => {
         this.preventDefault(e);
         // record the mouse position
@@ -448,7 +453,7 @@ class TABLEVIEW extends React.Component {
 
     // careful!!
     handleTaskSelection = (e) => {
-        return;
+        // return;
         // if this click makes the task is selected, then handle delete and edit
         if (e.currentTarget.parentNode.style.border !== selectedStyle) {
             e.currentTarget.parentNode.style.border = selectedStyle
@@ -607,7 +612,7 @@ class TABLEVIEW extends React.Component {
     }
 
     dragTaskStart = (e) => {
-        return;
+        // return;
         if (e.target.className.slice(0, 4) === 'task') {
             let task_id = Number(e.target.className.slice(4))
             let tmp = this.state.tasks
@@ -879,6 +884,7 @@ class TABLEVIEW extends React.Component {
                             item.transform = `translate(${val}px, 0px)`
                             let taskBorder = { ...styles.taskBorder }
                             taskBorder.width = task.duration / gap * this.state.unitWidth
+                            // hightligth the task if overtime
                             if(task.overtime){
                                 taskBorder.borderColor = "red"
                                 taskBorder.borderWidth =  3

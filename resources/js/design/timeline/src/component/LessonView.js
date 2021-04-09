@@ -214,7 +214,8 @@ function LessonTaskList(props){
                                         style={getItemStyle(
                                             snapshot.isDragging,
                                             provided.draggableProps.style,
-                                            {backgroundColor:taskOpt["taskType"]["color"]})}
+                                            {backgroundColor:taskOpt["taskType"]["color"]}
+                                        )}
                                         >
                                         {item.title}
                                         </div>

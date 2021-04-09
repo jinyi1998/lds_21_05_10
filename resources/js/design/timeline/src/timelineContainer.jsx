@@ -29,6 +29,7 @@ function TimelineContainer() {
 	const [showEditionView, setShowEditionView] = useState(false)
 	const [toolORresource, setToolORresource] = useState("tool")
 
+	// fix data error while init
 	useEffect(()=>{
 		DATAAPI.getOpts();
 		DATAAPI.getCourseInfo(setLessonList)

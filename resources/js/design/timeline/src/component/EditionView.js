@@ -131,6 +131,7 @@ export default function TaskEdition(props){
         <div className='taskEditiontitle2'> You may add new learning task for this component... </div>
         {
           typeof taskData != "undefined"?
+          // use LDS build-in instead 
           <LearningTaskEditView 
           taskID = {taskData.id} 
           taskData = {taskData} 
