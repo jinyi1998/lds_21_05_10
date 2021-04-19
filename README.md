@@ -98,6 +98,10 @@ Run the npm to install all the front end dependency.
 
 ```npm install```
 
+At this point you may want to restart NGINX to apply any changes that is not loaded
+
+```service nginx restart```
+
 Run the npm build to apply the latest front code changes.
 
 ```npm run prod``` or ```npm run dev``` for dev build
