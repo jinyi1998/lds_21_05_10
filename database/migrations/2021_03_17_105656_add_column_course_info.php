@@ -20,6 +20,7 @@ class AddColumnCourseInfo extends Migration
             $table->text('sch_cc_goal')->nullable();
             $table->text('technology')->nullable();
             $table->text('prior_knowledge')->nullable();
+            $table->text('maximum_enrollment_number')->nullable();
             $table->text('highlight')->nullable();
             $table->text('reflection')->nullable();
         });
@@ -39,6 +40,7 @@ class AddColumnCourseInfo extends Migration
             $table->dropColumn('sch_cc_goal');
             $table->dropColumn('technology');
             $table->dropColumn('prior_knowledge');
+            $table->dropColumn('maximum_enrollment_number');
             $table->dropColumn('highlight');
             $table->dropColumn('reflection');
         });

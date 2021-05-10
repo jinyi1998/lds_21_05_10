@@ -157,6 +157,9 @@ class CourseController extends Controller
         if($request->has('prior_knowledge')){
             $course->prior_knowledge =  $request->prior_knowledge;
         }
+        if($request->has('maximum_enrollment_number')){
+            $course->maximum_enrollment_number =  $request->maximum_enrollment_number;
+        }
 
         if($request->has('highlight')){
             $course->highlight =  $request->highlight;

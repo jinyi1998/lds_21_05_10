@@ -57,6 +57,6 @@
     var version = "{{ Config::get('app.app_ver') }}";
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = "/js/app.js?v=" + version;
+    script.src = "/js/app.js" ;
     document.body.appendChild(script); 
 </script>

@@ -246,6 +246,7 @@ const DesignInfo = (props) => {
       'sch_cc_goal': courseData.sch_cc_goal,
       'technology': courseData.technology,
       'prior_knowledge': courseData.prior_knowledge,
+      'maximum_enrollment_number': courseData.maximum_enrollment_number,
       'highlight': courseData.highlight,
       'reflection': courseData.reflection,
     }).then(response => {
@@ -428,6 +429,21 @@ const DesignInfo = (props) => {
             name="prior_knowledge" 
             data-tour = "prior_knowledge"
             value = {courseData.prior_knowledge}
+            disabled = {!(courseData.permission > 2)}
+            fullWidth 
+            onChange={onChange} />
+        </Grid>
+
+        {/* practice！！！！！！！！！！！！ */}
+        <Grid item xs={12} md={6}>
+          <InputLabel>
+            Maximum enrollment number
+          </InputLabel>
+          <TextField 
+            id="maximum_enrollment_number" 
+            name="maximum_enrollment_number" 
+            data-tour = "maximum_enrollment_number"
+            value = {courseData.maximum_enrollment_number}
             disabled = {!(courseData.permission > 2)}
             fullWidth 
             onChange={onChange} />
